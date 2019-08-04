@@ -1,3 +1,5 @@
+package CD19;
+
 import java.util.List;
 
 public class Compiler {
@@ -10,10 +12,8 @@ public class Compiler {
     }
 
     public void lexicalAnalysis(String filePath){
-        CodeFileReader codeFileReader = new CodeFileReader();
-        List<String> codeLines = codeFileReader.readFile(filePath);
-
-
+       Scanner scanner = new Scanner(new CodeFileReader(filePath));
+       List<Token> allTokens = scanner.getAllTokens();
 
     }
 

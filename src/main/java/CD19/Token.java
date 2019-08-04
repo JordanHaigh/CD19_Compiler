@@ -1,6 +1,6 @@
-// COMP3290 CD19 Compiler
+package CD19;// COMP3290 CD19 CD19.Compiler
 //
-//	Token class	- constructs a token on behalf of the scanner for it to be sent to the parser.
+//	CD19.Token class	- constructs a token on behalf of the scanner for it to be sent to the parser.
 //			- IDs/FLITs/Strings do not have their symbol table reference set in this class,
 //			    this is best done within the scanner as it makes things easier in later phases,
 //			    when we are dealing with things like variable scoping.
@@ -16,11 +16,13 @@
 //
 //
 
+import CD19.States.*;
+
 public class Token {
 
     public static final int
 
-            TEOF  =  0,	  // Token value for end of file
+            TEOF  =  0,	  // CD19.Token value for end of file
 
     // The 30 keywords
 
@@ -92,9 +94,9 @@ public class Token {
 
     //public StRec getSymbol() { return symbol; } todo uncomment
 
-    //public void setSymbol(StRec x) {symbol = x; }		// Used by the Parser to set the ST Ref field of the Token tuple todo uncomment
+    //public void setSymbol(StRec x) {symbol = x; }		// Used by the Parser to set the ST Ref field of the CD19.Token tuple todo uncomment
 
-    public String toString() {				// This does NOT produce output for the Scanner Phase	   *****
+    public String toString() {				// This does NOT produce output for the CD19.Scanner Phase	   *****
         String s = TPRINT[tid]+" " + line + " " + pos;	// It is meant to be used for diagnostic printing only	   *****
         if (str == null) return s;			// It may give you some ideas wrt reporting lexical errors *****
         if (tid != TUNDF)
@@ -110,8 +112,8 @@ public class Token {
         return s;
     }
 
-    public String shortString() {		// This produces a string which may be useful for output in the Scanner Phase	*****
-        String s = TPRINT[tid];		// Token as a string
+    public String shortString() {		// This produces a string which may be useful for output in the CD19.Scanner Phase	*****
+        String s = TPRINT[tid];		// CD19.Token as a string
         if (str == null) return s;	// If that is all - return
         if (tid != TUNDF) {		// For IDs, ILITS and FLITs - add the lexeme
             s += str + " ";
@@ -130,8 +132,8 @@ public class Token {
         return s;
     }
 
-    private int checkKeywords(String s) {	// Takes a lexeme recognised as an ID
-        // Returns the correct keyword Token number
+    private static int checkKeywords(String s) {	// Takes a lexeme recognised as an ID
+        // Returns the correct keyword CD19.Token number
         s = s.toLowerCase();		// change to lower case before checking
         if ( s.equals("cd19")      )	return TCD19;
         if ( s.equals("constants") )	return TCONS;
@@ -171,5 +173,66 @@ public class Token {
         if ( s.equals("false")     )	return TFALS;
 
         return -1;		// not a Keyword
+    }
+
+
+    //////////////////////////////////////////////
+    //extra methods
+
+    public static int checkOperatorsAndDelimiters(String s){
+        if ( s.equals(",")  )	return TCOMA;
+        if ( s.equals("[")  )	return TLBRK;
+        if ( s.equals("]")  )	return TRBRK;
+        if ( s.equals("(")  )	return TLPAR;
+        if ( s.equals(")")  )	return TRPAR;
+        if ( s.equals("=")  )	return TEQUL;
+        if ( s.equals("+")  )	return TPLUS;
+        if ( s.equals("-")  )	return TMINS;
+        if ( s.equals("*")  )	return TSTAR;
+        if ( s.equals("/")  )	return TDIVD;
+        if ( s.equals("%")  )	return TPERC;
+        if ( s.equals("^")  )	return TCART;
+        if ( s.equals("<")  )	return TLESS;
+        if ( s.equals(">")  )	return TGRTR;
+        if ( s.equals(":")  )	return TCOLN;
+        if ( s.equals("<=") )	return TLEQL;
+        if ( s.equals(">=") )	return TGRTR;
+        if ( s.equals("!=") )	return TNEQL;
+        if ( s.equals("==") )	return TEQEQ;
+        if ( s.equals("+=") )	return TPLEQ;
+        if ( s.equals("-=") )	return TMNEQ;
+        if ( s.equals("*=") )	return TSTEQ;
+        if ( s.equals("/=") )	return TDVEQ;
+        if ( s.equals("%=") )	return TPCEQ;
+        if ( s.equals(";")  )	return TSEMI;
+        if ( s.equals(".")  )	return TDOT;
+
+        return -1;
+    }
+
+    public static int findTokenId(String tokenString, State previousState){
+        int tokenId;
+
+        tokenId = checkKeywords(tokenString);
+        if(tokenId != -1)
+            return tokenId;
+
+        //so its not a keyword, check operators and delimiters
+        tokenId = checkOperatorsAndDelimiters(tokenString);
+        if(tokenId != -1)
+            return tokenId;
+
+        //if not keyword and not operator, then it could be:
+        //identifier, number, string, undefined token,
+        if(previousState instanceof IdentifierState)
+            return TIDEN;
+        else if(previousState instanceof IntegerState)
+            return TILIT;
+        else if(previousState instanceof AbsoluteFloatState)
+            return TFLIT;
+        else if(previousState instanceof StringState)
+            return TSTRG;
+        else
+            return TUNDF; //todo do we want to error handle this?
     }
 }
