@@ -6,7 +6,7 @@ import java.util.List;
 public class Scanner {
 
     private List<String> codeLines;
-    private State state;
+    private State state; //state pattern https://sourcemaking.com/design_patterns/state
 
     public Scanner(List<String> codeLines){
         this.codeLines = codeLines;
