@@ -2,6 +2,7 @@ import CD19.CodeFileReader;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -33,4 +34,46 @@ public class CodeFileReaderTests {
         assertEquals("CD19 test", lines.get(6));
 
     }
+
+    @Test
+    public void codeFileReader_readNextChar_normal(){
+        List<String> codeLines = new ArrayList<>();
+        codeLines.add("hello world");
+
+        CodeFileReader codeFileReader = new CodeFileReader(codeLines);
+        char nextChar = codeFileReader.readNextChar();
+        assertEquals('h', nextChar);
+    }
+
+    @Test
+    public void codeFileReader_readNextChar_reachEndOfLineAndTriggerArrayOutOfBounds(){
+        List<String> codeLines = new ArrayList<>();
+        codeLines.add("h");
+        codeLines.add("e");
+
+        CodeFileReader codeFileReader = new CodeFileReader(codeLines);
+        char firstChar = codeFileReader.readNextChar(); //h
+        char secondChar = codeFileReader.readNextChar(); // \n
+
+        assertEquals(secondChar, '\n');
+        assertEquals(1, codeFileReader.getColumnNumber());
+        assertEquals(2, codeFileReader.getLineNumber());
+    }
+
+    @Test
+    public void codeFileReader_readNextChar_reachEndOfFile(){
+        List<String> codeLines = new ArrayList<>();
+        codeLines.add("h");
+        codeLines.add("e");
+
+        CodeFileReader codeFileReader = new CodeFileReader(codeLines);
+        char firstChar = codeFileReader.readNextChar(); //h
+        char secondChar = codeFileReader.readNextChar(); // \n
+        char thirdChar = codeFileReader.readNextChar(); // e
+        char forthChar = codeFileReader.readNextChar(); // \n
+
+        assertEquals(true, codeFileReader.hasReachedEOF());
+    }
+
+
 }

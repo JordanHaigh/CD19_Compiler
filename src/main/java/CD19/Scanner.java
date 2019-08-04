@@ -47,10 +47,10 @@ public class Scanner {
             stateMachine.updateState(nextChar);
 
             if (stateMachine.getCurrentState() instanceof InvalidState) {
-                return createInvalidToken(lexemeBuffer);
+                return createTokenFromInvalidState(lexemeBuffer);
             }
             if (stateMachine.getCurrentState() instanceof CompletedTokenState) {
-                return createCompletedToken(lexemeBuffer);
+                return createTokenFromCompletedState(lexemeBuffer);
             }
 
             lexemeBuffer.append(nextChar);
@@ -58,7 +58,7 @@ public class Scanner {
         }
     }
 
-    private Token createInvalidToken(StringBuilder lexemeBuffer){
+    private Token createTokenFromInvalidState(StringBuilder lexemeBuffer){
         //attempt to salvage a token before we hit the invalid character
 
         int tokenId = Token.findTokenId(lexemeBuffer.toString(), stateMachine.getPreviousState());
@@ -72,7 +72,7 @@ public class Scanner {
 
     }
 
-    private Token createCompletedToken(StringBuilder lexemeBuffer){
+    private Token createTokenFromCompletedState(StringBuilder lexemeBuffer){
         int tokenId = Token.findTokenId(lexemeBuffer.toString(), stateMachine.getPreviousState());
         int tokenColumn = codeFileReader.getColumnNumber() - lexemeBuffer.length();
         int tokenLine = codeFileReader.getLineNumber();

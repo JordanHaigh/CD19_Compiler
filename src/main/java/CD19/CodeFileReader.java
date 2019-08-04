@@ -17,6 +17,11 @@ public class CodeFileReader {
     private int lineNumber, columnNumber;
     private boolean reachedEOF;
 
+    public CodeFileReader(List<String> codeLines){
+        this.codeLines = codeLines;
+        lineNumber = columnNumber = 0;
+    }
+
     public CodeFileReader(String filePath) {
         this.codeLines = readFile(filePath);
         lineNumber = columnNumber = 0;
@@ -43,8 +48,8 @@ public class CodeFileReader {
         char nextChar;
 
         try {
-            nextChar = currentLine.charAt(++columnNumber);
-        } catch (ArrayIndexOutOfBoundsException e) {
+            nextChar = currentLine.charAt(columnNumber++);
+        } catch (StringIndexOutOfBoundsException e) {
             //column number has gone too far
             columnNumber = 0;
 
