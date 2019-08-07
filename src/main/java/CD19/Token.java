@@ -236,7 +236,7 @@ public class Token {
             return TILIT;
         else if(previousState instanceof AbsoluteFloatState)
             return TFLIT;
-        else if(previousState instanceof StringState)
+        else if(previousState instanceof PossibleStringState)
             return TSTRG;
         else
             return TUNDF; //todo do we want to error handle this?

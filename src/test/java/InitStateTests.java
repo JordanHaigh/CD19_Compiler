@@ -20,11 +20,21 @@ public class InitStateTests {
     }
 
     @Test
-    public void InitState_SetState_NumberPassed_SetStateToIdentifier(){
+    public void InitState_SetState_NumberPassed_SetStateToInteger(){
         StateMachine sm = new StateMachine();
         sm.updateState('4');
 
         assertTrue(sm.getCurrentState() instanceof IntegerState);
 
     }
+
+    @Test
+    public void InitState_SetState_QuotePassed_SetStateToPossibleString(){
+        StateMachine sm = new StateMachine();
+        sm.updateState('"');
+
+        assertTrue(sm.getCurrentState() instanceof PossibleStringState);
+
+    }
+
 }

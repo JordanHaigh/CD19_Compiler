@@ -20,10 +20,10 @@ public class InitState implements State {
 //            sm.setCurrentState(new SpecialState());
 //        else if(CharacterClassification.isCharPossibleComment(c))
 //            sm.setCurrentState(new PossibleCommentState());
-        else if(CharacterClassification.isCharPossibleString(c))
-            sm.setCurrentState(new StringState());
+        else if(c == '\"')
+            sm.setCurrentState(new PossibleStringState());
         else{
-            System.out.println("unknown char. char is " + c);
+            System.out.println("unknown char. char is " + (int)c);
             System.exit(-1);
         }
     }
