@@ -12,10 +12,10 @@ public class InitState implements State {
             sm.setCurrentState(new IdentifierState());
         else if(CharacterClassification.isCharNumerical(c))
             sm.setCurrentState(new IntegerState());
-        else if(CharacterClassification.isCharSpecial(c))
-            sm.setCurrentState(new SpecialState());
-        else if(CharacterClassification.isCharPossibleComment(c))
-            sm.setCurrentState(new PossibleCommentState());
+//        else if(CharacterClassification.isCharSpecial(c))
+//            sm.setCurrentState(new SpecialState());
+//        else if(CharacterClassification.isCharPossibleComment(c))
+//            sm.setCurrentState(new PossibleCommentState());
         else if(CharacterClassification.isCharPossibleString(c))
             sm.setCurrentState(new StringState());
         else{
