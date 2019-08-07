@@ -20,6 +20,8 @@ public class InitState implements State {
             sm.setCurrentState(new CompletedTokenState());
         else if(c == '!')
             sm.setCurrentState(new PossibleNotEqualsState());
+        else if(CharacterClassification.isCharAssignmentOrRelationalOperator(c))
+            sm.setCurrentState(new SingleOperatorState());
 //        else if(CharacterClassification.isCharSpecial(c))
 //            sm.setCurrentState(new SpecialState());
 //        else if(CharacterClassification.isCharPossibleComment(c))

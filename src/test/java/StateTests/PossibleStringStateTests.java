@@ -57,7 +57,7 @@ public class PossibleStringStateTests {
 
         sm.updateState('\"');
 
-        assertTrue(sm.getCurrentState() instanceof AbsoluteStringState);
+        assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
 
     }
 

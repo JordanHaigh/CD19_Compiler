@@ -12,7 +12,7 @@ public class PossibleStringState implements State{
         if(c == '\n')
             sm.setCurrentState(new InvalidState());
         else if(c == '\"')
-            sm.setCurrentState(new AbsoluteStringState());
+            sm.setCurrentState(new CompletedTokenState());
 
 
         //alphas, special or numbers dont change anything

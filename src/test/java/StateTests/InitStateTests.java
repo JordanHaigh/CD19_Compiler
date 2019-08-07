@@ -129,6 +129,62 @@ public class InitStateTests {
 
     }
 
+    @Test
+    public void InitState_SetState_PlusPassed_SingleOperator(){
+        StateMachine sm = new StateMachine();
+        sm.updateState('+');
+
+        assertTrue(sm.getCurrentState() instanceof SingleOperatorState);
+    }
+
+    @Test
+    public void InitState_SetState_MinusPassed_SingleOperator(){
+        StateMachine sm = new StateMachine();
+        sm.updateState('-');
+
+        assertTrue(sm.getCurrentState() instanceof SingleOperatorState);
+    }
+
+    @Test
+    public void InitState_SetState_EqualsPassed_SingleOperator(){
+        StateMachine sm = new StateMachine();
+        sm.updateState('=');
+
+        assertTrue(sm.getCurrentState() instanceof SingleOperatorState);
+    }
+
+    @Test
+    public void InitState_SetState_StarPassed_SingleOperator(){
+        StateMachine sm = new StateMachine();
+        sm.updateState('*');
+
+        assertTrue(sm.getCurrentState() instanceof SingleOperatorState);
+    }
+
+    @Test
+    public void InitState_SetState_PercentPassed_SingleOperator(){
+        StateMachine sm = new StateMachine();
+        sm.updateState('%');
+
+        assertTrue(sm.getCurrentState() instanceof SingleOperatorState);
+    }
+
+    @Test
+    public void InitState_SetState_LessThanPassed_SingleOperator(){
+        StateMachine sm = new StateMachine();
+        sm.updateState('<');
+
+        assertTrue(sm.getCurrentState() instanceof SingleOperatorState);
+    }
+
+    @Test
+    public void InitState_SetState_GreaterThanPassed_SingleOperator(){
+        StateMachine sm = new StateMachine();
+        sm.updateState('<');
+
+        assertTrue(sm.getCurrentState() instanceof SingleOperatorState);
+    }
+
 
 
 }
