@@ -47,4 +47,26 @@ public class PossibleFloatStateTests {
         assertTrue(sm.getCurrentState() instanceof InvalidState);
     }
 
+    @Test
+    public void PossibleFloatState_SetState_WhitespacePassed_Invalid(){
+
+        StateMachine sm = new StateMachine();
+        sm.setCurrentState(new PossibleFloatState());
+
+        sm.updateState(' ');
+
+        assertTrue(sm.getCurrentState() instanceof InvalidState);
+    }
+
+    @Test
+    public void PossibleFloatState_SetState_NewLinePassed_Invalid(){
+
+        StateMachine sm = new StateMachine();
+        sm.setCurrentState(new PossibleFloatState());
+
+        sm.updateState('\n');
+
+        assertTrue(sm.getCurrentState() instanceof InvalidState);
+    }
+
 }

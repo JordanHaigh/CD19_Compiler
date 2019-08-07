@@ -16,6 +16,8 @@ public class InitState implements State {
             sm.setCurrentState(new IdentifierState());
         else if(CharacterClassification.isCharNumerical(c))
             sm.setCurrentState(new IntegerState());
+        else if(c == '\"')
+            sm.setCurrentState(new PossibleStringState());
         else if(CharacterClassification.isCharSingleOperator(c))
             sm.setCurrentState(new CompletedTokenState());
         else if(c == '!')
@@ -24,12 +26,7 @@ public class InitState implements State {
             sm.setCurrentState(new SingleOperatorState());
         else if(c == '/')
             sm.setCurrentState(new CommentOrDivideState());
-//        else if(CharacterClassification.isCharSpecial(c))
-//            sm.setCurrentState(new SpecialState());
-//        else if(CharacterClassification.isCharPossibleComment(c))
-//            sm.setCurrentState(new PossibleCommentState());
-        else if(c == '\"')
-            sm.setCurrentState(new PossibleStringState());
+
         else{
             System.out.println("unknown char. char is " + (int)c);
             System.exit(-1);
