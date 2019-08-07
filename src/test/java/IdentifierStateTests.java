@@ -4,6 +4,12 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
+/*
+ * Jordan Haigh CD19
+ * public class IdentifierStateTests
+ * Tests determine if state transition logic is working as intended
+ * */
 public class IdentifierStateTests {
 
     @Test

@@ -2,6 +2,11 @@ package CD19;
 
 import java.util.List;
 
+/*
+ * Jordan Haigh c3256730 CD19
+ * public class Compiler
+ * Class houses the main sections of the complete assignment (lexical analysis, parsing, compiling)
+ * */
 public class Compiler {
 
     public void compile(String filePath){

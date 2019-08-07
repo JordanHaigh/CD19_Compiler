@@ -2,6 +2,11 @@ package CD19.States;
 
 import CD19.CharacterClassification;
 
+/*
+ * Jordan Haigh c3256730 CD19
+ * public class IdentifierState.java
+ * Building an Identifier token. Character inputs determine state transitions
+ * */
 public class IdentifierState implements State {
 
     @Override

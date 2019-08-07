@@ -1,7 +1,11 @@
 package CD19.States;
-
 import CD19.CharacterClassification;
 
+/*
+ * Jordan Haigh c3256730 CD19
+ * public class InitState.java
+ * Starting node of the state machine. Character input determines state transitions
+ * */
 public class InitState implements State {
     @Override
     public void updateState(StateMachine sm, char c) {

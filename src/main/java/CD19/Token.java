@@ -18,6 +18,12 @@ package CD19;// COMP3290 CD19 CD19.Compiler
 
 import CD19.States.*;
 
+
+/*
+ * Jordan Haigh c3256730 CD19
+ * public class Token
+ * Code created by COMP3290 Staff. Class is used for token checking
+ * */
 public class Token {
 
     public static final int

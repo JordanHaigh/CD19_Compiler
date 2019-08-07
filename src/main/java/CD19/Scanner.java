@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * Jordan Haigh CD19
- * public class CD19.Scanner
+ * Jordan Haigh c3256730 CD19
+ * public class Scanner
  * Used for lexical analysis and token generation when scanning a file
  * */
 public class Scanner {

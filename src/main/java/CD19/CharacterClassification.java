@@ -1,5 +1,11 @@
 package CD19;
 
+
+/*
+ * Jordan Haigh c3256730 CD19
+ * public class CharacterClassification
+ * Static methods determine if a char is within a certain range of the ascii table
+ * */
 public class CharacterClassification{
     public static boolean isCharAlphabetical(char c){
         return (65 <= c && c <= 90) || (97 <= c && c <= 122); //if char is a capital or lowercase

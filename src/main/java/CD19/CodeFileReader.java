@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * Jordan Haigh CD19
- * public class CD19.CodeFileReader
+ * Jordan Haigh c3256730 CD19
+ * public class CodeFileReader
  * Takes file path as argument and returns a list of strings of the contained text in the file.
  * */
 public class CodeFileReader {

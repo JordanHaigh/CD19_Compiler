@@ -1,7 +1,7 @@
 import CD19.Compiler;
 
 /*
-* Jordan Haigh CD19
+* Jordan Haigh c3256730 CD19
 * public class A1
 * Used as main entry point for first assignment submission
 * */
