@@ -1,3 +1,5 @@
+package StateTests;
+
 import CD19.States.*;
 import org.junit.jupiter.api.*;
 

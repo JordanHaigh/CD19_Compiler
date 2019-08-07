@@ -30,12 +30,13 @@ public class CharacterClassification{
         return false;
     }
 
-    public static boolean isCharPossibleString(char c){
-        return c == '"';
+    public static boolean isCharAssignmentOrRelationalOperator(char c){
+        return c == '=' || c == '+' || c == '-' || c == '*' || c == '%' || c == '<' || c == '>';
     }
 
-    public static boolean isCharPossibleComment(char c){
-        return c =='/';
+    public static boolean isCharSingleOperator(char c){
+        return c == '(' || c == ')' || c == '[' || c == ']' || c == '^' || c == ':' || c == '.' || c == ';' || c == ',';
     }
+
 
 }

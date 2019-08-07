@@ -1,3 +1,5 @@
+package StateTests;
+
 import CD19.States.*;
 import org.junit.jupiter.api.*;
 
@@ -13,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AbsoluteStringStateTests {
 
     @Test
-    public void PossibleStringState_SetState_AlphaPassed_InvalidState(){
+    public void AbsoluteStringState_SetState_AlphaPassed_InvalidState(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new AbsoluteStringState());
@@ -25,7 +27,7 @@ public class AbsoluteStringStateTests {
     }
 
     @Test
-    public void PossibleStringState_SetState_NumberPassed_InvalidState(){
+    public void AbsoluteStringState_SetState_NumberPassed_InvalidState(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new AbsoluteStringState());
@@ -37,7 +39,7 @@ public class AbsoluteStringStateTests {
     }
 
     @Test
-    public void PossibleStringState_SetState_SpecialPassed_InvalidState(){
+    public void AbsoluteStringState_SetState_SpecialPassed_InvalidState(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new AbsoluteStringState());
@@ -49,7 +51,7 @@ public class AbsoluteStringStateTests {
     }
 
     @Test
-    public void PossibleStringState_SetState_WhitespacePassed_CompletedToken(){
+    public void AbsoluteStringState_SetState_WhitespacePassed_CompletedToken(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new AbsoluteStringState());
@@ -61,7 +63,7 @@ public class AbsoluteStringStateTests {
     }
 
     @Test
-    public void PossibleStringState_SetState_NewLinePassed_CompletedToken(){
+    public void AbsoluteStringState_SetState_NewLinePassed_CompletedToken(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new AbsoluteStringState());
