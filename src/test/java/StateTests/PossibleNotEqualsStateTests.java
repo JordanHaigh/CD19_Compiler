@@ -74,14 +74,14 @@ public class PossibleNotEqualsStateTests {
     }
 
     @Test
-    public void PossibleNotEqualsState_SetState_EqualsPassed_AbsoluteNotEquals(){
+    public void PossibleNotEqualsState_SetState_EqualsPassed_Completed(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleNotEqualsState());
 
         sm.updateState('=');
 
-        assertTrue(sm.getCurrentState() instanceof AbsoluteNotEqualsState);
+        assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
 
     }
 }

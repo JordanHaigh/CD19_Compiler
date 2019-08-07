@@ -11,7 +11,7 @@ public class SingleOperatorState implements State{
     @Override
     public void updateState(StateMachine sm, char c) {
         if(c == '=')
-            sm.setCurrentState(new DoubleOperatorState());
+            sm.setCurrentState(new CompletedTokenState()); //double operator
         else if(c == ' ')
             sm.setCurrentState(new CompletedTokenState());
         else

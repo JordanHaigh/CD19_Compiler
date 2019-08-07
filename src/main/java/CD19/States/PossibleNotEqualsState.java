@@ -11,7 +11,7 @@ public class PossibleNotEqualsState implements State {
     @Override
     public void updateState(StateMachine sm, char c) {
         if(c == '=')
-            sm.setCurrentState(new AbsoluteNotEqualsState());
+            sm.setCurrentState(new CompletedTokenState()); //absolute not equals
         else
             sm.setCurrentState(new InvalidState());
     }

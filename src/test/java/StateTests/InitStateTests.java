@@ -185,6 +185,14 @@ public class InitStateTests {
         assertTrue(sm.getCurrentState() instanceof SingleOperatorState);
     }
 
+    @Test
+    public void InitState_SetState_ForwardSlash_CommendOrDivide(){
+        StateMachine sm = new StateMachine();
+        sm.updateState('/');
+
+        assertTrue(sm.getCurrentState() instanceof CommentOrDivideState);
+    }
+
 
 
 }

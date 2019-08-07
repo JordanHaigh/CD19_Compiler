@@ -14,14 +14,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SingleOperatorStateTests {
 
     @Test
-    public void SingleOperatorState_SetState_EqualsPassed_DoubleOperator(){
+    public void SingleOperatorState_SetState_EqualsPassed_CompletedToken(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new SingleOperatorState());
 
         sm.updateState('=');
 
-        assertTrue(sm.getCurrentState() instanceof DoubleOperatorState);
+        assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
 
     }
 
