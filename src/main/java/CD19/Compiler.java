@@ -19,7 +19,7 @@ public class Compiler {
     public void lexicalAnalysis(String filePath){
        Scanner scanner = new Scanner(new CodeFileReader(filePath));
        List<Token> allTokens = scanner.getAllTokens();
-
+       System.out.println("done?");
     }
 
     public void parse(){

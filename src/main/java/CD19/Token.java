@@ -232,7 +232,7 @@ public class Token {
         //identifier, number, string, undefined token,
         if(previousState instanceof IdentifierState)
             return TIDEN;
-        else if(previousState instanceof IntegerState)
+        else if(previousState instanceof IntegerState || previousState instanceof PossibleFloatState) //todo possible float state is dangerous be careful with this... its only solving to 100.a issue
             return TILIT;
         else if(previousState instanceof AbsoluteFloatState)
             return TFLIT;
