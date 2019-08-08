@@ -44,7 +44,7 @@ public class IntegerStateTests {
 
         sm.updateState('a');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -56,7 +56,7 @@ public class IntegerStateTests {
 
         sm.updateState('%');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 

@@ -45,7 +45,7 @@ public class SingleOperatorStateTests {
 
         sm.updateState('a');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class SingleOperatorStateTests {
 
         sm.updateState('1');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class SingleOperatorStateTests {
 
         sm.updateState('@');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
     }
     @Test
     public void SingleOperatorState_SetState_NewLinePassed_Invalid(){
@@ -77,7 +77,7 @@ public class SingleOperatorStateTests {
 
         sm.updateState('\n');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
     }
 
 }

@@ -81,7 +81,7 @@ public class PossibleStringStateTests {
 
         sm.updateState('\n');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 }

@@ -12,7 +12,7 @@ public class PossibleCommentState implements State{
         if(c == '-')
             sm.setCurrentState(new AbsoluteCommentState());
         else
-            sm.setCurrentState(new InvalidState());
+            sm.setCurrentState(new InvalidStepOneState());
 
     }
 }

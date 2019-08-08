@@ -13,6 +13,6 @@ public class PossibleNotEqualsState implements State {
         if(c == '=')
             sm.setCurrentState(new CompletedTokenState()); //absolute not equals
         else
-            sm.setCurrentState(new InvalidState());
+            sm.setCurrentState(new InvalidStepOneState());
     }
 }

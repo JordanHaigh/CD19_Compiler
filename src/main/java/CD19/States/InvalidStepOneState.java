@@ -1,6 +1,6 @@
 package CD19.States;
 
-public class InvalidState implements State {
+public class InvalidStepOneState implements State {
 
     @Override
     public void updateState(StateMachine sm, char c) {

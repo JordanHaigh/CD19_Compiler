@@ -41,7 +41,7 @@ public class IdentifierStateTests {
 
         sm.updateState('+');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
     }
 
     @Test

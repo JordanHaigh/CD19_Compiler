@@ -57,7 +57,7 @@ public class CommentOrDivideTests {
 
         sm.updateState('Z');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -69,7 +69,7 @@ public class CommentOrDivideTests {
 
         sm.updateState('8');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
     @Test
@@ -80,7 +80,7 @@ public class CommentOrDivideTests {
 
         sm.updateState('&');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -92,7 +92,7 @@ public class CommentOrDivideTests {
 
         sm.updateState('\n');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 }

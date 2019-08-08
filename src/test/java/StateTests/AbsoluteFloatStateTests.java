@@ -32,7 +32,7 @@ public class AbsoluteFloatStateTests {
 
         sm.updateState('a');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -45,7 +45,7 @@ public class AbsoluteFloatStateTests {
 
         sm.updateState('$');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 

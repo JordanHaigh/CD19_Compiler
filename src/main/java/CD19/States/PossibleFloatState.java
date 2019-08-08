@@ -14,7 +14,7 @@ public class PossibleFloatState implements State{
         if(CharacterClassification.isCharNumerical(c)){
             sm.setCurrentState(new AbsoluteFloatState());
         } else{
-            sm.setCurrentState(new InvalidState());
+            sm.setCurrentState(new InvalidStepOneState());
         }
 
     }

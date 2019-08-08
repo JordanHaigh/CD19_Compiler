@@ -16,6 +16,6 @@ public class AbsoluteFloatState implements State {
         else if(c == ' ' || c == '\n')
             sm.setCurrentState(new CompletedTokenState());
         else
-            sm.setCurrentState(new InvalidState());
+            sm.setCurrentState(new InvalidStepOneState());
     }
 }

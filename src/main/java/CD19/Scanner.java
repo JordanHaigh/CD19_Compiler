@@ -41,12 +41,12 @@ public class Scanner {
             char nextChar = codeFileReader.readNextChar();
 
             if(codeFileReader.hasReachedEOF()){
-                return new Token(Token.TEOF, codeFileReader.getLineNumber(), codeFileReader.getColumnNumber(), ""); //todo do we want nothing for the lexeme here?
+                return new Token(Token.TEOF, codeFileReader.getLineNumber(), codeFileReader.getColumnNumber(), "\0");
             }
 
             stateMachine.updateState(nextChar);
 
-            if (stateMachine.getCurrentState() instanceof InvalidState) {
+            if (stateMachine.getCurrentState() instanceof InvalidStepOneState) {
                 return createTokenFromInvalidState(lexemeBuffer);
             }
             if (stateMachine.getCurrentState() instanceof CompletedTokenState) {

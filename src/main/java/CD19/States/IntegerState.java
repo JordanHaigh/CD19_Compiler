@@ -20,7 +20,7 @@ public class IntegerState implements State {
             sm.setCurrentState(new CompletedTokenState());
         }
         else{
-            sm.setCurrentState(new InvalidState());
+            sm.setCurrentState(new InvalidStepOneState());
         }
 
     }

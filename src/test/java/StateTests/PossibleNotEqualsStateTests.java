@@ -21,7 +21,7 @@ public class PossibleNotEqualsStateTests {
 
         sm.updateState('g');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -33,7 +33,7 @@ public class PossibleNotEqualsStateTests {
 
         sm.updateState('3');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -45,7 +45,7 @@ public class PossibleNotEqualsStateTests {
 
         sm.updateState('?');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -57,7 +57,7 @@ public class PossibleNotEqualsStateTests {
 
         sm.updateState(' ');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -69,7 +69,7 @@ public class PossibleNotEqualsStateTests {
 
         sm.updateState('\n');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 

@@ -33,7 +33,7 @@ public class PossibleCommentStateTests {
 
         sm.updateState('a');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -45,7 +45,7 @@ public class PossibleCommentStateTests {
 
         sm.updateState('3');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -57,7 +57,7 @@ public class PossibleCommentStateTests {
 
         sm.updateState(')');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -69,7 +69,7 @@ public class PossibleCommentStateTests {
 
         sm.updateState(' ');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
@@ -81,7 +81,7 @@ public class PossibleCommentStateTests {
 
         sm.updateState('\n');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 }

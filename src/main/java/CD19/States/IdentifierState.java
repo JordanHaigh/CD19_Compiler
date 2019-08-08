@@ -17,9 +17,8 @@ public class IdentifierState implements State {
 
         if(c == ' ' || c == '\n')
             sm.setCurrentState(new CompletedTokenState());
-
-        if(CharacterClassification.isCharSpecial(c))
-            sm.setCurrentState(new InvalidState());
+        else
+            sm.setCurrentState(new InvalidStepOneState());
 
     }
 }

@@ -26,11 +26,8 @@ public class InitState implements State {
             sm.setCurrentState(new SingleOperatorState());
         else if(c == '/')
             sm.setCurrentState(new CommentOrDivideState());
-
-        else{
-            System.out.println("unknown char. char is " + (int)c);
-            System.exit(-1);
-        }
+        else
+            sm.setCurrentState(new UndefinedState());
     }
 }
 

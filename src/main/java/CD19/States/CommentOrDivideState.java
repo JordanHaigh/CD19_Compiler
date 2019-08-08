@@ -17,6 +17,6 @@ public class CommentOrDivideState implements State {
         else if(c == ' ')
             sm.setCurrentState(new CompletedTokenState()); // /
         else
-            sm.setCurrentState(new InvalidState());
+            sm.setCurrentState(new InvalidStepOneState());
     }
 }

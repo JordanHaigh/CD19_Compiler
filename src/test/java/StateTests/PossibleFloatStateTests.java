@@ -33,7 +33,7 @@ public class PossibleFloatStateTests {
 
         sm.updateState('a');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class PossibleFloatStateTests {
 
         sm.updateState('.');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class PossibleFloatStateTests {
 
         sm.updateState(' ');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class PossibleFloatStateTests {
 
         sm.updateState('\n');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
     }
 
 }

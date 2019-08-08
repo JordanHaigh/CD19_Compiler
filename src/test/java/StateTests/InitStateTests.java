@@ -193,6 +193,15 @@ public class InitStateTests {
         assertTrue(sm.getCurrentState() instanceof CommentOrDivideState);
     }
 
+    @Test
+    public void InitState_SetState_UndefinedToken_Undefined(){
+        StateMachine sm = new StateMachine();
+        sm.updateState('#');
+
+        assertTrue(sm.getCurrentState() instanceof UndefinedState);
+    }
+
+
 
 
 }
