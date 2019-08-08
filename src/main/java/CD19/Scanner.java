@@ -44,40 +44,34 @@ public class Scanner {
                 return new Token(Token.TEOF, codeFileReader.getLineNumber(), codeFileReader.getColumnNumber(), "\0");
             }
 
+            lexemeBuffer.append(nextChar); //we append here and may take characters away when we are building the token.
+            // the final state will determine how many characters to remove from the lexeme
             stateMachine.updateState(nextChar);
 
-            if (stateMachine.getCurrentState() instanceof InvalidStepOneState) {
-                return createTokenFromInvalidState(lexemeBuffer);
-            }
             if (stateMachine.getCurrentState() instanceof CompletedTokenState) {
-                return createTokenFromCompletedState(lexemeBuffer);
+                return createTokenFromState(lexemeBuffer, 0);
+
             }
+            if (stateMachine.getCurrentState() instanceof InvalidStepOneState) {
+                return createTokenFromState(lexemeBuffer, 1);
 
-            lexemeBuffer.append(nextChar);
-
+            }
+            if(stateMachine.getCurrentState() instanceof InvalidStepTwoState){
+                return createTokenFromState(lexemeBuffer,2);
+            }
         }
     }
 
-    private Token createTokenFromInvalidState(StringBuilder lexemeBuffer){
-        //attempt to salvage a token before we hit the invalid character
+    private Token createTokenFromState(StringBuilder lexemeBuffer, int numberOfSteps){
+        String lexeme = lexemeBuffer.toString();
+        String lexemeSubString = lexeme.substring(0,lexeme.length()-numberOfSteps); //todo this may or may not work. this is in the event of /-a or 100.a that it needs to go back and parse ONLY the first bit
 
-        int tokenId = Token.findTokenId(lexemeBuffer.toString(), stateMachine.getPreviousState());
+        int tokenId = Token.findTokenId(lexemeSubString, stateMachine.getPreviousState());
         int tokenColumn = codeFileReader.getColumnNumber() - lexemeBuffer.length();
         int tokenLine = codeFileReader.getLineNumber();
 
         stateMachine.reset(); //send it back to the init state for next parse
-        codeFileReader.moveColumnPosition(); //move it back one spot so we aren't forgetting about the current read char
-
-        return new Token(tokenId, tokenLine, tokenColumn, lexemeBuffer.toString());
-
-    }
-
-    private Token createTokenFromCompletedState(StringBuilder lexemeBuffer){
-        int tokenId = Token.findTokenId(lexemeBuffer.toString(), stateMachine.getPreviousState());
-        int tokenColumn = codeFileReader.getColumnNumber() - lexemeBuffer.length();
-        int tokenLine = codeFileReader.getLineNumber();
-
-        stateMachine.reset(); //send it back to the init state for next parse
+        codeFileReader.moveColumnPosition(numberOfSteps); //move it back one spot so we aren't forgetting about the current read char
 
         return new Token(tokenId, tokenLine, tokenColumn, lexemeBuffer.toString());
 

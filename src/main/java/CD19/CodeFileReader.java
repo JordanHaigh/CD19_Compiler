@@ -67,6 +67,15 @@ public class CodeFileReader {
         columnNumber--;
     }
 
+    public void moveColumnPosition(int steps) {
+        for(int i = 0; i < steps; i++)
+            columnNumber--;
+
+        if(columnNumber < 0)
+            columnNumber = 0; //todo danger danger be careful with this
+    }
+
+
     public List<String> getCodeLines() {
         return codeLines;
     }
