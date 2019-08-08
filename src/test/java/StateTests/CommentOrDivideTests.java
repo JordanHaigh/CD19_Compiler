@@ -92,7 +92,7 @@ public class CommentOrDivideTests {
 
         sm.updateState('\n');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
+        assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
 
     }
 }

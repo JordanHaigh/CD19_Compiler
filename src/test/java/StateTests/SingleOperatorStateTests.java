@@ -77,7 +77,7 @@ public class SingleOperatorStateTests {
 
         sm.updateState('\n');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
+        assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
     }
 
 }

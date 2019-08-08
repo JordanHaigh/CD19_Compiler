@@ -103,11 +103,11 @@ public class InitStateTests {
     }
 
     @Test
-    public void InitState_SetState_SemiColonPassed_CompletedToken(){
+    public void InitState_SetState_SemiColonPassed_Init(){
         StateMachine sm = new StateMachine();
         sm.updateState(';');
 
-        assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
+        assertTrue(sm.getCurrentState() instanceof InitState);
 
     }
 

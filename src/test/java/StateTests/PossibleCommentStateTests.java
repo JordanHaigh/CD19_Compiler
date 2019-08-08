@@ -26,62 +26,62 @@ public class PossibleCommentStateTests {
     }
 
     @Test
-    public void PossibleCommentState_SetState_AlphaPassed_Invalid(){
+    public void PossibleCommentState_SetState_AlphaPassed_InvalidStepTwo(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleCommentState());
 
         sm.updateState('a');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepTwoState);
 
     }
 
     @Test
-    public void PossibleCommentState_SetState_NumberPassed_Invalid(){
+    public void PossibleCommentState_SetState_NumberPassed_InvalidStepTwo(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleCommentState());
 
         sm.updateState('3');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepTwoState);
 
     }
 
     @Test
-    public void PossibleCommentState_SetState_SpecialNotDashPassed_Invalid(){
+    public void PossibleCommentState_SetState_SpecialNotDashPassed_InvalidStepTwo(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleCommentState());
 
         sm.updateState(')');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepTwoState);
 
     }
 
     @Test
-    public void PossibleCommentState_SetState_WhitespacePassed_Invalid(){
+    public void PossibleCommentState_SetState_WhitespacePassed_InvalidStepTwo(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleCommentState());
 
         sm.updateState(' ');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepTwoState);
 
     }
 
     @Test
-    public void PossibleCommentState_SetState_NewLinePassed_Invalid(){
+    public void PossibleCommentState_SetState_NewLinePassed_InvalidStepTwo(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleCommentState());
 
         sm.updateState('\n');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepTwoState);
 
     }
 }

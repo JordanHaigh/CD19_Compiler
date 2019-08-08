@@ -15,7 +15,7 @@ public class IdentifierState implements State {
             return; //no need to update state
         }
 
-        if(c == ' ' || c == '\n')
+        if(CharacterClassification.isCharDelimiter(c))
             sm.setCurrentState(new CompletedTokenState());
         else
             sm.setCurrentState(new InvalidStepOneState());

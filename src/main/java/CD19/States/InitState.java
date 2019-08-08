@@ -9,7 +9,7 @@ import CD19.CharacterClassification;
 public class InitState implements State {
     @Override
     public void updateState(StateMachine sm, char c) {
-        if(c == ' ' || c == '\n')
+        if(CharacterClassification.isCharDelimiter(c))
             return;
 
         if(CharacterClassification.isCharAlphabetical(c))

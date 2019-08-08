@@ -16,7 +16,7 @@ public class IntegerState implements State {
         else if(c == '.'){
             sm.setCurrentState(new PossibleFloatState());
         }
-        else if(c == ' ' || c == '\n'){
+        else if(CharacterClassification.isCharDelimiter(c)){
             sm.setCurrentState(new CompletedTokenState());
         }
         else{

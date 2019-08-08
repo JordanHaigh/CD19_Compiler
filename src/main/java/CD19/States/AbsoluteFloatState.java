@@ -13,7 +13,7 @@ public class AbsoluteFloatState implements State {
     public void updateState(StateMachine sm, char c) {
         if(CharacterClassification.isCharNumerical(c))
             return; //no state update
-        else if(c == ' ' || c == '\n')
+        else if(CharacterClassification.isCharDelimiter(c))
             sm.setCurrentState(new CompletedTokenState());
         else
             sm.setCurrentState(new InvalidStepOneState());
