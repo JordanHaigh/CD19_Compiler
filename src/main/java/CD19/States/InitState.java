@@ -1,4 +1,5 @@
 package CD19.States;
+
 import CD19.CharacterClassification;
 
 /*
@@ -9,22 +10,24 @@ import CD19.CharacterClassification;
 public class InitState implements State {
     @Override
     public void updateState(StateMachine sm, char c) {
-        if(CharacterClassification.isCharDelimiter(c))
+        if (CharacterClassification.isCharDelimiter(c))
             return;
 
-        if(CharacterClassification.isCharAlphabetical(c))
-            sm.setCurrentState(new IdentifierState());
-        else if(CharacterClassification.isCharNumerical(c))
-            sm.setCurrentState(new IntegerState());
-        else if(c == '\"')
-            sm.setCurrentState(new PossibleStringState());
-        else if(CharacterClassification.isCharSingleOperator(c))
+        if(c == ';') //this check must come before the single op check. since this can be a token
             sm.setCurrentState(new CompletedTokenState());
-        else if(c == '!')
+        else if (CharacterClassification.isCharAlphabetical(c))
+            sm.setCurrentState(new IdentifierState());
+        else if (CharacterClassification.isCharNumerical(c))
+            sm.setCurrentState(new IntegerState());
+        else if (c == '\"')
+            sm.setCurrentState(new PossibleStringState());
+        else if (CharacterClassification.isCharSingleOperator(c))
+            sm.setCurrentState(new CompletedTokenState());
+        else if (c == '!')
             sm.setCurrentState(new PossibleNotEqualsState());
-        else if(CharacterClassification.isCharAssignmentOrRelationalOperator(c))
+        else if (CharacterClassification.isCharAssignmentOrRelationalOperator(c))
             sm.setCurrentState(new SingleOperatorState());
-        else if(c == '/')
+        else if (c == '/')
             sm.setCurrentState(new CommentOrDivideState());
         else
             sm.setCurrentState(new UndefinedState());

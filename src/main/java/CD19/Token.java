@@ -202,7 +202,7 @@ public class Token {
         if ( s.equals(">")  )	return TGRTR;
         if ( s.equals(":")  )	return TCOLN;
         if ( s.equals("<=") )	return TLEQL;
-        if ( s.equals(">=") )	return TGRTR;
+        if ( s.equals(">=") )	return TGEQL;
         if ( s.equals("!=") )	return TNEQL;
         if ( s.equals("==") )	return TEQEQ;
         if ( s.equals("+=") )	return TPLEQ;

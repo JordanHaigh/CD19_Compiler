@@ -43,7 +43,7 @@ public class PossibleNotEqualsStateTests {
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleNotEqualsState());
 
-        sm.updateState('?');
+        sm.updateState('-');
 
         assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
@@ -82,6 +82,18 @@ public class PossibleNotEqualsStateTests {
         sm.updateState('=');
 
         assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
+
+    }
+
+    @Test
+    public void PossibleNotEqualsState_SetState_UndefinedPassed_Undefined(){
+
+        StateMachine sm = new StateMachine();
+        sm.setCurrentState(new PossibleNotEqualsState());
+
+        sm.updateState('#');
+
+        assertTrue(sm.getCurrentState() instanceof UndefinedState);
 
     }
 }

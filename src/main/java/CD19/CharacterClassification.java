@@ -31,19 +31,27 @@ public class CharacterClassification{
 //    }
 
     public static boolean isCharAssignmentOrRelationalOperator(char c){
-        return c == '=' || c == '+' || c == '-' || c == '*' || c == '%' || c == '<' || c == '>';
+        return c == '=' || c == '+' || c == '-' || c == '*' || c == '<' || c == '>';
     }
 
     public static boolean isCharSingleOperator(char c){
-        return c == '(' || c == ')' || c == '[' || c == ']' || c == '^' || c == ':' || c == '.' || c == ',';
+        return c == '(' || c == ')' || c == '[' || c == ']' || c == '^' || c == ':' || c == '.' || c == ',' || c == '%' || c==';';
     }
 
     public static boolean isCharDelimiter(char c){
-        return c == ' ' || c == '\n' || c == '\t' || c == ';';
+        return c == ' ' || c == '\n' || c == '\t'; //semi colon is not in this because it can also be a token.
 
     }
 
     //dont forget quote and forward slash!
+
+    public static boolean isCharDefined(char c){
+        return isCharAlphabetical(c) || isCharNumerical(c) ||
+                isCharAssignmentOrRelationalOperator(c) ||
+                isCharSingleOperator(c) || isCharDelimiter(c) ||
+                c == '\"' || c == '/' ;
+
+    }
 
 
 }

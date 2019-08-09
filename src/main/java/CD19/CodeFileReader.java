@@ -16,8 +16,9 @@ public class CodeFileReader {
     List<String> codeLines;
     private int lineNumber, columnNumber;
     private boolean reachedEOF;
+    private boolean hitNewLineOnLastPass;
 
-    public CodeFileReader(List<String> codeLines){
+    public CodeFileReader(List<String> codeLines) {
         this.codeLines = codeLines;
         lineNumber = columnNumber = 0;
     }
@@ -44,6 +45,15 @@ public class CodeFileReader {
     }
 
     public char readNextChar() {
+        if (hitNewLineOnLastPass) { //if we previously hit a new line
+           incrementLineNumber();
+            hitNewLineOnLastPass = false;
+        }
+
+        if(reachedEOF){ //check if eof before updating the current line (otherwise exception!)
+            return '\0';
+        }
+
         String currentLine = codeLines.get(lineNumber);
         char nextChar;
 
@@ -51,16 +61,22 @@ public class CodeFileReader {
             nextChar = currentLine.charAt(columnNumber++);
         } catch (StringIndexOutOfBoundsException e) {
             //column number has gone too far
-            columnNumber = 0;
-
-            lineNumber++;
-            if(lineNumber == codeLines.size())
-                reachedEOF = true;
-
+            hitNewLineOnLastPass = true;
             return '\n';
         }
 
+        if(nextChar == '\n')
+            hitNewLineOnLastPass = true;
+
         return nextChar;
+    }
+
+    private void incrementLineNumber(){
+        columnNumber = 0;
+
+        lineNumber++;
+        if (lineNumber == codeLines.size())
+            reachedEOF = true;
     }
 
     public void moveColumnPosition() {
@@ -68,10 +84,10 @@ public class CodeFileReader {
     }
 
     public void moveColumnPosition(int steps) {
-        for(int i = 0; i < steps; i++)
+        for (int i = 0; i < steps; i++)
             columnNumber--;
 
-        if(columnNumber < 0)
+        if (columnNumber < 0)
             columnNumber = 0; //todo danger danger be careful with this
     }
 

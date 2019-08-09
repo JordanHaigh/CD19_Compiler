@@ -41,7 +41,18 @@ public class Scanner {
             char nextChar = codeFileReader.readNextChar();
 
             if(codeFileReader.hasReachedEOF()){
-                return new Token(Token.TEOF, codeFileReader.getLineNumber(), codeFileReader.getColumnNumber(), "\0");
+                //there might be delimiters in the buffer, need to remove them
+                String lexeme = lexemeBuffer.toString();
+                lexeme = cleanLexeme(lexeme);
+                //is there still stuff in the buffer? if so, try to create a token from it
+                if(lexeme.length() > 0){
+                    //parse that token instead
+                    return createTokenFromState(lexeme, 0); //number of steps is redundant as we're finished the file
+                }
+                else{
+                    //return new eof token
+                    return new Token(Token.TEOF, codeFileReader.getLineNumber(), codeFileReader.getColumnNumber(), "\0");
+                }
             }
 
             lexemeBuffer.append(nextChar); //we append here and may take characters away when we are building the token.
@@ -49,30 +60,26 @@ public class Scanner {
             stateMachine.updateState(nextChar);
 
             if (stateMachine.getCurrentState() instanceof CompletedTokenState) {
-                return createTokenFromState(lexemeBuffer, 0);
+                return createTokenFromState(lexemeBuffer.toString(), 0);
 
             }
             if (stateMachine.getCurrentState() instanceof InvalidStepOneState) {
-                return createTokenFromState(lexemeBuffer, 1);
+                return createTokenFromState(lexemeBuffer.toString(), 1);
 
             }
             if(stateMachine.getCurrentState() instanceof InvalidStepTwoState){
-                return createTokenFromState(lexemeBuffer,2);
+                return createTokenFromState(lexemeBuffer.toString(),2);
             }
         }
     }
 
-    private Token createTokenFromState(StringBuilder lexemeBuffer, int numberOfSteps){
-        String lexeme = lexemeBuffer.toString();
+    private Token createTokenFromState(String lexeme, int numberOfSteps){
         String lexemeSubString = lexeme.substring(0,lexeme.length()-numberOfSteps); //todo this may or may not work. this is in the event of /-a or 100.a that it needs to go back and parse ONLY the first bit
         //clean substring of delimiters
-        lexemeSubString = lexemeSubString.replaceAll(" ","");
-        lexemeSubString = lexemeSubString.replaceAll("\t","");
-        lexemeSubString = lexemeSubString.replaceAll("\n","");
-        lexemeSubString = lexemeSubString.replaceAll(";","");
+        lexemeSubString = cleanLexeme(lexemeSubString);
 
         int tokenId = Token.findTokenId(lexemeSubString, stateMachine.getPreviousState());
-        int tokenColumn = codeFileReader.getColumnNumber() - lexemeBuffer.length();
+        int tokenColumn = codeFileReader.getColumnNumber() - lexeme.length();
         int tokenLine = codeFileReader.getLineNumber();
 
         stateMachine.reset(); //send it back to the init state for next parse
@@ -80,5 +87,17 @@ public class Scanner {
 
         return new Token(tokenId, tokenLine, tokenColumn, lexemeSubString);
 
+    }
+
+    private String cleanLexeme(String lexeme){
+        lexeme = lexeme.replaceAll(" ","");
+        lexeme = lexeme.replaceAll("\t","");
+        lexeme = lexeme.replaceAll("\n","");
+
+        //if just a semi, dont delete it - because that will be its own token (its the one outlier case that makes this all gross looking)
+        if(!lexeme.equals(";"))
+            lexeme = lexeme.replaceAll(";","");
+
+        return lexeme;
     }
 }

@@ -103,11 +103,11 @@ public class InitStateTests {
     }
 
     @Test
-    public void InitState_SetState_SemiColonPassed_Init(){
+    public void InitState_SetState_SemiColonPassed_Completed(){
         StateMachine sm = new StateMachine();
         sm.updateState(';');
 
-        assertTrue(sm.getCurrentState() instanceof InitState);
+        assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
 
     }
 
@@ -162,11 +162,11 @@ public class InitStateTests {
     }
 
     @Test
-    public void InitState_SetState_PercentPassed_SingleOperator(){
+    public void InitState_SetState_PercentPassed_Completed(){
         StateMachine sm = new StateMachine();
         sm.updateState('%');
 
-        assertTrue(sm.getCurrentState() instanceof SingleOperatorState);
+        assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
     }
 
     @Test

@@ -9,18 +9,12 @@ import CD19.CharacterClassification;
 public class UndefinedState implements State {
     @Override
     public void updateState(StateMachine sm, char c) {
-        if (CharacterClassification.isCharAlphabetical(c) ||
-                CharacterClassification.isCharNumerical(c) ||
-                CharacterClassification.isCharSingleOperator(c) ||
-                CharacterClassification.isCharAssignmentOrRelationalOperator(c) ||
-                c == '\"' || c == '/')
-        {
-            sm.setCurrentState(new InvalidStepOneState());
-        }
-        else if(CharacterClassification.isCharDelimiter(c))
+        if(CharacterClassification.isCharDelimiter(c))
             sm.setCurrentState(new CompletedTokenState());
         else if(c == '!')
             sm.setCurrentState(new PossibleRecoveredState());
+        else if (CharacterClassification.isCharDefined(c))
+            sm.setCurrentState(new InvalidStepOneState());
         else
             return; //keep consuming unidentified characters
 
