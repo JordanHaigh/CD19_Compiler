@@ -13,9 +13,7 @@ public class InitState implements State {
         if (CharacterClassification.isCharDelimiter(c))
             return;
 
-        if(c == ';') //this check must come before the single op check. since this can be a token
-            sm.setCurrentState(new CompletedTokenState());
-        else if (CharacterClassification.isCharAlphabetical(c))
+        if (CharacterClassification.isCharAlphabetical(c))
             sm.setCurrentState(new IdentifierState());
         else if (CharacterClassification.isCharNumerical(c))
             sm.setCurrentState(new IntegerState());

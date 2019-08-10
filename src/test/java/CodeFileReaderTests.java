@@ -56,7 +56,10 @@ public class CodeFileReaderTests {
         char secondChar = codeFileReader.readNextChar(); // \n
 
         assertEquals(secondChar, '\n');
-        assertEquals(1, codeFileReader.getColumnNumber());
+
+        char thirdChar = codeFileReader.readNextChar(); // e
+
+        assertEquals(2, codeFileReader.getColumnNumber());
         assertEquals(2, codeFileReader.getLineNumber());
     }
 
@@ -71,6 +74,7 @@ public class CodeFileReaderTests {
         char secondChar = codeFileReader.readNextChar(); // \n
         char thirdChar = codeFileReader.readNextChar(); // e
         char forthChar = codeFileReader.readNextChar(); // \n
+        char fifthChaar= codeFileReader.readNextChar(); // eof
 
         assertEquals(true, codeFileReader.hasReachedEOF());
     }

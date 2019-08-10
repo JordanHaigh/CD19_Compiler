@@ -583,6 +583,16 @@ public class ScannerTests {
         assertEquals(Token.TCOMA, token.value());
     }
 
+    @Test
+    public void Scanner_getNextToken_TEOF(){
+        List<String> code = new ArrayList<>();
+        code.add("");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        Token token = scanner.getNextToken();
+        assertEquals(Token.TEOF, token.value());
+    }
+
     //NOW FOR THE FUN STUFF OOOOOOOOOOO
     @Test
     public void Scanner_getAllTokens_Iden_Iden(){
@@ -595,6 +605,19 @@ public class ScannerTests {
         assertEquals(Token.TIDEN, tokens.get(1).value());
         assertEquals(Token.TEOF, tokens.get(2).value());
     }
+
+    @Test
+    public void Scanner_getAllTokens_Iden(){
+        List<String> code = new ArrayList<>();
+        code.add("aa aa");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TIDEN, tokens.get(0).value());
+        assertEquals(Token.TIDEN, tokens.get(1).value());
+        assertEquals(Token.TEOF, tokens.get(2).value());
+    }
+
 
 
 

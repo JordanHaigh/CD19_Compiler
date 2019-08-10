@@ -39,7 +39,7 @@ public class CharacterClassification{
     }
 
     public static boolean isCharDelimiter(char c){
-        return c == ' ' || c == '\n' || c == '\t'; //semi colon is not in this because it can also be a token.
+        return c == ' ' || c == '\n' || c == '\t';
 
     }
 
