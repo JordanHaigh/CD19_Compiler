@@ -607,16 +607,263 @@ public class ScannerTests {
     }
 
     @Test
-    public void Scanner_getAllTokens_Iden(){
+    public void Scanner_getAllTokens_Iden_UndefinedChar(){
         List<String> code = new ArrayList<>();
-        code.add("aa aa");
+        code.add("aa##");
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
         assertEquals(Token.TIDEN, tokens.get(0).value());
-        assertEquals(Token.TIDEN, tokens.get(1).value());
+        assertEquals(Token.TUNDF, tokens.get(1).value());
         assertEquals(Token.TEOF, tokens.get(2).value());
+
     }
+    @Test
+    public void Scanner_getAllTokens_Iden_Slash(){
+        List<String> code = new ArrayList<>();
+        code.add("aa/-=a");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TIDEN, tokens.get(0).value());
+        assertEquals(Token.TDIVD, tokens.get(1).value());
+        assertEquals(Token.TMNEQ, tokens.get(2).value());
+        assertEquals(Token.TIDEN, tokens.get(3).value());
+        assertEquals(Token.TEOF, tokens.get(4).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_Iden_Underscore(){
+        List<String> code = new ArrayList<>();
+        code.add("aa_a");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TIDEN, tokens.get(0).value());
+        assertEquals(Token.TEOF, tokens.get(1).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_SemiAfterIden(){
+        List<String> code = new ArrayList<>();
+        code.add("aa; 100");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TIDEN, tokens.get(0).value());
+        assertEquals(Token.TSEMI, tokens.get(1).value());
+        assertEquals(Token.TILIT, tokens.get(2).value());
+        assertEquals(Token.TEOF, tokens.get(3).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_UnsuccessfulFloatDueToUndefined(){
+        List<String> code = new ArrayList<>();
+        code.add("100.#");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TILIT, tokens.get(0).value());
+        assertEquals(Token.TDOT, tokens.get(1).value());
+        assertEquals(Token.TUNDF, tokens.get(2).value());
+        assertEquals(Token.TEOF, tokens.get(3).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_UnsuccessfulFloatDueToSpecial(){
+        List<String> code = new ArrayList<>();
+        code.add("100./");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TILIT, tokens.get(0).value());
+        assertEquals(Token.TDOT, tokens.get(1).value());
+        assertEquals(Token.TDIVD, tokens.get(2).value());
+        assertEquals(Token.TEOF, tokens.get(3).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_UnsuccessfulFloatDueToAlpha(){
+        List<String> code = new ArrayList<>();
+        code.add("100.a");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TILIT, tokens.get(0).value());
+        assertEquals(Token.TDOT, tokens.get(1).value());
+        assertEquals(Token.TIDEN, tokens.get(2).value());
+        assertEquals(Token.TEOF, tokens.get(3).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_SemiStopsFloat(){
+        List<String> code = new ArrayList<>();
+        code.add("100.;");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TILIT, tokens.get(0).value());
+        assertEquals(Token.TDOT, tokens.get(1).value());
+        assertEquals(Token.TSEMI, tokens.get(2).value());
+        assertEquals(Token.TEOF, tokens.get(3).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_SemiStopsComment(){
+        List<String> code = new ArrayList<>();
+        code.add("/-;");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TDIVD, tokens.get(0).value());
+        assertEquals(Token.TMINS, tokens.get(1).value());
+        assertEquals(Token.TSEMI, tokens.get(2).value());
+        assertEquals(Token.TEOF, tokens.get(3).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_BadCommentIden(){
+        List<String> code = new ArrayList<>();
+        code.add("/-a");  //la dash ah
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TDIVD, tokens.get(0).value());
+        assertEquals(Token.TMINS, tokens.get(1).value());
+        assertEquals(Token.TIDEN, tokens.get(2).value());
+        assertEquals(Token.TEOF, tokens.get(3).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_CompleteComment(){
+        List<String> code = new ArrayList<>();
+        code.add("/--haha u cant see meee");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TEOF, tokens.get(0).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_InlineCompleteComment(){
+        List<String> code = new ArrayList<>();
+        code.add("iden 100; /--haha u cant see meee");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TIDEN, tokens.get(0).value());
+        assertEquals(Token.TILIT, tokens.get(1).value());
+        assertEquals(Token.TSEMI, tokens.get(2).value());
+        assertEquals(Token.TEOF, tokens.get(3).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_Exclaim_Undefined(){
+        List<String> code = new ArrayList<>();
+        code.add("!");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TUNDF, tokens.get(0).value());
+        assertEquals(Token.TEOF, tokens.get(1).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_GroupedUndefined_ExclaimAtStart(){
+        List<String> code = new ArrayList<>();
+        code.add("!##");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TUNDF, tokens.get(0).value());
+        assertEquals(Token.TEOF, tokens.get(1).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_GroupedUndefined_ExclaimMiddle(){
+        List<String> code = new ArrayList<>();
+        code.add("@!# %");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TUNDF, tokens.get(0).value());
+        assertEquals(Token.TPERC, tokens.get(1).value());
+        assertEquals(Token.TEOF, tokens.get(2).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_GroupedUndefined_ExclaimEnd(){
+        List<String> code = new ArrayList<>();
+        code.add("@#! ##");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TUNDF, tokens.get(0).value());
+        assertEquals(Token.TUNDF, tokens.get(1).value());
+        assertEquals(Token.TEOF, tokens.get(2).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_GroupedUndefined_NotEqualBetweenUndefined(){
+        List<String> code = new ArrayList<>();
+        code.add("@!=#! #a");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TUNDF, tokens.get(0).value());
+        assertEquals(Token.TNEQL, tokens.get(1).value());
+        assertEquals(Token.TUNDF, tokens.get(2).value());
+        assertEquals(Token.TUNDF, tokens.get(3).value());
+        assertEquals(Token.TIDEN, tokens.get(4).value());
+        assertEquals(Token.TEOF, tokens.get(5).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_GroupedUndefined_NotEqualAtEnd(){
+        List<String> code = new ArrayList<>();
+        code.add("@!= #a");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TUNDF, tokens.get(0).value());
+        assertEquals(Token.TNEQL, tokens.get(1).value());
+        assertEquals(Token.TUNDF, tokens.get(2).value());
+        assertEquals(Token.TIDEN, tokens.get(3).value());
+        assertEquals(Token.TEOF, tokens.get(4).value());
+
+    }
+
+    @Test
+    public void Scanner_getAllTokens_GroupedUndefined_FailedFloatSpaceIden(){
+        List<String> code = new ArrayList<>();
+        code.add("100. a");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TILIT, tokens.get(0).value());
+        assertEquals(Token.TDOT, tokens.get(1).value());
+        assertEquals(Token.TIDEN, tokens.get(2).value());
+        assertEquals(Token.TEOF, tokens.get(3).value());
+
+    }
+
+    //todo strings - waiting on response from dan
 
 
 

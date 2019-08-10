@@ -49,6 +49,11 @@ public class Scanner {
             // the final state will determine how many characters to remove from the lexeme
             stateMachine.updateState(nextChar);
 
+
+            if(stateMachine.getCurrentState() instanceof  CompletedCommentTokenState){
+                stateMachine.reset(); //comments are not tokens and are ignored by the program
+                lexemeBuffer = new StringBuilder();
+            }
             if (stateMachine.getCurrentState() instanceof CompletedTokenState) {
                 return createTokenFromState(lexemeBuffer.toString(), 0);
 
@@ -84,7 +89,6 @@ public class Scanner {
         lexeme = lexeme.replaceAll("\t", "");
         lexeme = lexeme.replaceAll("\n", "");
 
-//        //if just a semi, dont delete it - because that will be its own token (its the one outlier case that makes this all gross looking)
 //        if(!lexeme.equals(";"))
 //            lexeme = lexeme.replaceAll(";","");
 

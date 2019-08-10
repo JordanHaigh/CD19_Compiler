@@ -17,6 +17,8 @@ public class IdentifierState implements State {
 
         if(CharacterClassification.isCharDelimiter(c))
             sm.setCurrentState(new CompletedTokenState());
+        else if(c == '_') //underscores in this state is fine.
+            return;
         else
             sm.setCurrentState(new InvalidStepOneState());
 

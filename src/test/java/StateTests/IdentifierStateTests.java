@@ -63,4 +63,14 @@ public class IdentifierStateTests {
 
         assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
     }
+
+    @Test
+    public void IdentifierState_SetState_Underscore_NoStateChange() {
+        StateMachine sm = new StateMachine();
+        sm.setCurrentState(new IdentifierState());
+
+        sm.updateState('_');
+
+        assertTrue(sm.getCurrentState() instanceof IdentifierState);
+    }
 }

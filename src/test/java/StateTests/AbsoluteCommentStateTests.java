@@ -63,14 +63,14 @@ public class AbsoluteCommentStateTests {
 
 
     @Test
-    public void AbsoluteCommentState_SetState_NewLinePassed_Completed(){
+    public void AbsoluteCommentState_SetState_NewLinePassed_CompletedCommentState(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new AbsoluteCommentState());
 
         sm.updateState('\n');
 
-        assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
+        assertTrue(sm.getCurrentState() instanceof CompletedCommentTokenState);
 
     }
 }

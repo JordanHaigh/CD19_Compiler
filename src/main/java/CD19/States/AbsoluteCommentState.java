@@ -11,7 +11,7 @@ public class AbsoluteCommentState implements State {
     @Override
     public void updateState(StateMachine sm, char c) {
         if(c == '\n')
-            sm.setCurrentState(new CompletedTokenState());
+            sm.setCurrentState(new CompletedCommentTokenState()); // this state won't generate a token for the comment
 
         //everything else is consumed by the comment line
     }
