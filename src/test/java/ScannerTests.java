@@ -863,10 +863,41 @@ public class ScannerTests {
 
     }
 
-    //todo strings - waiting on response from dan
+    @Test
+    public void Scanner_getAllTokens_GroupedUndefined_FailedCommentTurnedIntoMinusEquals(){
+        List<String> code = new ArrayList<>();
+        code.add("/-=a");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TDIVD, tokens.get(0).value());
+        assertEquals(Token.TMNEQ, tokens.get(1).value());
+        assertEquals(Token.TIDEN, tokens.get(2).value());
+        assertEquals(Token.TEOF, tokens.get(3).value());
+
+    }
 
 
+    @Test
+    public void Scanner_getAllTokens_CompleteString(){
+        List<String> code = new ArrayList<>();
+        code.add("\"this is text ina string \"");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
 
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TSTRG, tokens.get(0).value());
+        assertEquals(Token.TEOF, tokens.get(1).value());
+    }
 
+    @Test
+    public void Scanner_getAllTokens_FailedString(){
+        List<String> code = new ArrayList<>();
+        code.add("\"str ");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TUNDF, tokens.get(0).value());
+        assertEquals(Token.TEOF, tokens.get(1).value());
+    }
 
 }

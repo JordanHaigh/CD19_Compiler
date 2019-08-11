@@ -74,14 +74,14 @@ public class PossibleStringStateTests {
     }
 
     @Test
-    public void PossibleStringState_SetState_NewLinePassed_InvalidState(){
+    public void PossibleStringState_SetState_NewLinePassed_Completed(){
 
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleStringState());
 
         sm.updateState('\n');
 
-        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
+        assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
 
     }
 }

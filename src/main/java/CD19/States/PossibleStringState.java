@@ -9,12 +9,10 @@ public class PossibleStringState implements State{
 
     @Override
     public void updateState(StateMachine sm, char c) {
-        if(c == '\n')
-            sm.setCurrentState(new InvalidStepOneState());
-        else if(c == '\"')
+        if(c == '\n' || c == '\"')
             sm.setCurrentState(new CompletedTokenState());
 
-
+        //else..
         //alphas, special or numbers dont change anything
     }
 }

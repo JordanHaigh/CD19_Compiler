@@ -209,7 +209,7 @@ public class Token {
         if ( s.equals("-=") )	return TMNEQ;
         if ( s.equals("*=") )	return TSTEQ;
         if ( s.equals("/=") )	return TDVEQ;
-        if ( s.equals("%=") )	return TPCEQ;
+        //if ( s.equals("%=") )	return TPCEQ;
         if ( s.equals(";")  )	return TSEMI;
         if ( s.equals(".")  )	return TDOT;
 
@@ -229,16 +229,42 @@ public class Token {
             return tokenId;
 
         //if not keyword and not operator, then it could be:
-        //identifier, number, string, undefined token,
+        //identifier, number, string, undefined token. check previous state to determine
         if(previousState instanceof IdentifierState)
             return TIDEN;
-        else if(previousState instanceof IntegerState || previousState instanceof PossibleFloatState) //todo possible float state is dangerous be careful with this... its only solving to 100.a issue
+        else if(previousState instanceof IntegerState || previousState instanceof PossibleFloatState)
             return TILIT;
         else if(previousState instanceof AbsoluteFloatState)
             return TFLIT;
-        else if(previousState instanceof PossibleStringState)
-            return TSTRG;
+        else if(previousState instanceof PossibleStringState){
+            //token could either have one quotation or two quotations.
+
+            //if the token string only contains 1 quotation, then the whole thing becomes undefined
+            int numberOfQuotesInString = howManyCharsInString(tokenString, '\"');
+            if(numberOfQuotesInString == 1)
+                return TUNDF;
+            else //            //otherwise its a valid string
+                return TSTRG;
+
+        }
         else
             return TUNDF; //todo do we want to error handle this?
+    }
+
+    /**
+     * Used to determine how many specific characters are in a string
+     * @param string - String to check against
+     * @param key - Char key value to determine how many in string
+     * @return - Integer determining number of the key chars in string
+     */
+    private static int howManyCharsInString(String string, char key){
+        int counter = 0;
+        for(int i = 0; i < string.length();i++){
+            if(string.charAt(i) == key)
+                counter++;
+        }
+
+        return counter;
+
     }
 }
