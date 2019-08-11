@@ -13,6 +13,8 @@ public class PossibleRecoveredState implements State {
     public void updateState(StateMachine sm, char c) {
         if(c == '=')
             sm.setCurrentState(new InvalidStepTwoState());
+        else if(c == '!')
+            sm.setCurrentState(new UnrecoveredNotEqualsState()); //!!!!!!!=
         else if(CharacterClassification.isCharDelimiter(c))
             sm.setCurrentState(new CompletedTokenState());
         else

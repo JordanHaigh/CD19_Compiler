@@ -69,18 +69,19 @@ public class Scanner {
     }
 
     private Token createTokenFromState(String lexeme, int numberOfSteps) {
-        String lexemeSubString = lexeme.substring(0, lexeme.length() - numberOfSteps); //todo this may or may not work. this is in the event of /-a or 100.a that it needs to go back and parse ONLY the first bit
+        String lexemeSubString = lexeme.substring(0, lexeme.length() - numberOfSteps);
         //clean substring of delimiters
         lexemeSubString = cleanLexeme(lexemeSubString);
 
         int tokenId = Token.findTokenId(lexemeSubString, stateMachine.getPreviousState());
         int tokenColumn = codeFileReader.getColumnNumber() - lexeme.length();
         int tokenLine = codeFileReader.getLineNumber();
+        String lexemeToAddToToken = Token.addLexeme(lexemeSubString,tokenId);
 
         stateMachine.reset(); //send it back to the init state for next parse
         codeFileReader.moveColumnPosition(numberOfSteps); //move it back one spot so we aren't forgetting about the current read char
 
-        return new Token(tokenId, tokenLine, tokenColumn, lexemeSubString);
+        return new Token(tokenId, tokenLine, tokenColumn, lexemeToAddToToken);
 
     }
 

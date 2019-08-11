@@ -53,22 +53,22 @@ public class PossibleRecoveredStateTests {
     }
 
     @Test
-    public void PossibleRecoveredState_SetState_SpecialNotEqualsPassed_Undefined(){
-        StateMachine sm = new StateMachine();
-        sm.setCurrentState(new PossibleRecoveredState());
-        sm.updateState('!');
-
-        assertTrue(sm.getCurrentState() instanceof UndefinedState);
-
-    }
-
-    @Test
     public void PossibleRecoveredState_SetState_UndefinedPassed_Undefined(){
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleRecoveredState());
         sm.updateState('#');
 
         assertTrue(sm.getCurrentState() instanceof UndefinedState);
+
+    }
+
+    @Test
+    public void PossibleRecoveredState_SetState_ExclaimPassed_UnrecoveredNotEquals(){
+        StateMachine sm = new StateMachine();
+        sm.setCurrentState(new PossibleRecoveredState());
+        sm.updateState('!');
+
+        assertTrue(sm.getCurrentState() instanceof UnrecoveredNotEqualsState);
 
     }
 }
