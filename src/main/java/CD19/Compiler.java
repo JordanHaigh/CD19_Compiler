@@ -35,7 +35,7 @@ public class Compiler {
 
         for(Token token : allTokens){
             if(token.isUndefined()){
-                lines.add(token.getTokenID());
+                lines.add(token.getTokenIDAsString());
                 lines.add("lexical error " + token.getStr());
                 currentLine =  new StringBuilder(); //reset
             }

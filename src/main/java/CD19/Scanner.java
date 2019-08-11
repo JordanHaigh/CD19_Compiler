@@ -76,12 +76,11 @@ public class Scanner {
         int tokenId = Token.findTokenId(lexemeSubString, stateMachine.getPreviousState());
         int tokenColumn = codeFileReader.getColumnNumber() - lexeme.length();
         int tokenLine = codeFileReader.getLineNumber();
-        String lexemeToAddToToken = Token.addLexeme(lexemeSubString,tokenId);
 
         stateMachine.reset(); //send it back to the init state for next parse
         codeFileReader.moveColumnPosition(numberOfSteps); //move it back one spot so we aren't forgetting about the current read char
 
-        return new Token(tokenId, tokenLine, tokenColumn, lexemeToAddToToken);
+        return new Token(tokenId, tokenLine, tokenColumn, lexemeSubString);
 
     }
 

@@ -18,7 +18,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TCD19, token.value());
+        assertEquals(Token.TCD19, token.getTokenID());
 
     }
 
@@ -29,7 +29,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TCNST, token.value());
+        assertEquals(Token.TCNST, token.getTokenID());
 
     }
 
@@ -40,7 +40,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TTYPS, token.value());
+        assertEquals(Token.TTYPS, token.getTokenID());
 
     }
 
@@ -51,7 +51,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TARRS, token.value());
+        assertEquals(Token.TARRS, token.getTokenID());
 
     }
 
@@ -62,7 +62,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TMAIN, token.value());
+        assertEquals(Token.TMAIN, token.getTokenID());
 
     }
 
@@ -73,7 +73,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TBEGN, token.value());
+        assertEquals(Token.TBEGN, token.getTokenID());
 
     }
 
@@ -84,7 +84,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TEND, token.value());
+        assertEquals(Token.TEND, token.getTokenID());
 
     }
 
@@ -95,7 +95,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TIS, token.value());
+        assertEquals(Token.TIS, token.getTokenID());
 
     }
 
@@ -106,7 +106,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TARAY, token.value());
+        assertEquals(Token.TARAY, token.getTokenID());
 
     }
 
@@ -117,7 +117,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TOF, token.value());
+        assertEquals(Token.TOF, token.getTokenID());
 
     }
 
@@ -128,7 +128,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TFUNC, token.value());
+        assertEquals(Token.TFUNC, token.getTokenID());
 
     }
 
@@ -139,7 +139,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TVOID, token.value());
+        assertEquals(Token.TVOID, token.getTokenID());
 
     }
 
@@ -150,7 +150,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TINTG, token.value());
+        assertEquals(Token.TINTG, token.getTokenID());
 
     }
 
@@ -161,7 +161,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TREAL, token.value());
+        assertEquals(Token.TREAL, token.getTokenID());
 
     }
 
@@ -172,7 +172,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TBOOL, token.value());
+        assertEquals(Token.TBOOL, token.getTokenID());
 
     }
 
@@ -183,7 +183,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TFOR, token.value());
+        assertEquals(Token.TFOR, token.getTokenID());
 
     }
 
@@ -194,7 +194,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TREPT, token.value());
+        assertEquals(Token.TREPT, token.getTokenID());
 
     }
 
@@ -205,7 +205,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TUNTL, token.value());
+        assertEquals(Token.TUNTL, token.getTokenID());
 
     }
 
@@ -216,7 +216,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TIFTH, token.value());
+        assertEquals(Token.TIFTH, token.getTokenID());
 
     }
 
@@ -227,7 +227,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TELSE, token.value());
+        assertEquals(Token.TELSE, token.getTokenID());
 
     }
 
@@ -238,7 +238,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TINPT, token.value());
+        assertEquals(Token.TINPT, token.getTokenID());
 
     }
 
@@ -249,7 +249,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TPRIN, token.value());
+        assertEquals(Token.TPRIN, token.getTokenID());
 
     }
 
@@ -260,7 +260,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TPRLN, token.value());
+        assertEquals(Token.TPRLN, token.getTokenID());
 
     }
 
@@ -271,7 +271,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TRETN, token.value());
+        assertEquals(Token.TRETN, token.getTokenID());
 
     }
 
@@ -282,7 +282,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TEQUL, token.value());
+        assertEquals(Token.TEQUL, token.getTokenID());
 
     }
 
@@ -293,7 +293,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TPLEQ, token.value());
+        assertEquals(Token.TPLEQ, token.getTokenID());
 
     }
 
@@ -304,7 +304,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TMNEQ, token.value());
+        assertEquals(Token.TMNEQ, token.getTokenID());
 
     }
 
@@ -315,7 +315,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TSTEQ, token.value());
+        assertEquals(Token.TSTEQ, token.getTokenID());
 
     }
 
@@ -326,7 +326,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TDVEQ, token.value());
+        assertEquals(Token.TDVEQ, token.getTokenID());
 
     }
 
@@ -337,7 +337,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TNOT, token.value());
+        assertEquals(Token.TNOT, token.getTokenID());
 
     }
 
@@ -348,7 +348,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TAND, token.value());
+        assertEquals(Token.TAND, token.getTokenID());
 
     }
 
@@ -359,7 +359,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TOR, token.value());
+        assertEquals(Token.TOR, token.getTokenID());
     }
 
     @Test
@@ -369,7 +369,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TXOR, token.value());
+        assertEquals(Token.TXOR, token.getTokenID());
     }
 
     @Test
@@ -379,7 +379,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TEQEQ, token.value());
+        assertEquals(Token.TEQEQ, token.getTokenID());
     }
 
 
@@ -390,7 +390,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TGRTR, token.value());
+        assertEquals(Token.TGRTR, token.getTokenID());
     }
 
     @Test
@@ -400,7 +400,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TGEQL, token.value());
+        assertEquals(Token.TGEQL, token.getTokenID());
     }
 
     @Test
@@ -410,7 +410,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TLESS, token.value());
+        assertEquals(Token.TLESS, token.getTokenID());
     }
 
     @Test
@@ -420,7 +420,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TLEQL, token.value());
+        assertEquals(Token.TLEQL, token.getTokenID());
     }
 
     @Test
@@ -430,7 +430,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TPLUS, token.value());
+        assertEquals(Token.TPLUS, token.getTokenID());
     }
 
     @Test
@@ -440,7 +440,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TMINS, token.value());
+        assertEquals(Token.TMINS, token.getTokenID());
     }
 
     @Test
@@ -450,7 +450,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TSTAR, token.value());
+        assertEquals(Token.TSTAR, token.getTokenID());
     }
 
     @Test
@@ -460,7 +460,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TDIVD, token.value());
+        assertEquals(Token.TDIVD, token.getTokenID());
     }
 
     @Test
@@ -470,7 +470,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TCART, token.value());
+        assertEquals(Token.TCART, token.getTokenID());
     }
 
     @Test
@@ -480,7 +480,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TPERC, token.value());
+        assertEquals(Token.TPERC, token.getTokenID());
     }
 
     @Test
@@ -490,7 +490,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TTRUE, token.value());
+        assertEquals(Token.TTRUE, token.getTokenID());
     }
 
     @Test
@@ -500,7 +500,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TFALS, token.value());
+        assertEquals(Token.TFALS, token.getTokenID());
     }
 
     @Test
@@ -510,7 +510,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TLBRK, token.value());
+        assertEquals(Token.TLBRK, token.getTokenID());
     }
 
     @Test
@@ -520,7 +520,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TRBRK, token.value());
+        assertEquals(Token.TRBRK, token.getTokenID());
     }
 
     @Test
@@ -530,7 +530,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TCOLN, token.value());
+        assertEquals(Token.TCOLN, token.getTokenID());
     }
 
     @Test
@@ -540,7 +540,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TDOT, token.value());
+        assertEquals(Token.TDOT, token.getTokenID());
     }
 
     @Test
@@ -550,7 +550,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TSEMI, token.value());
+        assertEquals(Token.TSEMI, token.getTokenID());
     }
 
     @Test
@@ -560,7 +560,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TLPAR, token.value());
+        assertEquals(Token.TLPAR, token.getTokenID());
     }
 
     @Test
@@ -570,7 +570,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TRPAR, token.value());
+        assertEquals(Token.TRPAR, token.getTokenID());
     }
 
     @Test
@@ -580,7 +580,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TCOMA, token.value());
+        assertEquals(Token.TCOMA, token.getTokenID());
     }
 
     @Test
@@ -590,7 +590,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
-        assertEquals(Token.TEOF, token.value());
+        assertEquals(Token.TEOF, token.getTokenID());
     }
 
     //NOW FOR THE FUN STUFF OOOOOOOOOOO
@@ -601,9 +601,9 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TIDEN, tokens.get(0).value());
-        assertEquals(Token.TIDEN, tokens.get(1).value());
-        assertEquals(Token.TEOF, tokens.get(2).value());
+        assertEquals(Token.TIDEN, tokens.get(0).getTokenID());
+        assertEquals(Token.TIDEN, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
     }
 
     @Test
@@ -613,9 +613,9 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TIDEN, tokens.get(0).value());
-        assertEquals(Token.TUNDF, tokens.get(1).value());
-        assertEquals(Token.TEOF, tokens.get(2).value());
+        assertEquals(Token.TIDEN, tokens.get(0).getTokenID());
+        assertEquals(Token.TUNDF, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
 
     }
     @Test
@@ -625,11 +625,11 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TIDEN, tokens.get(0).value());
-        assertEquals(Token.TDIVD, tokens.get(1).value());
-        assertEquals(Token.TMNEQ, tokens.get(2).value());
-        assertEquals(Token.TIDEN, tokens.get(3).value());
-        assertEquals(Token.TEOF, tokens.get(4).value());
+        assertEquals(Token.TIDEN, tokens.get(0).getTokenID());
+        assertEquals(Token.TDIVD, tokens.get(1).getTokenID());
+        assertEquals(Token.TMNEQ, tokens.get(2).getTokenID());
+        assertEquals(Token.TIDEN, tokens.get(3).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(4).getTokenID());
 
     }
 
@@ -640,8 +640,8 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TIDEN, tokens.get(0).value());
-        assertEquals(Token.TEOF, tokens.get(1).value());
+        assertEquals(Token.TIDEN, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
 
     }
 
@@ -652,8 +652,8 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TIDEN, tokens.get(0).value());
-        assertEquals(Token.TEOF, tokens.get(1).value());
+        assertEquals(Token.TIDEN, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
 
     }
 
@@ -664,10 +664,10 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TIDEN, tokens.get(0).value());
-        assertEquals(Token.TSEMI, tokens.get(1).value());
-        assertEquals(Token.TILIT, tokens.get(2).value());
-        assertEquals(Token.TEOF, tokens.get(3).value());
+        assertEquals(Token.TIDEN, tokens.get(0).getTokenID());
+        assertEquals(Token.TSEMI, tokens.get(1).getTokenID());
+        assertEquals(Token.TILIT, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
 
     }
 
@@ -678,9 +678,9 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TMINS, tokens.get(0).value());
-        assertEquals(Token.TILIT, tokens.get(1).value());
-        assertEquals(Token.TEOF, tokens.get(2).value());
+        assertEquals(Token.TMINS, tokens.get(0).getTokenID());
+        assertEquals(Token.TILIT, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
 
     }
 
@@ -691,8 +691,8 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TILIT, tokens.get(0).value());
-        assertEquals(Token.TEOF, tokens.get(1).value());
+        assertEquals(Token.TILIT, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
 
     }
 
@@ -703,9 +703,9 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TEQUL, tokens.get(0).value());
-        assertEquals(Token.TEQUL, tokens.get(1).value());
-        assertEquals(Token.TEOF, tokens.get(2).value());
+        assertEquals(Token.TEQUL, tokens.get(0).getTokenID());
+        assertEquals(Token.TEQUL, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
 
     }
 
@@ -716,10 +716,10 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TILIT, tokens.get(0).value());
-        assertEquals(Token.TDOT, tokens.get(1).value());
-        assertEquals(Token.TUNDF, tokens.get(2).value());
-        assertEquals(Token.TEOF, tokens.get(3).value());
+        assertEquals(Token.TILIT, tokens.get(0).getTokenID());
+        assertEquals(Token.TDOT, tokens.get(1).getTokenID());
+        assertEquals(Token.TUNDF, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
 
     }
 
@@ -730,10 +730,10 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TILIT, tokens.get(0).value());
-        assertEquals(Token.TDOT, tokens.get(1).value());
-        assertEquals(Token.TDIVD, tokens.get(2).value());
-        assertEquals(Token.TEOF, tokens.get(3).value());
+        assertEquals(Token.TILIT, tokens.get(0).getTokenID());
+        assertEquals(Token.TDOT, tokens.get(1).getTokenID());
+        assertEquals(Token.TDIVD, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
 
     }
 
@@ -744,10 +744,10 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TILIT, tokens.get(0).value());
-        assertEquals(Token.TDOT, tokens.get(1).value());
-        assertEquals(Token.TIDEN, tokens.get(2).value());
-        assertEquals(Token.TEOF, tokens.get(3).value());
+        assertEquals(Token.TILIT, tokens.get(0).getTokenID());
+        assertEquals(Token.TDOT, tokens.get(1).getTokenID());
+        assertEquals(Token.TIDEN, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
 
     }
 
@@ -758,10 +758,10 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TILIT, tokens.get(0).value());
-        assertEquals(Token.TDOT, tokens.get(1).value());
-        assertEquals(Token.TSEMI, tokens.get(2).value());
-        assertEquals(Token.TEOF, tokens.get(3).value());
+        assertEquals(Token.TILIT, tokens.get(0).getTokenID());
+        assertEquals(Token.TDOT, tokens.get(1).getTokenID());
+        assertEquals(Token.TSEMI, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
 
     }
 
@@ -772,10 +772,10 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TDIVD, tokens.get(0).value());
-        assertEquals(Token.TMINS, tokens.get(1).value());
-        assertEquals(Token.TSEMI, tokens.get(2).value());
-        assertEquals(Token.TEOF, tokens.get(3).value());
+        assertEquals(Token.TDIVD, tokens.get(0).getTokenID());
+        assertEquals(Token.TMINS, tokens.get(1).getTokenID());
+        assertEquals(Token.TSEMI, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
 
     }
 
@@ -786,10 +786,10 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TDIVD, tokens.get(0).value());
-        assertEquals(Token.TMINS, tokens.get(1).value());
-        assertEquals(Token.TIDEN, tokens.get(2).value());
-        assertEquals(Token.TEOF, tokens.get(3).value());
+        assertEquals(Token.TDIVD, tokens.get(0).getTokenID());
+        assertEquals(Token.TMINS, tokens.get(1).getTokenID());
+        assertEquals(Token.TIDEN, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
 
     }
 
@@ -800,7 +800,7 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TEOF, tokens.get(0).value());
+        assertEquals(Token.TEOF, tokens.get(0).getTokenID());
 
     }
 
@@ -811,10 +811,10 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TIDEN, tokens.get(0).value());
-        assertEquals(Token.TILIT, tokens.get(1).value());
-        assertEquals(Token.TSEMI, tokens.get(2).value());
-        assertEquals(Token.TEOF, tokens.get(3).value());
+        assertEquals(Token.TIDEN, tokens.get(0).getTokenID());
+        assertEquals(Token.TILIT, tokens.get(1).getTokenID());
+        assertEquals(Token.TSEMI, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
 
     }
 
@@ -825,8 +825,8 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TUNDF, tokens.get(0).value());
-        assertEquals(Token.TEOF, tokens.get(1).value());
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
 
     }
 
@@ -837,8 +837,8 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TUNDF, tokens.get(0).value());
-        assertEquals(Token.TEOF, tokens.get(1).value());
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
 
     }
 
@@ -849,9 +849,9 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TUNDF, tokens.get(0).value());
-        assertEquals(Token.TPERC, tokens.get(1).value());
-        assertEquals(Token.TEOF, tokens.get(2).value());
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TPERC, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
 
     }
 
@@ -862,9 +862,9 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TUNDF, tokens.get(0).value());
-        assertEquals(Token.TUNDF, tokens.get(1).value());
-        assertEquals(Token.TEOF, tokens.get(2).value());
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TUNDF, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
 
     }
 
@@ -875,12 +875,12 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TUNDF, tokens.get(0).value());
-        assertEquals(Token.TNEQL, tokens.get(1).value());
-        assertEquals(Token.TUNDF, tokens.get(2).value());
-        assertEquals(Token.TUNDF, tokens.get(3).value());
-        assertEquals(Token.TIDEN, tokens.get(4).value());
-        assertEquals(Token.TEOF, tokens.get(5).value());
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TNEQL, tokens.get(1).getTokenID());
+        assertEquals(Token.TUNDF, tokens.get(2).getTokenID());
+        assertEquals(Token.TUNDF, tokens.get(3).getTokenID());
+        assertEquals(Token.TIDEN, tokens.get(4).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(5).getTokenID());
 
     }
 
@@ -891,11 +891,11 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TUNDF, tokens.get(0).value());
-        assertEquals(Token.TNEQL, tokens.get(1).value());
-        assertEquals(Token.TUNDF, tokens.get(2).value());
-        assertEquals(Token.TIDEN, tokens.get(3).value());
-        assertEquals(Token.TEOF, tokens.get(4).value());
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TNEQL, tokens.get(1).getTokenID());
+        assertEquals(Token.TUNDF, tokens.get(2).getTokenID());
+        assertEquals(Token.TIDEN, tokens.get(3).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(4).getTokenID());
 
     }
 
@@ -906,10 +906,10 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TILIT, tokens.get(0).value());
-        assertEquals(Token.TDOT, tokens.get(1).value());
-        assertEquals(Token.TIDEN, tokens.get(2).value());
-        assertEquals(Token.TEOF, tokens.get(3).value());
+        assertEquals(Token.TILIT, tokens.get(0).getTokenID());
+        assertEquals(Token.TDOT, tokens.get(1).getTokenID());
+        assertEquals(Token.TIDEN, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
 
     }
 
@@ -920,10 +920,10 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TDIVD, tokens.get(0).value());
-        assertEquals(Token.TMNEQ, tokens.get(1).value());
-        assertEquals(Token.TIDEN, tokens.get(2).value());
-        assertEquals(Token.TEOF, tokens.get(3).value());
+        assertEquals(Token.TDIVD, tokens.get(0).getTokenID());
+        assertEquals(Token.TMNEQ, tokens.get(1).getTokenID());
+        assertEquals(Token.TIDEN, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
 
     }
 
@@ -935,8 +935,8 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TSTRG, tokens.get(0).value());
-        assertEquals(Token.TEOF, tokens.get(1).value());
+        assertEquals(Token.TSTRG, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
     }
 
     @Test
@@ -946,8 +946,8 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TUNDF, tokens.get(0).value());
-        assertEquals(Token.TEOF, tokens.get(1).value());
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
     }
 
     @Test
@@ -957,9 +957,9 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TCD19, tokens.get(0).value());
-        assertEquals(Token.TBEGN, tokens.get(1).value());
-        assertEquals(Token.TEOF, tokens.get(2).value());
+        assertEquals(Token.TCD19, tokens.get(0).getTokenID());
+        assertEquals(Token.TBEGN, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
     }
 
     @Test
@@ -969,8 +969,8 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TIDEN, tokens.get(0).value());
-        assertEquals(Token.TEOF, tokens.get(1).value());
+        assertEquals(Token.TIDEN, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
     }
 
     @Test
@@ -982,10 +982,10 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TIDEN, tokens.get(0).value());
-        assertEquals(Token.TFLIT, tokens.get(1).value());
-        assertEquals(Token.TUNDF, tokens.get(2).value());
-        assertEquals(Token.TEOF, tokens.get(3).value());
+        assertEquals(Token.TIDEN, tokens.get(0).getTokenID());
+        assertEquals(Token.TFLIT, tokens.get(1).getTokenID());
+        assertEquals(Token.TUNDF, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
     }
 
 
@@ -996,9 +996,9 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TUNDF, tokens.get(0).value());
-        assertEquals(Token.TIDEN, tokens.get(1).value());
-        assertEquals(Token.TEOF, tokens.get(2).value());
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TIDEN, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
     }
 
     @Test
@@ -1008,9 +1008,9 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TUNDF, tokens.get(0).value());
-        assertEquals(Token.TNEQL, tokens.get(1).value());
-        assertEquals(Token.TEOF, tokens.get(2).value());
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TNEQL, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
     }
 
     @Test
@@ -1020,10 +1020,24 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TUNDF, tokens.get(0).value());
-        assertEquals(Token.TNEQL, tokens.get(1).value());
-        assertEquals(Token.TEOF, tokens.get(2).value());
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TNEQL, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
     }
+
+    @Test
+    public void Scanner_getAllTokens_LessLessEqEq(){
+        List<String> code = new ArrayList<>();
+        code.add("<<==");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TLESS, tokens.get(0).getTokenID());
+        assertEquals(Token.TLEQL, tokens.get(1).getTokenID());
+        assertEquals(Token.TEQUL, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
+    }
+
 
 
 

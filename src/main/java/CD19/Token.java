@@ -28,7 +28,7 @@ public class Token {
 
     public static final int
 
-            TEOF = 0,      // CD19.Token value for end of file
+            TEOF = 0,      // CD19.Token getTokenID for end of file
 
     // The 30 keywords
 
@@ -68,45 +68,78 @@ public class Token {
             "TIDEN ", "TILIT ", "TFLIT ", "TSTRG ", "TUNDF "};
 
 
-    private int tid;    // token number - for token classification
+    private int tokenID;    // token number - for token classification
     private int line;    // line number on listing
-    private int pos;    // character position within line
+    private int col;    // character position within line
     private String str;    // lexeme - actual character string from scanner for TIDEN/TILIT/TFLIT/TSTRG
     //private StRec symbol;	// symbol table entry - set by Parser in Part 3 - not used in Part 1 todo uncomment
     // This does require a "stub" class for StRec, however........
 
-    public Token(int t, int ln, int p, String s) {  //Constructor takes in token number, line, column & lexeme
-        tid = t;
-        line = ln;
-        pos = p;
-        str = s;        // This string is expected to be non-empty only if lexeme has been recognised
+    public Token(int tid, int line, int pos, String str) {  //Constructor takes in token number, line, column & lexeme
+        this.tokenID = tid;
+        this.line = line;
+        this.col = pos;
+        this.str = str;        // This string is expected to be non-empty only if lexeme has been recognised
         //   as an ID, Integer or Real Literal, String Literal, or an Error (TUNDF).
         // For all other tokens the lexeme has already supplied all information
         //   necessary and so is expected to be passed in as an empty string.
-        if (tid == TIDEN) {                // Identifier lexeme could be a reserved keyword
-            int v = checkKeywords(s);        // 	(match is case-insensitive)
+
+        overwriteLexemeIfKeywordOrOperator();
+
+        if (this.tokenID == TIDEN) {                // Identifier lexeme could be a reserved keyword
+            int v = checkKeywords(str);        // 	(match is case-insensitive)
             if (v > 0) {
-                tid = v;
-                str = null;
+                this.tokenID = v;
+                this.str = null;
             }    // if keyword, alter token type and set lexeme to null
         }
+
+
         //symbol = null;	// initially null, SymTab lookup is done by Parser for TIDEN/TILIT/TFLIT/TSTRG todo uncomment
+
+
     }
 
-    public int value() {
-        return tid;
+    /**
+     * Determines to overwrite lexeme to the constructor of Token
+     * If the Tid is an identifier or literal, don't overwrite. Otherwise do it
+     */
+    private void overwriteLexemeIfKeywordOrOperator() {
+        //idea for this came from kyle. thanks kyle you the man
+        if (tokenID >= TIDEN)
+            return;
+        else
+            str = null;
     }
 
-    public int getLn() {
+    /**
+     * @return - String of Token ID padded to 6 chars long
+     */
+    public String getTokenIDAsString() {
+        return TPRINT[tokenID];
+    }
+
+    public int getTokenID() {
+        return tokenID;
+    }
+
+    public int getLine() {
         return line;
     }
 
-    public int getPos() {
-        return pos;
+    public int getCol() {
+        return col;
     }
 
     public String getStr() {
         return str;
+    }
+
+    /**
+     * @return - True if current ID is TUNDF
+     */
+    public boolean isUndefined() {
+        return tokenID == TUNDF;
     }
 
     //public StRec getSymbol() { return symbol; } todo uncomment
@@ -114,9 +147,9 @@ public class Token {
     //public void setSymbol(StRec x) {symbol = x; }		// Used by the Parser to set the ST Ref field of the CD19.Token tuple todo uncomment
 
     public String toString() {                // This does NOT produce output for the CD19.Scanner Phase	   *****
-        String s = TPRINT[tid] + " " + line + " " + pos;    // It is meant to be used for diagnostic printing only	   *****
+        String s = TPRINT[tokenID] + " " + line + " " + col;    // It is meant to be used for diagnostic printing only	   *****
         if (str == null) return s;            // It may give you some ideas wrt reporting lexical errors *****
-        if (tid != TUNDF)
+        if (tokenID != TUNDF)
             s += " " + str;
         else {
             s += " ";
@@ -131,10 +164,10 @@ public class Token {
     }
 
     public String shortString() {        // This produces a string which may be useful for output in the CD19.Scanner Phase	*****
-        String s = TPRINT[tid];        // Token as a string
+        String s = TPRINT[tokenID];        // Token as a string
 
         if (str == null) return s;    // If that is all - return
-        if (tid != TUNDF) {        // For IDs, ILITS and FLITs - add the lexeme
+        if (tokenID != TUNDF) {        // For IDs, ILITS and FLITs - add the lexeme
             s += str + " ";
             int j = (6 - s.length() % 6) % 6;
             for (int i = 0; i < j; i++)
@@ -150,35 +183,6 @@ public class Token {
         }
         s += "\n";
         return s;
-
-/*
-        //Jordans better version
-
-        String s = TPRINT[tid];        // Token as a string
-
-        if (str == null) return s;    // If that is all - return
-        if (isIdentifierLiteralOrString()) {        // For IDs, ILITS and FLITs - add the lexeme
-            s += str + " ";
-            int j = (6 - s.length() % 6) % 6;
-            for (int i = 0; i < j; i++)
-                s += " ";    // right-fill with spaces
-            return s;        // return ID/ILIT/FLIT
-        }
-
-        if(isKeyword() || isOperator())
-            return s;
-
-        //s = "\n" + s;
-        for (int i = 0; i < str.length(); i++) { // output non-printables as ascii codes
-            char ch = str.charAt(i);
-            int j = (int) ch;
-            if (j <= 31 || j >= 127) s += "\\" + j;
-            else s += ch;
-        }
-        s += "\n";
-        return s;
-
- */
     }
 
     private static int checkKeywords(String s) {    // Takes a lexeme recognised as an ID
@@ -285,9 +289,7 @@ public class Token {
             return TUNDF;
     }
 
-    public static String addLexeme(String lexeme, int tokenID){
-        return (tokenID >= TIDEN) ? lexeme : null; //idea for this came from kyle fennell. thanks kyle you the man
-    }
+
 
     /**
      * Checks if argument is a valid keyword or operator
@@ -314,7 +316,7 @@ public class Token {
      * Used to determine how many specific characters are in a string
      *
      * @param string - String to check against
-     * @param key    - Char key value to determine how many in string
+     * @param key    - Char key getTokenID to determine how many in string
      * @return - Integer determining number of the key chars in string
      */
     private static int howManyCharsInString(String string, char key) {
@@ -326,28 +328,5 @@ public class Token {
 
         return counter;
 
-    }
-
-    public boolean isKeyword() {
-        return checkKeywords(str) != -1;
-    }
-
-    public boolean isOperator() {
-        return checkOperatorsAndDelimiters(str) != -1;
-    }
-
-    public boolean isUndefined() {
-        return tid == TUNDF;
-    }
-
-    public boolean isIdentifierLiteralOrString() {
-        return tid == TIDEN ||
-                tid == TILIT ||
-                tid == TFLIT ||
-                tid == TSTRG;
-    }
-
-    public String getTokenID(){
-        return TPRINT[tid];
     }
 }
