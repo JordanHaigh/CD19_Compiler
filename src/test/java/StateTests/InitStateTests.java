@@ -201,6 +201,14 @@ public class InitStateTests {
         assertTrue(sm.getCurrentState() instanceof UndefinedState);
     }
 
+    @Test
+    public void InitState_SetState_UndefinedToken_Underscore(){
+        StateMachine sm = new StateMachine();
+        sm.updateState('_');
+
+        assertTrue(sm.getCurrentState() instanceof IdentifierState);
+    }
+
 
 
 

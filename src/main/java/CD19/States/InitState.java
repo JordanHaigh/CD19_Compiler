@@ -13,7 +13,7 @@ public class InitState implements State {
         if (CharacterClassification.isCharDelimiter(c))
             return;
 
-        if (CharacterClassification.isCharAlphabetical(c))
+        if (CharacterClassification.isCharAlphabetical(c) || c == '_')
             sm.setCurrentState(new IdentifierState());
         else if (CharacterClassification.isCharNumerical(c))
             sm.setCurrentState(new IntegerState());

@@ -15,21 +15,6 @@ public class CharacterClassification{
         return (48 <= c && c <= 57);
     }
 
-//    public static boolean isCharSpecial(char c){
-//        if(c == 33) // !
-//            return true;
-//        if(35 <= c && c <= 46)
-//            return true; // # $ % & ' ( ) * + , - .
-//        if(58 <= c && c <= 64)// : ; < = > ? @
-//            return true;
-//        if(91 <= c && c <= 96)// [ \ ] ^ _ `
-//            return true;
-//        if(123 <= c && c <= 126)// { | } ~
-//            return true;
-//
-//        return false;
-//    }
-
     public static boolean isCharAssignmentOrRelationalOperator(char c){
         return c == '=' || c == '+' || c == '-' || c == '*' || c == '<' || c == '>';
     }
