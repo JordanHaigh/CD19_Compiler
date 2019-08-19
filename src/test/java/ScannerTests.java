@@ -1007,8 +1007,9 @@ public class ScannerTests {
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
-        assertEquals(Token.TIDEN, tokens.get(0).getTokenID());
-        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TIDEN, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
     }
 
     @Test
