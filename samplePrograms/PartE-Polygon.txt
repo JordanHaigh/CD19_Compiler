@@ -1,0 +1,67 @@
+CD19 PolygonArea
+
+constants
+    MAXARRLENGTH = 20;
+
+types
+    point is
+        x : integer,
+        y : integer
+    end
+
+points is array[ARRLENGTH] of point
+
+arrays
+    polygon : points
+
+
+function inputPoints() : integer
+    numberOfPoints : integer,
+    i : integer
+begin
+    repeat()
+        printline "Enter the number of points";
+        input numberOfPoints;
+    until numberOfPoints > 2 && numberOfPoints <=MAXARRLENGTH;
+
+    for(i=0; i < numberOfPoints)
+        printline "Enter X and Y for point", i,".";
+        input polygon[i].x, polygon[i].y;
+    end
+
+    return numberOfPoints;
+end
+
+
+function computeArea(polygon : points, arraySize : integer) : real
+    sum : integer,
+    area : real,
+    i : integer
+begin
+    for(sum = 0,i = 0; i < arraySize-1)
+        sum += (points[i+1].x + points[i].x) * (points[i+1].y - points[i].y);
+        i = i+1;
+    end
+
+    if(sum < 0)
+        sum = 0 - sum; /--should make it positive
+    end
+
+    area = (1/2) * sum;
+    return area;
+end
+
+
+
+
+main
+    numberOfPoints : integer
+    area : real
+begin
+    numberOfPoints = inputPoints();
+    area = computeArea(polygon, numberOfPoints)
+    printline "The area is: ", area, ".";
+end
+
+
+CD19 PolygonArea

@@ -1,0 +1,28 @@
+CD19 arrays
+constants
+    ARRLENGTH = 10
+
+types
+    student is                                   /-- create student struct
+        id : integer,
+        mark : integer
+    end
+
+students is array [ARRLENGTH] of student        /-- create student array
+
+arrays
+    comp3290 : students                         /-- create variable of student array
+
+main
+a : integer                                     /-- variable must be here for toy language
+
+begin
+
+for(a = 0; a < ARRLENGTH)                       /--access elements from 0-9 and assign
+    comp3290[a].id = a;
+    comp3290[a].mark = 0;
+    a = a+1;
+end
+
+
+CD19 arrays

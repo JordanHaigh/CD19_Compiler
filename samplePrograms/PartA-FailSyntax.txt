@@ -1,0 +1,17 @@
+/-- Jordan Haigh c3256730 COMP3290 A2
+/-- Program that succeeds lexically but fails syntactically (Problem in grammar)
+/-- Variable defined as integer then assigned a string
+
+CD19 FailSyntax
+main
+    a : integer
+
+begin
+    
+    else /-- Missing if statement
+        a = 10;
+    end
+
+end
+
+CD19 FailSyntax

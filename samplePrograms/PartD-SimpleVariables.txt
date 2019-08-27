@@ -1,0 +1,13 @@
+CD19 SuccessSimpleVariables
+main
+    a : integer,
+    b : real,
+    c : boolean
+
+begin
+    a = 10;
+    b = 10.101;
+    c = true;
+
+end
+CD19 SuccessSimpleVariables

@@ -1107,4 +1107,16 @@ public class ScannerTests {
         assertEquals(Token.TEOF, tokens.get(1).getTokenID());
     }
 
+    @Test
+    public void Scanner_getAllTokens_PercentEquals(){
+        List<String> code = new ArrayList<>();
+        code.add("%=");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TPERC, tokens.get(0).getTokenID());
+        assertEquals(Token.TEQUL, tokens.get(1).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(2).getTokenID());
+    }
+
 }

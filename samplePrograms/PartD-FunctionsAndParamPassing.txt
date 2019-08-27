@@ -1,0 +1,63 @@
+CD19 FunctionsAndParamPassing
+
+constants
+    COUNT = 10
+
+types
+    student is
+        id : integer,
+        mark : integer
+    end
+
+students is array [COUNT] of student
+
+arrays
+    classA : students
+    const classB : students 
+
+
+
+function forceFail(class : students) : void
+    i : integer
+begin
+    for(i = 0; i < COUNT)
+        class[i].mark = 0;
+        i = i+1;
+    end
+end
+
+
+function averageMark(const class : students) : real
+    sum : integer,
+    average : real,
+    i : integer
+begin
+    for(i = 0,sum=0; i < COUNT)
+        sum += class[i].mark;
+        i = i+1;
+    end
+
+    average = sum / COUNT;
+    return average;
+end
+
+function sumTwoInts(a : integer, b : integer) : integer
+    sum : integer
+begin
+    sum = a + b;
+    return sum;
+end
+
+main
+    averageMark : real
+    x : integer,
+    y : integer,
+    summedNumbers : integer
+begin
+forceFail(classA);
+averageMark = average(classB);
+summedNumbers = sum(x,y);
+
+end
+
+CD19 FunctionsAndParamPassing

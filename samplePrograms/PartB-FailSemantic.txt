@@ -1,0 +1,9 @@
+CD19 FailSemantic
+main
+    a : integer
+
+begin
+    a = "123";
+end
+
+CD19 FailSemantic

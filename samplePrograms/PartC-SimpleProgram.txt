@@ -1,0 +1,16 @@
+/-- Jordan Haigh c3256730 COMP3290 A2
+/-- MY definition of the simplest program in this language
+/-- Not sure what else there is to say...
+/-- Urban Dictionary defines "The Trogdor" as "When you are smoking (burninating) and you put an eye drop in only one eye. Half man, half dragon. TROGDOOOOOOORRRRR!!!"
+
+CD19 SimpleProgram
+main
+    a: integer
+
+begin
+    printline "Hello World";
+end
+
+
+
+CD19 SimpleProgram
