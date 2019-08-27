@@ -1,13 +1,24 @@
 # Compilers Notes
 
+## Important Changes
+* Left Factoring - upload a txt file saying the productions that have been changed and why (Left recursive)
+    * Typelist
+    * Ifstat
+    * Expr
+    * Returnstat
+    * Bool
+    * Fact
+    * Term
+    *(Any rule that starts with itself)
+
 ## Questions
 [ X ] **`Integer.parse("10101.1")` - does it trunkate or error?**
 
     It will error.
 
-[  ] **Ask dan about == and != for reals - how many digits should we check for**
+[ X ] **Ask dan about == and != for reals - how many digits should we check for**
 
-    Waiting
+    Check Grammar Spec
 
 [  ] **Can you init arrays inline? E.g.** 
 
