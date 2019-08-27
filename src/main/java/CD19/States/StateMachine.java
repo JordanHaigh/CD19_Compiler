@@ -1,5 +1,10 @@
 package CD19.States;
 
+/*
+ * Jordan Haigh c3256730 CD19
+ * public class StateMachine.java
+ * State Machine Stores current state, previous state. Has functionality to reset and start state changes.
+ * */
 public class StateMachine {
 
     private State currentState;

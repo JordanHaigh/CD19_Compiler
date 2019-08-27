@@ -10,6 +10,10 @@ import java.util.List;
  * */
 public class Compiler {
 
+    /**
+     * Compile source file
+     * @param filePath  - Path to File
+     */
     public void compile(String filePath) {
         lexicalAnalysis(filePath);
 
@@ -17,12 +21,16 @@ public class Compiler {
 
     }
 
+    /**
+     * Perform Lexical Analysis on File
+     * Return and print the list of tokens
+     * @param filePath  - Path to File
+     */
     public void lexicalAnalysis(String filePath) {
         Scanner scanner = new Scanner(new CodeFileReader(filePath));
         List<Token> allTokens = scanner.getAllTokens();
         printTokens(allTokens);
     }
-
 
     /**
      * Printing method for Assignment 1

@@ -13,7 +13,7 @@ public class CharacterClassification{
 
     public static boolean isCharNumerical(char c){
         return (48 <= c && c <= 57);
-    }
+    } //0-9
 
     public static boolean isCharAssignmentOrRelationalOperator(char c){
         return c == '=' || c == '+' || c == '-' || c == '*' || c == '<' || c == '>';

@@ -13,7 +13,7 @@ import java.util.List;
  * */
 public class CodeFileReader {
 
-    List<String> codeLines;
+    private List<String> codeLines;
     private int lineNumber, columnNumber;
     private boolean reachedEOF;
     private boolean hitNewLineOnLastPass;
@@ -28,6 +28,11 @@ public class CodeFileReader {
         lineNumber = columnNumber = 0;
     }
 
+    /**
+     * Reads a file from argument file path
+     * @param filePath - File to read
+     * @return - List of Strings of each line in the file
+     */
     public List<String> readFile(String filePath) {
         List<String> lines = new ArrayList<>();
 
@@ -44,6 +49,12 @@ public class CodeFileReader {
         return lines;
     }
 
+    /**
+     * Reads the next character in the fileLines
+     * Updates the Column and Row Number respectively
+     * If a new line is hit, it will trigger a flag
+     * @return - Next char found in the code file
+     */
     public char readNextChar() {
         if (hitNewLineOnLastPass) { //if we previously hit a new line
            incrementLineNumber();
@@ -71,6 +82,10 @@ public class CodeFileReader {
         return nextChar;
     }
 
+    /**
+     * Increments the Current Line number and resets the column number
+     * If the line number is equal to the size of the code lines list, it will toggle the ReachedEOF flag
+     */
     private void incrementLineNumber(){
         columnNumber = 0;
 
@@ -79,10 +94,13 @@ public class CodeFileReader {
             reachedEOF = true;
     }
 
-    public void moveColumnPosition() {
-        columnNumber--;
-    }
+//    public void moveColumnPosition() {
+//        columnNumber--;
+//    }
 
+    /**
+     * @param steps - Number of steps to move
+     */
     public void moveColumnPosition(int steps) {
         for (int i = 0; i < steps; i++)
             columnNumber--;

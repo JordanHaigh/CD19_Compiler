@@ -84,7 +84,9 @@ public class Token {
         // For all other tokens the lexeme has already supplied all information
         //   necessary and so is expected to be passed in as an empty string.
 
-        overwriteLexemeIfKeywordOrOperator();
+        //overwrite lexeme if the token is not an identifier or literal
+        if (tokenID < TIDEN)
+            this.str = null;
 
         if (this.tokenID == TIDEN) {                // Identifier lexeme could be a reserved keyword
             int v = checkKeywords(str);        // 	(match is case-insensitive)
@@ -98,18 +100,6 @@ public class Token {
         //symbol = null;	// initially null, SymTab lookup is done by Parser for TIDEN/TILIT/TFLIT/TSTRG todo uncomment
 
 
-    }
-
-    /**
-     * Determines to overwrite lexeme to the constructor of Token
-     * If the Tid is an identifier or literal, don't overwrite. Otherwise do it
-     */
-    private void overwriteLexemeIfKeywordOrOperator() {
-        //idea for this came from kyle. thanks kyle you the man
-        if (tokenID >= TIDEN)
-            return;
-        else
-            str = null;
     }
 
     /**

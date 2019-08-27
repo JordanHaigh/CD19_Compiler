@@ -20,6 +20,10 @@ public class Scanner {
         this.stateMachine = new StateMachine();
     }
 
+    /**
+     * Get all tokens from a .CD File
+     * @return - List containing all tokens from .CD File
+     */
     public List<Token> getAllTokens() {
         //parse all lines in the code lines
         //for each line, get the tokens from the line
@@ -34,6 +38,12 @@ public class Scanner {
         return allTokens;
     }
 
+    /**
+     * Get Next Token from Code File Reader
+     * Keeps building upon a string builder (greedy left to right)
+     * Uses state machine to determine if the state is in a completed state
+     * @return - Completed Token
+     */
     public Token getNextToken() {
         //search char by char, building the token and updating state where necessary
         StringBuilder lexemeBuffer = new StringBuilder();
@@ -68,10 +78,16 @@ public class Scanner {
         }
     }
 
+    /**
+     * Given a lexeme, it will clean the lexeme, and find the associated token string/id.
+     * @param lexeme - Lexeme string
+     * @param numberOfSteps - Number of steps to move the code file reader column back
+     * @return - Token containing tid, column, row and lexeme (where applicable)
+     */
     private Token createTokenFromState(String lexeme, int numberOfSteps) {
         String lexemeSubString = lexeme.substring(0, lexeme.length() - numberOfSteps);
         //clean substring of delimiters
-        lexemeSubString = cleanLexeme(lexemeSubString);
+        lexemeSubString = cleanLexeme(lexemeSubString); //todo tabs in strings
 
         int tokenId = Token.findTokenId(lexemeSubString, stateMachine.getPreviousState());
         int tokenColumn = codeFileReader.getColumnNumber() - lexeme.length();
@@ -84,6 +100,11 @@ public class Scanner {
 
     }
 
+    /**
+     * Clean lexeme of spaces,new lines and tabs
+     * @param lexeme - Lexeme to clean
+     * @return - Cleaned lexeme
+     */
     private String cleanLexeme(String lexeme) {
         lexeme = lexeme.replaceAll(" ", "");
         lexeme = lexeme.replaceAll("\t", "");
