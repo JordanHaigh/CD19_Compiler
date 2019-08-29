@@ -135,7 +135,7 @@ public class ScannerTests {
     @Test
     public void Scanner_getNextToken_TFUNC(){
         List<String> code = new ArrayList<>();
-        code.add("func");
+        code.add("function");
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         Token token = scanner.getNextToken();
@@ -618,6 +618,29 @@ public class ScannerTests {
     }
 
     @Test
+    public void Scanner_getAllTokens_int(){
+        List<String> code = new ArrayList<>();
+        code.add("124");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TILIT, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
+    }
+
+    @Test
+    public void Scanner_getAllTokens_float(){
+        List<String> code = new ArrayList<>();
+        code.add("124.123");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TFLIT, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
+    }
+
+
+    @Test
     public void Scanner_getAllTokens_Iden_UndefinedChar(){
         List<String> code = new ArrayList<>();
         code.add("aa##");
@@ -838,7 +861,6 @@ public class ScannerTests {
         List<Token> tokens = scanner.getAllTokens();
         assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
         assertEquals(Token.TEOF, tokens.get(1).getTokenID());
-
     }
 
     @Test
@@ -924,6 +946,23 @@ public class ScannerTests {
 
     }
 
+
+    @Test
+    public void Scanner_getAllTokens_TwoDotFloat(){
+        List<String> code = new ArrayList<>();
+        code.add("10..0");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TILIT, tokens.get(0).getTokenID());
+        assertEquals(Token.TDOT, tokens.get(1).getTokenID());
+        assertEquals(Token.TDOT, tokens.get(2).getTokenID());
+        assertEquals(Token.TILIT, tokens.get(3).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(4).getTokenID());
+
+    }
+
+
     @Test
     public void Scanner_getAllTokens_GroupedUndefined_FailedCommentTurnedIntoMinusEquals(){
         List<String> code = new ArrayList<>();
@@ -942,7 +981,7 @@ public class ScannerTests {
     @Test
     public void Scanner_getAllTokens_CompleteString(){
         List<String> code = new ArrayList<>();
-        code.add("\"this is text ina string \"");
+        code.add("\"this is text ina string  ###?!!= <= \"");
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
@@ -1117,6 +1156,28 @@ public class ScannerTests {
         assertEquals(Token.TPERC, tokens.get(0).getTokenID());
         assertEquals(Token.TEQUL, tokens.get(1).getTokenID());
         assertEquals(Token.TEOF, tokens.get(2).getTokenID());
+    }
+
+    @Test
+    public void Scanner_getAllTokens_TabsInStrings(){
+        List<String> code = new ArrayList<>();
+        code.add("\"this is string \t more text \"");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TSTRG, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
+    }
+
+    @Test
+    public void Scanner_getAllTokens_IdenWithNumbers(){
+        List<String> code = new ArrayList<>();
+        code.add("abc123");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TIDEN, tokens.get(0).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(1).getTokenID());
     }
 
 }

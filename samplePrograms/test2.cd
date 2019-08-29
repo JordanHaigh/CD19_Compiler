@@ -1,17 +1,52 @@
-/-- /-=a
-/-- ##@!@
-/-- ##!=
-/-- 100.abc
-/-- if(!<=a)
-/-- !##;
-/-- !=$#
-/-- #@!
-/-- !; ;
-/-- aa;
-
-/-- 1..0;
-/-- 100.;
-
-
 .seven()?@@#next tokens here.
 
+100.abc
+if(!<=a)
+
+CD19 constants const types arrays main begin end is array of function
+void integer real boolean for repeat until if else input print
+printline return
+= += -= *= /= not and or xor == > >= < <= + - * / ^ % true false
+[ ] : . ; ( ) ,
+
+/-- fun stuff now
+aa
+123
+123.456
+"whats your stoyle?"
+aa##
+/-=a
+aa_aa
+aa_
+_dan
+aa; 100
+-100
+000000000000001010
+= =
+100.#
+100./
+100.a
+100.;
+/-a
+!##
+@!#
+@#!
+@!=#!
+@!=
+!=$#
+##!=
+1..0;
+/-=a
+"this is text ina string  ###?!!= <= "
+"str
+###                        aaa
+Cd19 BeGiN
+!!==
+@!!!!!!=
+<<==
+""
+#!!#"
+#_## __
+%=
+"this is string 	 more text "
+abc123

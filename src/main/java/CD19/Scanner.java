@@ -87,16 +87,23 @@ public class Scanner {
     private Token createTokenFromState(String lexeme, int numberOfSteps) {
         String lexemeSubString = lexeme.substring(0, lexeme.length() - numberOfSteps);
         //clean substring of delimiters
-        lexemeSubString = cleanLexeme(lexemeSubString); //todo tabs in strings
 
-        int tokenId = Token.findTokenId(lexemeSubString, stateMachine.getPreviousState());
+        String cleanedLexeme = cleanLexeme(lexemeSubString);
+
+        int tokenId = Token.findTokenId(cleanedLexeme, stateMachine.getPreviousState());
+
+        //now if the token is a string we need to undo the cleaning. so we need to readd tabs and spaces
+        if(tokenId == Token.TSTRG){
+            cleanedLexeme = lexemeSubString;
+        }
+
         int tokenColumn = codeFileReader.getColumnNumber() - lexeme.length();
         int tokenLine = codeFileReader.getLineNumber();
 
         stateMachine.reset(); //send it back to the init state for next parse
         codeFileReader.moveColumnPosition(numberOfSteps); //move it back one spot so we aren't forgetting about the current read char
 
-        return new Token(tokenId, tokenLine, tokenColumn, lexemeSubString);
+        return new Token(tokenId, tokenLine, tokenColumn, cleanedLexeme);
 
     }
 
@@ -106,12 +113,9 @@ public class Scanner {
      * @return - Cleaned lexeme
      */
     private String cleanLexeme(String lexeme) {
-        lexeme = lexeme.replaceAll(" ", "");
         lexeme = lexeme.replaceAll("\t", "");
+        lexeme = lexeme.replaceAll(" ", "");
         lexeme = lexeme.replaceAll("\n", "");
-
-//        if(!lexeme.equals(";"))
-//            lexeme = lexeme.replaceAll(";","");
 
         return lexeme;
     }
