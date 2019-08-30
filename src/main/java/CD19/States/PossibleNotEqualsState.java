@@ -14,6 +14,8 @@ public class PossibleNotEqualsState implements State {
     public void updateState(StateMachine sm, char c) {
         if(c == '=')
             sm.setCurrentState(new CompletedTokenState()); //absolute not equals
+        else if(c == '!')
+            sm.setCurrentState(new UnrecoveredNotEqualsState());
         else if(!CharacterClassification.isCharDefined(c))
             sm.setCurrentState(new UndefinedState());
         else
