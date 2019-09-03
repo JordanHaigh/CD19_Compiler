@@ -57,6 +57,8 @@ public class Scanner {
 
             lexemeBuffer.append(nextChar); //we append here and may take characters away when we are building the token.
             // the final state will determine how many characters to remove from the lexeme
+            if(lexemeBuffer.toString().equals("\n"))
+                lexemeBuffer = new StringBuilder(); //reset lexeme buffer otherwise it will mess with column numbers
             stateMachine.updateState(nextChar);
 
 

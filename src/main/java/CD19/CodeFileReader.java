@@ -57,7 +57,12 @@ public class CodeFileReader {
      */
     public char readNextChar() {
         if (hitNewLineOnLastPass) { //if we previously hit a new line
-           incrementLineNumber();
+            columnNumber = 0;
+
+            lineNumber++;
+            if (lineNumber == codeLines.size())
+                reachedEOF = true;
+
             hitNewLineOnLastPass = false;
         }
 
@@ -81,22 +86,6 @@ public class CodeFileReader {
 
         return nextChar;
     }
-
-    /**
-     * Increments the Current Line number and resets the column number
-     * If the line number is equal to the size of the code lines list, it will toggle the ReachedEOF flag
-     */
-    private void incrementLineNumber(){
-        columnNumber = 0;
-
-        lineNumber++;
-        if (lineNumber == codeLines.size())
-            reachedEOF = true;
-    }
-
-//    public void moveColumnPosition() {
-//        columnNumber--;
-//    }
 
     /**
      * @param steps - Number of steps to move
