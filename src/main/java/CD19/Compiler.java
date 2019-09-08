@@ -10,6 +10,13 @@ import java.util.List;
  * */
 public class Compiler {
 
+    ErrorHandler errorHandler;
+
+    public Compiler(){
+        errorHandler = new ErrorHandler();
+
+
+    }
     /**
      * Compile source file
      * @param filePath  - Path to File
@@ -27,7 +34,7 @@ public class Compiler {
      * @param filePath  - Path to File
      */
     public void lexicalAnalysis(String filePath) {
-        Scanner scanner = new Scanner(new CodeFileReader(filePath));
+        Scanner scanner = new Scanner(new CodeFileReader(filePath),errorHandler);
         List<Token> allTokens = scanner.getAllTokens();
         printTokens(allTokens);
     }
@@ -71,6 +78,9 @@ public class Compiler {
             System.out.println(line);
         }
 
+        //print out error listing
+        System.out.println("Error Handler Messages:");
+        errorHandler.printErrorMessages();
     }
     public void parse() {
         //todo at a later date

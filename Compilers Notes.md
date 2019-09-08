@@ -12,6 +12,15 @@
     *(Any rule that starts with itself)
 
 ## Questions
+
+### Parser Questions
+[  ] **How do you want us to parse nrtypes and natypes, since structid and typeid are both tidents**
+
+    Need to send message
+
+
+
+### Other Questions
 [ X ] **`Integer.parse("10101.1")` - does it trunkate or error?**
 
     It will error.

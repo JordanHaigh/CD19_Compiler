@@ -1,5 +1,9 @@
 package CD19;
 
+import CD19.Observer.ObservableErrorMessage;
+import CD19.Observer.ObservableMessage;
+import CD19.Observer.Observer;
+import CD19.Observer.Subject;
 import CD19.States.*;
 
 import java.util.ArrayList;
@@ -10,14 +14,27 @@ import java.util.List;
  * public class Scanner
  * Used for lexical analysis and token generation when scanning a file
  * */
-public class Scanner {
+public class Scanner implements Subject {
 
-    CodeFileReader codeFileReader;
+    private CodeFileReader codeFileReader;
     private StateMachine stateMachine; //state pattern -  https://sourcemaking.com/design_patterns/state
 
+    private List<Observer> observers = new ArrayList<>();
+
     public Scanner(CodeFileReader codeFileReader) {
+        ErrorHandler errorHandler= new ErrorHandler();
+
         this.codeFileReader = codeFileReader;
         this.stateMachine = new StateMachine();
+
+        addObserver(errorHandler);
+    }
+
+    public Scanner(CodeFileReader codeFileReader, ErrorHandler errorHandler) {
+        this.codeFileReader = codeFileReader;
+        this.stateMachine = new StateMachine();
+
+        addObserver(errorHandler);
     }
 
     /**
@@ -32,6 +49,10 @@ public class Scanner {
 
         while (!codeFileReader.hasReachedEOF()) {
             Token token = getNextToken();
+            if(token.isUndefined()){
+                //add to listing
+                notifyObservers(new ObservableErrorMessage("lexical error: " + token.getStr()));
+            }
             allTokens.add(token);
         }
 
@@ -120,5 +141,23 @@ public class Scanner {
         lexeme = lexeme.replaceAll("\n", "");
 
         return lexeme;
+    }
+
+    //observer methods
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(ObservableMessage message) {
+        for(Observer observer : observers){
+            observer.handleMessage(message);
+        }
     }
 }
