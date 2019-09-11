@@ -17,13 +17,13 @@ public class ErrorHandler implements Observer {
 
     @Override
     public void handleMessage(ObservableMessage message) {
-        if(message instanceof ObservableErrorMessage){
-            String newErrorMessage = ((ObservableErrorMessage)message).getErrorMessage();
+        if(message instanceof LexicalErrorMessage){
+            String newErrorMessage = ((LexicalErrorMessage)message).getErrorMessage();
             errorMessages.add(newErrorMessage);
         }
 
         if(message instanceof ObservableImmediateErrorMessage){
-            String newErrorMessage = ((ObservableErrorMessage)message).getErrorMessage();
+            String newErrorMessage = ((LexicalErrorMessage)message).getErrorMessage();
             System.out.println(newErrorMessage);
             errorMessages.add(newErrorMessage);
 

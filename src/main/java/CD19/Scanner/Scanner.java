@@ -1,7 +1,7 @@
 package CD19.Scanner;
 
 import CD19.ErrorHandler;
-import CD19.Observer.ObservableErrorMessage;
+import CD19.Observer.LexicalErrorMessage;
 import CD19.Observer.ObservableMessage;
 import CD19.Observer.Observer;
 import CD19.Observer.Subject;
@@ -23,19 +23,9 @@ public class Scanner implements Subject {
     private List<Observer> observers = new ArrayList<>();
 
     public Scanner(CodeFileReader codeFileReader) {
-        ErrorHandler errorHandler= new ErrorHandler();
 
         this.codeFileReader = codeFileReader;
         this.stateMachine = new StateMachine();
-
-        addObserver(errorHandler);
-    }
-
-    public Scanner(CodeFileReader codeFileReader, ErrorHandler errorHandler) {
-        this.codeFileReader = codeFileReader;
-        this.stateMachine = new StateMachine();
-
-        addObserver(errorHandler);
     }
 
     /**
@@ -52,7 +42,7 @@ public class Scanner implements Subject {
             Token token = getNextToken();
             if(token.isUndefined()){
                 //add to listing
-                notifyObservers(new ObservableErrorMessage("lexical error: " + token.getStr()));
+                notifyObservers(new LexicalErrorMessage("lexical error: " + token.getStr() + " [" + token.getCol() + ":" + token.getLine() + "]"));
             }
             allTokens.add(token);
         }

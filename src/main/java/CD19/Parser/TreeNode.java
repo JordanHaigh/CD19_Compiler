@@ -48,11 +48,13 @@ public class TreeNode {
     private static int count = 0;
 
     private int nodeValue;
+    private String nodeValueString;
     private TreeNode left,middle,right;
     private SymbolTableRecord symbol, type;
 
     public TreeNode (int value) {
         nodeValue = value;
+        nodeValueString = PRINTNODE[value];
         left = null;
         middle = null;
         right = null;

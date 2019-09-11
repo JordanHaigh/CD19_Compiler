@@ -16,7 +16,6 @@ import java.util.List;
 public class Compiler {
 
     ErrorHandler errorHandler;
-    List<Token> tokens = new ArrayList<>();
 
     public Compiler(){
         errorHandler = new ErrorHandler();
@@ -26,8 +25,8 @@ public class Compiler {
      * @param filePath  - Path to File
      */
     public void compile(String filePath) {
-        lexicalAnalysis(filePath);
-        parse();
+        List<Token> tokens = lexicalAnalysis(filePath);
+        parse(tokens);
         //todo more at a later date
 
     }
@@ -37,14 +36,17 @@ public class Compiler {
      * Return and print the list of tokens
      * @param filePath  - Path to File
      */
-    public void lexicalAnalysis(String filePath) {
-        Scanner scanner = new Scanner(new CodeFileReader(filePath),errorHandler);
-        tokens = scanner.getAllTokens();
+    public List<Token> lexicalAnalysis(String filePath) {
+        Scanner scanner = new Scanner(new CodeFileReader(filePath));
+        scanner.addObserver(errorHandler);
+        List<Token> tokens = scanner.getAllTokens();
         //printTokens(allTokens);
+        return tokens;
     }
 
-    public void parse() {
-        Parser parser = new Parser(tokens, errorHandler);
+    public void parse(List<Token> tokens) {
+        Parser parser = new Parser(tokens);
+        parser.addObserver(errorHandler);
         parser.parse();
 
     }

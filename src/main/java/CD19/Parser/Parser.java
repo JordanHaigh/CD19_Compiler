@@ -2,6 +2,7 @@ package CD19.Parser;
 
 import CD19.ErrorHandler;
 import CD19.Observer.*;
+import CD19.Parser.Nodes.NGlobNode;
 import CD19.Parser.Nodes.NProgNode;
 import CD19.Scanner.Token;
 
@@ -20,9 +21,9 @@ public class Parser implements Subject {
 //    private boolean syntacticallyValid = true;
 //    private boolean semanticallyValid = true;
 
-    public Parser(List<Token> tokens, ErrorHandler errorHandler){
+    public Parser(List<Token> tokens){
         this.tokens = tokens;
-        observers.add(errorHandler);
+//        observers.add(errorHandler);
     }
 
     public Token peek() {return tokens.get(tokenIndex);}
@@ -34,7 +35,7 @@ public class Parser implements Subject {
 
         //try making an nprog node
         try{
-            TreeNode tree = NProgNode.make(this);
+            TreeNode tree = new NProgNode().make(this);
 
             if(tree == null)
                 throw new Exception();

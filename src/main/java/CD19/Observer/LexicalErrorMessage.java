@@ -1,9 +1,9 @@
 package CD19.Observer;
 
-public class ObservableErrorMessage extends ObservableMessage {
+public class LexicalErrorMessage extends ObservableMessage {
     private String errorMessage;
 
-    public ObservableErrorMessage(String errorMessage){
+    public LexicalErrorMessage(String errorMessage){
         this.errorMessage = errorMessage;
     }
 
