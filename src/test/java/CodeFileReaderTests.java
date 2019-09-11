@@ -1,4 +1,4 @@
-import CD19.CodeFileReader;
+import CD19.Scanner.CodeFileReader;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

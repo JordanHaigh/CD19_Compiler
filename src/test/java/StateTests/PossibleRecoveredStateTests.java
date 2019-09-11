@@ -1,6 +1,6 @@
 package StateTests;
 
-import CD19.States.*;
+import CD19.Scanner.States.*;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

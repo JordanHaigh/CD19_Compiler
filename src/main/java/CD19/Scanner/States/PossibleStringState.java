@@ -1,4 +1,4 @@
-package CD19.States;
+package CD19.Scanner.States;
 
 /*
  * Jordan Haigh c3256730 CD19

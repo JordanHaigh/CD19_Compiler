@@ -1,4 +1,4 @@
-package CD19;
+package CD19.Scanner;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

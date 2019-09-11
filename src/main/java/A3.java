@@ -4,10 +4,10 @@ import java.io.File;
 
 /*
 * Jordan Haigh c3256730 CD19
-* public class A1
+* public class A3
 * Used as main entry point for first assignment submission
 * */
-public class A1 {
+public class A3 {
 
     public static void main(String[] args){
         if(args.length != 1){

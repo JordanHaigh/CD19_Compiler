@@ -1,4 +1,4 @@
-package CD19.States;
+package CD19.Scanner.States;
 
 import CD19.Scanner.CharacterClassification;
 

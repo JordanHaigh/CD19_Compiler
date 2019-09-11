@@ -21,5 +21,12 @@ public class ErrorHandler implements Observer {
             String newErrorMessage = ((ObservableErrorMessage)message).getErrorMessage();
             errorMessages.add(newErrorMessage);
         }
+
+        if(message instanceof ObservableImmediateErrorMessage){
+            String newErrorMessage = ((ObservableErrorMessage)message).getErrorMessage();
+            System.out.println(newErrorMessage);
+            errorMessages.add(newErrorMessage);
+
+        }
     }
 }

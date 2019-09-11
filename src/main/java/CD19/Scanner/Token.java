@@ -1,6 +1,6 @@
-package CD19;// COMP3290 CD19 CD19.Compiler
+package CD19.Scanner;// COMP3290 CD19 CD19.Compiler
 //
-//	CD19.Token class	- constructs a token on behalf of the scanner for it to be sent to the parser.
+//	CD19.Scanner.Token class	- constructs a token on behalf of the scanner for it to be sent to the parser.
 //			- IDs/FLITs/Strings do not have their symbol table reference set in this class,
 //			    this is best done within the scanner as it makes things easier in later phases,
 //			    when we are dealing with things like variable scoping.
@@ -16,7 +16,9 @@ package CD19;// COMP3290 CD19 CD19.Compiler
 //
 //
 
-import CD19.States.*;
+import CD19.Scanner.States.*;
+
+import java.util.Objects;
 
 
 /*
@@ -28,7 +30,7 @@ public class Token {
 
     public static final int
 
-            TEOF = 0,      // CD19.Token getTokenID for end of file
+            TEOF = 0,      // CD19.Scanner.Token getTokenID for end of file
 
     // The 30 keywords
 
@@ -134,9 +136,9 @@ public class Token {
 
     //public StRec getSymbol() { return symbol; } todo uncomment
 
-    //public void setSymbol(StRec x) {symbol = x; }		// Used by the Parser to set the ST Ref field of the CD19.Token tuple todo uncomment
+    //public void setSymbol(StRec x) {symbol = x; }		// Used by the Parser to set the ST Ref field of the CD19.Scanner.Token tuple todo uncomment
 
-    public String toString() {                // This does NOT produce output for the CD19.Scanner Phase	   *****
+    public String toString() {                // This does NOT produce output for the CD19.Scanner.Scanner Phase	   *****
         String s = TPRINT[tokenID] + " " + line + " " + col;    // It is meant to be used for diagnostic printing only	   *****
         if (str == null) return s;            // It may give you some ideas wrt reporting lexical errors *****
         if (tokenID != TUNDF)
@@ -153,7 +155,7 @@ public class Token {
         return s;
     }
 
-    public String shortString() {        // This produces a string which may be useful for output in the CD19.Scanner Phase	*****
+    public String shortString() {        // This produces a string which may be useful for output in the CD19.Scanner.Scanner Phase	*****
         String s = TPRINT[tokenID];        // Token as a string
 
         if (str == null) return s;    // If that is all - return
@@ -176,7 +178,7 @@ public class Token {
     }
 
     private static int checkKeywords(String s) {    // Takes a lexeme recognised as an ID
-        // Returns the correct keyword CD19.Token number
+        // Returns the correct keyword CD19.Scanner.Token number
         s = s.toLowerCase();        // change to lower case before checking
         if (s.equals("cd19")) return TCD19;
         if (s.equals("constants")) return TCONS;
@@ -319,4 +321,6 @@ public class Token {
         return counter;
 
     }
+
+
 }

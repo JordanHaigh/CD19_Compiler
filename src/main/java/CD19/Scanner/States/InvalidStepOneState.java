@@ -1,4 +1,4 @@
-package CD19.States;
+package CD19.Scanner.States;
 
 public class InvalidStepOneState implements State {
     /*

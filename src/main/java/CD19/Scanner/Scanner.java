@@ -1,10 +1,11 @@
-package CD19;
+package CD19.Scanner;
 
+import CD19.ErrorHandler;
 import CD19.Observer.ObservableErrorMessage;
 import CD19.Observer.ObservableMessage;
 import CD19.Observer.Observer;
 import CD19.Observer.Subject;
-import CD19.States.*;
+import CD19.Scanner.States.*;
 
 import java.util.ArrayList;
 import java.util.List;

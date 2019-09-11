@@ -1,13 +1,12 @@
-import CD19.CodeFileReader;
-import CD19.Scanner;
-import CD19.Token;
-import org.junit.jupiter.api.*;
+import CD19.Scanner.CodeFileReader;
+import CD19.Scanner.Scanner;
+import CD19.Scanner.Token;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ScannerTests {
 
