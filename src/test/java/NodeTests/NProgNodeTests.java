@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 
 public class NProgNodeTests {
-
+    //NPROG	<program>	::=	CD19 <id> <globals> <funcs> <mainbody>
     @Mock NGlobNode globs;
     @Mock NFuncsNode funcs;
     @Mock NMainNode main;

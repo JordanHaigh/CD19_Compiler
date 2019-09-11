@@ -37,9 +37,4 @@ public class NProgNode implements Node{
         return nProgTreeNode;
     }
 
-    public void errorRecovery() {
-
-    }
-
-
 }
