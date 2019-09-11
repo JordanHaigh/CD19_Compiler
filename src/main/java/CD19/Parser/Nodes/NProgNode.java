@@ -22,10 +22,10 @@ public class NProgNode implements Node{
     }
 
     public TreeNode make(Parser parser) {
-        parser.peekAndConsume(Token.TCD19);
+        parser.peekAndConsume(Token.TCD19); //CD19 keyword
         //error check
 
-        parser.peekAndConsume(Token.TIDEN);
+        parser.peekAndConsume(Token.TIDEN); //name of program
         //error check
 
         TreeNode nGlobTreeNode = nGlobNode.make(parser);
