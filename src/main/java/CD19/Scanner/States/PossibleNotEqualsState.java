@@ -1,7 +1,7 @@
 package CD19.States;
 
 
-import CD19.CharacterClassification;
+import CD19.Scanner.CharacterClassification;
 
 /*
  * Jordan Haigh c3256730 CD19
