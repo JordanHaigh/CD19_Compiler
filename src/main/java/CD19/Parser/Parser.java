@@ -14,11 +14,11 @@ public class Parser implements Subject {
 
     private List<Observer> observers = new ArrayList<>();
 
-    private SymbolTable constants;
-    private SymbolTable identifiers;
-
-    private boolean syntacticallyValid = true;
-    private boolean semanticallyValid = true;
+//    private SymbolTable constants;
+//    private SymbolTable identifiers;
+//
+//    private boolean syntacticallyValid = true;
+//    private boolean semanticallyValid = true;
 
     public Parser(List<Token> tokens, ErrorHandler errorHandler){
         this.tokens = tokens;
@@ -44,8 +44,8 @@ public class Parser implements Subject {
         catch(Exception e){
             notifyObservers(new ObservableImmediateErrorMessage("Error occurred whilst parsing the program"));
 
-            syntacticallyValid = false;
-            semanticallyValid = false;
+//            syntacticallyValid = false;
+//            semanticallyValid = false;
 
             return new TreeNode(TreeNode.NUNDEF);
         }

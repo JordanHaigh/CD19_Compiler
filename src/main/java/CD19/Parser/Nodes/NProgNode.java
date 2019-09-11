@@ -10,10 +10,10 @@ public class NProgNode{
     public static TreeNode make(Parser parser){
         if(!parser.peekAndConsume(Token.TCD19)){
             //error
-
+            return null;
         }
 
-        return null;
+        return new TreeNode(TreeNode.NPROG);
     }
 
 }
