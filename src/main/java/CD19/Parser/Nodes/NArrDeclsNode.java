@@ -6,7 +6,7 @@ import CD19.Scanner.Token;
 
 public class NArrDeclsNode implements Node{
     //NALIST	<arrdecls>	::=	<arrdecl> <arrDeclTail>
-    //	<arrdeclsTail>	::=	ε |  , <arrdecls>
+    //	<arrdeclsTail>	::=	eps |  , <arrdecls>
 
     NArrDeclNode nArrDeclNode;
 

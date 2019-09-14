@@ -6,7 +6,7 @@ import CD19.Scanner.Token;
 
 public class NInitListNode implements Node {
     //NILIST	<initlist>	::=	<init> <initListTail>
-    //	<initListTail>	::=	ε | ,<initlist>
+    //	<initListTail>	::=	eps | ,<initlist>
 
     private NInitNode nInitNode;
 

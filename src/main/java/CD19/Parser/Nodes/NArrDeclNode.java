@@ -12,6 +12,7 @@ public class NArrDeclNode implements Node{
     public TreeNode make(Parser parser) {
         Token id = parser.peek();
         if(id.getTokenID() == Token.TIDEN){
+            parser.consume();
             parser.peekAndConsume(Token.TSEMI);
             Token type = parser.peek();
             if(type.getTokenID() == Token.TIDEN){

@@ -5,7 +5,7 @@ import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
 public class NTypesNode implements Node {
-    //<types>	::=	types <typelist> | ε
+    //<types>	::=	types <typelist> | eps
 
     private NTypeListNode nTypeListNode;
 

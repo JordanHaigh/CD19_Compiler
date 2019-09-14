@@ -5,7 +5,7 @@ import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
 public class NConstsNode implements Node{
-    //Special	<consts>	::=	constants <initlist> | ε
+    //Special	<consts>	::=	constants <initlist> | eps
 
     private NInitListNode nInitListNode;
 

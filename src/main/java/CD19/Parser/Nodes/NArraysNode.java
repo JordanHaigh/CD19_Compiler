@@ -6,7 +6,7 @@ import CD19.Scanner.Token;
 
 public class NArraysNode implements Node {
 
-    //<arrays>	::=	ε | arrays <arrdecls>
+    //<arrays>	::=	eps | arrays <arrdecls>
 
     private NArrDeclsNode nArrDeclsNode;
 

@@ -21,6 +21,7 @@ public class NInitNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         Token id = parser.peek(); //id
+        parser.consume();
         parser.peekAndConsume(Token.TEQUL);
         TreeNode exprTreeNode = nExprNode.make(parser);
 
