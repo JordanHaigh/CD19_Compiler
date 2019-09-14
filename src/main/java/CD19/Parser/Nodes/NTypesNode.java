@@ -9,6 +9,14 @@ public class NTypesNode implements Node {
 
     private NTypeListNode nTypeListNode;
 
+    public NTypesNode(){
+        this(new NTypeListNode());
+    }
+
+    public NTypesNode(NTypeListNode nTypeListNode){
+        this.nTypeListNode = nTypeListNode;
+    }
+
     @Override
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TTYPS)){

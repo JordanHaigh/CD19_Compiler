@@ -9,6 +9,14 @@ public class NConstsNode implements Node{
 
     private NInitListNode nInitListNode;
 
+    public NConstsNode(){
+        this(new NInitListNode());
+    }
+
+    public NConstsNode(NInitListNode nInitListNode){
+        this.nInitListNode = nInitListNode;
+    }
+
     @Override
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TCONS)){ //// constants token

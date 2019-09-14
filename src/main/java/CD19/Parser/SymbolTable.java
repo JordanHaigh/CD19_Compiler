@@ -14,7 +14,7 @@ public class SymbolTable {
     }
 
     public void insert(SymbolTableRecord record){
-        map.put(record.getRecordKey(), record);
+        map.put(record.getSymbolTableKey(), record);
     }
 
     public void remove(SymbolTableRecord record){

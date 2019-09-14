@@ -6,6 +6,9 @@ package CD19.Parser;
 //	By COMP3290 Staff - 2019
 //
 
+import CD19.Parser.Nodes.NodeDataTypes;
+import com.sun.corba.se.impl.orbutil.graph.NodeData;
+
 import java.io.*;
 
 public class TreeNode {
@@ -50,7 +53,8 @@ public class TreeNode {
     private int nodeValue;
     private String nodeValueString;
     private TreeNode left,middle,right;
-    private SymbolTableRecord symbol, type;
+    private SymbolTableRecord symbol;
+    private NodeDataTypes dataType;
 
     public TreeNode (int value) {
         nodeValue = value;
@@ -59,7 +63,7 @@ public class TreeNode {
         middle = null;
         right = null;
         symbol = null;
-        type = null;
+        dataType = null;
     }
 
     public TreeNode (int value, SymbolTableRecord st) {
@@ -88,7 +92,7 @@ public class TreeNode {
 
     public SymbolTableRecord getSymbol() { return symbol; }
 
-    public SymbolTableRecord getType() { return type; }
+    public NodeDataTypes getType() { return dataType; }
 
     public void setValue(int value) { nodeValue = value; }
 
@@ -100,7 +104,7 @@ public class TreeNode {
 
     public void setSymbol(SymbolTableRecord st) { symbol = st; }
 
-    public void setType(SymbolTableRecord st) { type = st; }
+    public void setType(NodeDataTypes st) { dataType = st; }
 
 
     //
@@ -118,12 +122,12 @@ public class TreeNode {
         count++;
         if (count%7 == 0) out.println();
         if (tr.symbol != null) {
-            out.print(tr.symbol.getLexeme() + " "); //todo used to be tr.symbol.getName(). this is probs wrong
+            out.print(tr.symbol.getLexeme() + " ");
             count++;
             if (count%7 == 0) out.println();
         }
-        if (tr.type   != null) {
-            out.print(  tr.type.getLexeme() + " "); //todo used to be tr.symbol.getName(). this is probs wrong
+        if (tr.dataType  != null) {
+            out.print(  tr.dataType.toString().toLowerCase() + " ");
             count++;
             if (count%7 == 0) out.println();
         }

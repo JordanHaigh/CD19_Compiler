@@ -15,8 +15,7 @@ public class Parser implements Subject {
 
     private List<Observer> observers = new ArrayList<>();
 
-//    private SymbolTable constants;
-//    private SymbolTable identifiers;
+//    private SymbolTable symbolTable;
 //
 //    private boolean syntacticallyValid = true;
 //    private boolean semanticallyValid = true;
