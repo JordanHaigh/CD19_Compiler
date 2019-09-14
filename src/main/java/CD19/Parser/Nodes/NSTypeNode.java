@@ -12,12 +12,18 @@ public class NSTypeNode implements Node{
         Token token = parser.peek();
         TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
 
-        if(token.getTokenID() == Token.TILIT)
+        if(token.getTokenID() == Token.TILIT){
+            parser.consume();
             dummy.setType(NodeDataTypes.Integer);
-        else if(token.getTokenID() == Token.TFLIT)
+        }
+        else if(token.getTokenID() == Token.TFLIT){
+            parser.consume();
             dummy.setType(NodeDataTypes.Real);
-        else if(token.getTokenID() == Token.TBOOL)
+        }
+        else if(token.getTokenID() == Token.TBOOL){
+            parser.consume();
             dummy.setType(NodeDataTypes.Boolean);
+        }
         else
             return null; //todo meant to error
 
