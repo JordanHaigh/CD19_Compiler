@@ -36,7 +36,7 @@ public class NGlobNodeTests {
     }
 
     @Test
-    public void NGlobNode_SunnyDayData() {
+    public void NGlobNode_SunnyDayData_constNodeNotEps_TypesNodeNotEps_ArraysNodeNotEps() {
         List<Token> tokens= new ArrayList<>();
 
         tokens.add(new Token(Token.TCD19,1,1,null));
@@ -47,16 +47,40 @@ public class NGlobNodeTests {
 
         Parser parser = new Parser(tokens);
 
-        when(consts.make(parser)).thenReturn(new TreeNode(TreeNode.NUNDEF)); //todo is this right? spec says its a "special" token
-        when(types.make(parser)).thenReturn(new TreeNode(TreeNode.NUNDEF)); //todo same here
-        when(arrays.make(parser)).thenReturn(new TreeNode(TreeNode.NUNDEF)); //todo and here
+        when(consts.make(parser)).thenReturn(new TreeNode(TreeNode.NILIST));
+        when(types.make(parser)).thenReturn(new TreeNode(TreeNode.NTYPEL));
+        when(arrays.make(parser)).thenReturn(new TreeNode(TreeNode.NALIST));
 
         TreeNode globs = glob.make(parser);
 
         assertEquals(TreeNode.NGLOB, globs.getValue());
-        assertEquals(TreeNode.NUNDEF, globs.getLeft().getValue());
-        assertEquals(TreeNode.NUNDEF, globs.getMiddle().getValue());
-        assertEquals(TreeNode.NUNDEF, globs.getRight().getValue());
+        assertEquals(TreeNode.NILIST, globs.getLeft().getValue());
+        assertEquals(TreeNode.NTYPEL, globs.getMiddle().getValue());
+        assertEquals(TreeNode.NALIST, globs.getRight().getValue());
+    }
+
+    @Test
+    public void NGlobNode_SunnyDayData_constNodeEps_TypesNodeEps_ArraysNodeEps() {
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCD19,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
+        tokens.add(new Token(Token.TCONS,1,1,null));
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+        tokens.add(new Token(Token.TMAIN,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        when(consts.make(parser)).thenReturn(null);
+        when(types.make(parser)).thenReturn(null);
+        when(arrays.make(parser)).thenReturn(null);
+
+        TreeNode globs = glob.make(parser);
+
+        assertEquals(TreeNode.NGLOB, globs.getValue());
+        assertEquals(null, globs.getLeft());
+        assertEquals(null, globs.getMiddle());
+        assertEquals(null, globs.getRight());
     }
 
 }

@@ -11,21 +11,16 @@ public class NConstsNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
-        Token token = parser.peek();
-        if(token.getTokenID() == Token.TIDEN){
-            //initlist transition
-            TreeNode nInitListTreeNode = nInitListNode.make(parser);
-            TreeNode nConstsTreeNode = new TreeNode(TreeNode.NUNDEF, null, nInitListTreeNode); //todo only one child???
-            return nConstsTreeNode;
+        if(parser.peekAndConsume(Token.TCONS)){ //// constants token
+            Token token = parser.peek();
+            if(token.getTokenID() == Token.TIDEN){
+                //constants initlist transition
+
+                return nInitListNode.make(parser);
+            }
         }
-        else{
-            //epsilon transition //todo is this right?
-            TreeNode nConstsTreeNode = new TreeNode(TreeNode.NUNDEF);
-            return nConstsTreeNode;
-        }
+
+        return null;
     }
-
-
-
 }
 
