@@ -127,8 +127,11 @@ public class Scanner implements Subject {
      * @return - Cleaned lexeme
      */
     private String cleanLexeme(String lexeme) {
+        if(!(stateMachine.getPreviousState() instanceof PossibleStringState)){ //dont clean if it is a failed string
+            lexeme = lexeme.replaceAll(" ", "");
+        }
+
         lexeme = lexeme.replaceAll("\t", "");
-        lexeme = lexeme.replaceAll(" ", "");
         lexeme = lexeme.replaceAll("\n", "");
 
         return lexeme;

@@ -15,8 +15,8 @@ public class PossibleRecoveredState implements State {
             sm.setCurrentState(new InvalidStepTwoState());
         else if(c == '!')
             sm.setCurrentState(new UnrecoveredNotEqualsState()); //!!!!!!!=
-        else if(CharacterClassification.isCharDelimiter(c))
-            sm.setCurrentState(new CompletedTokenState());
+        else if(CharacterClassification.isCharDefined(c))
+            sm.setCurrentState(new InvalidStepOneState());
         else
             sm.setCurrentState(new UndefinedState());
     }

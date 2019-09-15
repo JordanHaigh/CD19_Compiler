@@ -23,32 +23,32 @@ public class PossibleRecoveredStateTests {
     }
 
     @Test
-    public void PossibleRecoveredState_SetState_DelimPassed_Completed(){
+    public void PossibleRecoveredState_SetState_DelimPassed_StepOneBack(){
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleRecoveredState());
         sm.updateState(' ');
 
-        assertTrue(sm.getCurrentState() instanceof CompletedTokenState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
     @Test
-    public void PossibleRecoveredState_SetState_AlphaPassed_Undefined(){
+    public void PossibleRecoveredState_SetState_AlphaPassed_StepOneBack(){
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleRecoveredState());
         sm.updateState('a');
 
-        assertTrue(sm.getCurrentState() instanceof UndefinedState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 
     @Test
-    public void PossibleRecoveredState_SetState_NumberPassed_Undefined(){
+    public void PossibleRecoveredState_SetState_NumberPassed_StepOneBack(){
         StateMachine sm = new StateMachine();
         sm.setCurrentState(new PossibleRecoveredState());
         sm.updateState('9');
 
-        assertTrue(sm.getCurrentState() instanceof UndefinedState);
+        assertTrue(sm.getCurrentState() instanceof InvalidStepOneState);
 
     }
 

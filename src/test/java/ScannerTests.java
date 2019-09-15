@@ -991,7 +991,7 @@ public class ScannerTests {
     @Test
     public void Scanner_getAllTokens_FailedString(){
         List<String> code = new ArrayList<>();
-        code.add("\"str ");
+        code.add("\"this string wraps around a line so ");
         Scanner scanner = new Scanner(new CodeFileReader(code));
 
         List<Token> tokens = scanner.getAllTokens();
@@ -1189,6 +1189,19 @@ public class ScannerTests {
         assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
         assertEquals(Token.TNEQL, tokens.get(1).getTokenID());
         assertEquals(Token.TEQUL, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
+    }
+
+    @Test
+    public void Scanner_getAllTokens_DansFunkyOne(){
+        List<String> code = new ArrayList<>();
+        code.add("?@!-$$@#");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TUNDF, tokens.get(0).getTokenID());
+        assertEquals(Token.TMINS, tokens.get(1).getTokenID());
+        assertEquals(Token.TUNDF, tokens.get(2).getTokenID());
         assertEquals(Token.TEOF, tokens.get(3).getTokenID());
     }
 
