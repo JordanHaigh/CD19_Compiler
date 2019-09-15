@@ -9,6 +9,16 @@ public class NParamNode implements Node{
     //NSIMP | NARRP | NARRC	<param>	::=	<id> : <paramTypeTail> | const <arrdecl>
     //	<paramTypeTail>	::=	<stype> | <typeid>
 
+    NParamTypeTailNode nParamTypeTailNode;
+
+    public NParamNode() {
+        this(new NParamTypeTailNode());
+    }
+
+    public NParamNode(NParamTypeTailNode nParamTypeTailNode) {
+        this.nParamTypeTailNode = nParamTypeTailNode;
+    }
+
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
@@ -38,7 +48,7 @@ public class NParamNode implements Node{
 
         parser.peekAndConsume(Token.TSEMI);
 
-        TreeNode tail = paramTypeTail();
+        TreeNode tail = nParamTypeTailNode.make(parser);
 
         SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType());
 
@@ -50,12 +60,7 @@ public class NParamNode implements Node{
         }
     }
 
-    private TreeNode paramTypeTail(){
-        //	<paramTypeTail>	::=	<stype> | <typeid> //todo struct or primitive
-        TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
-        dummy.setType(NodeDataTypes.Array); //todo change this later
-        return dummy;
-    }
+
 
 
 
