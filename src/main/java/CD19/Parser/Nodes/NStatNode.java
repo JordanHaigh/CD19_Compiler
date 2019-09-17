@@ -8,18 +8,18 @@ public class NStatNode implements Node{
 
     NReptStatNode nReptStatNode;
     NIoStatNode nIoStatNode;
-    NRetunStatNode nRetunStatNode;
+    NReturnStatNode nReturnStatNode;
     NAsgnStatOrCallStatNode nAsgnStatOrCallStatNode;
 
     public NStatNode() {
-        this(new NReptStatNode(), new NIoStatNode(), new NRetunStatNode(),new NAsgnStatOrCallStatNode());
+        this(new NReptStatNode(), new NIoStatNode(), new NReturnStatNode(),new NAsgnStatOrCallStatNode());
     }
 
     public NStatNode(NReptStatNode nReptStatNode, NIoStatNode nIoStatNode,
-                     NRetunStatNode nRetunStatNode, NAsgnStatOrCallStatNode nAsgnStatOrCallStatNode) {
+                     NReturnStatNode nReturnStatNode, NAsgnStatOrCallStatNode nAsgnStatOrCallStatNode) {
         this.nReptStatNode = nReptStatNode;
         this.nIoStatNode = nIoStatNode;
-        this.nRetunStatNode = nRetunStatNode;
+        this.nReturnStatNode = nReturnStatNode;
         this.nAsgnStatOrCallStatNode = nAsgnStatOrCallStatNode;
     }
 
@@ -33,7 +33,7 @@ public class NStatNode implements Node{
             return nIoStatNode.make(parser);
         }
         else if(token.getTokenID() == Token.TRETN){
-            return nRetunStatNode.make(parser);
+            return nReturnStatNode.make(parser);
         }
         else if(token.getTokenID() == Token.TIDEN){
             parser.consume();

@@ -1,13 +1,12 @@
 package NodeTests;
 
-import CD19.ErrorHandler;
 import CD19.Parser.Nodes.*;
 import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,7 +22,8 @@ public class NProgNodeTests {
     //NPROG	<program>	::=	CD19 <id> <globals> <funcs> <mainbody>
     @Mock NGlobNode globs;
     @Mock NFuncsNode funcs;
-    @Mock NMainNode main;
+    @Mock
+    NMainBodyNode main;
 
     @InjectMocks NProgNode prog;
 
