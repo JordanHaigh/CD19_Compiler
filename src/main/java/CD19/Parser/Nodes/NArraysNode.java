@@ -27,7 +27,6 @@ public class NArraysNode implements Node {
             if(token.getTokenID() ==Token.TIDEN){
                 return nArrDeclsNode.make(parser);
             }
-
         }
         return null;
     }

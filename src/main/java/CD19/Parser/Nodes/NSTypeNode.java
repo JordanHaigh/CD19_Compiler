@@ -7,16 +7,20 @@ import CD19.Scanner.Token;
 public class NSTypeNode implements Node{
 
 
+    public NSTypeNode() {
+    }
+
+
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
         TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
 
-        if(token.getTokenID() == Token.TILIT){
+        if(token.getTokenID() == Token.TINTG){
             parser.consume();
             dummy.setType(NodeDataTypes.Integer);
         }
-        else if(token.getTokenID() == Token.TFLIT){
+        else if(token.getTokenID() == Token.TREAL){
             parser.consume();
             dummy.setType(NodeDataTypes.Real);
         }

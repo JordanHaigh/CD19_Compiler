@@ -22,10 +22,10 @@ public class NInitListNode implements Node {
     @Override
     public TreeNode make(Parser parser) {
         //NILIST	<initlist>	::=	<init> <initListTail>
-        TreeNode nInitTreeNode = nInitNode.make(parser);
-        TreeNode tailTreeNode = tail(parser);
+        TreeNode init = nInitNode.make(parser);
+        TreeNode tail = tail(parser);
 
-        return new TreeNode(TreeNode.NILIST, nInitTreeNode, tailTreeNode);
+        return new TreeNode(TreeNode.NILIST, init, tail);
     }
 
 

@@ -10,6 +10,20 @@ public class NTypeNode implements Node{
     //NRTYPE|NATYPE	<type>	::=	<anyFuckingID> is <typeTail>
     //	<typeTail>	::=	<fields> end |  array [<expr>] of <structid>
 
+
+    NFieldsNode nFieldsNode;
+    NExprNode nExprNode;
+
+
+    public NTypeNode() {
+        this(new NFieldsNode(),new NExprNode());
+    }
+
+    public NTypeNode(NFieldsNode nFieldsNode, NExprNode nExprNode) {
+        this.nFieldsNode = nFieldsNode;
+        this.nExprNode = nExprNode;
+    }
+
     @Override
     public TreeNode make(Parser parser) {
         Token id = parser.peek();
@@ -38,12 +52,10 @@ public class NTypeNode implements Node{
     }
 
     private TreeNode arrayTail(Parser parser){
-        NExprNode exprNode = new NExprNode();
-
         //array [<expr>] of <structid>
         parser.peekAndConsume(Token.TARAY);
         parser.peekAndConsume(Token.TLBRK);
-        TreeNode exprTNode = exprNode.make(parser);
+        TreeNode exprTNode = nExprNode.make(parser);
         parser.peekAndConsume(Token.TRBRK);
         parser.peekAndConsume(Token.TOF);
         parser.peekAndConsume(Token.TIDEN); //check struct id is legit
@@ -53,7 +65,6 @@ public class NTypeNode implements Node{
 
     private TreeNode structTail(Parser parser){
         //<fields> end
-        NFieldsNode nFieldsNode = new NFieldsNode();
 
         TreeNode nFieldsTNode = nFieldsNode.make(parser);
         parser.peekAndConsume(Token.TEND);

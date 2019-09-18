@@ -25,7 +25,7 @@ public class NPrListNode implements Node{
         TreeNode printitem = nPrintItemNode.make(parser);
         TreeNode tail = tail(parser);
 
-        return new TreeNode(TreeNode.NPRINT, printitem, tail);
+        return new TreeNode(TreeNode.NPRLST, printitem, tail);
     }
 
     private TreeNode tail(Parser parser){

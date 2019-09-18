@@ -25,7 +25,7 @@ public class NSDeclNode implements Node{
     public TreeNode make(Parser parser) {
         Token id =  parser.peek();
         parser.consume();
-        parser.peekAndConsume(Token.TSEMI);
+        parser.peekAndConsume(Token.TCOLN);
         TreeNode stype = nsTypeNode.make(parser);
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), stype.getType());

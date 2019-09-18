@@ -136,4 +136,12 @@ public class TreeNode {
         if (tr.right  != null) { printTree(out,tr.right);  }
         if (tr.nodeValue == NPROG && count%7 != 0) out.println();
     }
+
+    @Override
+    public String toString() {
+        return "TreeNode{ " +
+                +nodeValue +" " +
+                nodeValueString +
+                '}';
+    }
 }

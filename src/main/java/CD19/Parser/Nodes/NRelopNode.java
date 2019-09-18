@@ -18,7 +18,7 @@ public class NRelopNode implements Node{
         else if(parser.peekAndConsume(Token.TGEQL)) // >=
             return new TreeNode(TreeNode.NGEQ);
         else if(parser.peekAndConsume(Token.TLESS)) // <
-            return new TreeNode(TreeNode.NLEQ);
+            return new TreeNode(TreeNode.NLSS);
         else if(parser.peekAndConsume(Token.TLEQL)) //<=
             return new TreeNode(TreeNode.NLEQ);
         return null; //todo error check

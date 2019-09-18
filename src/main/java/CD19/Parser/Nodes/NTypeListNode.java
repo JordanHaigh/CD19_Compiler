@@ -8,6 +8,15 @@ public class NTypeListNode implements Node{
     //NTYPEL	<typelist>	::=	<type> <typelistTail>
     //	<typelistTail>	::=	eps |  <typelist>
 
+
+    public NTypeListNode() {
+        this(new NTypeNode());
+    }
+
+    public NTypeListNode(NTypeNode nTypeNode) {
+        this.nTypeNode = nTypeNode;
+    }
+
     NTypeNode nTypeNode;
 
     @Override
