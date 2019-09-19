@@ -23,8 +23,10 @@ public class NTermNode implements Node{
     public TreeNode make(Parser parser) {
         TreeNode fact = nFactNode.make(parser);
         TreeNode tail = tail(parser);
-
-        return new TreeNode(tail.getValue(), fact, tail);
+        if(tail == null) //whens its just a fact
+            return new TreeNode(fact.getValue(), fact, null);
+        else //when its a fact plus more terms
+            return new TreeNode(tail.getValue(), fact, tail);
     }
 
     private TreeNode tail(Parser parser){
@@ -42,7 +44,7 @@ public class NTermNode implements Node{
             return new TreeNode(TreeNode.NMOD, term, null);
         }
         else
-            return null; //todo error handle
+            return null; //epsilon transition
 
 
     }
