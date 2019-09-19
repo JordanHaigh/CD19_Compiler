@@ -22,9 +22,9 @@ public class NFuncsNode implements Node {
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
         if(token.getTokenID() == Token.TFUNC){
-            TreeNode tfunc = nFuncNode.make(parser);
-            TreeNode tfuncs = this.make(parser);
-            return new TreeNode(TreeNode.NFUNCS, tfunc, tfuncs);
+            TreeNode func = nFuncNode.make(parser);
+            TreeNode funcs = this.make(parser);
+            return new TreeNode(TreeNode.NFUNCS, func, funcs);
         }
         else
             return null;

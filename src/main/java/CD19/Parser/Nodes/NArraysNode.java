@@ -23,10 +23,7 @@ public class NArraysNode implements Node {
     @Override
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TARRS)){
-            Token token = parser.peek();
-            if(token.getTokenID() ==Token.TIDEN){
-                return nArrDeclsNode.make(parser);
-            }
+            return nArrDeclsNode.make(parser);
         }
         return null;
     }

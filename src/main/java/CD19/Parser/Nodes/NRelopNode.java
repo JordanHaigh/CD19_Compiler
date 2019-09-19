@@ -6,7 +6,7 @@ import CD19.Scanner.Token;
 
 public class NRelopNode implements Node{
 
-//NEQL, NNEQ, NGRT, NLEQ, NLSS, NGEQ	<relop>	::=	 == | != | > | <= | < | >=
+    //NEQL, NNEQ, NGRT, NLEQ, NLSS, NGEQ	<relop>	::=	 == | != | > | <= | < | >=
     @Override
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TEQEQ)) //==

@@ -10,40 +10,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 
 
-public class NArraysNodeTests{
+public class NArrDeclsNodeTests {
 
-    //<arrays>	::=	eps | arrays <arrdecls>
+    //NALIST	<arrdecls>	::=	<arrdecl> <arrDeclTail>
+    //	<arrdeclsTail>	::=	eps |  , <arrdecls>
+
 
     NArrDeclsNode nArrDeclsNode = new NArrDeclsNode();
-    NArraysNode nArraysNode = new NArraysNode();
 
     @Test
-    public void NArrays_SunnyDayData_eps() {
+    public void sunnyday_uno(){
+        //arrays person : people
         List<Token> tokens= new ArrayList<>();
 
-        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
-        tokens.add(new Token(Token.TEQEQ,1,1,null));
-        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"people"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"person"));
+
         tokens.add(new Token(Token.TFUNC,1,1,null));
 
         Parser parser = new Parser(tokens);
 
+        TreeNode arrdecls = nArrDeclsNode.make(parser);
 
-        TreeNode alist = nArraysNode.make(parser);
+        assertEquals(TreeNode.NALIST, arrdecls.getValue());
+        assertEquals(TreeNode.NARRD, arrdecls.getLeft().getValue());
+        assertEquals(null, arrdecls.getRight());
 
-        assertEquals(null, alist);
     }
 
-    @Test
-    public void NArrays_SunnyDayData_noteps() {
-        //arrays people : person, class : person
 
+    @Test
+    public void sunnyday_dos(){
+        //arrays person : people
         List<Token> tokens= new ArrayList<>();
 
-        tokens.add(new Token(Token.TARRS,1,1,null));
         tokens.add(new Token(Token.TIDEN,1,1,"people"));
         tokens.add(new Token(Token.TCOLN,1,1,null));
         tokens.add(new Token(Token.TIDEN,1,1,"person"));
@@ -54,16 +57,16 @@ public class NArraysNodeTests{
         tokens.add(new Token(Token.TCOLN,1,1,null));
         tokens.add(new Token(Token.TIDEN,1,1,"person"));
 
-        //start of functions declaration
         tokens.add(new Token(Token.TFUNC,1,1,null));
 
         Parser parser = new Parser(tokens);
-        NExprNode mockExprNode = mock(NExprNode.class);
 
-        TreeNode arrays = nArraysNode.make(parser);
+        TreeNode arrdecls = nArrDeclsNode.make(parser);
 
-        assertEquals(TreeNode.NALIST, arrays.getValue());
-        assertEquals(TreeNode.NARRD, arrays.getLeft().getValue());
-        assertEquals(TreeNode.NALIST, arrays.getRight().getValue());
+        assertEquals(TreeNode.NALIST, arrdecls.getValue());
+        assertEquals(TreeNode.NARRD, arrdecls.getLeft().getValue());
+        assertEquals(TreeNode.NALIST, arrdecls.getRight().getValue());
+
     }
+
 }

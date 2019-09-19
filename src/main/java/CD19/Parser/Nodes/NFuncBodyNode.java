@@ -27,8 +27,7 @@ public class NFuncBodyNode implements Node{
         TreeNode stats = nStatsNode.make(parser);
         parser.peekAndConsume(Token.TEND);
         TreeNode dummy = new TreeNode(TreeNode.NUNDEF, locals, stats);
-        return dummy;// todo ask dan about this. i dont understand what to do here
-
+        return dummy;
     }
 }
 

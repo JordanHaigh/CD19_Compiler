@@ -31,7 +31,12 @@ public class NFuncNode implements Node{
         parser.peekAndConsume(Token.TSEMI);
         TreeNode rtype = nrTypeNode.make(parser);
         TreeNode funcBody = nFuncBodyNode.make(parser);
-        return new TreeNode(TreeNode.NFUND, plist, rtype, funcBody);
+
+        TreeNode locals = funcBody.getLeft(); //from funcbody
+        TreeNode stats = funcBody.getRight(); //from funcbody
+
+        //todo get rtype back into play somehow idk its late and im tired figure it out.
+        return new TreeNode(TreeNode.NFUND, plist, locals, stats);
     }
 }
 

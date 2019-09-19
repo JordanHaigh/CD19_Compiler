@@ -13,17 +13,16 @@ public class NArrDeclNode implements Node{
         Token id = parser.peek();
         if(id.getTokenID() == Token.TIDEN){
             parser.consume();
-            parser.peekAndConsume(Token.TSEMI);
+            parser.peekAndConsume(Token.TCOLN);
             Token type = parser.peek();
             if(type.getTokenID() == Token.TIDEN){
+                parser.consume();
                 SymbolTableRecord record = new SymbolTableRecord(id.getStr(),NodeDataTypes.Array);
                 TreeNode treeNode = new TreeNode(TreeNode.NARRD, record);
                 return treeNode;
             }
         }
 
-
         return null; //todo should error
-
     }
 }

@@ -64,7 +64,7 @@ public class NExponentNode implements Node{
         //	<fncallTail>	::=	( <fnCallElistTail>)
         parser.peekAndConsume(Token.TLPAR);
         TreeNode fncallelisttail = fnCallElistTail(parser);
-        parser.peek(Token.TRPAR);
+        parser.peekAndConsume(Token.TRPAR);
         return new TreeNode(TreeNode.NFCALL, fncallelisttail, null);//todo probs wrong
     }
 

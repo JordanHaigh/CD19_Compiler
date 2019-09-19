@@ -1,6 +1,7 @@
 package CD19.Parser.Nodes;
 
 import CD19.Parser.*;
+import CD19.Scanner.Token;
 
 public class NGlobNode implements Node {
     //NGLOB	<globals>	::=	<consts> <types> <arrays>
