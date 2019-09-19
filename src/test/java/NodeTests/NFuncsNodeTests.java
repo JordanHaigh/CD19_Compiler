@@ -20,11 +20,11 @@ public class NFuncsNodeTests {
 //    //NFUNCS	<funcs>	::=	eps | <func> <funcs>
     @Test
     public void sunnyday_uno(){
-        //function fuckoff (a : integer, const myarray : people) : void begin a=5; end
+        //function aaa (a : integer, const myarray : people) : void begin a=5; end
         List<Token> tokens= new ArrayList<>();
 
         tokens.add(new Token(Token.TFUNC,1,1,null));
-        tokens.add(new Token(Token.TIDEN,1,1,"fackoff"));
+        tokens.add(new Token(Token.TIDEN,1,1,"aaa"));
         tokens.add(new Token(Token.TLPAR,1,1,null));
         tokens.add(new Token(Token.TIDEN,1,1,"a"));
         tokens.add(new Token(Token.TCOLN,1,1,null));
@@ -73,15 +73,15 @@ public class NFuncsNodeTests {
 
     @Test
     public void sunnyday_dos(){
-        //function fuckoff (a : integer, const myarray : people) : void begin a=5; end
-        // function fuckoff2 (a : integer, const myarray : people) : void begin a=5; end
+        //function aaa (a : integer, const myarray : people) : void begin a=5; end
+        // function bbb (a : integer, const myarray : people) : void begin a=5; end
 
 
 
         List<Token> tokens= new ArrayList<>();
 
         tokens.add(new Token(Token.TFUNC,1,1,null));
-        tokens.add(new Token(Token.TIDEN,1,1,"fackoff"));
+        tokens.add(new Token(Token.TIDEN,1,1,"aaa"));
         tokens.add(new Token(Token.TLPAR,1,1,null));
         tokens.add(new Token(Token.TIDEN,1,1,"a"));
         tokens.add(new Token(Token.TCOLN,1,1,null));
@@ -102,7 +102,7 @@ public class NFuncsNodeTests {
         tokens.add(new Token(Token.TEND,1,1,null));
 
         tokens.add(new Token(Token.TFUNC,1,1,null));
-        tokens.add(new Token(Token.TIDEN,1,1,"fackoff2"));
+        tokens.add(new Token(Token.TIDEN,1,1,"bbb"));
         tokens.add(new Token(Token.TLPAR,1,1,null));
         tokens.add(new Token(Token.TIDEN,1,1,"a"));
         tokens.add(new Token(Token.TCOLN,1,1,null));

@@ -24,7 +24,11 @@ public class NFactNode implements Node{
     public TreeNode make(Parser parser) {
         TreeNode exponent = nExponentNode.make(parser);
         TreeNode tail = tail(parser);
-        return new TreeNode(tail.getValue(), exponent, tail);
+        if(tail != null)
+            return new TreeNode(tail.getValue(), exponent, tail);
+        else
+            return new TreeNode(exponent.getValue(), exponent, tail);
+
     }
 
     private TreeNode tail(Parser parser){
