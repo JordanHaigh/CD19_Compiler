@@ -21,8 +21,10 @@ public class NExprNode implements Node{
     public TreeNode make(Parser parser) {
         TreeNode term = nTermNode.make(parser);
         TreeNode tail = tail(parser);
-
-        return new TreeNode(tail.getValue(), term, tail); //todo wrong
+        if(tail == null)
+            return new TreeNode(term.getValue(), term, null);
+        else
+            return new TreeNode(tail.getValue(), term, tail);
     }
 
     private TreeNode tail(Parser parser){

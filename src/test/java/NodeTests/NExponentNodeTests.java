@@ -42,6 +42,8 @@ public class NExponentNodeTests {
         TreeNode exponent = nExponentNode.make(parser);
 
         assertEquals(TreeNode.NSIMV, exponent.getValue());
+        assertEquals(null, exponent.getLeft());
+        assertEquals(null, exponent.getRight());
 
     }
 
@@ -66,6 +68,8 @@ public class NExponentNodeTests {
         TreeNode exponent = nExponentNode.make(parser);
 
         assertEquals(TreeNode.NARRV, exponent.getValue());
+        assertEquals(null, exponent.getLeft());
+        assertEquals(null, exponent.getRight());
     }
 
 
@@ -89,6 +93,8 @@ public class NExponentNodeTests {
         TreeNode exponent = nExponentNode.make(parser);
 
         assertEquals(TreeNode.NILIT, exponent.getValue());
+        assertEquals(null, exponent.getLeft());
+        assertEquals(null, exponent.getRight());
     }
 
     @Test
@@ -111,6 +117,8 @@ public class NExponentNodeTests {
         TreeNode exponent = nExponentNode.make(parser);
 
         assertEquals(TreeNode.NFLIT, exponent.getValue());
+        assertEquals(null, exponent.getLeft());
+        assertEquals(null, exponent.getRight());
     }
 
 
@@ -135,6 +143,8 @@ public class NExponentNodeTests {
         TreeNode exponent = nExponentNode.make(parser);
 
         assertEquals(TreeNode.NTRUE, exponent.getValue());
+        assertEquals(null, exponent.getLeft());
+        assertEquals(null, exponent.getRight());
     }
 
     @Test
@@ -157,6 +167,8 @@ public class NExponentNodeTests {
         TreeNode exponent = nExponentNode.make(parser);
 
         assertEquals(TreeNode.NFALS, exponent.getValue());
+        assertEquals(null, exponent.getLeft());
+        assertEquals(null, exponent.getRight());
     }
 
     @Test
@@ -210,6 +222,8 @@ public class NExponentNodeTests {
         TreeNode exponent = nExponentNode.make(parser);
 
         assertEquals(TreeNode.NFCALL, exponent.getValue());
+        assertEquals(null, exponent.getLeft());
+        assertEquals(null, exponent.getRight());
     }
 
 

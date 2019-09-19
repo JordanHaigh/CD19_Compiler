@@ -45,6 +45,8 @@ public class NTermNodeTests {
         assertEquals(TreeNode.NPOW, term.getValue());
         assertEquals(TreeNode.NILIT, term.getLeft().getLeft().getValue());
         assertEquals(TreeNode.NPOW, term.getLeft().getRight().getValue());
+        assertEquals(null, term.getRight());
+
     }
 
     @Test
@@ -73,6 +75,7 @@ public class NTermNodeTests {
         assertEquals(TreeNode.NILIT, term.getLeft().getValue());
         assertEquals(TreeNode.NDIV, term.getRight().getValue());
         assertEquals(TreeNode.NILIT, term.getRight().getLeft().getValue());
+        assertEquals(null, term.getRight().getRight());
     }
 
 
@@ -102,6 +105,8 @@ public class NTermNodeTests {
         assertEquals(TreeNode.NILIT, term.getLeft().getValue());
         assertEquals(TreeNode.NMUL, term.getRight().getValue());
         assertEquals(TreeNode.NILIT, term.getRight().getLeft().getValue());
+        assertEquals(null, term.getRight().getRight());
+
     }
 
 
@@ -131,5 +136,6 @@ public class NTermNodeTests {
         assertEquals(TreeNode.NILIT, term.getLeft().getValue());
         assertEquals(TreeNode.NMOD, term.getRight().getValue());
         assertEquals(TreeNode.NILIT, term.getRight().getLeft().getValue());
+        assertEquals(null, term.getRight().getRight());
     }
 }
