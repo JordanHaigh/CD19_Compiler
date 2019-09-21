@@ -12,11 +12,19 @@ public class NPrListNode implements Node{
 
 
     public NPrListNode() {
-        this(new NPrintItemNode());
+        this(NPrintItemNode.INSTANCE());
     }
 
     public NPrListNode(NPrintItemNode nPrintItemNode) {
         this.nPrintItemNode = nPrintItemNode;
+    }
+
+    private static NPrListNode instance;
+    public static NPrListNode INSTANCE() {
+        if (instance == null) {
+            instance = new NPrListNode();
+        }
+        return instance;
     }
 
     @Override

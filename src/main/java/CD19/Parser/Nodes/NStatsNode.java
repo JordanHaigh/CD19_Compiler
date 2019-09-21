@@ -12,12 +12,20 @@ public class NStatsNode implements Node{
     NStrStatNode nStrStatNode;
 
     public NStatsNode() {
-        this(new NStatNode(), new NStrStatNode());
+        this(NStatNode.INSTANCE(), NStrStatNode.INSTANCE());
     }
 
     public NStatsNode(NStatNode nStatNode, NStrStatNode nStrStatNode) {
         this.nStatNode = nStatNode;
         this.nStrStatNode = nStrStatNode;
+    }
+
+    private static NStatsNode instance;
+    public static NStatsNode INSTANCE() {
+        if (instance == null) {
+            instance = new NStatsNode();
+        }
+        return instance;
     }
 
     @Override

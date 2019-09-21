@@ -10,11 +10,20 @@ public class NExprNode implements Node{
     NTermNode nTermNode;
 
     public NExprNode() {
-        this(new NTermNode());
+        this(NTermNode.INSTANCE());
     }
 
     public NExprNode(NTermNode nTermNode) {
         this.nTermNode = nTermNode;
+    }
+
+
+    private static NExprNode instance;
+    public static NExprNode INSTANCE() {
+        if (instance == null) {
+            instance = new NExprNode();
+        }
+        return instance;
     }
 
     @Override

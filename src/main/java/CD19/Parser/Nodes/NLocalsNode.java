@@ -10,12 +10,21 @@ public class NLocalsNode implements Node{
     NDListNode ndListNode;
 
     public NLocalsNode() {
-        this(new NDListNode());
+        this(NDListNode.INSTANCE());
     }
 
     public NLocalsNode(NDListNode ndListNode) {
         this.ndListNode = ndListNode;
     }
+
+    private static NLocalsNode instance;
+    public static NLocalsNode INSTANCE() {
+        if (instance == null) {
+            instance = new NLocalsNode();
+        }
+        return instance;
+    }
+
 
     @Override
     public TreeNode make(Parser parser) {

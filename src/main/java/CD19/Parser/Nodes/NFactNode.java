@@ -13,11 +13,20 @@ public class NFactNode implements Node{
     NExponentNode nExponentNode;
 
     public NFactNode() {
-        this(new NExponentNode());
+        this(NExponentNode.INSTANCE());
     }
 
     public NFactNode(NExponentNode nExponentNode) {
         this.nExponentNode = nExponentNode;
+    }
+
+
+    private static NFactNode instance;
+    public static NFactNode INSTANCE() {
+        if (instance == null) {
+            instance = new NFactNode();
+        }
+        return instance;
     }
 
     @Override

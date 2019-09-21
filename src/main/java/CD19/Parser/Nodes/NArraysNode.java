@@ -12,13 +12,21 @@ public class NArraysNode implements Node {
 
 
     public NArraysNode(){
-        this(new NArrDeclsNode());
+        this(NArrDeclsNode.INSTANCE());
     }
 
     public NArraysNode(NArrDeclsNode nArrDeclsNode){
         this.nArrDeclsNode = nArrDeclsNode;
     }
 
+
+    private static NArraysNode instance;
+    public static NArraysNode INSTANCE() {
+        if (instance == null) {
+            instance = new NArraysNode();
+        }
+        return instance;
+    }
 
     @Override
     public TreeNode make(Parser parser) {

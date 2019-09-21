@@ -12,13 +12,21 @@ public class NProgNode implements Node{
     private NMainBodyNode nMainBodyNode;
 
     public NProgNode() {
-        this(new NGlobNode(), new NFuncsNode(), new NMainBodyNode());
+        this(NGlobNode.INSTANCE(), NFuncsNode.INSTANCE(), NMainBodyNode.INSTANCE());
     }
 
     public NProgNode(NGlobNode nGlobNode, NFuncsNode nFuncsNode, NMainBodyNode nMainBodyNode) {
         this.nGlobNode = nGlobNode;
         this.nFuncsNode = nFuncsNode;
         this.nMainBodyNode = nMainBodyNode;
+    }
+
+    private static NProgNode instance;
+    public static NProgNode INSTANCE() {
+        if (instance == null) {
+            instance = new NProgNode();
+        }
+        return instance;
     }
 
     public TreeNode make(Parser parser) {

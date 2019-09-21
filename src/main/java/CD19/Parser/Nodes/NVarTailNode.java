@@ -11,13 +11,25 @@ public class NVarTailNode implements Node{
     NExprNode nExprNode;
 
     public NVarTailNode() {
-        this(new NExprNode());
+        this(null);
     }
 
     public NVarTailNode(NExprNode nExprNode) {
         this.nExprNode = nExprNode;
     }
 
+    private static NVarTailNode instance;
+    public static NVarTailNode INSTANCE() {
+        if (instance == null) {
+            instance = new NVarTailNode();
+        }
+        return instance;
+    }
+
+
+    public void setnBoolNode(NExprNode exprNode) {
+        this.nExprNode= exprNode;
+    }
     @Override
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TLBRK)){

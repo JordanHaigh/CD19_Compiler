@@ -6,8 +6,12 @@ import CD19.Scanner.Token;
 
 public class NSTypeNode implements Node{
 
-
-    public NSTypeNode() {
+    private static NSTypeNode instance;
+    public static NSTypeNode INSTANCE() {
+        if (instance == null) {
+            instance = new NSTypeNode();
+        }
+        return instance;
     }
 
 

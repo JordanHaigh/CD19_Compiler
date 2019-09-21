@@ -11,13 +11,21 @@ public class NInitListNode implements Node {
     private NInitNode nInitNode;
 
     public NInitListNode(){
-        this(new NInitNode());
+        this(NInitNode.INSTANCE());
     }
 
     public NInitListNode(NInitNode nInitNode){
         this.nInitNode = nInitNode;
     }
 
+
+    private static NInitListNode instance;
+    public static NInitListNode INSTANCE() {
+        if (instance == null) {
+            instance = new NInitListNode();
+        }
+        return instance;
+    }
 
     @Override
     public TreeNode make(Parser parser) {

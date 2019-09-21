@@ -1,4 +1,5 @@
 import CD19.Compiler;
+import CD19.Parser.Parser;
 
 import java.io.File;
 
@@ -10,6 +11,10 @@ import java.io.File;
 public class A3 {
 
     public static void main(String[] args){
+
+        Parser parser = new Parser(null);
+        parser.getProgNode();
+
         if(args.length != 1){
             System.out.println("Error: Incorrect number of program arguments");
             return;

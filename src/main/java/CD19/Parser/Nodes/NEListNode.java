@@ -11,13 +11,25 @@ public class NEListNode implements Node{
     private NBoolNode nBoolNode;
 
     public NEListNode() {
-        this(new NBoolNode());
+        this(null);
     }
 
     public NEListNode(NBoolNode nBoolNode) {
         this.nBoolNode = nBoolNode;
     }
 
+
+    private static NEListNode instance;
+    public static NEListNode INSTANCE() {
+        if (instance == null) {
+            instance = new NEListNode();
+        }
+        return instance;
+    }
+
+    public void setnBoolNode(NBoolNode boolNode) {
+        this.nBoolNode = boolNode;
+    }
     @Override
     public TreeNode make(Parser parser) {
         //NEXPL	<elist>	::=	<bool> <elistTail>

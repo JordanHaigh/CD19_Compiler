@@ -13,11 +13,19 @@ public class NVarNode implements Node{
     NVarTailNode nVarTailNode;
 
     public NVarNode() {
-        this(new NVarTailNode());
+        this(NVarTailNode.INSTANCE());
     }
 
     public NVarNode(NVarTailNode nVarTailNode) {
         this.nVarTailNode = nVarTailNode;
+    }
+
+    private static NVarNode instance;
+    public static NVarNode INSTANCE() {
+        if (instance == null) {
+            instance = new NVarNode();
+        }
+        return instance;
     }
 
     @Override

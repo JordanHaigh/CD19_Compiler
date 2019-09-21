@@ -11,11 +11,19 @@ public class NRTypeNode implements Node{
     NSTypeNode nsTypeNode;
 
     public NRTypeNode() {
-        this(new NSTypeNode());
+        this(NSTypeNode.INSTANCE());
     }
 
     public NRTypeNode(NSTypeNode nsTypeNode) {
         this.nsTypeNode = nsTypeNode;
+    }
+
+    private static NRTypeNode instance;
+    public static NRTypeNode INSTANCE() {
+        if (instance == null) {
+            instance = new NRTypeNode();
+        }
+        return instance;
     }
 
     @Override

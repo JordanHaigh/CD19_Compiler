@@ -12,11 +12,19 @@ public class NTermNode implements Node{
     NFactNode nFactNode;
 
     public NTermNode() {
-        this(new NFactNode());
+        this(NFactNode.INSTANCE());
     }
 
     public NTermNode(NFactNode nFactNode) {
         this.nFactNode = nFactNode;
+    }
+
+    private static NTermNode instance;
+    public static NTermNode INSTANCE() {
+        if (instance == null) {
+            instance = new NTermNode();
+        }
+        return instance;
     }
 
     @Override

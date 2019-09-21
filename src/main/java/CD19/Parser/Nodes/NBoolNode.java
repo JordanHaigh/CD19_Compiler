@@ -13,13 +13,25 @@ public class NBoolNode implements Node{
     NLogopNode nLogopNode;
 
     public NBoolNode() {
-        this(new NRelNode(), new NLogopNode());
+        this(NRelNode.INSTANCE(), NLogopNode.INSTANCE());
     }
 
     public NBoolNode(NRelNode nRelNode, NLogopNode nLogopNode) {
         this.nRelNode = nRelNode;
         this.nLogopNode = nLogopNode;
     }
+
+
+
+    private static NBoolNode instance;
+    public static NBoolNode INSTANCE() {
+        if (instance == null) {
+            instance = new NBoolNode();
+        }
+        return instance;
+    }
+
+
 
     @Override
     public TreeNode make(Parser parser) {

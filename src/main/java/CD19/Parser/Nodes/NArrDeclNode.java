@@ -8,6 +8,14 @@ import CD19.Scanner.Token;
 public class NArrDeclNode implements Node{
     //NARRD	<arrdecl>	::=	<id> : <typeid>
 
+    private static NArrDeclNode instance;
+    public static NArrDeclNode INSTANCE() {
+        if (instance == null) {
+            instance = new NArrDeclNode();
+        }
+        return instance;
+    }
+
     @Override
     public TreeNode make(Parser parser) {
         Token id = parser.peek();

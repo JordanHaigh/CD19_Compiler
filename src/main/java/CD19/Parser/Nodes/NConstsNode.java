@@ -10,11 +10,20 @@ public class NConstsNode implements Node{
     private NInitListNode nInitListNode;
 
     public NConstsNode(){
-        this(new NInitListNode());
+        this(NInitListNode.INSTANCE());
     }
 
     public NConstsNode(NInitListNode nInitListNode){
         this.nInitListNode = nInitListNode;
+    }
+
+
+    private static NConstsNode instance;
+    public static NConstsNode INSTANCE() {
+        if (instance == null) {
+            instance = new NConstsNode();
+        }
+        return instance;
     }
 
     @Override

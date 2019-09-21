@@ -12,12 +12,23 @@ public class NDListNode implements Node{
     NDeclNode nDeclNode;
 
     public NDListNode() {
-        this(new NDeclNode());
+        this(NDeclNode.INSTANCE());
     }
 
     public NDListNode(NDeclNode nDeclNode) {
         this.nDeclNode = nDeclNode;
     }
+
+
+    private static NDListNode instance;
+    public static NDListNode INSTANCE() {
+        if (instance == null) {
+            instance = new NDListNode();
+        }
+        return instance;
+    }
+
+
 
     @Override
     public TreeNode make(Parser parser) {

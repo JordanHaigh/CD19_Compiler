@@ -13,12 +13,22 @@ public class NFieldsNode implements Node{
     NSDeclNode sDeclNode;
 
     public NFieldsNode(){
-        this(new NSDeclNode());
+        this(NSDeclNode.INSTANCE());
     }
 
     public NFieldsNode(NSDeclNode sDeclNode){
         this.sDeclNode = sDeclNode;
     }
+
+
+    private static NFieldsNode instance;
+    public static NFieldsNode INSTANCE() {
+        if (instance == null) {
+            instance = new NFieldsNode();
+        }
+        return instance;
+    }
+
 
     @Override
     public TreeNode make(Parser parser) {

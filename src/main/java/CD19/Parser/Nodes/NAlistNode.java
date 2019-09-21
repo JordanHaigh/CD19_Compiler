@@ -13,11 +13,19 @@ public class NAlistNode implements Node{
     NAsgnStatNode nAsgnStatNode;
 
     public NAlistNode() {
-        this(new NAsgnStatNode());
+        this(NAsgnStatNode.INSTANCE());
     }
 
     public NAlistNode(NAsgnStatNode nAsgnStatNode) {
         this.nAsgnStatNode = nAsgnStatNode;
+    }
+
+    private static NAlistNode instance;
+    public static NAlistNode INSTANCE() {
+        if (instance == null) {
+            instance = new NAlistNode();
+        }
+        return instance;
     }
 
     @Override

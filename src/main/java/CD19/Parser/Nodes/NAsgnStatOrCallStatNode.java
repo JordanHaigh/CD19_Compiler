@@ -12,13 +12,25 @@ public class NAsgnStatOrCallStatNode implements Node{
     NAsgnStatNode nAsgnStatNode;
 
     public NAsgnStatOrCallStatNode() {
-        this(new NCallStatNode(), new NAsgnStatNode());
+        this(NCallStatNode.INSTANCE(), NAsgnStatNode.INSTANCE());
     }
 
     public NAsgnStatOrCallStatNode(NCallStatNode nCallStatNode, NAsgnStatNode nAsgnStatNode) {
         this.nCallStatNode = nCallStatNode;
         this.nAsgnStatNode = nAsgnStatNode;
     }
+
+
+
+    private static NAsgnStatOrCallStatNode instance;
+    public static NAsgnStatOrCallStatNode INSTANCE() {
+        if (instance == null) {
+            instance = new NAsgnStatOrCallStatNode();
+        }
+        return instance;
+    }
+
+
 
     @Override
     public TreeNode make(Parser parser) {

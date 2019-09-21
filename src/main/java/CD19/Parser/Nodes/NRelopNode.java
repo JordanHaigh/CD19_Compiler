@@ -6,6 +6,14 @@ import CD19.Scanner.Token;
 
 public class NRelopNode implements Node{
 
+    private static NRelopNode instance;
+    public static NRelopNode INSTANCE() {
+        if (instance == null) {
+            instance = new NRelopNode();
+        }
+        return instance;
+    }
+
     //NEQL, NNEQ, NGRT, NLEQ, NLSS, NGEQ	<relop>	::=	 == | != | > | <= | < | >=
     @Override
     public TreeNode make(Parser parser) {

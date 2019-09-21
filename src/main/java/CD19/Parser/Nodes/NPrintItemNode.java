@@ -9,11 +9,24 @@ public class NPrintItemNode implements Node{
     NExprNode nExprNode;
 
     public NPrintItemNode() {
-        this(new NExprNode());
+        this(null);
     }
 
     public NPrintItemNode(NExprNode nExprNode) {
         this.nExprNode = nExprNode;
+    }
+
+    private static NPrintItemNode instance;
+    public static NPrintItemNode INSTANCE() {
+        if (instance == null) {
+            instance = new NPrintItemNode();
+        }
+        return instance;
+    }
+
+
+    public void setnExprNode(NExprNode nExprNode) {
+        this.nExprNode= nExprNode;
     }
 
     @Override

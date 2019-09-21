@@ -11,7 +11,7 @@ public class NGlobNode implements Node {
     private NArraysNode nArraysNode;
 
     public NGlobNode(){
-        this(new NConstsNode(), new NTypesNode(), new NArraysNode());
+        this(NConstsNode.INSTANCE(), NTypesNode.INSTANCE(), NArraysNode.INSTANCE());
     }
 
     public NGlobNode(NConstsNode nConstsNode, NTypesNode nTypesNode, NArraysNode nArraysNode){
@@ -19,6 +19,14 @@ public class NGlobNode implements Node {
         this.nTypesNode = nTypesNode;
         this.nArraysNode = nArraysNode;
 
+    }
+
+    private static NGlobNode instance;
+    public static NGlobNode INSTANCE() {
+        if (instance == null) {
+            instance = new NGlobNode();
+        }
+        return instance;
     }
 
     public TreeNode make(Parser parser){

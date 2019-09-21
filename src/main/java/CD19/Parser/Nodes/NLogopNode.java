@@ -6,6 +6,14 @@ import CD19.Scanner.Token;
 
 public class NLogopNode implements Node{
 
+    private static NLogopNode instance;
+    public static NLogopNode INSTANCE() {
+        if (instance == null) {
+            instance = new NLogopNode();
+        }
+        return instance;
+    }
+
     @Override
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TAND))

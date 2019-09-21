@@ -12,7 +12,7 @@ public class NForStatNode implements Node{
     NStatsNode nStatsNode;
 
     public NForStatNode() {
-        this(new NAsgnListNode(), new NBoolNode(), new NStatsNode());
+        this(NAsgnListNode.INSTANCE(), null,null);
     }
 
     public NForStatNode(NAsgnListNode nAsgnListNode, NBoolNode nBoolNode, NStatsNode nStatsNode) {
@@ -20,6 +20,25 @@ public class NForStatNode implements Node{
         this.nBoolNode = nBoolNode;
         this.nStatsNode = nStatsNode;
     }
+
+
+
+    private static NForStatNode instance;
+    public static NForStatNode INSTANCE() {
+        if (instance == null) {
+            instance = new NForStatNode();
+        }
+        return instance;
+    }
+
+    public void setnBoolNode(NBoolNode boolNode) {
+        this.nBoolNode = boolNode;
+    }
+
+    public void setnStatsNode(NStatsNode nStatsNode) {
+        this.nStatsNode = nStatsNode;
+    }
+
 
     @Override
     public TreeNode make(Parser parser) {

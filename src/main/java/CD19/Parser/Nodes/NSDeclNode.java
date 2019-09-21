@@ -13,13 +13,20 @@ public class NSDeclNode implements Node{
     NSTypeNode nsTypeNode;
 
     public NSDeclNode(){
-        this(new NSTypeNode());
+        this(NSTypeNode.INSTANCE());
     }
 
     public NSDeclNode(NSTypeNode nsTypeNode){
         this.nsTypeNode = nsTypeNode;
     }
 
+    private static NSDeclNode instance;
+    public static NSDeclNode INSTANCE() {
+        if (instance == null) {
+            instance = new NSDeclNode();
+        }
+        return instance;
+    }
 
     @Override
     public TreeNode make(Parser parser) {

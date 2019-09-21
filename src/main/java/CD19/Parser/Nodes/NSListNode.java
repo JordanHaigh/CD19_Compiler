@@ -12,11 +12,19 @@ public class NSListNode implements Node{
     NSDeclNode nsDeclNode;
 
     public NSListNode() {
-        this(new NSDeclNode());
+        this(NSDeclNode.INSTANCE());
     }
 
     public NSListNode(NSDeclNode nsDeclNode) {
         this.nsDeclNode = nsDeclNode;
+    }
+
+    private static NSListNode instance;
+    public static NSListNode INSTANCE() {
+        if (instance == null) {
+            instance = new NSListNode();
+        }
+        return instance;
     }
 
     @Override

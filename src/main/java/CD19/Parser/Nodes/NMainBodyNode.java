@@ -12,13 +12,27 @@ public class NMainBodyNode implements Node {
     NStatsNode nStatsNode;
 
     public NMainBodyNode() {
-        this(new NSListNode(), new NStatsNode());
+        this(NSListNode.INSTANCE(),null);
     }
 
     public NMainBodyNode(NSListNode nsListNode, NStatsNode nStatsNode) {
         this.nsListNode = nsListNode;
         this.nStatsNode = nStatsNode;
     }
+
+    private static NMainBodyNode instance;
+    public static NMainBodyNode INSTANCE() {
+        if (instance == null) {
+            instance = new NMainBodyNode();
+        }
+        return instance;
+    }
+
+    public void setnStatsNode(NStatsNode nStatsNode) {
+        this.nStatsNode = nStatsNode;
+    }
+
+
 
     @Override
     public TreeNode make(Parser parser) {

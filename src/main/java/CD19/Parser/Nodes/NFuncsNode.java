@@ -11,12 +11,22 @@ public class NFuncsNode implements Node {
 
 
     public NFuncsNode(){
-        this(new NFuncNode());
+        this(NFuncNode.INSTANCE());
     }
 
     public NFuncsNode(NFuncNode nFuncNode){
         this.nFuncNode = nFuncNode;
     }
+
+
+    private static NFuncsNode instance;
+    public static NFuncsNode INSTANCE() {
+        if (instance == null) {
+            instance = new NFuncsNode();
+        }
+        return instance;
+    }
+
 
     @Override
     public TreeNode make(Parser parser) {

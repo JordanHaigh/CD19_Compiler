@@ -12,7 +12,7 @@ public class NAsgnStatNode implements Node{
     NBoolNode nBoolNode;
 
     public NAsgnStatNode() {
-        this(new NVarTailNode(), new NAsgnOpNode(), new NBoolNode());
+        this(NVarTailNode.INSTANCE(), NAsgnOpNode.INSTANCE(), null);
     }
 
     public NAsgnStatNode(NVarTailNode nVarTailNode, NAsgnOpNode nAsgnOpNode, NBoolNode nBoolNode) {
@@ -20,6 +20,19 @@ public class NAsgnStatNode implements Node{
         this.nAsgnOpNode = nAsgnOpNode;
         this.nBoolNode = nBoolNode;
     }
+
+    private static NAsgnStatNode instance;
+    public static NAsgnStatNode INSTANCE() {
+        if (instance == null) {
+            instance = new NAsgnStatNode();
+        }
+        return instance;
+    }
+
+    public void setnBoolNode(NBoolNode boolNode) {
+        this.nBoolNode = boolNode;
+    }
+
 
     @Override
     public TreeNode make(Parser parser) {

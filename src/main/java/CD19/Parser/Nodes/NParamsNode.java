@@ -10,11 +10,19 @@ public class NParamsNode implements Node{
     NParamNode nParamNode;
 
     public NParamsNode() {
-        this(new NParamNode());
+        this(NParamNode.INSTANCE());
     }
 
     public NParamsNode(NParamNode nParamNode) {
         this.nParamNode = nParamNode;
+    }
+
+    private static NParamsNode instance;
+    public static NParamsNode INSTANCE() {
+        if (instance == null) {
+            instance = new NParamsNode();
+        }
+        return instance;
     }
 
     @Override

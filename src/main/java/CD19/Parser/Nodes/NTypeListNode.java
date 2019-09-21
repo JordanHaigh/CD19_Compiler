@@ -10,11 +10,19 @@ public class NTypeListNode implements Node{
 
 
     public NTypeListNode() {
-        this(new NTypeNode());
+        this(NTypeNode.INSTANCE());
     }
 
     public NTypeListNode(NTypeNode nTypeNode) {
         this.nTypeNode = nTypeNode;
+    }
+
+    private static NTypeListNode instance;
+    public static NTypeListNode INSTANCE() {
+        if (instance == null) {
+            instance = new NTypeListNode();
+        }
+        return instance;
     }
 
     NTypeNode nTypeNode;

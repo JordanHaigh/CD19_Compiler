@@ -12,13 +12,26 @@ public class NRelNode implements Node{
     NRelopNode nRelopNode;
 
     public NRelNode() {
-        this(new NExprNode(), new NRelopNode());
+        this(null, NRelopNode.INSTANCE());
     }
 
     public NRelNode(NExprNode nExprNode, NRelopNode nRelopNode) {
         this.nExprNode = nExprNode;
         this.nRelopNode = nRelopNode;
     }
+
+    private static NRelNode instance;
+    public static NRelNode INSTANCE() {
+        if (instance == null) {
+            instance = new NRelNode();
+        }
+        return instance;
+    }
+
+    public void setnExprNode(NExprNode nExprNode) {
+        this.nExprNode= nExprNode;
+    }
+
 
     @Override
     public TreeNode make(Parser parser) {

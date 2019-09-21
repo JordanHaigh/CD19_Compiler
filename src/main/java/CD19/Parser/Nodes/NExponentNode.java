@@ -15,13 +15,33 @@ public class NExponentNode implements Node{
     NEListNode nEListNode;
 
     public NExponentNode() {
-        this(new NBoolNode(), new NVarTailNode(), new NEListNode());
+        this(null, NVarTailNode.INSTANCE(), NEListNode.INSTANCE());
     }
 
     public NExponentNode(NBoolNode nBoolNode, NVarTailNode nVarTailNode, NEListNode neListNode) {
         this.nBoolNode = nBoolNode;
         this.nVarTailNode = nVarTailNode;
         this.nEListNode = neListNode;
+    }
+
+    private static NExponentNode instance;
+    public static NExponentNode INSTANCE() {
+        if (instance == null) {
+            instance = new NExponentNode();
+        }
+        return instance;
+    }
+
+    public void setnBoolNode(NBoolNode boolNode) {
+        this.nBoolNode = boolNode;
+    }
+
+    public void setnVarTailNode(NVarTailNode varTailNode) {
+        this.nVarTailNode = varTailNode;
+    }
+
+    public void setnEListNode(NEListNode elistNode) {
+        this.nEListNode = elistNode;
     }
 
     @Override

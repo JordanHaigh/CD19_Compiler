@@ -12,13 +12,28 @@ public class NFuncBodyNode implements Node{
 
 
     public NFuncBodyNode() {
-        this(new NLocalsNode(), new NStatsNode());
+        this(NLocalsNode.INSTANCE(),null);
     }
 
     public NFuncBodyNode(NLocalsNode nLocalsNode, NStatsNode nStatsNode) {
         this.nLocalsNode = nLocalsNode;
         this.nStatsNode = nStatsNode;
     }
+
+
+    private static NFuncBodyNode instance;
+    public static NFuncBodyNode INSTANCE() {
+        if (instance == null) {
+            instance = new NFuncBodyNode();
+        }
+        return instance;
+    }
+
+    public void setnStatsNode(NStatsNode nStatsNode) {
+        this.nStatsNode = nStatsNode;
+    }
+
+
 
     @Override
     public TreeNode make(Parser parser) {

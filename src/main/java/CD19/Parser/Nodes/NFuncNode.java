@@ -12,7 +12,7 @@ public class NFuncNode implements Node{
     NFuncBodyNode nFuncBodyNode;
 
     public NFuncNode() {
-        this(new NPListNode(), new NRTypeNode(), new NFuncBodyNode());
+        this(NPListNode.INSTANCE(), NRTypeNode.INSTANCE(), NFuncBodyNode.INSTANCE());
     }
 
     public NFuncNode(NPListNode npListNode, NRTypeNode nrTypeNode, NFuncBodyNode nFuncBodyNode) {
@@ -20,6 +20,17 @@ public class NFuncNode implements Node{
         this.nrTypeNode = nrTypeNode;
         this.nFuncBodyNode = nFuncBodyNode;
     }
+
+
+
+    private static NFuncNode instance;
+    public static NFuncNode INSTANCE() {
+        if (instance == null) {
+            instance = new NFuncNode();
+        }
+        return instance;
+    }
+
 
     @Override
     public TreeNode make(Parser parser) {

@@ -10,11 +10,19 @@ public class NPListNode implements Node{
     NParamsNode nParamsNode;
 
     public NPListNode() {
-        this(new NParamsNode());
+        this(NParamsNode.INSTANCE());
     }
 
     public NPListNode(NParamsNode nParamsNode) {
         this.nParamsNode = nParamsNode;
+    }
+
+    private static NPListNode instance;
+    public static NPListNode INSTANCE() {
+        if (instance == null) {
+            instance = new NPListNode();
+        }
+        return instance;
     }
 
     @Override

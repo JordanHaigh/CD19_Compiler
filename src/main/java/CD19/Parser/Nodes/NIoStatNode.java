@@ -1,7 +1,6 @@
 package CD19.Parser.Nodes;
 
-import CD19.Parser.Parser;
-import CD19.Parser.TreeNode;
+import CD19.Parser.*;
 import CD19.Scanner.Token;
 
 public class NIoStatNode implements Node{
@@ -12,12 +11,21 @@ public class NIoStatNode implements Node{
     NPrListNode nPrListNode;
 
     public NIoStatNode() {
-        this(new NVListNode(), new NPrListNode());
+        this(NVListNode.INSTANCE(), NPrListNode.INSTANCE());
     }
 
     public NIoStatNode(NVListNode nvListNode, NPrListNode nPrListNode) {
         this.nvListNode = nvListNode;
         this.nPrListNode = nPrListNode;
+    }
+
+
+    private static NIoStatNode instance;
+    public static NIoStatNode INSTANCE() {
+        if (instance == null) {
+            instance = new NIoStatNode();
+        }
+        return instance;
     }
 
     @Override

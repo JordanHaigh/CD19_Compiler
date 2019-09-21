@@ -16,13 +16,26 @@ public class NTypeNode implements Node{
 
 
     public NTypeNode() {
-        this(new NFieldsNode(),new NExprNode());
+        this(NFieldsNode.INSTANCE(), null);
     }
 
     public NTypeNode(NFieldsNode nFieldsNode, NExprNode nExprNode) {
         this.nFieldsNode = nFieldsNode;
         this.nExprNode = nExprNode;
     }
+
+    private static NTypeNode instance;
+    public static NTypeNode INSTANCE() {
+        if (instance == null) {
+            instance = new NTypeNode();
+        }
+        return instance;
+    }
+
+    public void setnExprNode(NExprNode nExprNode) {
+        this.nExprNode= nExprNode;
+    }
+
 
     @Override
     public TreeNode make(Parser parser) {

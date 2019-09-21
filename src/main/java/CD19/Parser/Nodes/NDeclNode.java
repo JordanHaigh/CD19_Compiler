@@ -10,11 +10,20 @@ public class NDeclNode implements Node{
     NParamTypeTailNode nParamTypeTailNode;
 
     public NDeclNode() {
-        this(new NParamTypeTailNode());
+        this(NParamTypeTailNode.INSTANCE());
     }
 
     public NDeclNode(NParamTypeTailNode nParamTypeTailNode) {
         this.nParamTypeTailNode = nParamTypeTailNode;
+    }
+
+
+    private static NDeclNode instance;
+    public static NDeclNode INSTANCE() {
+        if (instance == null) {
+            instance = new NDeclNode();
+        }
+        return instance;
     }
 
     @Override

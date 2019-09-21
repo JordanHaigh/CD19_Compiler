@@ -12,11 +12,27 @@ public class NIfStatNode implements Node{
     NStatsNode nStatsNode;
 
     public NIfStatNode() {
-        this(new NBoolNode(), new NStatsNode());
+        this(null, null);
     }
 
     public NIfStatNode(NBoolNode nBoolNode, NStatsNode nStatsNode) {
         this.nBoolNode = nBoolNode;
+        this.nStatsNode = nStatsNode;
+    }
+
+    private static NIfStatNode instance;
+    public static NIfStatNode INSTANCE() {
+        if (instance == null) {
+            instance = new NIfStatNode();
+        }
+        return instance;
+    }
+
+    public void setnBoolNode(NBoolNode boolNode) {
+        this.nBoolNode = boolNode;
+    }
+
+    public void setnStatsNode(NStatsNode nStatsNode) {
         this.nStatsNode = nStatsNode;
     }
 

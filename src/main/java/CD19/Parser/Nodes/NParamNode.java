@@ -12,11 +12,19 @@ public class NParamNode implements Node{
     NParamTypeTailNode nParamTypeTailNode;
 
     public NParamNode() {
-        this(new NParamTypeTailNode());
+        this(NParamTypeTailNode.INSTANCE());
     }
 
     public NParamNode(NParamTypeTailNode nParamTypeTailNode) {
         this.nParamTypeTailNode = nParamTypeTailNode;
+    }
+
+    private static NParamNode instance;
+    public static NParamNode INSTANCE() {
+        if (instance == null) {
+            instance = new NParamNode();
+        }
+        return instance;
     }
 
     @Override

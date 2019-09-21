@@ -12,11 +12,24 @@ public class NReturnStatNode implements Node{
     NExprNode nExprNode;
 
     public NReturnStatNode() {
-        this(new NExprNode());
+        this(null);
     }
 
     public NReturnStatNode(NExprNode nExprNode) {
         this.nExprNode = nExprNode;
+    }
+
+    private static NReturnStatNode instance;
+    public static NReturnStatNode INSTANCE() {
+        if (instance == null) {
+            instance = new NReturnStatNode();
+        }
+        return instance;
+    }
+
+
+    public void setnExprNode(NExprNode nExprNode) {
+        this.nExprNode= nExprNode;
     }
 
     @Override

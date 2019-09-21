@@ -10,12 +10,22 @@ public class NCallStatNode implements Node{
 
 
     public NCallStatNode() {
-        this(new NEListNode());
+        this(NEListNode.INSTANCE());
     }
 
     public NCallStatNode(NEListNode neListNode) {
         this.neListNode = neListNode;
     }
+
+    private static NCallStatNode instance;
+    public static NCallStatNode INSTANCE() {
+        if (instance == null) {
+            instance = new NCallStatNode();
+        }
+        return instance;
+    }
+
+
 
     @Override
     public TreeNode make(Parser parser) {

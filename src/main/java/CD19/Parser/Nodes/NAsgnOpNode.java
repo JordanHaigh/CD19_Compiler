@@ -6,6 +6,15 @@ import CD19.Scanner.Token;
 
 public class NAsgnOpNode implements Node{
     //NASGN, NPLEQ, NMNEQ, NSTEQ, NDVEQ	<asgnop>	::=	 = | += | -= | *= | /=
+
+    private static NAsgnOpNode instance;
+    public static NAsgnOpNode INSTANCE() {
+        if (instance == null) {
+            instance = new NAsgnOpNode();
+        }
+        return instance;
+    }
+
     @Override
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TEQUL)) //=

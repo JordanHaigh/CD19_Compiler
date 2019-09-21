@@ -11,11 +11,19 @@ public class NVListNode implements Node{
     NVarNode nVarNode;
 
     public NVListNode() {
-        this(new NVarNode());
+        this(NVarNode.INSTANCE());
     }
 
     public NVListNode(NVarNode nVarNode) {
         this.nVarNode = nVarNode;
+    }
+
+    private static NVListNode instance;
+    public static NVListNode INSTANCE() {
+        if (instance == null) {
+            instance = new NVListNode();
+        }
+        return instance;
     }
 
     @Override

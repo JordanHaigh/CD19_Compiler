@@ -12,7 +12,7 @@ public class NStatNode implements Node{
     NAsgnStatOrCallStatNode nAsgnStatOrCallStatNode;
 
     public NStatNode() {
-        this(new NReptStatNode(), new NIoStatNode(), new NReturnStatNode(),new NAsgnStatOrCallStatNode());
+        this(NReptStatNode.INSTANCE(), NIoStatNode.INSTANCE(), NReturnStatNode.INSTANCE(), NAsgnStatOrCallStatNode.INSTANCE());
     }
 
     public NStatNode(NReptStatNode nReptStatNode, NIoStatNode nIoStatNode,
@@ -21,6 +21,14 @@ public class NStatNode implements Node{
         this.nIoStatNode = nIoStatNode;
         this.nReturnStatNode = nReturnStatNode;
         this.nAsgnStatOrCallStatNode = nAsgnStatOrCallStatNode;
+    }
+
+    private static NStatNode instance;
+    public static NStatNode INSTANCE() {
+        if (instance == null) {
+            instance = new NStatNode();
+        }
+        return instance;
     }
 
     @Override

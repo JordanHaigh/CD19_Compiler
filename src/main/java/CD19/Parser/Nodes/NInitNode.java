@@ -11,12 +11,26 @@ public class NInitNode implements Node{
     NExprNode nExprNode;
 
     public NInitNode(){
-        this(new NExprNode());
+        this(null);
     }
 
     public NInitNode(NExprNode nExprNode){
         this.nExprNode = nExprNode;
     }
+
+
+    private static NInitNode instance;
+    public static NInitNode INSTANCE() {
+        if (instance == null) {
+            instance = new NInitNode();
+        }
+        return instance;
+    }
+
+    public void setnExprNode(NExprNode nExprNode) {
+        this.nExprNode= nExprNode;
+    }
+
 
     @Override
     public TreeNode make(Parser parser) {

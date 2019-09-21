@@ -11,12 +11,21 @@ public class NArrDeclsNode implements Node{
     NArrDeclNode nArrDeclNode;
 
     public NArrDeclsNode(){
-        this(new NArrDeclNode());
+        this(NArrDeclNode.INSTANCE());
     }
 
     public NArrDeclsNode(NArrDeclNode node){
         this.nArrDeclNode = node;
     }
+
+    private static NArrDeclsNode instance;
+    public static NArrDeclsNode INSTANCE() {
+        if (instance == null) {
+            instance = new NArrDeclsNode();
+        }
+        return instance;
+    }
+
 
     @Override
     public TreeNode make(Parser parser) {
