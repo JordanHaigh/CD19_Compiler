@@ -32,15 +32,9 @@ public class NExprNode implements Node{
         //<exprTail>	::=	ε | +<expr> | -<expr>
         if(parser.peekAndConsume(Token.TPLUS)){
             return buildLeftDerivedTree(parser, TreeNode.NADD, leftNode);
-
-            //TreeNode expr = this.make(parser);
-            //return new TreeNode(TreeNode.NADD, expr,null); //todo probs wrong
         }
         else if(parser.peekAndConsume(Token.TMINS)){
             return buildLeftDerivedTree(parser, TreeNode.NSUB, leftNode);
-
-            //TreeNode expr = this.make(parser);
-            //return new TreeNode(TreeNode.NSUB, expr,null);
         }
         else
             return null; //eps - todo error handle
