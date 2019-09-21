@@ -6,7 +6,7 @@ import CD19.Scanner.Token;
 
 public class NExprNode implements Node{
     //NADD | NSUB	<expr>	::=	<term><exprTail>
-	//<exprTail>	::=	ε | +<expr> | -<expr>
+	//<exprTail>	::=	ε | +<term><exprTail> | -<term><exprTail>
     NTermNode nTermNode;
 
     public NExprNode() {
@@ -20,25 +20,45 @@ public class NExprNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         TreeNode term = nTermNode.make(parser);
-        TreeNode tail = tail(parser);
-        if(tail == null)
-            return new TreeNode(term.getValue(), term, null);
+        TreeNode tail = tail(parser,term);
+
+        if(tail != null)
+            return tail;
         else
-            return new TreeNode(tail.getValue(), term, tail);
+            return term;
     }
 
-    private TreeNode tail(Parser parser){
+    private TreeNode tail(Parser parser, TreeNode leftNode){
         //<exprTail>	::=	ε | +<expr> | -<expr>
         if(parser.peekAndConsume(Token.TPLUS)){
-            TreeNode expr = this.make(parser);
-            return new TreeNode(TreeNode.NADD, expr,null); //todo probs wrong
+            return buildLeftDerivedTree(parser, TreeNode.NADD, leftNode);
+
+            //TreeNode expr = this.make(parser);
+            //return new TreeNode(TreeNode.NADD, expr,null); //todo probs wrong
         }
         else if(parser.peekAndConsume(Token.TMINS)){
-            TreeNode expr = this.make(parser);
-            return new TreeNode(TreeNode.NSUB, expr,null);
+            return buildLeftDerivedTree(parser, TreeNode.NSUB, leftNode);
+
+            //TreeNode expr = this.make(parser);
+            //return new TreeNode(TreeNode.NSUB, expr,null);
         }
         else
-            return null; //todo error handle
+            return null; //eps - todo error handle
+    }
+
+    private TreeNode buildLeftDerivedTree(Parser parser, int expectedTreeNodeValue, TreeNode leftNode){
+        TreeNode returnTreeNode = new TreeNode(expectedTreeNodeValue);
+        returnTreeNode.setLeft(leftNode);
+
+        TreeNode fact = nTermNode.make(parser);
+        TreeNode tail = tail(parser, returnTreeNode);
+
+        returnTreeNode.setRight(fact);
+        if(tail == null)
+            return returnTreeNode;
+        else
+            return tail;
+
     }
 }
 

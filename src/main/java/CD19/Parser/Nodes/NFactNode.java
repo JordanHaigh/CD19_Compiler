@@ -7,7 +7,7 @@ import CD19.Scanner.Token;
 public class NFactNode implements Node{
 
     //NPOW	<fact>	::=	<exponent><factTail>
-    //	<factTail>	::=	ε | ^<fact>
+    //	<factTail>	::=	ε | ^<exponent><factTail>
 
 
     NExponentNode nExponentNode;
@@ -23,20 +23,30 @@ public class NFactNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         TreeNode exponent = nExponentNode.make(parser);
-        TreeNode tail = tail(parser);
-        if(tail != null)
-            return new TreeNode(tail.getValue(), exponent, tail);
+        TreeNode tail = tail(parser,exponent);
+        //left derivation
+        if(tail == null)
+            return exponent;
         else
-            return new TreeNode(exponent.getValue(), exponent, tail);
+            return tail;
 
     }
 
-    private TreeNode tail(Parser parser){
+    private TreeNode tail(Parser parser, TreeNode leftNode){
         if(parser.peekAndConsume(Token.TCART)){
-            TreeNode fact = this.make(parser);
-            return new TreeNode(TreeNode.NPOW, fact, null);
+            TreeNode returnTreeNode = new TreeNode(TreeNode.NPOW);
+            returnTreeNode.setLeft(leftNode);
+
+            TreeNode fact = nExponentNode.make(parser);
+            TreeNode tail = tail(parser,returnTreeNode);
+
+            returnTreeNode.setRight(fact);
+            if(tail == null)
+                return returnTreeNode;
+            else
+                return tail;
         }
-        else
+        else //eps trans
             return null;
 
     }

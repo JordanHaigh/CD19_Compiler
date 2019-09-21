@@ -7,7 +7,7 @@ import sun.reflect.generics.tree.Tree;
 
 public class NTermNode implements Node{
     //NMUL | NDIV | NMOD	<term>	::=	<fact><termTail>
-    //	<termTail	::=	ε | *<term> | /<term> | %<term>
+    //	<termTail	::=	ε | *<fact><termTail> | /<fact><termTail> | %<fact><termTail>
 
     NFactNode nFactNode;
 
@@ -22,30 +22,50 @@ public class NTermNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         TreeNode fact = nFactNode.make(parser);
-        TreeNode tail = tail(parser);
-        if(tail == null) //whens its just a fact
-            return new TreeNode(fact.getValue(), fact, null);
-        else //when its a fact plus more terms
-            return new TreeNode(tail.getValue(), fact, tail);
+        TreeNode tail = tail(parser, fact);
+        if(tail != null) //whens its just a fact
+            return tail;
+        else
+            return fact;
     }
 
-    private TreeNode tail(Parser parser){
+    private TreeNode tail(Parser parser, TreeNode leftNode){
         //	<termTail	::=	ε | *<term> | /<term> | %<term>
         if(parser.peekAndConsume(Token.TSTAR)){
-            TreeNode term = this.make(parser);
-            return new TreeNode(TreeNode.NMUL, term, null);
+            return buildLeftDerivedTree(parser, TreeNode.NMUL, leftNode);
+
+            //TreeNode term = this.make(parser);
+            //return new TreeNode(TreeNode.NMUL, term, null);
         }
         else if(parser.peekAndConsume(Token.TDIVD)){
-            TreeNode term = this.make(parser);
-            return new TreeNode(TreeNode.NDIV, term, null);
+            return buildLeftDerivedTree(parser, TreeNode.NDIV, leftNode);
+
+            //TreeNode term = this.make(parser);
+            //return new TreeNode(TreeNode.NDIV, term, null);
         }
         else if(parser.peekAndConsume(Token.TPERC)){
-            TreeNode term = this.make(parser);
-            return new TreeNode(TreeNode.NMOD, term, null);
+            return buildLeftDerivedTree(parser, TreeNode.NMOD, leftNode);
+
+            //TreeNode term = this.make(parser);
+            //return new TreeNode(TreeNode.NMOD, term, null);
         }
         else
             return null; //epsilon transition
+    }
 
+
+    private TreeNode buildLeftDerivedTree(Parser parser, int expectedTreeNodeValue, TreeNode leftNode){
+        TreeNode returnTreeNode = new TreeNode(expectedTreeNodeValue);
+        returnTreeNode.setLeft(leftNode);
+
+        TreeNode fact = nFactNode.make(parser);
+        TreeNode tail = tail(parser, returnTreeNode);
+
+        returnTreeNode.setRight(fact);
+        if(tail == null)
+            return returnTreeNode;
+        else
+            return tail;
 
     }
 }

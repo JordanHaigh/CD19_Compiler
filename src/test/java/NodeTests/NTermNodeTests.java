@@ -43,9 +43,9 @@ public class NTermNodeTests {
 
 
         assertEquals(TreeNode.NPOW, term.getValue());
-        assertEquals(TreeNode.NILIT, term.getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NPOW, term.getLeft().getRight().getValue());
-        assertEquals(null, term.getRight());
+        assertEquals(TreeNode.NILIT, term.getLeft().getValue());
+        assertEquals(TreeNode.NILIT, term.getRight().getValue());
+
 
     }
 
@@ -73,9 +73,7 @@ public class NTermNodeTests {
 
         assertEquals(TreeNode.NDIV, term.getValue());
         assertEquals(TreeNode.NILIT, term.getLeft().getValue());
-        assertEquals(TreeNode.NDIV, term.getRight().getValue());
-        assertEquals(TreeNode.NILIT, term.getRight().getLeft().getValue());
-        assertEquals(null, term.getRight().getRight());
+        assertEquals(TreeNode.NILIT, term.getRight().getValue());
     }
 
 
@@ -103,9 +101,7 @@ public class NTermNodeTests {
 
         assertEquals(TreeNode.NMUL, term.getValue());
         assertEquals(TreeNode.NILIT, term.getLeft().getValue());
-        assertEquals(TreeNode.NMUL, term.getRight().getValue());
-        assertEquals(TreeNode.NILIT, term.getRight().getLeft().getValue());
-        assertEquals(null, term.getRight().getRight());
+        assertEquals(TreeNode.NILIT, term.getRight().getValue());
 
     }
 
@@ -134,8 +130,70 @@ public class NTermNodeTests {
 
         assertEquals(TreeNode.NMOD, term.getValue());
         assertEquals(TreeNode.NILIT, term.getLeft().getValue());
-        assertEquals(TreeNode.NMOD, term.getRight().getValue());
-        assertEquals(TreeNode.NILIT, term.getRight().getLeft().getValue());
-        assertEquals(null, term.getRight().getRight());
+        assertEquals(TreeNode.NILIT, term.getRight().getValue());
+    }
+
+    @Test
+    public void sunnyDay_modmod(){
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TPERC,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TPERC,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NBoolNode nBoolNode = mock(NBoolNode.class);
+        NExprNode nExprNode = mock(NExprNode.class);
+        NVarTailNode nVarTailNode= new NVarTailNode(nExprNode);
+        NEListNode neListNode = mock(NEListNode.class);
+        NExponentNode nExponentNode = new NExponentNode(nBoolNode, nVarTailNode, neListNode);
+        NFactNode nFactNode = new NFactNode(nExponentNode);
+
+        NTermNode nTermNode = new NTermNode(nFactNode);
+        TreeNode term = nTermNode.make(parser);
+
+        assertEquals(TreeNode.NMOD, term.getValue());
+        assertEquals(TreeNode.NMOD, term.getLeft().getValue());
+        assertEquals(TreeNode.NILIT, term.getRight().getValue());
+        assertEquals(TreeNode.NILIT, term.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NILIT, term.getLeft().getRight().getValue());
+
+    }
+
+    @Test
+    public void sunnyDay_modmul(){
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TPERC,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TSTAR,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NBoolNode nBoolNode = mock(NBoolNode.class);
+        NExprNode nExprNode = mock(NExprNode.class);
+        NVarTailNode nVarTailNode= new NVarTailNode(nExprNode);
+        NEListNode neListNode = mock(NEListNode.class);
+        NExponentNode nExponentNode = new NExponentNode(nBoolNode, nVarTailNode, neListNode);
+        NFactNode nFactNode = new NFactNode(nExponentNode);
+
+        NTermNode nTermNode = new NTermNode(nFactNode);
+        TreeNode term = nTermNode.make(parser);
+
+        assertEquals(TreeNode.NMUL, term.getValue());
+        assertEquals(TreeNode.NMOD, term.getLeft().getValue());
+        assertEquals(TreeNode.NILIT, term.getRight().getValue());
+        assertEquals(TreeNode.NILIT, term.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NILIT, term.getLeft().getRight().getValue());
+
     }
 }

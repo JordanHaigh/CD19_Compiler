@@ -63,8 +63,6 @@ public class NFactNodeTests {
         TreeNode fact = nFactNode.make(parser);
 
         assertEquals(TreeNode.NILIT, fact.getValue());
-        assertEquals(TreeNode.NILIT, fact.getLeft().getValue());
-        assertEquals(null, fact.getRight());
 
     }
 
@@ -92,9 +90,7 @@ public class NFactNodeTests {
 
         assertEquals(TreeNode.NPOW, fact.getValue());
         assertEquals(TreeNode.NILIT, fact.getLeft().getValue());
-        assertEquals(TreeNode.NPOW, fact.getRight().getValue());
-        assertEquals(TreeNode.NILIT, fact.getRight().getLeft().getValue());
-        assertEquals(null, fact.getRight().getRight());
+        assertEquals(TreeNode.NILIT, fact.getRight().getValue());
     }
 
     @Test
@@ -123,13 +119,46 @@ public class NFactNodeTests {
         TreeNode fact = nFactNode.make(parser);
 
         assertEquals(TreeNode.NPOW, fact.getValue());
-        assertEquals(TreeNode.NILIT, fact.getLeft().getValue());
-        assertEquals(TreeNode.NPOW, fact.getRight().getValue());
-        assertEquals(TreeNode.NPOW, fact.getRight().getLeft().getValue());
-        assertEquals(null, fact.getRight().getRight());
-        assertEquals(TreeNode.NILIT, fact.getRight().getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NPOW, fact.getRight().getLeft().getRight().getValue());
-        assertEquals(TreeNode.NILIT, fact.getRight().getLeft().getRight().getLeft().getValue());
-        assertEquals(null, fact.getRight().getLeft().getRight().getRight());
+        assertEquals(TreeNode.NPOW, fact.getLeft().getValue());
+        assertEquals(TreeNode.NILIT, fact.getRight().getValue());
+        assertEquals(TreeNode.NILIT, fact.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NILIT, fact.getLeft().getRight().getValue());
+    }
+
+
+    @Test
+    public void sunnyday_powpowpow(){
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TCART,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TCART,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TCART,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+
+        Parser parser = new Parser(tokens);
+
+        NBoolNode nBoolNode = mock(NBoolNode.class);
+        NExprNode nExprNode = mock(NExprNode.class);
+        NVarTailNode nVarTailNode= new NVarTailNode(nExprNode);
+        NEListNode neListNode = mock(NEListNode.class);
+        NExponentNode nExponentNode = new NExponentNode(nBoolNode, nVarTailNode, neListNode);
+
+        NFactNode nFactNode = new NFactNode(nExponentNode);
+
+        TreeNode fact = nFactNode.make(parser);
+
+        assertEquals(TreeNode.NPOW, fact.getValue());
+        assertEquals(TreeNode.NPOW, fact.getLeft().getValue());
+        assertEquals(TreeNode.NILIT, fact.getRight().getValue());
+        assertEquals(TreeNode.NPOW, fact.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NILIT, fact.getLeft().getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NILIT, fact.getLeft().getLeft().getRight().getValue());
+
     }
 }

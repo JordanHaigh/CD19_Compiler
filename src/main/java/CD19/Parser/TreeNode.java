@@ -94,7 +94,9 @@ public class TreeNode {
 
     public NodeDataTypes getType() { return dataType; }
 
-    public void setValue(int value) { nodeValue = value; }
+    public void setValue(int value) { nodeValue = value;
+        nodeValueString = PRINTNODE[value];
+    }
 
     public void setLeft(TreeNode l) { left = l; }
 
@@ -106,7 +108,18 @@ public class TreeNode {
 
     public void setType(NodeDataTypes st) { dataType = st; }
 
+    public int childrenCount(){
+        int counter = 0;
+        if(left != null)
+            counter++;
+        if(middle != null)
+            counter++;
+        if(right != null)
+            counter++;
 
+        return counter;
+
+    }
     //
     // Call is: TreeNode.printTree(outfile, rootOfTree);
     //	-> prints tree pre-order as a flat 7 values per line
