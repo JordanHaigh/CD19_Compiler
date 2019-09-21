@@ -48,7 +48,12 @@ public class NRelNode implements Node{
     private TreeNode exprPath(Parser parser){
         TreeNode expr = nExprNode.make(parser);
         TreeNode tail = tail(parser);
-        return new TreeNode(tail.getValue(), expr, tail);
+        if(tail != null){
+            tail.setLeft(expr);
+            return tail;
+        }
+        return expr;
+
     }
 
     private TreeNode tail(Parser parser){
@@ -60,6 +65,7 @@ public class NRelNode implements Node{
                 token.getTokenID() == Token.TLESS ||
                 token.getTokenID() == Token.TLEQL){
 
+
             TreeNode relop = nRelopNode.make(parser);
             TreeNode expr = nExprNode.make(parser);
             return new TreeNode(relop.getValue(), relop, expr);
@@ -68,7 +74,6 @@ public class NRelNode implements Node{
             return null; //else //todo may cause problems later
         }
     }
-
 
     private TreeNode notExprPath(Parser parser){
         parser.peekAndConsume(Token.TNOT);

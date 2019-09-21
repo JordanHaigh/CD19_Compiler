@@ -54,7 +54,7 @@ public class NParamNode implements Node{
         Token token  = parser.peek();
         parser.consume();
 
-        parser.peekAndConsume(Token.TSEMI);
+        parser.peekAndConsume(Token.TCOLN);
 
         TreeNode tail = nParamTypeTailNode.make(parser);
 

@@ -2,9 +2,20 @@ package CD19.Parser.Nodes;
 
 import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
+import CD19.Scanner.Token;
 
 public class NParamTypeTailNode implements Node {
     //	<paramTypeTail>	::=	<stype> | <typeid> //todo struct or primitive
+
+    NSTypeNode nsTypeNode;
+
+    public NParamTypeTailNode() {
+        this(new NSTypeNode());
+    }
+
+    public NParamTypeTailNode(NSTypeNode nsTypeNode) {
+        this.nsTypeNode = nsTypeNode;
+    }
 
     private static NParamTypeTailNode instance;
     public static NParamTypeTailNode INSTANCE() {
@@ -16,9 +27,21 @@ public class NParamTypeTailNode implements Node {
 
     @Override
     public TreeNode make(Parser parser) {
-        TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
-        dummy.setType(NodeDataTypes.Array); //todo change this later
-        return dummy;
+        Token type = parser.peek();
+        if(type.getTokenID() == Token.TINTG ||
+            type.getTokenID() == Token.TREAL ||
+            type.getTokenID() == Token.TBOOL)
+        {
+            return nsTypeNode.make(parser);
+        }
+        else{
+            parser.consume(); //consume the type id
+            TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
+            dummy.setType(NodeDataTypes.Array);
+            return dummy;
+        }
+
+
     }
 
 

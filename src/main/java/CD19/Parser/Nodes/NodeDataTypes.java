@@ -7,5 +7,6 @@ public enum NodeDataTypes {
     Real,
     Struct,
     Array,
-    String
+    String,
+    Void
 }

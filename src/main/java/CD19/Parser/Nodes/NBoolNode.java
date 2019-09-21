@@ -5,8 +5,8 @@ import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
 public class NBoolNode implements Node{
-    //NBOOL	<bool>	::=	<rel><boolTail>
-    //	<boolTail>	::=	ε | <logop><bool>
+//NBOOL	<bool>	::=	<rel><boolTail>
+//	<boolTail>	::=	ε | <logop><rel><boolTail>
 
 
     NRelNode nRelNode;
@@ -37,8 +37,12 @@ public class NBoolNode implements Node{
     public TreeNode make(Parser parser) {
         TreeNode rel = nRelNode.make(parser);
         TreeNode tail = tail(parser);
-
-        return new TreeNode(tail.getValue(), rel, tail);
+        if (tail != null) {
+            tail.setLeft(rel);
+            return tail;
+        }
+        else
+            return rel;
     }
 
     private TreeNode tail(Parser parser){
@@ -46,12 +50,13 @@ public class NBoolNode implements Node{
         if(token.getTokenID() == Token.TAND ||
                 token.getTokenID() == Token.TOR ||
                 token.getTokenID() == Token.TXOR){
+
             TreeNode logop = nLogopNode.make(parser);
             TreeNode bool = this.make(parser);
-            return new TreeNode (logop.getValue(), logop, bool); //todo probs wrong
+            return new TreeNode (TreeNode.NBOOL, null, logop, bool);
         }
         else
-            return new TreeNode(TreeNode.NBOOL, null,null); //eps trans
+          return null; //eps trans
 
     }
 }

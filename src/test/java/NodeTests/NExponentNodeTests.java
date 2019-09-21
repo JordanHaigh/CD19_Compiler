@@ -172,7 +172,7 @@ public class NExponentNodeTests {
     }
 
     @Test
-    public void sunnyday_bool_nbool(){
+    public void sunnyday_bool(){
         List<Token> tokens= new ArrayList<>();
         //(5+5)
         tokens.add(new Token(Token.TLPAR,1,1,null));
@@ -183,21 +183,111 @@ public class NExponentNodeTests {
 
         Parser parser = new Parser(tokens);
 
-        NRelNode nRelNode = mock(NRelNode.class);
-        NLogopNode nLogopNode = mock(NLogopNode.class);
-        NBoolNode nBoolNode = new NBoolNode(nRelNode, nLogopNode);
-        NExprNode nExprNode = mock(NExprNode.class);
 
-        NVarTailNode nVarTailNode= new NVarTailNode(nExprNode);
+        // Create exponent node separately or else we get a recursive loop
+        NExponentNode nExponentNode = NExponentNode.INSTANCE();
+        NReptStatNode nReptStatNode = NReptStatNode.INSTANCE();
+        NAsgnStatNode nAsgnStatNode= NAsgnStatNode.INSTANCE();
+        NEListNode neListNode = NEListNode.INSTANCE();
+        NForStatNode nForStatNode = NForStatNode.INSTANCE();
+        NIfStatNode nIfStatNode = NIfStatNode.INSTANCE();
 
-        NEListNode neListNode = mock(NEListNode.class);
-        NExponentNode nExponentNode= new NExponentNode(nBoolNode, nVarTailNode, neListNode );
 
-        TreeNode exponent = nExponentNode.make(parser);
+        NInitNode nInitNode = NInitNode.INSTANCE();
+        NTypeNode nTypeNode = NTypeNode.INSTANCE();
+        NRelNode nRelNode = NRelNode.INSTANCE();
+        NPrintItemNode nPrintItemNode = NPrintItemNode.INSTANCE();
+        NReturnStatNode nReturnStatNode = NReturnStatNode.INSTANCE();
 
-        assertEquals(TreeNode.NBOOL, exponent.getValue());
+        NProgNode nProgNode = NProgNode.INSTANCE();
+
+        // Fix broken recursive loop
+        nExponentNode.setnBoolNode(NBoolNode.INSTANCE());
+        nReptStatNode.setnBoolNode(NBoolNode.INSTANCE());
+        nAsgnStatNode.setnBoolNode(NBoolNode.INSTANCE());
+        neListNode.setnBoolNode(NBoolNode.INSTANCE());
+        nForStatNode.setnBoolNode(NBoolNode.INSTANCE());
+        nIfStatNode.setnBoolNode(NBoolNode.INSTANCE());
+
+        nInitNode.setnExprNode(NExprNode.INSTANCE());
+        nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        nRelNode.setnExprNode(NExprNode.INSTANCE());
+        nPrintItemNode.setnExprNode(NExprNode.INSTANCE());
+        nReturnStatNode.setnExprNode(NExprNode.INSTANCE());
+
+
+
+
+        TreeNode bool = nExponentNode.make(parser);
+
+
+        assertEquals(TreeNode.NADD, bool.getValue());
     }
 
+
+    @Test
+    public void sunnyday_bool2(){
+        List<Token> tokens= new ArrayList<>();
+        //(5+(5*20)
+        //todo cant be tested due to recursive looping shit
+
+
+        tokens.add(new Token(Token.TLPAR,1,1,null)); //(
+        tokens.add(new Token(Token.TILIT,1,1,null)); //5
+        tokens.add(new Token(Token.TPLUS,1,1,null)); //+
+        tokens.add(new Token(Token.TLPAR,1,1,null));//(
+        tokens.add(new Token(Token.TILIT,1,1,null));//5
+        tokens.add(new Token(Token.TSTAR,1,1,null));//*
+        tokens.add(new Token(Token.TILIT,1,1,null));// 20
+        tokens.add(new Token(Token.TRPAR,1,1,null));//)
+        tokens.add(new Token(Token.TRPAR,1,1,null));//)
+
+        Parser parser = new Parser(tokens);
+
+
+        // Create exponent node separately or else we get a recursive loop
+        NExponentNode nExponentNode = NExponentNode.INSTANCE();
+        NReptStatNode nReptStatNode = NReptStatNode.INSTANCE();
+        NAsgnStatNode nAsgnStatNode= NAsgnStatNode.INSTANCE();
+        NEListNode neListNode = NEListNode.INSTANCE();
+        NForStatNode nForStatNode = NForStatNode.INSTANCE();
+        NIfStatNode nIfStatNode = NIfStatNode.INSTANCE();
+
+
+        NInitNode nInitNode = NInitNode.INSTANCE();
+        NTypeNode nTypeNode = NTypeNode.INSTANCE();
+        NRelNode nRelNode = NRelNode.INSTANCE();
+        NPrintItemNode nPrintItemNode = NPrintItemNode.INSTANCE();
+        NReturnStatNode nReturnStatNode = NReturnStatNode.INSTANCE();
+
+        NProgNode nProgNode = NProgNode.INSTANCE();
+
+        // Fix broken recursive loop
+        nExponentNode.setnBoolNode(NBoolNode.INSTANCE());
+        nReptStatNode.setnBoolNode(NBoolNode.INSTANCE());
+        nAsgnStatNode.setnBoolNode(NBoolNode.INSTANCE());
+        neListNode.setnBoolNode(NBoolNode.INSTANCE());
+        nForStatNode.setnBoolNode(NBoolNode.INSTANCE());
+        nIfStatNode.setnBoolNode(NBoolNode.INSTANCE());
+
+        nInitNode.setnExprNode(NExprNode.INSTANCE());
+        nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        nRelNode.setnExprNode(NExprNode.INSTANCE());
+        nPrintItemNode.setnExprNode(NExprNode.INSTANCE());
+        nReturnStatNode.setnExprNode(NExprNode.INSTANCE());
+
+
+
+
+        TreeNode bool = nExponentNode.make(parser);
+
+        assertEquals(TreeNode.NADD, bool.getValue());
+        assertEquals(TreeNode.NILIT, bool.getLeft().getValue());
+        assertEquals(TreeNode.NMUL, bool.getRight().getValue());
+        assertEquals(TreeNode.NILIT, bool.getRight().getLeft().getValue());
+        assertEquals(TreeNode.NILIT, bool.getRight().getRight().getValue());
+
+    }
 
 
     @Test
@@ -229,31 +319,63 @@ public class NExponentNodeTests {
 
     @Test
     public void sunnyday_fncall_args(){
+        //todo HELP
         List<Token> tokens= new ArrayList<>();
-        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+        //func(func2())
+        tokens.add(new Token(Token.TIDEN,1,1,"func"));
         tokens.add(new Token(Token.TLPAR,1,1,null));
-        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+        tokens.add(new Token(Token.TIDEN,1,1,"func2"));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
         tokens.add(new Token(Token.TRPAR,1,1,null));
 
         tokens.add(new Token(Token.TIDEN,1,1,"aa"));
 
         Parser parser = new Parser(tokens);
 
-        NRelNode nRelNode = mock(NRelNode.class);
-        NLogopNode nLogopNode = mock(NLogopNode.class);
-        NBoolNode nBoolNode = new NBoolNode(nRelNode, nLogopNode);
-        NExprNode nExprNode = mock(NExprNode.class);
 
-        NVarTailNode nVarTailNode= new NVarTailNode(nExprNode);
+        // Create exponent node separately or else we get a recursive loop
+        NExponentNode nExponentNode = NExponentNode.INSTANCE();
+        NReptStatNode nReptStatNode = NReptStatNode.INSTANCE();
+        NAsgnStatNode nAsgnStatNode= NAsgnStatNode.INSTANCE();
+        NEListNode neListNode = NEListNode.INSTANCE();
+        NForStatNode nForStatNode = NForStatNode.INSTANCE();
+        NIfStatNode nIfStatNode = NIfStatNode.INSTANCE();
 
-        NEListNode neListNode = new NEListNode(nBoolNode);
-        NExponentNode nExponentNode= new NExponentNode(nBoolNode, nVarTailNode, neListNode );
 
-        TreeNode exponent = nExponentNode.make(parser);
+        NInitNode nInitNode = NInitNode.INSTANCE();
+        NTypeNode nTypeNode = NTypeNode.INSTANCE();
+        NRelNode nRelNode = NRelNode.INSTANCE();
+        NPrintItemNode nPrintItemNode = NPrintItemNode.INSTANCE();
+        NReturnStatNode nReturnStatNode = NReturnStatNode.INSTANCE();
+
+        NProgNode nProgNode = NProgNode.INSTANCE();
+
+        // Fix broken recursive loop
+        nExponentNode.setnBoolNode(NBoolNode.INSTANCE());
+        nReptStatNode.setnBoolNode(NBoolNode.INSTANCE());
+        nAsgnStatNode.setnBoolNode(NBoolNode.INSTANCE());
+        neListNode.setnBoolNode(NBoolNode.INSTANCE());
+        nForStatNode.setnBoolNode(NBoolNode.INSTANCE());
+        nIfStatNode.setnBoolNode(NBoolNode.INSTANCE());
+
+        nInitNode.setnExprNode(NExprNode.INSTANCE());
+        nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        nRelNode.setnExprNode(NExprNode.INSTANCE());
+        nPrintItemNode.setnExprNode(NExprNode.INSTANCE());
+        nReturnStatNode.setnExprNode(NExprNode.INSTANCE());
+
+        NBoolNode nBoolNode = new NBoolNode(nRelNode, new NLogopNode());
+        NVarTailNode nVarTailNode = new NVarTailNode(new NExprNode());
+
+        NExponentNode nExponentNode1= new NExponentNode(nBoolNode, nVarTailNode, neListNode );
+
+        TreeNode exponent = nExponentNode1.make(parser);
 
         assertEquals(TreeNode.NFCALL, exponent.getValue());
-        assertEquals(TreeNode.NEXPL, exponent.getLeft().getValue());
+        assertEquals(TreeNode.NFCALL, exponent.getLeft().getValue());
     }
+
 
 
 

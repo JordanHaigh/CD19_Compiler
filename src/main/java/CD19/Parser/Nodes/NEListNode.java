@@ -6,7 +6,7 @@ import CD19.Scanner.Token;
 
 public class NEListNode implements Node{
     //NEXPL	<elist>	::=	<bool> <elistTail>
-    //	<elistTail>	::=	ε | , <elist>
+    //	<elistTail>	::=	ε | , <bool> <elistTail>
 
     private NBoolNode nBoolNode;
 
@@ -35,14 +35,20 @@ public class NEListNode implements Node{
         //NEXPL	<elist>	::=	<bool> <elistTail>
         TreeNode bool = nBoolNode.make(parser);
         TreeNode tail = tail(parser);
-
-        return new TreeNode(TreeNode.NEXPL, bool,tail);
+        if(tail == null)
+            return bool;
+        tail.setRight(tail.getLeft());
+        tail.setLeft(bool);
+        return tail;
+        //return new TreeNode(TreeNode.NEXPL, bool,tail);
     }
 
     private TreeNode tail(Parser parser){
         //	<elistTail>	::=	ε | , <elist>
         if((parser).peekAndConsume(Token.TCOMA)){
-            return this.make(parser);
+            TreeNode bool = nBoolNode.make(parser);
+            TreeNode tail = tail(parser);
+            return new TreeNode(TreeNode.NEXPL, bool, tail);
         }
 
         return null;
