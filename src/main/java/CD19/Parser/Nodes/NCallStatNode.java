@@ -40,6 +40,6 @@ public class NCallStatNode implements Node{
             TreeNode elist = neListNode.make(parser);
             return new TreeNode(TreeNode.NCALL, elist,null);
         }
-        return null; //eps trans
+        return new TreeNode(TreeNode.NCALL, null,null);
     }
 }

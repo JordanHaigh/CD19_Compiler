@@ -18,7 +18,7 @@ public class NSTypeNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
-        TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
+        TreeNode dummy = new TreeNode(TreeNode.NSDECL);
 
         if(token.getTokenID() == Token.TINTG){
             parser.consume();

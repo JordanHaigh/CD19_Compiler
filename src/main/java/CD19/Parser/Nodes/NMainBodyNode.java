@@ -6,7 +6,7 @@ import CD19.Scanner.Token;
 
 public class NMainBodyNode implements Node {
 
-    //NMAIN	<mainbody>	::=	main <slist> begin <stats> end CD19 <id>
+    //NMAIN	<mainbody>	::=	main <slist> begin <stats> end
 
     NSListNode nsListNode;
     NStatsNode nStatsNode;
@@ -41,8 +41,7 @@ public class NMainBodyNode implements Node {
         parser.peekAndConsume(Token.TBEGN);
         TreeNode stats = nStatsNode.make(parser);
         parser.peekAndConsume(Token.TEND);
-        parser.peekAndConsume(Token.TCD19);
-        parser.peekAndConsume(Token.TIDEN);
+
 
         return new TreeNode(TreeNode.NMAIN, slist, stats);
     }

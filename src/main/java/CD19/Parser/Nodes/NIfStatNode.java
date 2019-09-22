@@ -5,8 +5,8 @@ import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
 public class NIfStatNode implements Node{
-    //NIFTH | NIFTE	<ifstat>	::=	if ( <bool> ) <stats> <ifStatTail>
-    //	<ifStatTail>	::=	end |  else <stats> end
+    //NIFTH | NIFTE	<ifstat>	::=	if ( <bool> ) <stats> <ifStatTail> end
+    //	<ifStatTail>	::=	eps |  else <stats>
 
     NBoolNode nBoolNode;
     NStatsNode nStatsNode;
@@ -41,23 +41,34 @@ public class NIfStatNode implements Node{
 
         parser.peekAndConsume(Token.TIFTH);
         parser.peekAndConsume(Token.TLPAR);
+
         TreeNode bool = nBoolNode.make(parser);
+
         parser.peekAndConsume(Token.TRPAR);
+
         TreeNode stats = nStatsNode.make(parser);
+
         TreeNode tail = tail(parser);
-        return new TreeNode(tail.getValue(), bool, stats, tail); //todo check if tail null??
+
+        parser.peekAndConsume(Token.TEND);
+
+
+        if(tail==null){ //if just an if statement, then we dont need tail node's stats
+            return new TreeNode(TreeNode.NIFTH, bool, stats);
+        }
+        else{
+            return new TreeNode(TreeNode.NIFTE, bool, stats, tail); //contains an else statement so we need tail's stats
+        }
+
     }
 
     private TreeNode tail(Parser parser){
         if(parser.peekAndConsume(Token.TELSE)){
             TreeNode stats = nStatsNode.make(parser);
-            parser.peekAndConsume(Token.TEND);
-            return new TreeNode(TreeNode.NIFTE, stats,null);
+            return stats;
         }
-        else if(parser.peekAndConsume(Token.TEND)){
-            return new TreeNode(TreeNode.NIFTH,null,null);
-        }
-        return null; //todo error here
+        else
+            return null;
 
     }
 }

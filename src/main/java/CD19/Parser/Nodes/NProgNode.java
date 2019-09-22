@@ -39,6 +39,8 @@ public class NProgNode implements Node{
         TreeNode nGlobTreeNode = nGlobNode.make(parser);
         TreeNode nFuncsTreeNode = nFuncsNode.make(parser);
         TreeNode nMainTreeNode = nMainBodyNode.make(parser);
+        parser.peekAndConsume(Token.TCD19);
+        parser.peekAndConsume(Token.TIDEN);
 
         TreeNode nProgTreeNode = new TreeNode(TreeNode.NPROG,nGlobTreeNode,nFuncsTreeNode, nMainTreeNode);
 

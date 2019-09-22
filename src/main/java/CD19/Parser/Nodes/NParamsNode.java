@@ -6,7 +6,7 @@ import CD19.Scanner.Token;
 
 public class NParamsNode implements Node{
     //NPLIST	<params>	::=	<param> <paramTail>
-    //	<paramsTail>	::=	ε | , <params>
+    //	<paramsTail>	::=	ε | , <param> <paramTail>
     NParamNode nParamNode;
 
     public NParamsNode() {
@@ -29,13 +29,20 @@ public class NParamsNode implements Node{
     public TreeNode make(Parser parser) {
         TreeNode param = nParamNode.make(parser);
         TreeNode tail = tail(parser);
+        if(tail == null)
+            return param;
+
         return new TreeNode(TreeNode.NPLIST, param, tail);
 
     }
 
     private TreeNode tail(Parser parser){
         if(parser.peekAndConsume(Token.TCOMA)){
-            return this.make(parser);
+            TreeNode param = nParamNode.make(parser);
+            TreeNode tail = tail(parser);
+            if(tail == null)
+                return param;
+            return new TreeNode(TreeNode.NPLIST, param, tail);
         }
         return null; //eps transition
 

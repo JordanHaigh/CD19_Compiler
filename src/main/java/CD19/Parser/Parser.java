@@ -127,6 +127,11 @@ public class Parser implements Subject {
 
     @Override
     public String toString(){
-        return "Current Token: " + tokens.get(tokenIndex);
+
+        try{
+            return "Current Token: " + tokens.get(tokenIndex);
+        }catch(Exception e){
+            return "Yo my dude I'm out of tokens";
+        }
     }
 }

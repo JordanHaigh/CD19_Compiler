@@ -6,7 +6,7 @@ import CD19.Scanner.Token;
 
 public class NDListNode implements Node{
     //NDLIST	<dlist>	::=	<decl> <dlistTail>
-    //	<dlistTail>	::=	ε | , <dlist>
+    //	<dlistTail>	::=	ε | , <decl> <dlistTail>
 
 
     NDeclNode nDeclNode;
@@ -34,13 +34,19 @@ public class NDListNode implements Node{
     public TreeNode make(Parser parser) {
         TreeNode decl = nDeclNode.make(parser);
         TreeNode tail = tail(parser);
-
+        if(tail == null)
+            return decl;
         return new TreeNode(TreeNode.NDLIST, decl, tail);
     }
 
     private TreeNode tail(Parser parser){
         if(parser.peekAndConsume(Token.TCOMA)){
-            return this.make(parser); //dlist trans
+            TreeNode decl = nDeclNode.make(parser);
+            TreeNode tail = tail(parser);
+
+            if(tail == null)
+                return decl;
+            return new TreeNode(TreeNode.NDLIST, decl, tail);
         }
         return null; //eps trans
     }

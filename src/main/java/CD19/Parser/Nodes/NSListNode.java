@@ -7,7 +7,7 @@ import CD19.Scanner.Token;
 public class NSListNode implements Node{
 
     //NSDLST	<slist>	::=	<sdecl> <slistTail>
-	//<slistTail>	::=	ε | , <slist>
+	//<slistTail>	::=	ε | ,<sdecl> <slistTail>
 
     NSDeclNode nsDeclNode;
 
@@ -31,6 +31,8 @@ public class NSListNode implements Node{
     public TreeNode make(Parser parser) {
         TreeNode sdecl = nsDeclNode.make(parser);
         TreeNode tail = tail(parser);
+        if(tail == null)
+            return sdecl;
 
         return new TreeNode(TreeNode.NSDLST, sdecl, tail);
 
@@ -38,7 +40,13 @@ public class NSListNode implements Node{
 
     private TreeNode tail(Parser parser){
         if(parser.peekAndConsume(Token.TCOMA)){
-            return this.make(parser); //recurse trans
+            TreeNode sdecl = nsDeclNode.make(parser);
+            TreeNode tail = tail(parser);
+
+            if(tail == null)
+                return sdecl;
+
+            return new TreeNode(TreeNode.NSDLST, sdecl, tail);
         }
         return null; //eps trans
 

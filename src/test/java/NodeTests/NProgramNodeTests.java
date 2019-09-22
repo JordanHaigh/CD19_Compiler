@@ -18,7 +18,7 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 
-public class NProgNodeTests {
+public class NProgramNodeTests {
     //NPROG	<program>	::=	CD19 <id> <globals> <funcs> <mainbody>
     @Mock NGlobNode globs;
     @Mock NFuncsNode funcs;

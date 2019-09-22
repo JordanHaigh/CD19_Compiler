@@ -69,6 +69,8 @@ public class TreeNode {
     public TreeNode (int value, SymbolTableRecord st) {
         this(value);
         symbol = st;
+        if(st != null)
+            dataType = st.getDataType();
     }
 
     public TreeNode (int value, TreeNode l, TreeNode r) {

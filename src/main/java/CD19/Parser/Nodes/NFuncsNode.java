@@ -33,7 +33,11 @@ public class NFuncsNode implements Node {
         Token token = parser.peek();
         if(token.getTokenID() == Token.TFUNC){
             TreeNode func = nFuncNode.make(parser);
+
             TreeNode funcs = this.make(parser);
+            if(funcs == null)
+                return func;
+
             return new TreeNode(TreeNode.NFUNCS, func, funcs);
         }
         else

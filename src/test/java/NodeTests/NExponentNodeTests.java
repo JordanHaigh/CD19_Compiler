@@ -229,8 +229,6 @@ public class NExponentNodeTests {
     public void sunnyday_bool2(){
         List<Token> tokens= new ArrayList<>();
         //(5+(5*20)
-        //todo cant be tested due to recursive looping shit
-
 
         tokens.add(new Token(Token.TLPAR,1,1,null)); //(
         tokens.add(new Token(Token.TILIT,1,1,null)); //5

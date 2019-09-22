@@ -6,12 +6,10 @@ import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 import org.junit.jupiter.api.Test;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NAlistNodeTests {
 
@@ -48,7 +46,7 @@ public class NAlistNodeTests {
 
         assertEquals(TreeNode.NASGN,alist.getValue());
         assertEquals(TreeNode.NSIMV, alist.getLeft().getValue());
-        assertEquals(TreeNode.NILIT,alist.getRight().getValue()); //todo i dont know about this one
+        assertEquals(TreeNode.NILIT,alist.getRight().getValue());
 
     }
 

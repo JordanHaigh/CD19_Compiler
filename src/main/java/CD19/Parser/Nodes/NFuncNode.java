@@ -39,7 +39,7 @@ public class NFuncNode implements Node{
         parser.peekAndConsume(Token.TLPAR);
         TreeNode plist = npListNode.make(parser);
         parser.peekAndConsume(Token.TRPAR);
-        parser.peekAndConsume(Token.TSEMI);
+        parser.peekAndConsume(Token.TCOLN);
         TreeNode rtype = nrTypeNode.make(parser);
         TreeNode funcBody = nFuncBodyNode.make(parser);
 

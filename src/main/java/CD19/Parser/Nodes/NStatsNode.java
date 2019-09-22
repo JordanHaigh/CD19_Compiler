@@ -5,8 +5,8 @@ import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
 public class NStatsNode implements Node{
-    //NSTATS	<stats>	::=	<stat> ;  <StatsTail> |
-	//<statsTail>	::=	eps | <stats>
+    //NSTATS	<stats>	::=	<stat> ;  <StatsTail> | <strstat> <statsTail>
+	//<statsTail>	::=	 eps |  {<stat> ;  <StatsTail> | <strstat> <statsTail>}
 
     NStatNode nStatNode;
     NStrStatNode nStrStatNode;
@@ -46,6 +46,9 @@ public class NStatsNode implements Node{
         parser.peekAndConsume(Token.TSEMI);
         TreeNode tail = tail(parser);
 
+        if(tail == null)
+            return stat;
+
         return new TreeNode(TreeNode.NSTATS, stat, tail);
     }
 
@@ -54,24 +57,38 @@ public class NStatsNode implements Node{
         //<strstat> <statsTail>
         TreeNode strstat = nStrStatNode.make(parser);
         TreeNode tail = tail(parser);
-
+        if(tail == null)
+            return strstat;
         return new TreeNode(TreeNode.NSTATS, strstat, tail);
 
     }
 
 
     private TreeNode tail(Parser parser){
+        //	//<statsTail>	::=	 eps |  {<stat> ;  <StatsTail> | <strstat> <statsTail>}
         Token token = parser.peek();
-        if(token.getTokenID() == Token.TIFTH //ifstat
-                || token.getTokenID() == Token.TFOR //forstat
-                || token.getTokenID() == Token.TREPT //reptstat
-                || token.getTokenID() == Token.TIDEN //asgnstat
-                || token.getTokenID() == Token.TINPT //iostat
-                || token.getTokenID() == Token.TRETN //retnstat
+        if(token.getTokenID() == Token.TREPT  || token.getTokenID() == Token.TIDEN
+                || token.getTokenID() == Token.TINPT || token.getTokenID() == Token.TPRIN
+                || token.getTokenID() == Token.TPRLN || token.getTokenID() == Token.TRETN
         ){
-            return this.make(parser); //stat transition
+           TreeNode stat = nStatNode.make(parser);
+           parser.peekAndConsume(Token.TSEMI);
+           TreeNode tail = tail(parser);
+
+           if(tail == null)
+               return stat;
+            return new TreeNode(TreeNode.NSTATS, stat, tail);
         }
-        return null; //eps trans
+        else if(token.getTokenID() == Token.TIFTH  || token.getTokenID() == Token.TFOR){
+            TreeNode strstat = nStrStatNode.make(parser);
+            TreeNode tail = tail(parser);
+
+            if(tail == null)
+                return strstat;
+            return new TreeNode(TreeNode.NSTATS, strstat, tail);
+        }
+        else
+            return null; //eps trans
 
     }
 }

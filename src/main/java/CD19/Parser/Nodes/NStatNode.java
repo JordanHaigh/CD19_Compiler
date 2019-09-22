@@ -37,7 +37,7 @@ public class NStatNode implements Node{
         if (token.getTokenID() == Token.TREPT) {
             return nReptStatNode.make(parser);
         }
-        else if(token.getTokenID() == Token.TINPT){
+        else if(token.getTokenID() == Token.TINPT || token.getTokenID() == Token.TPRIN || token.getTokenID() == Token.TPRLN){
             return nIoStatNode.make(parser);
         }
         else if(token.getTokenID() == Token.TRETN){

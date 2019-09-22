@@ -132,4 +132,80 @@ public class NIoStatNodeTests {
 
 
     }
+
+    @Test
+    public void sunnyday_print(){
+        SetupMocks.setup();
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TPRIN,1,1,null));
+
+        ////////////////////////prlist////////////////////////
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TPLUS,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        tokens.add(new Token(Token.TSTRG,1,1,null));
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+        ////////////////////////prlist////////////////////////
+
+
+        Parser parser = new Parser(tokens);
+
+        NVarTailNode nVarTailNode = new NVarTailNode();
+        nVarTailNode.setnExprNode(NExprNode.INSTANCE());
+        NVarNode nVarNode = new NVarNode(nVarTailNode);
+
+        NVListNode nvListNode = new NVListNode(nVarNode);
+        NPrListNode nPrListNode = new NPrListNode();
+        NIoStatNode nIoStatNode = new NIoStatNode(nvListNode,nPrListNode);
+
+
+        TreeNode iostat = nIoStatNode.make(parser);
+
+        assertEquals(TreeNode.NPRINT, iostat.getValue());
+        assertEquals(TreeNode.NPRLST, iostat.getLeft().getValue());
+    }
+
+    @Test
+    public void sunnyday_printline(){
+        SetupMocks.setup();
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TPRLN,1,1,null));
+
+        ////////////////////////prlist////////////////////////
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TPLUS,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        tokens.add(new Token(Token.TSTRG,1,1,null));
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+        ////////////////////////prlist////////////////////////
+
+
+        Parser parser = new Parser(tokens);
+
+        NVarTailNode nVarTailNode = new NVarTailNode();
+        nVarTailNode.setnExprNode(NExprNode.INSTANCE());
+        NVarNode nVarNode = new NVarNode(nVarTailNode);
+
+        NVListNode nvListNode = new NVListNode(nVarNode);
+        NPrListNode nPrListNode = new NPrListNode();
+        NIoStatNode nIoStatNode = new NIoStatNode(nvListNode,nPrListNode);
+
+
+        TreeNode iostat = nIoStatNode.make(parser);
+
+        assertEquals(TreeNode.NPRLN, iostat.getValue());
+        assertEquals(TreeNode.NPRLST, iostat.getLeft().getValue());
+    }
 }

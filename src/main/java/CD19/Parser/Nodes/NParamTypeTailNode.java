@@ -36,7 +36,7 @@ public class NParamTypeTailNode implements Node {
         }
         else{
             parser.consume(); //consume the type id
-            TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
+            TreeNode dummy = new TreeNode(TreeNode.NARRD);
             dummy.setType(NodeDataTypes.Array);
             return dummy;
         }

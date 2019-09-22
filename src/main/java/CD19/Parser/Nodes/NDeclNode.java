@@ -29,15 +29,15 @@ public class NDeclNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
-        parser.consume();
-
-        parser.peekAndConsume(Token.TSEMI);
+        parser.peekAndConsume(Token.TIDEN);
+        parser.peekAndConsume(Token.TCOLN);
         TreeNode paramTypeTail = nParamTypeTailNode.make(parser);
         NodeDataTypes dataType = paramTypeTail.getType();
 
-
         SymbolTableRecord record = new SymbolTableRecord(token.getStr(), dataType);
-        return new TreeNode(TreeNode.NUNDEF, record);
+
+        TreeNode returnTreeNode = new TreeNode(paramTypeTail.getValue(), record); //todo this needs serious error checking
+        return returnTreeNode;
     }
 
 

@@ -43,9 +43,12 @@ public class NParamNode implements Node{
         NArrDeclNode nArrDeclNode = new NArrDeclNode();
 
         parser.peekAndConsume(Token.TCNST);
-        TreeNode arrdecl =  nArrDeclNode.make(parser);
+        TreeNode arrdecl =  nArrDeclNode.make(parser); //get narrd
         SymbolTableRecord record = new SymbolTableRecord(arrdecl.getSymbol().getLexeme(), NodeDataTypes.Array);
-        return new TreeNode(TreeNode.NARRC, record);
+
+        TreeNode returnTreeNode = new TreeNode(TreeNode.NARRC, arrdecl, null);
+        returnTreeNode.setSymbol(record);
+        return returnTreeNode; //map to narrc
 
     }
 
@@ -60,11 +63,15 @@ public class NParamNode implements Node{
 
         SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType());
 
-        if(tail.getType().equals(NodeDataTypes.Array)){
-            return new TreeNode(TreeNode.NARRP, record);
+        if(tail.getValue() == TreeNode.NARRD){
+            TreeNode returnTreeNode = new TreeNode(TreeNode.NARRP, tail, null);
+            returnTreeNode.setSymbol(record);
+            return returnTreeNode;
         }
         else{
-            return new TreeNode(TreeNode.NSIMP, record);
+            TreeNode returnTreeNode = new TreeNode(TreeNode.NSIMP, tail, null);
+            returnTreeNode.setSymbol(record);
+            return returnTreeNode;
         }
     }
 

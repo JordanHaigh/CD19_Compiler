@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class NGlobNodeTests {
+public class NGlobalsNodeTests {
 
     //NGLOB	<globals>	::=	<consts> <types> <arrays>
     @Mock

@@ -31,6 +31,7 @@ public class NParamNodeTests {
         TreeNode param = nParamNode.make(parser);
 
         assertEquals(TreeNode.NARRP, param.getValue());
+        assertEquals(TreeNode.NARRD, param.getLeft().getValue());
 
     }
 
@@ -53,6 +54,8 @@ public class NParamNodeTests {
         TreeNode param = nParamNode.make(parser);
 
         assertEquals(TreeNode.NSIMP, param.getValue());
+        assertEquals(TreeNode.NSDECL, param.getLeft().getValue());
+
 
     }
 
@@ -74,7 +77,7 @@ public class NParamNodeTests {
         TreeNode param = nParamNode.make(parser);
 
         assertEquals(TreeNode.NSIMP, param.getValue());
-
+        assertEquals(TreeNode.NSDECL, param.getLeft().getValue());
     }
 
 
@@ -96,6 +99,9 @@ public class NParamNodeTests {
         TreeNode param = nParamNode.make(parser);
 
         assertEquals(TreeNode.NSIMP, param.getValue());
+        assertEquals(TreeNode.NSDECL, param.getLeft().getValue());
+
+
 
     }
     @Test
@@ -117,6 +123,7 @@ public class NParamNodeTests {
         TreeNode param = nParamNode.make(parser);
 
         assertEquals(TreeNode.NARRC, param.getValue());
+        assertEquals(TreeNode.NARRD, param.getLeft().getValue());
 
     }
 }
