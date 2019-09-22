@@ -27,7 +27,7 @@ public class NVarTailNode implements Node{
     }
 
 
-    public void setnBoolNode(NExprNode exprNode) {
+    public void setnExprNode(NExprNode exprNode) {
         this.nExprNode= exprNode;
     }
     @Override

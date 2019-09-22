@@ -31,11 +31,14 @@ public class NVarNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         Token id = parser.peek();
-        parser.consume();
-
-        TreeNode tail = nVarTailNode.make(parser);
-        SymbolTableRecord record = tail.getSymbol();
-        return new TreeNode(tail.getValue(),record); //todo probs wrong
+        if(id.getTokenID() == Token.TIDEN){
+            parser.consume();
+            TreeNode tail = nVarTailNode.make(parser);
+            SymbolTableRecord record = tail.getSymbol();
+            return new TreeNode(tail.getValue(),record); //todo probs wrong
+        }
+        else
+            return new TreeNode(TreeNode.NUNDEF); //error detect
     }
 
 

@@ -22,7 +22,7 @@ public class NVarNodeTests {
     public void sunnyday_id_eps(){
         List<Token> tokens= new ArrayList<>();
 
-        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
 
         tokens.add(new Token(Token.TILIT,1,1,null));
 

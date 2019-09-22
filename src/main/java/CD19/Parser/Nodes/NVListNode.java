@@ -6,7 +6,7 @@ import CD19.Scanner.Token;
 
 public class NVListNode implements Node{
     //NVLIST	<vlist>	::=	<var> <vlistTail>
-    //	<vlistTail>	::=	ε | ,<vlist>
+    //	<vlistTail>	::=	ε | ,<var> <vlistTail>
 
     NVarNode nVarNode;
 
@@ -30,13 +30,21 @@ public class NVListNode implements Node{
     public TreeNode make(Parser parser) {
         TreeNode var = nVarNode.make(parser);
         TreeNode tail = tail(parser);
+        if(tail == null)
+            return var;
+
         return new TreeNode(TreeNode.NVLIST, var, tail);
     }
 
 
     private TreeNode tail(Parser parser){
         if(parser.peekAndConsume(Token.TCOMA)){
-            return this.make(parser); //recurse
+            TreeNode var = nVarNode.make(parser);
+            TreeNode tail = tail(parser);
+            if(tail == null)
+                return var;
+
+            return new TreeNode(TreeNode.NVLIST, var, tail); //recurse
         }
         return null; //eps
 

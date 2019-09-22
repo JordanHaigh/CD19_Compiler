@@ -8,7 +8,7 @@ import CD19.Scanner.Token;
 public class NAlistNode implements Node{
 
     //NASGNS	<alist>	::=	<id><asgnstat> <alistTail>
-	//<alistTail>	::=	eps | , <alist>
+	//<alistTail>	::=	eps | , <id><asgnstat> <alistTail>
 
     NAsgnStatNode nAsgnStatNode;
 
@@ -31,18 +31,36 @@ public class NAlistNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
-        parser.consume();
-        TreeNode asgnStat = nAsgnStatNode.make(parser);
-        TreeNode tail = tail(parser);
-        //SymbolTableRecord record = new SymbolTableRecord(token.getStr(), ) //todo do this later
-        return new TreeNode(TreeNode.NASGNS, asgnStat, tail); //todo wrong. fix later
+        if(token.getTokenID() == Token.TIDEN){
+            parser.consume();
+            TreeNode asgnStat = nAsgnStatNode.make(parser);
+            TreeNode tail = tail(parser);
+            if(tail == null){
+                return asgnStat;
+            }
+            else{
+                //SymbolTableRecord record = new SymbolTableRecord(token.getStr(), ) //todo do this later
+                return new TreeNode(TreeNode.NASGNS, asgnStat, tail); //todo wrong. fix later
+            }
 
+        }
+        else
+            return new TreeNode(TreeNode.NUNDEF); //todo error here
 
     }
 
     private TreeNode tail(Parser parser){
         if(parser.peekAndConsume(Token.TCOMA)){
-            return this.make(parser); //alist tran
+            parser.peekAndConsume(Token.TIDEN);
+            TreeNode asgnStat = nAsgnStatNode.make(parser);
+            TreeNode tail = tail(parser);
+            if(tail == null){
+                return asgnStat;
+            }
+            else{
+                return new TreeNode(TreeNode.NASGNS, asgnStat, tail); //todo what to do with id???
+            }
+
         }
         return null; //eps trans
 

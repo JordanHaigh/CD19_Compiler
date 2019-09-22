@@ -42,6 +42,7 @@ public class NPrintItemNode implements Node{
             return nExprNode.make(parser);
         }
         else{ //return string
+            parser.consume(); //consume string token. we done with it
             return new TreeNode(TreeNode.NSTRG,null,null);
         }
     }

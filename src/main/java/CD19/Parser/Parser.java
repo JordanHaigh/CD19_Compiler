@@ -124,4 +124,9 @@ public class Parser implements Subject {
 
         }
     }
+
+    @Override
+    public String toString(){
+        return "Current Token: " + tokens.get(tokenIndex);
+    }
 }
