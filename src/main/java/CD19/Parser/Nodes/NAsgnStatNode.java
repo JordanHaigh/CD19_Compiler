@@ -41,7 +41,10 @@ public class NAsgnStatNode implements Node{
         TreeNode bool = nBoolNode.make(parser);
         //nodetype will be what is returned from the nasgnop node (nasgn, npleq...)
         
-        return new TreeNode(asgnop.getValue(), vartail, asgnop, bool);
+        //return new TreeNode(asgnop.getValue(), vartail, bool);
+        asgnop.setLeft(vartail);
+        asgnop.setRight(bool);
+        return asgnop;
     }
 }
 

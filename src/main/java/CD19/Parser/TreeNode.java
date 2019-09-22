@@ -10,6 +10,8 @@ import CD19.Parser.Nodes.NodeDataTypes;
 import com.sun.corba.se.impl.orbutil.graph.NodeData;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TreeNode {
 
@@ -135,21 +137,49 @@ public class TreeNode {
         if (tr.nodeValue == NPROG) count = 0;
         out.print(PRINTNODE[tr.nodeValue]+" ");
         count++;
-        if (count%7 == 0) out.println();
+        if (count%10 == 0) out.println();
         if (tr.symbol != null) {
             out.print(tr.symbol.getLexeme() + " ");
             count++;
-            if (count%7 == 0) out.println();
+            if (count%10 == 0) out.println();
         }
-        if (tr.dataType  != null) {
-            out.print(  tr.dataType.toString().toLowerCase() + " ");
-            count++;
-            if (count%7 == 0) out.println();
-        }
+//        if (tr.dataType  != null) {
+//            out.print(  tr.dataType.toString().toLowerCase() + " ");
+//            count++;
+//            if (count%7 == 0) out.println();
+//        }
         if (tr.left   != null) { printTree(out,tr.left);   }
         if (tr.middle != null) { printTree(out,tr.middle); }
         if (tr.right  != null) { printTree(out,tr.right);  }
-        if (tr.nodeValue == NPROG && count%7 != 0) out.println();
+        if (tr.nodeValue == NPROG && count%10 != 0) out.println();
+    }
+
+    //pretty version
+    public String printTree(){
+        return printTree("", true);
+    }
+
+    private String printTree(String prefix, boolean isTail){
+
+        String result = prefix + (isTail ? "\\--- " : "|--- ") + toString() + "\n";
+
+        TreeNode l = getLeft();
+        TreeNode m = getMiddle();
+        TreeNode r = getRight();
+        List<TreeNode> children = new ArrayList<TreeNode>();
+
+        if(l != null) children.add(l);
+        if(m != null) children.add(m);
+        if(r != null) children.add(r);
+
+        for (int i = 0; i < children.size() - 1; i++) {
+            result += children.get(i).printTree(prefix + (isTail ? "     " : "|    "), false);
+        }
+        if(children.size() > 0) {
+            result += children.get(children.size() - 1).printTree(prefix + (isTail ? "     " : "|    "), true);
+        }
+
+        return result;
     }
 
     @Override

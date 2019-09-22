@@ -26,7 +26,7 @@ public class Compiler {
      */
     public void compile(String filePath) {
         List<Token> tokens = lexicalAnalysis(filePath);
-        //parse(tokens);
+        parse(tokens);
     }
 
     /**

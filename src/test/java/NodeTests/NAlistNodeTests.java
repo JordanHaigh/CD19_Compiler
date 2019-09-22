@@ -86,12 +86,10 @@ public class NAlistNodeTests {
         assertEquals(TreeNode.NASGN, alist.getRight().getValue());
 
         assertEquals(TreeNode.NSIMV, alist.getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NASGN, alist.getLeft().getMiddle().getValue());
         assertEquals(TreeNode.NILIT, alist.getLeft().getRight().getValue());
 
 
         assertEquals(TreeNode.NSIMV, alist.getRight().getLeft().getValue());
-        assertEquals(TreeNode.NASGN, alist.getRight().getMiddle().getValue());
         assertEquals(TreeNode.NILIT, alist.getRight().getRight().getValue());
 
     }
@@ -139,20 +137,16 @@ public class NAlistNodeTests {
         assertEquals(TreeNode.NASGNS, alist.getRight().getValue());
 
         assertEquals(TreeNode.NSIMV, alist.getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NASGN, alist.getLeft().getMiddle().getValue());
         assertEquals(TreeNode.NILIT, alist.getLeft().getRight().getValue());
 
         assertEquals(TreeNode.NASGN, alist.getRight().getLeft().getValue());
         assertEquals(TreeNode.NASGN, alist.getRight().getRight().getValue());
 
         assertEquals(TreeNode.NSIMV, alist.getRight().getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NASGN, alist.getRight().getLeft().getMiddle().getValue());
         assertEquals(TreeNode.NILIT, alist.getRight().getLeft().getRight().getValue());
 
         assertEquals(TreeNode.NSIMV, alist.getRight().getRight().getLeft().getValue());
-        assertEquals(TreeNode.NASGN, alist.getRight().getRight().getMiddle().getValue());
         assertEquals(TreeNode.NILIT, alist.getRight().getRight().getRight().getValue());
-
 
     }
 }

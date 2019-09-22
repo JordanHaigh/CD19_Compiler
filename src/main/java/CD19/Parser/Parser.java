@@ -5,6 +5,7 @@ import CD19.Observer.*;
 import CD19.Parser.Nodes.*;
 import CD19.Scanner.Token;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,13 @@ public class Parser implements Subject {
 
             if(tree == null)
                 throw new Exception();
+
+            System.out.println(tree.printTree());
+
+            PrintWriter out = new PrintWriter(System.out);
+            TreeNode.printTree(out, tree);
+            out.flush();
+
 
             return tree;
         }
