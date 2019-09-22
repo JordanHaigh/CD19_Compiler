@@ -30,24 +30,28 @@ public class NEListNode implements Node{
     public void setnBoolNode(NBoolNode boolNode) {
         this.nBoolNode = boolNode;
     }
+
     @Override
     public TreeNode make(Parser parser) {
         //NEXPL	<elist>	::=	<bool> <elistTail>
         TreeNode bool = nBoolNode.make(parser);
         TreeNode tail = tail(parser);
-        if(tail == null)
+        if(tail == null){
             return bool;
-        tail.setRight(tail.getLeft());
-        tail.setLeft(bool);
-        return tail;
-        //return new TreeNode(TreeNode.NEXPL, bool,tail);
+        }
+        else{
+            return new TreeNode(TreeNode.NEXPL, bool, tail);
+        }
     }
 
     private TreeNode tail(Parser parser){
-        //	<elistTail>	::=	ε | , <elist>
+        //	<elistTail>	::=	ε | , <bool> <elistTail>
         if((parser).peekAndConsume(Token.TCOMA)){
             TreeNode bool = nBoolNode.make(parser);
             TreeNode tail = tail(parser);
+            if(tail == null)
+                return bool;
+
             return new TreeNode(TreeNode.NEXPL, bool, tail);
         }
 

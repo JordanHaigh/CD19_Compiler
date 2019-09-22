@@ -127,6 +127,8 @@ public class NEListNodeTests {
     public void sunnyday_bool_coma_bool_coma_bool(){
         List<Token> tokens= new ArrayList<>();
 
+        // 1 + 1 and 2.0 + 2.0 , true - true or false - false , 1 + 1 xor 2.0 + 2.0
+
         tokens.add(new Token(Token.TILIT,1,1,null));
         tokens.add(new Token(Token.TPLUS,1,1,null));
         tokens.add(new Token(Token.TILIT,1,1,null));
@@ -155,7 +157,7 @@ public class NEListNodeTests {
         tokens.add(new Token(Token.TPLUS,1,1,null));
         tokens.add(new Token(Token.TILIT,1,1,null));
 
-        tokens.add(new Token(Token.TAND,1,1,null));
+        tokens.add(new Token(Token.TXOR,1,1,null));
 
         tokens.add(new Token(Token.TFLIT,1,1,null));
         tokens.add(new Token(Token.TPLUS,1,1,null));
@@ -181,22 +183,24 @@ public class NEListNodeTests {
         NEListNode neListNode1 = new NEListNode(nBoolNode1);
         TreeNode elist = neListNode1.make(parser);
 
-        assertEquals(TreeNode.NEXPL, elist.getValue()); //todo HELP
+        assertEquals(TreeNode.NEXPL, elist.getValue());
         assertEquals(TreeNode.NBOOL, elist.getLeft().getValue());
         assertEquals(TreeNode.NEXPL, elist.getRight().getValue());
 
         assertEquals(TreeNode.NADD, elist.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NAND, elist.getLeft().getMiddle().getValue());
         assertEquals(TreeNode.NADD, elist.getLeft().getRight().getValue());
 
         assertEquals(TreeNode.NBOOL, elist.getRight().getLeft().getValue());
         assertEquals(TreeNode.NBOOL, elist.getRight().getRight().getValue());
 
         assertEquals(TreeNode.NSUB, elist.getRight().getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NOR, elist.getRight().getLeft().getMiddle().getValue());
         assertEquals(TreeNode.NSUB, elist.getRight().getLeft().getRight().getValue());
-
 
         assertEquals(TreeNode.NADD, elist.getRight().getRight().getLeft().getValue());
         assertEquals(TreeNode.NADD, elist.getRight().getRight().getRight().getValue());
+        assertEquals(TreeNode.NXOR, elist.getRight().getRight().getMiddle().getValue());
 
 
     }

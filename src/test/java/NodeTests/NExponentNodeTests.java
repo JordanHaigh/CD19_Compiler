@@ -319,13 +319,12 @@ public class NExponentNodeTests {
 
     @Test
     public void sunnyday_fncall_args(){
-        //todo HELP
         List<Token> tokens= new ArrayList<>();
         //func(func2())
         tokens.add(new Token(Token.TIDEN,1,1,"func"));
         tokens.add(new Token(Token.TLPAR,1,1,null));
         tokens.add(new Token(Token.TIDEN,1,1,"func2"));
-        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TLPAR,1,1,null));
         tokens.add(new Token(Token.TRPAR,1,1,null));
         tokens.add(new Token(Token.TRPAR,1,1,null));
 
