@@ -44,10 +44,12 @@ public class NParamNode implements Node{
 
         parser.peekAndConsume(Token.TCNST);
         TreeNode arrdecl =  nArrDeclNode.make(parser); //get narrd
-        SymbolTableRecord record = new SymbolTableRecord(arrdecl.getSymbol().getLexeme(), NodeDataTypes.Array);
 
         TreeNode returnTreeNode = new TreeNode(TreeNode.NARRC, arrdecl, null);
-        returnTreeNode.setSymbol(record);
+
+        SymbolTableRecord constRecord = arrdecl.getSymbol();
+        parser.insertConstantRecord(constRecord);
+
         return returnTreeNode; //map to narrc
 
     }
@@ -61,7 +63,10 @@ public class NParamNode implements Node{
 
         TreeNode tail = nParamTypeTailNode.make(parser);
 
-        SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType());
+        //since we LL(1), we already have the id of the variable, but we need to call param type tail to get the data type
+        SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(),"");//todo scope later
+
+        parser.insertIdentifierRecord(record);
 
         if(tail.getValue() == TreeNode.NARRD){
             TreeNode returnTreeNode = new TreeNode(TreeNode.NARRP, tail, null);

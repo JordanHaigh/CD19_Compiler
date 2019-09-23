@@ -15,14 +15,16 @@ public class Parser implements Subject {
 
     private List<Observer> observers = new ArrayList<>();
 
-//    private SymbolTable symbolTable;
+    private SymbolTable constants, identifiers, types;
 //
 //    private boolean syntacticallyValid = true;
 //    private boolean semanticallyValid = true;
 
     public Parser(List<Token> tokens){
         this.tokens = tokens;
-//        observers.add(errorHandler);
+        constants = new SymbolTable();
+        identifiers = new SymbolTable();
+        types = new SymbolTable();
     }
 
     public Token peek() {return tokens.get(tokenIndex);}
@@ -39,7 +41,7 @@ public class Parser implements Subject {
             if(tree == null)
                 throw new Exception();
 
-            System.out.println(tree.printTree());
+            System.out.println(tree.prettyPrintTree());
 
             PrintWriter out = new PrintWriter(System.out);
             TreeNode.printTree(out, tree);
@@ -65,6 +67,51 @@ public class Parser implements Subject {
             return true;
         }
         return false;
+    }
+
+
+    public SymbolTableRecord lookupTypeRecord(SymbolTableRecord record){
+        return lookup(record, types);
+    }
+
+    public SymbolTableRecord lookupConstantRecord(SymbolTableRecord record){
+        return lookup(record, constants);
+    }
+
+    public SymbolTableRecord lookupIdentifierRecord(SymbolTableRecord record){
+        return lookup(record, identifiers);
+    }
+
+    public SymbolTableRecord lookup(SymbolTableRecord record, SymbolTable symbolTable){
+        if(symbolTable.contains(record)){
+            return record;
+        }
+        else{
+            //throw new IllegalStateException("Variable doesn't exist in symbol table"); //todo readd in semantic
+            return null;
+        }
+    }
+
+    public void  insertTypeRecord(SymbolTableRecord record){
+        insertRecord(record, types);
+    }
+
+    public void  insertConstantRecord(SymbolTableRecord record){
+        insertRecord(record, constants);
+    }
+
+    public void insertIdentifierRecord(SymbolTableRecord record){
+        insertRecord(record, identifiers);
+    }
+
+    public void insertRecord(SymbolTableRecord record, SymbolTable symbolTable){
+        if(!symbolTable.contains(record)){
+            symbolTable.insert(record);
+        }
+        else{
+            //throw new IllegalStateException("Variable already exists in symbol table"); //todo readd in semantic
+        }
+
     }
 
     public NProgNode getProgNode() {

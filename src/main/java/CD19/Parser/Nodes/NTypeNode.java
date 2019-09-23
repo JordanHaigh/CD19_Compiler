@@ -49,7 +49,8 @@ public class NTypeNode implements Node{
         else
             dataType = NodeDataTypes.Struct;
 
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(),dataType);
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(),dataType,""); //todo scope later
+        parser.insertTypeRecord(record);
         return new TreeNode(tail.getValue(), record);
     }
 

@@ -103,7 +103,7 @@ public class NTypeListNodeTests {
 
         when(nExprNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
             parser.consume();
-            SymbolTableRecord rec = new SymbolTableRecord("5", NodeDataTypes.Integer);
+            SymbolTableRecord rec = new SymbolTableRecord("5", NodeDataTypes.Integer,"");
             return new TreeNode(TreeNode.NILIT, rec);
         });
 

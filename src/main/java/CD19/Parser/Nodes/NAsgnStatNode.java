@@ -2,6 +2,7 @@ package CD19.Parser.Nodes;
 
 import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
+import CD19.Scanner.Token;
 
 public class NAsgnStatNode implements Node{
 
@@ -42,6 +43,7 @@ public class NAsgnStatNode implements Node{
         //nodetype will be what is returned from the nasgnop node (nasgn, npleq...)
         
         //return new TreeNode(asgnop.getValue(), vartail, bool);
+        //asgnop.setType(bool.getType()); //todo data types come later
         asgnop.setLeft(vartail);
         asgnop.setRight(bool);
         return asgnop;

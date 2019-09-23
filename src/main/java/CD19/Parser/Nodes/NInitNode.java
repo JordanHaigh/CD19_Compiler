@@ -39,7 +39,8 @@ public class NInitNode implements Node{
         parser.peekAndConsume(Token.TEQUL);
         TreeNode exprTreeNode = nExprNode.make(parser);
 
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(),exprTreeNode.getType());
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(),exprTreeNode.getType(),"");//todo scope
+        parser.insertConstantRecord(record);
 
         return new TreeNode(TreeNode.NINIT, record);
 

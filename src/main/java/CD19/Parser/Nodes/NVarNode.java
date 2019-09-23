@@ -34,8 +34,16 @@ public class NVarNode implements Node{
         if(id.getTokenID() == Token.TIDEN){
             parser.consume();
             TreeNode tail = nVarTailNode.make(parser);
-            SymbolTableRecord record = tail.getSymbol();
-            return new TreeNode(tail.getValue(),record); //todo probs wrong
+
+            if(tail.getValue() == TreeNode.NARRV){
+                return tail;
+            }
+            else{//todo fix vartail return type
+                SymbolTableRecord record = new SymbolTableRecord(id.getStr(),null,"" );
+                tail.setSymbol(record);
+                return tail;
+            }
+
         }
         else
             return new TreeNode(TreeNode.NUNDEF); //error detect

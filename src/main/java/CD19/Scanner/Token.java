@@ -16,6 +16,8 @@ package CD19.Scanner;// COMP3290 CD19 CD19.Compiler
 //
 //
 
+import CD19.Parser.Nodes.NodeDataTypes;
+import CD19.Parser.SymbolTableRecord;
 import CD19.Scanner.States.*;
 
 import java.util.Objects;
@@ -74,7 +76,7 @@ public class Token {
     private int line;    // line number on listing
     private int col;    // character position within line
     private String str;    // lexeme - actual character string from scanner for TIDEN/TILIT/TFLIT/TSTRG
-    //private StRec symbol;	// symbol table entry - set by Parser in Part 3 - not used in Part 1 todo uncomment
+
     // This does require a "stub" class for StRec, however........
 
     public Token(int tid, int line, int pos, String str) {  //Constructor takes in token number, line, column & lexeme

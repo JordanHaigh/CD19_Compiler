@@ -34,7 +34,8 @@ public class NDeclNode implements Node{
         TreeNode paramTypeTail = nParamTypeTailNode.make(parser);
         NodeDataTypes dataType = paramTypeTail.getType();
 
-        SymbolTableRecord record = new SymbolTableRecord(token.getStr(), dataType);
+        SymbolTableRecord record = new SymbolTableRecord(token.getStr(), dataType,"");
+        parser.insertIdentifierRecord(record);
 
         TreeNode returnTreeNode = new TreeNode(paramTypeTail.getValue(), record); //todo this needs serious error checking
         return returnTreeNode;

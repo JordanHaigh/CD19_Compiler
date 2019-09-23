@@ -44,8 +44,7 @@ public class NStatNode implements Node{
             return nReturnStatNode.make(parser);
         }
         else if(token.getTokenID() == Token.TIDEN){
-            parser.consume();
-            return nAsgnStatOrCallStatNode.make(parser);
+            return  nAsgnStatOrCallStatNode.make(parser);
         }
 
         return null; //todo error

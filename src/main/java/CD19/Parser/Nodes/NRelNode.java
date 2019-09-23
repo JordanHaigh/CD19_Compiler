@@ -71,7 +71,7 @@ public class NRelNode implements Node{
             return new TreeNode(relop.getValue(), relop, expr);
         }
         else{
-            return null; //else //todo may cause problems later
+            return null; //else //todo error check
         }
     }
 

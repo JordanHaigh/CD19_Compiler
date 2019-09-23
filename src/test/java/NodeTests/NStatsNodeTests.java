@@ -23,8 +23,6 @@ public class NStatsNodeTests {
     //NSTATS	<stats>	::=	<stat> ;  <StatsTail> | <strstat> <statsTail>
 	//<statsTail>	::=	ε |  {<stat> ;  <StatsTail> | <strstat> <statsTail>}
 
-    //todo just strstat, two strstats, threestrstats
-
     @Mock NBoolNode nBoolNode;
     @Mock NStatsNode nStatsNode;
 

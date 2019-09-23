@@ -1,13 +1,15 @@
 package CD19.Parser.Nodes;
 
 import CD19.Parser.Parser;
+import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
 public class NExponentNode implements Node{
 
-//NILIT | NFLIT | NTRUE | NFALS	   <exponent>	::=	<id> <varOrFNCallTail>|  <intlit> | <reallit>  |
+//NILIT | NFLIT | NTRUE | NFALS	   <exponent>	::=	<varorfncall> |  <intlit> | <reallit>  |
 //                                                  TRUE | FALSE | (<bool>)
+//  <varorfncall> ::= <id> <varOrFNCallTail>
 //	<varOrFNCallTail>	::=	<varTail> | <fnCallTail>
 //	<fncallTail>	::=	( <fnCallElistTail>)
     NBoolNode nBoolNode;
@@ -46,8 +48,8 @@ public class NExponentNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
-        if(parser.peekAndConsume(Token.TIDEN)){
-            return varOrFnCallTail(parser);
+        if(parser.peek().getTokenID() == Token.TIDEN){
+            return varOrFnCall(parser);
         }
         else if(parser.peekAndConsume(Token.TILIT)){
             return new TreeNode(TreeNode.NILIT, null,null);
@@ -70,6 +72,17 @@ public class NExponentNode implements Node{
         return null;
     }
 
+    private TreeNode varOrFnCall(Parser parser){
+        Token id = parser.peek();
+        parser.peekAndConsume(Token.TIDEN);
+
+        TreeNode tail = varOrFnCallTail(parser);
+
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(), ""); //todo fix scope
+        tail.setSymbol(record);
+        return tail;
+    }
+
     private TreeNode varOrFnCallTail(Parser parser){
         //	<varOrFNCallTail>	::=	<varTail> | <fnCallTail>
         Token token = parser.peek();
@@ -77,15 +90,15 @@ public class NExponentNode implements Node{
             return fnCallTail(parser); //fncalltail
         }
         else
-            return nVarTailNode.make(parser);
+            return nVarTailNode.make(parser); //todo fix data types, maybe speak to dan??
     }
 
     private TreeNode fnCallTail(Parser parser){
         //	<fncallTail>	::=	( <fnCallElistTail>)
         parser.peekAndConsume(Token.TLPAR);
         TreeNode fncallelisttail = fnCallElistTail(parser);
-        parser.peekAndConsume(Token.TRPAR);
-        return new TreeNode(TreeNode.NFCALL, fncallelisttail, null);//todo probs wrong
+        parser.peekAndConsume(Token.TRPAR); //todo return data type
+        return new TreeNode(TreeNode.NFCALL, fncallelisttail, null);
     }
 
     private TreeNode fnCallElistTail(Parser parser){

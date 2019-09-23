@@ -1,6 +1,7 @@
 package CD19.Parser.Nodes;
 
 import CD19.Parser.Parser;
+import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
@@ -35,7 +36,9 @@ public class NFuncNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         parser.peekAndConsume(Token.TFUNC);
+        Token id = parser.peek();
         parser.peekAndConsume(Token.TIDEN);
+
         parser.peekAndConsume(Token.TLPAR);
         TreeNode plist = npListNode.make(parser);
         parser.peekAndConsume(Token.TRPAR);
@@ -46,8 +49,15 @@ public class NFuncNode implements Node{
         TreeNode locals = funcBody.getLeft(); //from funcbody
         TreeNode stats = funcBody.getRight(); //from funcbody
 
-        //todo get rtype back into play somehow idk its late and im tired figure it out.
-        return new TreeNode(TreeNode.NFUND, plist, locals, stats);
+        TreeNode treenode = new TreeNode(TreeNode.NFUND, plist, locals, stats);
+
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), rtype.getType(), ""); //todo fix scope
+
+        parser.insertIdentifierRecord(record);
+
+        treenode.setSymbol(record);
+        treenode.setType(rtype.getType());
+        return treenode;
     }
 }
 

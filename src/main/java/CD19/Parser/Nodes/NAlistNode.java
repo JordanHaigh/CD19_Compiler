@@ -36,11 +36,20 @@ public class NAlistNode implements Node{
             TreeNode asgnStat = nAsgnStatNode.make(parser);
             TreeNode tail = tail(parser);
             if(tail == null){
+                SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(),"");//todo fix scope
+                parser.insertIdentifierRecord(record);
+                //todo data types come later
+                asgnStat.setSymbol(record);
+
                 return asgnStat;
             }
             else{
-                //SymbolTableRecord record = new SymbolTableRecord(token.getStr(), ) //todo do this later
-                return new TreeNode(TreeNode.NASGNS, asgnStat, tail); //todo wrong. fix later
+                SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(),"");//todo fix scope
+                parser.insertIdentifierRecord(record);
+
+                asgnStat.setSymbol(record);
+
+                return new TreeNode(TreeNode.NASGNS, asgnStat, tail);
             }
 
         }

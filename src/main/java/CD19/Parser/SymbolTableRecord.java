@@ -10,22 +10,31 @@ public class SymbolTableRecord {
     private String lexeme;
     private NodeDataTypes dataType;
 
+
+
+    private String scope;
+
     public SymbolTableRecord(){
-        this("",NodeDataTypes.Undefined);
+        this("",null, "");
     }
 
-    public SymbolTableRecord(String lexeme, NodeDataTypes dataType){
-        this.dataType = dataType;
+    public SymbolTableRecord(String lexeme, NodeDataTypes dataType, String scope){
         this.lexeme = lexeme;
+        this.dataType = dataType;
+        this.scope = scope;
         symbolTableKey = hashCode();
     }
 
     public int getSymbolTableKey() { return symbolTableKey; }
     public String getLexeme() { return lexeme; }
     public NodeDataTypes getDataType() { return dataType; }
+    public String getScope() { return scope; }
+
 
     public void setLexeme(String lexeme) { this.lexeme = lexeme; }
     public void setDataType(NodeDataTypes dataType) { this.dataType = dataType; }
+    public void setScope(String scope) { this.scope = scope; }
+
 
     @Override
     public boolean equals(Object o) {
@@ -38,7 +47,7 @@ public class SymbolTableRecord {
 
     @Override
     public int hashCode() {
-        return Objects.hash(dataType, lexeme);
+        return Objects.hash(lexeme, scope);
     }
 
 }

@@ -155,11 +155,11 @@ public class TreeNode {
     }
 
     //pretty version
-    public String printTree(){
-        return printTree("", true);
+    public String prettyPrintTree(){
+        return prettyPrintTree("", true);
     }
 
-    private String printTree(String prefix, boolean isTail){
+    private String prettyPrintTree(String prefix, boolean isTail){
 
         String result = prefix + (isTail ? "\\--- " : "|--- ") + toString() + "\n";
 
@@ -173,10 +173,10 @@ public class TreeNode {
         if(r != null) children.add(r);
 
         for (int i = 0; i < children.size() - 1; i++) {
-            result += children.get(i).printTree(prefix + (isTail ? "     " : "|    "), false);
+            result += children.get(i).prettyPrintTree(prefix + (isTail ? "     " : "|    "), false);
         }
         if(children.size() > 0) {
-            result += children.get(children.size() - 1).printTree(prefix + (isTail ? "     " : "|    "), true);
+            result += children.get(children.size() - 1).prettyPrintTree(prefix + (isTail ? "     " : "|    "), true);
         }
 
         return result;
@@ -184,9 +184,16 @@ public class TreeNode {
 
     @Override
     public String toString() {
-        return "TreeNode{ " +
-                +nodeValue +" " +
-                nodeValueString +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("TreeNode{ ")
+                .append(nodeValue)
+                .append(" ")
+                .append(nodeValueString);
+        if(symbol !=null){
+            sb.append("(").append(symbol.getLexeme()).append(")");
+        }
+        sb.append("}");
+
+        return sb.toString();
     }
 }

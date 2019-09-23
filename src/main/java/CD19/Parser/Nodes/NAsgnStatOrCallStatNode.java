@@ -1,12 +1,14 @@
 package CD19.Parser.Nodes;
 
 import CD19.Parser.Parser;
+import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
 public class NAsgnStatOrCallStatNode implements Node{
 
-//	<asgnStatOrCallStat>	::= 	(<callStat>) | <asgnStat>
+//	<asgnStatOrCallStat>	::= 	<id><tail>
+//	<tail> ::= (<callStat>) | <asgnStat>
 
     NCallStatNode nCallStatNode;
     NAsgnStatNode nAsgnStatNode;
@@ -35,7 +37,21 @@ public class NAsgnStatOrCallStatNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
+        parser.peekAndConsume(Token.TIDEN);
 
+        TreeNode tail = tail(parser);
+
+        SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(), ""); //todo fix scope
+        tail.getLeft().setSymbol(record);
+
+        return tail;
+    }
+
+
+
+    private TreeNode tail(Parser parser){
+        Token token = parser.peek();
+        //todo fix type for semantics
         if(token.getTokenID() == Token.TLPAR){
             //(<callStat>)
             parser.consume();
