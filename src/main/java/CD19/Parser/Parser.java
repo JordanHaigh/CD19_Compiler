@@ -51,8 +51,9 @@ public class Parser implements Subject {
             return tree;
         }
         catch(Exception e){
-            notifyObservers(new ObservableImmediateErrorMessage("Error occurred whilst parsing the program"));
-
+            //notifyObservers(new ObservableImmediateErrorMessage("Error occurred whilst parsing the program"));
+            e.printStackTrace();
+            System.out.println();
 //            syntacticallyValid = false;
 //            semanticallyValid = false;
 
@@ -116,6 +117,7 @@ public class Parser implements Subject {
 
     public NProgNode getProgNode() {
         // Create exponent node separately or else we get a recursive loop
+        //bool
         NExponentNode nExponentNode = NExponentNode.INSTANCE();
         NReptStatNode nReptStatNode = NReptStatNode.INSTANCE();
         NAsgnStatNode nAsgnStatNode= NAsgnStatNode.INSTANCE();
@@ -123,12 +125,15 @@ public class Parser implements Subject {
         NForStatNode nForStatNode = NForStatNode.INSTANCE();
         NIfStatNode nIfStatNode = NIfStatNode.INSTANCE();
 
+        //expr loop
         NInitNode nInitNode = NInitNode.INSTANCE();
         NTypeNode nTypeNode = NTypeNode.INSTANCE();
         NRelNode nRelNode = NRelNode.INSTANCE();
         NPrintItemNode nPrintItemNode = NPrintItemNode.INSTANCE();
         NReturnStatNode nReturnStatNode = NReturnStatNode.INSTANCE();
+        NVarTailNode nVarTailNode = NVarTailNode.INSTANCE();
 
+        ///stat
         NFuncBodyNode nFuncBodyNode = NFuncBodyNode.INSTANCE();
         //rept stat done
         //for stat done
@@ -139,6 +144,7 @@ public class Parser implements Subject {
         NProgNode nProgNode = NProgNode.INSTANCE();
 
         // Fix broken recursive loop
+        //bool
         nExponentNode.setnBoolNode(NBoolNode.INSTANCE());
         nReptStatNode.setnBoolNode(NBoolNode.INSTANCE());
         nAsgnStatNode.setnBoolNode(NBoolNode.INSTANCE());
@@ -146,12 +152,15 @@ public class Parser implements Subject {
         nForStatNode.setnBoolNode(NBoolNode.INSTANCE());
         nIfStatNode.setnBoolNode(NBoolNode.INSTANCE());
 
+        //bool
         nInitNode.setnExprNode(NExprNode.INSTANCE());
         nTypeNode.setnExprNode(NExprNode.INSTANCE());
         nRelNode.setnExprNode(NExprNode.INSTANCE());
         nPrintItemNode.setnExprNode(NExprNode.INSTANCE());
         nReturnStatNode.setnExprNode(NExprNode.INSTANCE());
+        nVarTailNode.setnExprNode(NExprNode.INSTANCE());
 
+        //stats
         nFuncBodyNode.setnStatsNode(NStatsNode.INSTANCE());
         nReptStatNode.setnStatsNode(NStatsNode.INSTANCE());
         nForStatNode.setnStatsNode(NStatsNode.INSTANCE());

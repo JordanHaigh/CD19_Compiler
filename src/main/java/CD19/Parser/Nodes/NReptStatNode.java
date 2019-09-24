@@ -32,7 +32,7 @@ public class NReptStatNode implements Node{
     }
 
     public void setnStatsNode(NStatsNode nStatsNode) {
-        this.nstatsNode = nstatsNode;
+        this.nstatsNode = nStatsNode;
     }
 
     @Override

@@ -1,0 +1,65 @@
+/-- d) several that you expect to run successfully when later compiled by your compiler (and also part 3).
+/-- These should include at least one that has function(s)/procedure(s) using all three methods of parameter passing that are allowed in CD19.
+/-- the three type are simple variable passing(pass by value), array descriptor copy and const array passing
+
+
+
+CD19 multiple_adding_program_with_arrays_and_stuff
+constants
+	LENGTH = 20
+
+types
+	number is
+		no : integer
+	end
+
+numbers is array [LENGTH] of number
+
+arrays
+	array1 : numbers,
+	array2 : numbers
+
+/--  populates parameter array with multiples of the parameter integer
+function populateArrayWithMultiples(a1: numbers, no: integer):void
+  counter: integer
+  begin
+    	for(counter = 0; counter < LENGTH)/-- iterate through array
+        a1[counter].no = no*(counter+1);/-- populate array
+        counter +=1;
+      end
+  end
+
+
+/-- adds the second parameter array into the first
+function addArrays(a1 : numbers, const a2 : numbers): void
+	counter: integer
+	begin
+		for(counter = 0; counter < LENGTH)
+			array1[counter].no += array2[counter].no;
+			counter+=1;
+		end
+	end
+
+main
+    i : integer,
+    x : integer,
+    y : integer
+
+begin
+
+  /-- populates 2 arrays
+  x = 5;
+  y = 12;
+  populateArrayWithMultiples(array1, x);
+  populateArrayWithMultiples(array2, y);
+
+  /-- adds all numbers in array2 to array1
+  addArrays(array1,array2);
+
+  /-- prints the result
+	for(i = 0; i < LENGTH)
+    printline array1[i].no;
+		i+=1;
+	end
+end
+CD19 multiple_adding_program_with_arrays_and_stuff

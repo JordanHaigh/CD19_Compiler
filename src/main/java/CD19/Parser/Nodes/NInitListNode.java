@@ -32,16 +32,24 @@ public class NInitListNode implements Node {
         //NILIST	<initlist>	::=	<init> <initListTail>
         TreeNode init = nInitNode.make(parser);
         TreeNode tail = tail(parser);
+        if(tail == null)
+            return init;
 
         return new TreeNode(TreeNode.NILIST, init, tail);
     }
 
 
     private TreeNode tail(Parser parser){
-        //	<initListTail>	::=	ε | ,<initlist>
+        //	<initListTail>	::=	ε | ,<init> <initListTail>>
         if(parser.peekAndConsume(Token.TCOMA)){
-            return this.make(parser);
+            TreeNode init = nInitNode.make(parser);
+            TreeNode tail = tail(parser);
+            if(tail == null)
+                return init;
+            return new TreeNode(TreeNode.NILIST, init, tail);
+
         }
+
         return null; //eps transition
 
     }

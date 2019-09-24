@@ -1,0 +1,94 @@
+
+/-- e) Write a program in CD19 that will compute the area of a polygon from a set of (x, y) Cartesian points.
+/-- The program should have functions to (i) input the number of points (up to 20) and the
+/-- points themselves, and (ii) compute the area of the polygon.
+/-- The main program should be used to output the result.
+
+CD19 area_calculator
+constants
+	LENGTH = 20
+
+types
+	point is
+		x : real,
+		y : real
+	end
+
+points is array [LENGTH+1] of point /-- final point needs to be a copy of the first point therefore the array needs to be LENGTH +1 to fit this copy
+
+arrays
+	inputPoints : points
+
+/-- given a points array and the number of points the shape has calculate the area
+function calculateArea(pts : points, noOfPoints: integer): real
+
+	sum : real,
+	counter: integer
+
+	begin
+
+		/-- copy the first point to the end of the array
+		pts[noOfPoints].x = pts[0].x;
+		pts[noOfPoints].y = pts[0].y;
+		noOfPoints+=1;
+
+
+		for(sum = 0, counter = 0; counter <= noOfPoints-2)
+			sum += (pts[counter].x + pts[counter+1].x) * (pts[counter+1].y - pts[counter].y);
+			counter+=1;
+		end
+
+		/-- absolute value
+		if(sum < 0)
+			sum *= 0-1;
+		end
+		/--divide the sum by 2 then return
+		return sum/2;
+	end
+
+/-- gets the number of points the shape has from the user
+function getNoOfInputs():integer
+  noOfPoints : integer
+  begin
+
+		repeat()
+
+	    printline "gimmie the number of points you want to input";
+      input noOfPoints;
+
+			/-- a shape needs to have at least 3 points (my assumption) and cannot have more points than the array can hold
+      if(noOfPoints<=2 or noOfPoints>LENGTH)
+        printline "The shape must have at least 3 points and at most " , length, " points";
+      end
+    until (noOfPoints > 2 and noOfPoints <= LENGTH);
+
+    return noOfPoints;
+  end
+
+/-- gets the input points from the user
+function getInputPoints(arrayToPopulate: points, noOfPoints: integer ): void
+	counter: integer
+
+	begin
+
+		/-- iterate through the array and ask the user to enter values for the x and y coordinates
+		for(counter = 0; counter<noOfPoints)
+			printline "please enter the X and Y coordinatates for point ", counter+1, "/", noOfPoints;
+			input inputPoints[counter].x, inputPoints[counter].y;
+			counter +=1;
+		end
+
+	end
+
+main
+	noOfPts : integer,
+	totalArea : real
+
+begin
+	noOfPts = getNoOfInputs();/-- get the number of points from the user
+	getInputPoints(inputPoints, noOfPts);/-- get the points from the user
+	totalArea = calculateArea(inputPoints, noOfPoints); /-- calculate the area of the shape given by the user
+	printline "areas of shape is ", totalArea; /-- output area
+
+end
+CD19 area_calculator
