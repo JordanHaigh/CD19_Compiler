@@ -1,7 +1,7 @@
 CD19 PolygonArea
 
 constants
-    MAXARRLENGTH = 20;
+    MAXARRLENGTH = 20
 
 types
     point is
@@ -20,16 +20,16 @@ function inputPoints() : integer
     i : integer
 begin
     repeat()
-        printline "Enter the number of points";
-        input numberOfPoints;
-    until numberOfPoints > 2 && numberOfPoints <=MAXARRLENGTH;
+        printline "Enter the number of points"
+        input numberOfPoints
+    until numberOfPoints > 2 && numberOfPoints <=MAXARRLENGTH
 
     for(i=0; i < numberOfPoints)
-        printline "Enter X and Y for point", i,".";
-        input polygon[i].x, polygon[i].y;
+        printline "Enter X and Y for point", i,"."
+        input polygon[i].x, polygon[i].y
     end
 
-    return numberOfPoints;
+    return numberOfPoints
 end
 
 
@@ -48,19 +48,19 @@ begin
     end
 
     area = (1/2) * sum;
-    return area;
+    return area
 end
 
 
 
 
 main
-    numberOfPoints : integer
+    numberOfPoints : integer,
     area : real
 begin
     numberOfPoints = inputPoints();
     area = computeArea(polygon, numberOfPoints)
-    printline "The area is: ", area, ".";
+    printline "The area is: ", area, "."
 end
 
 
