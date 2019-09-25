@@ -37,12 +37,12 @@ public class NMainBodyNode implements Node {
     @Override
     public TreeNode make(Parser parser) {
         parser.peekAndConsume(Token.TMAIN);
+        parser.enterScope("main");
         TreeNode slist = nsListNode.make(parser);
         parser.peekAndConsume(Token.TBEGN);
         TreeNode stats = nStatsNode.make(parser);
         parser.peekAndConsume(Token.TEND);
-
-
+        parser.leaveScope();
         return new TreeNode(TreeNode.NMAIN, slist, stats);
     }
 

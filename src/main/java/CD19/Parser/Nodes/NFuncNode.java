@@ -44,14 +44,17 @@ public class NFuncNode implements Node{
         parser.peekAndConsume(Token.TRPAR);
         parser.peekAndConsume(Token.TCOLN);
         TreeNode rtype = nrTypeNode.make(parser);
+
+        parser.enterScope("function_"+id.getStr());
         TreeNode funcBody = nFuncBodyNode.make(parser);
+        parser.leaveScope();
 
         TreeNode locals = funcBody.getLeft(); //from funcbody
         TreeNode stats = funcBody.getRight(); //from funcbody
 
         TreeNode treenode = new TreeNode(TreeNode.NFUND, plist, locals, stats);
 
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), rtype.getType(), ""); //todo fix scope
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), rtype.getType(), "function_"+id.getStr()); //todo fix scope
 
         parser.insertIdentifierRecord(record);
 

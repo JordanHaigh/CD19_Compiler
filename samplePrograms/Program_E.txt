@@ -14,7 +14,7 @@ types
 		y : real
 	end
 
-points is array [LENGTH+1] of point /-- final point needs to be a copy of the first point therefore the array needs to be LENGTH +1 to fit this copy
+    points is array [LENGTH+1] of point /-- final point needs to be a copy of the first point therefore the array needs to be LENGTH +1 to fit this copy
 
 arrays
 	inputPoints : points

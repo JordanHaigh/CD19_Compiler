@@ -35,7 +35,9 @@ public class NProgNode implements Node{
         //error check
         Token startId = parser.peek();
         parser.peekAndConsume(Token.TIDEN); //name of program
+
         //error check
+        parser.enterScope(startId.getStr());
 
         TreeNode nGlobTreeNode = nGlobNode.make(parser);
         TreeNode nFuncsTreeNode = nFuncsNode.make(parser);
@@ -56,6 +58,8 @@ public class NProgNode implements Node{
         TreeNode nProgTreeNode = new TreeNode(TreeNode.NPROG,nGlobTreeNode,nFuncsTreeNode, nMainTreeNode);
 
         nProgTreeNode.setSymbol(startRecord); //todo fix endrecord in semantic
+
+        parser.leaveScope();
 
         return nProgTreeNode;
     }

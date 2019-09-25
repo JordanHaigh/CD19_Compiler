@@ -78,7 +78,7 @@ public class NExponentNode implements Node{
 
         TreeNode tail = varOrFnCallTail(parser);
 
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(), ""); //todo fix scope
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(), id.getStr()+"_"+parser.getScope()); //todo fix scope
         tail.setSymbol(record);
         return tail;
     }

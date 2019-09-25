@@ -1,0 +1,53 @@
+CD19 program
+
+constants
+	aconst = 20
+
+/--	,bconst = 20
+/--	,cconst = 20
+
+types
+	astruct is
+		aint : integer
+/--		,bint : integer
+/--		,cint : integer
+
+	end
+
+/--	bstruct is
+/--		aint : integer
+/--		,bint : integer
+/--		,cint : integer
+/--    end
+
+/-- cstruct is
+/--     aint : integer
+/--     ,bint : integer
+/--     ,cint : integer
+/--    end
+
+numbersA is array [aconst] of astruct
+
+arrays
+	aarray : numbers,
+	barray : numbers,
+	carray : numbers
+
+
+
+function a():void
+    a : integer
+    begin
+        a=5;
+    end
+
+
+main
+    a : integer
+
+begin
+
+  a = 5;
+
+end
+CD19 program

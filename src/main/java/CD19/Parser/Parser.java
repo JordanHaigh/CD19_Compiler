@@ -8,6 +8,7 @@ import CD19.Scanner.Token;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Parser implements Subject {
     private List<Token> tokens;
@@ -16,6 +17,8 @@ public class Parser implements Subject {
     private List<Observer> observers = new ArrayList<>();
 
     private SymbolTable constants, identifiers, types;
+    private Stack<String> scopeStack = new Stack<>();
+
 //
 //    private boolean syntacticallyValid = true;
 //    private boolean semanticallyValid = true;
@@ -25,8 +28,20 @@ public class Parser implements Subject {
         constants = new SymbolTable();
         identifiers = new SymbolTable();
         types = new SymbolTable();
+        scopeStack.push("");
     }
 
+    public void enterScope(String scope){
+        scopeStack.push(scope);
+    }
+
+    public void leaveScope(){
+        scopeStack.pop();
+    }
+
+    public String getScope(){
+        return scopeStack.peek();
+    }
     public Token peek() {return tokens.get(tokenIndex);}
     public Token peek(int index){return tokens.get(index);}
     public void consume(){tokenIndex++;}
@@ -191,7 +206,6 @@ public class Parser implements Subject {
 
     @Override
     public String toString(){
-
         try{
             return "Current Token: " + tokens.get(tokenIndex);
         }catch(Exception e){

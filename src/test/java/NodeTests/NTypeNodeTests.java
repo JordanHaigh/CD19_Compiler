@@ -1,5 +1,6 @@
 package NodeTests;
 
+
 import CD19.Parser.Nodes.*;
 import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
@@ -17,9 +18,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class NTypesNodeTests {
+public class NTypeNodeTests {
 
-	//<types>	::=	types <typelist> | eps
+    //NRTYPE|NATYPE	<type>	::=	<anyFuckingID> is <typeTail>
+    //	<typeTail>	::=	<fields> end |  array [<expr>] of <structid>
 
     @Mock NFieldsNode nFieldsNode;
     @Mock NExprNode nExprNode;
@@ -31,21 +33,11 @@ public class NTypesNodeTests {
         MockitoAnnotations.initMocks(this);
     }
 
+
     @Test
-    public void sunnyday_typelist(){
+    public void fieldsTest_struct(){
         SetupMocks.setup();
         List<Token> tokens= new ArrayList<>();
-
-        tokens.add(new Token(Token.TTYPS,1,1,null));
-        tokens.add(new Token(Token.TIDEN,1,1,"struct"));
-        tokens.add(new Token(Token.TIS,1,1,null));
-        tokens.add(new Token(Token.TIDEN,1,1,"fields here"));
-        tokens.add(new Token(Token.TEND,1,1,null));
-
-        tokens.add(new Token(Token.TIDEN,1,1,"struct"));
-        tokens.add(new Token(Token.TIS,1,1,null));
-        tokens.add(new Token(Token.TIDEN,1,1,"fields here"));
-        tokens.add(new Token(Token.TEND,1,1,null));
 
         tokens.add(new Token(Token.TIDEN,1,1,"struct"));
         tokens.add(new Token(Token.TIS,1,1,null));
@@ -68,25 +60,25 @@ public class NTypesNodeTests {
         });
 
         nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        TreeNode type = nTypeNode.make(parser);
 
-        NTypeListNode nTypeListNode = new NTypeListNode(nTypeNode);
-        NTypesNode nTypesNode = new NTypesNode(nTypeListNode);
-
-        TreeNode types = nTypesNode.make(parser);
-
-        assertEquals(TreeNode.NTYPEL, types.getValue());
-        assertEquals(TreeNode.NRTYPE, types.getLeft().getValue());
-        assertEquals(TreeNode.NTYPEL, types.getRight().getValue());
-        assertEquals(TreeNode.NRTYPE, types.getRight().getLeft().getValue());
-        assertEquals(TreeNode.NRTYPE, types.getRight().getRight().getValue());
-
+        assertEquals(TreeNode.NRTYPE, type.getValue());
 
     }
 
     @Test
-    public void sunnyday_eps(){
+    public void type_array(){
         SetupMocks.setup();
         List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"arr"));
+        tokens.add(new Token(Token.TIS,1,1,null));
+        tokens.add(new Token(Token.TARAY,1,1,null));
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"expr here "));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TOF,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"struct id here"));
 
         tokens.add(new Token(Token.TEND,1,1,null));
 
@@ -104,14 +96,10 @@ public class NTypesNodeTests {
         });
 
         nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        TreeNode type = nTypeNode.make(parser);
 
-        NTypeListNode nTypeListNode = new NTypeListNode(nTypeNode);
-        NTypesNode nTypesNode = new NTypesNode(nTypeListNode);
-
-        TreeNode types = nTypesNode.make(parser);
-
-        assertEquals(null, types);
-
+        assertEquals(TreeNode.NATYPE, type.getValue());
 
     }
+
 }

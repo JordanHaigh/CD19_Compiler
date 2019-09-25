@@ -36,6 +36,12 @@ public class NVarNode implements Node{
             TreeNode tail = nVarTailNode.make(parser);
 
             if(tail.getValue() == TreeNode.NARRV){
+                //look up types symbol table with id
+                //get strec
+                //now we have strec of struct
+                //now i need to get the members of the struct
+                //use the name of the struct (scope) to get the member
+
                 return tail;
             }
             else{//todo fix vartail return type

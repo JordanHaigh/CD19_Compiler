@@ -40,22 +40,27 @@ public class NTypeNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         Token id = parser.peek();
-        parser.consume();
+        parser.peekAndConsume(Token.TIDEN);
+
         parser.peekAndConsume(Token.TIS);
+
+        parser.enterScope(id.getStr()+"_struct");
         TreeNode tail = tail(parser);
+        parser.leaveScope();
+
         NodeDataTypes dataType;
         if(tail.getValue() == TreeNode.NATYPE)
             dataType = NodeDataTypes.Array;
         else
             dataType = NodeDataTypes.Struct;
 
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(),dataType,""); //todo scope later
-        parser.insertTypeRecord(record);
-        return new TreeNode(tail.getValue(), record);
+
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(),dataType,parser.getScope()); //global (program) scope
+        tail.setSymbol(record);
+        return tail;
     }
 
     private TreeNode tail(Parser parser){
-        //todo struct must go "<fields> end" and arrayid must go to "array [<expr>]"...
         Token token = parser.peek();
         if(token.getTokenID() == Token.TARAY){
             return arrayTail(parser);
@@ -72,7 +77,7 @@ public class NTypeNode implements Node{
         TreeNode exprTNode = nExprNode.make(parser);
         parser.peekAndConsume(Token.TRBRK);
         parser.peekAndConsume(Token.TOF);
-        parser.peekAndConsume(Token.TIDEN); //check struct id is legit
+        parser.peekAndConsume(Token.TIDEN); //todo check struct id is legit
 
         return new TreeNode(TreeNode.NATYPE, exprTNode,null);
     }

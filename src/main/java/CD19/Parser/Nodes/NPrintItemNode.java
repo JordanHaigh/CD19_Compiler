@@ -1,6 +1,7 @@
 package CD19.Parser.Nodes;
 
 import CD19.Parser.Parser;
+import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
@@ -43,7 +44,8 @@ public class NPrintItemNode implements Node{
         }
         else{ //return string
             parser.consume(); //consume string token. we done with it
-            return new TreeNode(TreeNode.NSTRG,null,null);
+            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), NodeDataTypes.String, token.getStr()+"_"+parser.getScope());//todo scope
+            return new TreeNode(TreeNode.NSTRG,record);
         }
     }
 }

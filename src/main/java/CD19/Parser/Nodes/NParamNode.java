@@ -64,7 +64,7 @@ public class NParamNode implements Node{
         TreeNode tail = nParamTypeTailNode.make(parser);
 
         //since we LL(1), we already have the id of the variable, but we need to call param type tail to get the data type
-        SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(),"");//todo scope later
+        SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(),token.getStr()+"_"+parser.getScope());//todo scope later
 
         parser.insertIdentifierRecord(record);
 

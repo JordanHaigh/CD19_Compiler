@@ -8,7 +8,7 @@ public class NFieldsNode implements Node{
 
 
     //NFLIST	<fields>	::=	<sdecl> <fieldsTail>
-    //	<fieldsTail>	::=	eps  | , <fields>
+    //	<fieldsTail>	::=	eps  | , <sdecl> <fieldsTail>
 
     NSDeclNode sDeclNode;
 
@@ -34,13 +34,20 @@ public class NFieldsNode implements Node{
     public TreeNode make(Parser parser) {
         TreeNode sDecl = sDeclNode.make(parser);
         TreeNode tail = tail(parser);
+        if(tail == null)
+            return sDecl;
 
         return new TreeNode(TreeNode.NFLIST, sDecl, tail);
     }
 
     private TreeNode tail(Parser parser){
         if(parser.peekAndConsume(Token.TCOMA)){
-            return this.make(parser); //back to fields transition
+            TreeNode sDecl = sDeclNode.make(parser);
+            TreeNode tail = tail(parser);
+            if(tail == null)
+                return sDecl;
+
+            return new TreeNode(TreeNode.NFLIST, sDecl, tail);
         }
 
         return null; //eps trans

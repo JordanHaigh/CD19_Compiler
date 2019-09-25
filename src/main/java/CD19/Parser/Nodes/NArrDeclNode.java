@@ -25,7 +25,7 @@ public class NArrDeclNode implements Node{
             Token type = parser.peek();
             if(type.getTokenID() == Token.TIDEN){
                 parser.consume();
-                SymbolTableRecord record = new SymbolTableRecord(id.getStr(),NodeDataTypes.Array,"");//todo scope later
+                SymbolTableRecord record = new SymbolTableRecord(id.getStr(),NodeDataTypes.Array,parser.getScope());//todo scope later
                 parser.insertTypeRecord(record);
 
                 TreeNode treeNode = new TreeNode(TreeNode.NARRD, record);

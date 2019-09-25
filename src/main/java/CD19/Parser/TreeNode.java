@@ -191,6 +191,7 @@ public class TreeNode {
                 .append(nodeValueString);
         if(symbol !=null){
             sb.append("(").append(symbol.getLexeme()).append(")");
+            sb.append("Scope: " + symbol.getScope());
         }
         sb.append("}");
 

@@ -25,12 +25,12 @@ import static org.mockito.Mockito.when;
 public class NFieldsNodeTests {
 
     //NFLIST	<fields>	::=	<sdecl> <fieldsTail>
-    //	<fieldsTail>	::=	ε  | , <fields>
+    //	<fieldsTail>	::=	ε  | , <sdecl> <fieldsTail>
 
 
 
     @Test
-    public void fieldsNode_epsTest(){
+    public void fieldsNode_onedecl(){
         List<Token> tokens= new ArrayList<>();
 
         // age : integer    end
@@ -38,38 +38,33 @@ public class NFieldsNodeTests {
         tokens.add(new Token(Token.TIDEN,1,1,"age"));
         tokens.add(new Token(Token.TCOLN,1,1,null));
         tokens.add(new Token(Token.TINTG,1,1,null));
+
         tokens.add(new Token(Token.TEND,1,1,null));
 
         Parser parser = new Parser(tokens);
 
         NFieldsNode nFieldsNode = new NFieldsNode();
-        TreeNode fieldsList = nFieldsNode.make(parser);
+        TreeNode fields = nFieldsNode.make(parser);
 
-        assertEquals(TreeNode.NFLIST, fieldsList.getValue());
-        assertEquals(TreeNode.NSDECL, fieldsList.getLeft().getValue());
-        assertEquals(null, fieldsList.getRight());
+        assertEquals(TreeNode.NSDECL, fields.getValue());
 
     }
 
     @Test
-    public void typeList_notEpsTest(){
+    public void typeList_twosdelcs(){
         List<Token> tokens= new ArrayList<>();
 
-        // age : integer , height : real, deceased: boolean   end
+        // age : integer , height : real
 
         tokens.add(new Token(Token.TIDEN,1,1,"age"));
         tokens.add(new Token(Token.TCOLN,1,1,null));
         tokens.add(new Token(Token.TINTG,1,1,null));
+
         tokens.add(new Token(Token.TCOMA,1,1,null));
 
         tokens.add(new Token(Token.TIDEN,1,1,"height"));
         tokens.add(new Token(Token.TCOLN,1,1,null));
         tokens.add(new Token(Token.TREAL,1,1,null));
-        tokens.add(new Token(Token.TCOMA,1,1,null));
-
-        tokens.add(new Token(Token.TIDEN,1,1,"deceased"));
-        tokens.add(new Token(Token.TCOLN,1,1,null));
-        tokens.add(new Token(Token.TBOOL,1,1,null));
 
         tokens.add(new Token(Token.TEND,1,1,null));
 
@@ -80,12 +75,44 @@ public class NFieldsNodeTests {
 
         assertEquals(TreeNode.NFLIST, fieldsList.getValue());
         assertEquals(TreeNode.NSDECL, fieldsList.getLeft().getValue());
+        assertEquals(TreeNode.NSDECL, fieldsList.getRight().getValue());
 
+    }
+
+    @Test
+    public void typeList_threesdelcs(){
+        List<Token> tokens= new ArrayList<>();
+
+        // age : integer , height : real ,idk : real
+
+        tokens.add(new Token(Token.TIDEN,1,1,"age"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TINTG,1,1,null));
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        tokens.add(new Token(Token.TIDEN,1,1,"height"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TREAL,1,1,null));
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        tokens.add(new Token(Token.TIDEN,1,1,"height"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TREAL,1,1,null));
+
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NFieldsNode nFieldsNode = new NFieldsNode();
+        TreeNode fieldsList = nFieldsNode.make(parser);
+
+        assertEquals(TreeNode.NFLIST, fieldsList.getValue());
+        assertEquals(TreeNode.NSDECL, fieldsList.getLeft().getValue());
         assertEquals(TreeNode.NFLIST, fieldsList.getRight().getValue());
         assertEquals(TreeNode.NSDECL, fieldsList.getRight().getLeft().getValue());
+        assertEquals(TreeNode.NSDECL, fieldsList.getRight().getRight().getValue());
 
-        assertEquals(TreeNode.NFLIST, fieldsList.getRight().getRight().getValue());
-        assertEquals(TreeNode.NSDECL, fieldsList.getRight().getRight().getLeft().getValue());
-        assertEquals(null, fieldsList.getRight().getRight().getRight());
     }
 }
