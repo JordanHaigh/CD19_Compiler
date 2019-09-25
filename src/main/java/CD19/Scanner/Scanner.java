@@ -1,10 +1,6 @@
 package CD19.Scanner;
 
-import CD19.ErrorHandler;
-import CD19.Observer.LexicalErrorMessage;
-import CD19.Observer.ObservableMessage;
-import CD19.Observer.Observer;
-import CD19.Observer.Subject;
+import CD19.Observer.*;
 import CD19.Scanner.States.*;
 
 import java.util.ArrayList;
@@ -21,11 +17,13 @@ public class Scanner implements Subject {
     private StateMachine stateMachine; //state pattern -  https://sourcemaking.com/design_patterns/state
 
     private List<Observer> observers = new ArrayList<>();
+    private List<LexicalErrorMessage> errorMessagesForSourceLine = new ArrayList<>();
 
     public Scanner(CodeFileReader codeFileReader) {
 
         this.codeFileReader = codeFileReader;
         this.stateMachine = new StateMachine();
+
     }
 
     /**
@@ -41,11 +39,18 @@ public class Scanner implements Subject {
         while (!codeFileReader.hasReachedEOF()) {
             Token token = getNextToken();
             if(token.isUndefined()){
-                //add to listing
-                notifyObservers(new LexicalErrorMessage("lexical error: " + token.getStr() + " [" + token.getCol() + ":" + token.getLine() + "]"));
+                //add to error list
+                errorMessagesForSourceLine.add(new LexicalErrorMessage( "Lexical Error: " + token.getStr(), token.getLine(), token.getCol()));
             }
             allTokens.add(token);
+
         }
+
+        //send error list off to listing file
+        for(LexicalErrorMessage errorMessage : errorMessagesForSourceLine){
+            notifyObservers(errorMessage);
+        }
+
 
         return allTokens;
     }
@@ -69,8 +74,9 @@ public class Scanner implements Subject {
 
             lexemeBuffer.append(nextChar); //we append here and may take characters away when we are building the token.
             // the final state will determine how many characters to remove from the lexeme
-            if(lexemeBuffer.toString().equals("\n"))
+            if(lexemeBuffer.toString().equals("\n")){
                 lexemeBuffer = new StringBuilder(); //reset lexeme buffer otherwise it will mess with column numbers
+            }
             stateMachine.updateState(nextChar);
 
 

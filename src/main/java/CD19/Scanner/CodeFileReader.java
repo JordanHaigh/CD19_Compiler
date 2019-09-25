@@ -99,21 +99,13 @@ public class CodeFileReader {
     }
 
 
-    public List<String> getCodeLines() {
-        return codeLines;
-    }
 
-    public int getLineNumber() {
-        return lineNumber + 1;
-    }
-
-    public int getColumnNumber() {
-        return columnNumber + 1;
-    }
-
-    public boolean hasReachedEOF() {
-        return reachedEOF;
-    }
+    public String getCodeLine(int lineNumber){ return codeLines.get(lineNumber); }
+    public List<String> getCodeLines() { return codeLines; }
+    public int getLineNumber() { return lineNumber + 1; }
+    public int debug_getLineNumber() { return lineNumber; }
+    public int getColumnNumber() { return columnNumber + 1; }
+    public boolean hasReachedEOF() { return reachedEOF; }
 
 
 }

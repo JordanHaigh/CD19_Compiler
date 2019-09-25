@@ -1,6 +1,5 @@
 package CD19.Parser;
 
-import CD19.ErrorHandler;
 import CD19.Observer.*;
 import CD19.Parser.Nodes.*;
 import CD19.Scanner.Token;
@@ -18,6 +17,8 @@ public class Parser implements Subject {
 
     private SymbolTable constants, identifiers, types;
     private Stack<String> scopeStack = new Stack<>();
+
+    private List<SyntacticErrorMessage> syntacticErrors = new ArrayList<>();
 
 //
 //    private boolean syntacticallyValid = true;
@@ -37,6 +38,11 @@ public class Parser implements Subject {
 
     public void leaveScope(){
         scopeStack.pop();
+    }
+
+    public void addSyntacticErrorMessage(String message, int line, int column)
+    {
+        syntacticErrors.add(new SyntacticErrorMessage(message,line, column));
     }
 
     public String getScope(){

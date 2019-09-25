@@ -41,7 +41,7 @@ public class NAsgnStatOrCallStatNode implements Node{
 
         TreeNode tail = tail(parser);
 
-        SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(), token.getStr()+"_"+parser.getScope()); //todo fix scope
+        SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(), token.getStr()+"_"+parser.getScope());
         tail.getLeft().setSymbol(record);
 
         return tail;

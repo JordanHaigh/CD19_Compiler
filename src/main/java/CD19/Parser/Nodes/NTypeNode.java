@@ -78,7 +78,6 @@ public class NTypeNode implements Node{
         parser.peekAndConsume(Token.TRBRK);
         parser.peekAndConsume(Token.TOF);
         parser.peekAndConsume(Token.TIDEN); //todo check struct id is legit
-
         return new TreeNode(TreeNode.NATYPE, exprTNode,null);
     }
 

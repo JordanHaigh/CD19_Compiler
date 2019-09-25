@@ -55,7 +55,7 @@ public class NFuncNode implements Node{
 
         TreeNode treenode = new TreeNode(TreeNode.NFUND, plist, locals, stats);
 
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), rtype.getType(), "function_"+id.getStr()); //todo fix scope
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), rtype.getType(), "function_"+id.getStr());
 
         parser.insertIdentifierRecord(record);
 

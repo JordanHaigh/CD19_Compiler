@@ -44,7 +44,7 @@ public class NPrintItemNode implements Node{
         }
         else{ //return string
             parser.consume(); //consume string token. we done with it
-            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), NodeDataTypes.String, token.getStr()+"_"+parser.getScope());//todo scope
+            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), NodeDataTypes.String, token.getStr()+"_"+parser.getScope());
             return new TreeNode(TreeNode.NSTRG,record);
         }
     }

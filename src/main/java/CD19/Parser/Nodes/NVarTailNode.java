@@ -41,8 +41,7 @@ public class NVarTailNode implements Node{
             return new TreeNode(TreeNode.NARRV, record);
         }
         else{
-            SymbolTableRecord record = new SymbolTableRecord(); //todo fill this in
-            return new TreeNode(TreeNode.NSIMV, record);
+            return new TreeNode(TreeNode.NSIMV, null,null);
         }
     }
 }

@@ -44,8 +44,9 @@ public class NVarNode implements Node{
 
                 return tail;
             }
-            else{//todo fix vartail return type
-                SymbolTableRecord record = new SymbolTableRecord(id.getStr(),null,"" );
+            else{
+                SymbolTableRecord record = new SymbolTableRecord(id.getStr(),NodeDataTypes.String,parser.getScope()); //todo this var is called by vlist and vlist is only called in the "input". the inputs will be made as strings BUT YOU MUST PARSE THEM TO THE RESPECTIVE DATA TYPE
+                parser.insertIdentifierRecord(record);// todo remember to parse to appropriate data type.
                 tail.setSymbol(record);
                 return tail;
             }

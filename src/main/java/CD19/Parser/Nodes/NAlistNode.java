@@ -36,7 +36,7 @@ public class NAlistNode implements Node{
             TreeNode asgnStat = nAsgnStatNode.make(parser);
             TreeNode tail = tail(parser);
             if(tail == null){
-                SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(),token.getStr()+"_"+parser.getScope());//todo fix scope
+                SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(),token.getStr()+"_"+parser.getScope());
                 parser.insertIdentifierRecord(record);
                 //todo data types come later
                 asgnStat.setSymbol(record);
@@ -44,7 +44,7 @@ public class NAlistNode implements Node{
                 return asgnStat;
             }
             else{
-                SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(),token.getStr()+"_"+parser.getScope());//todo fix scope
+                SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(),token.getStr()+"_"+parser.getScope());
                 parser.insertIdentifierRecord(record);
 
                 asgnStat.setSymbol(record);

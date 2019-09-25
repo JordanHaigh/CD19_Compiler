@@ -35,7 +35,7 @@ public class NSDeclNode implements Node{
         parser.peekAndConsume(Token.TCOLN);
         TreeNode stype = nsTypeNode.make(parser);
 
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), stype.getType(),parser.getScope());//todo scope later
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), stype.getType(),parser.getScope());
         parser.insertIdentifierRecord(record);
 
         return new TreeNode(TreeNode.NSDECL, record);

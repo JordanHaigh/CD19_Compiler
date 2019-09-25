@@ -1,6 +1,7 @@
 package CD19;
 
 import CD19.Parser.Parser;
+import CD19.Parser.TreeNode;
 import CD19.Scanner.CodeFileReader;
 import CD19.Scanner.Scanner;
 import CD19.Scanner.Token;
@@ -15,18 +16,20 @@ import java.util.List;
  * */
 public class Compiler {
 
-    ErrorHandler errorHandler;
+    ListingFile listingFile;
 
-    public Compiler(){
-        errorHandler = new ErrorHandler();
-    }
     /**
      * Compile source file
      * @param filePath  - Path to File
      */
     public void compile(String filePath) {
         List<Token> tokens = lexicalAnalysis(filePath);
-        parse(tokens);
+
+        if(!listingFile.containsErrors()){
+            //parse(tokens);
+        }
+
+        listingFile.print();
     }
 
     /**
@@ -35,17 +38,17 @@ public class Compiler {
      * @param filePath  - Path to File
      */
     public List<Token> lexicalAnalysis(String filePath) {
+        listingFile = new ListingFile(new CodeFileReader(filePath));
+
         Scanner scanner = new Scanner(new CodeFileReader(filePath));
-        scanner.addObserver(errorHandler);
-        List<Token> tokens = scanner.getAllTokens();
-        //printTokens(allTokens);
-        return tokens;
+        scanner.addObserver(listingFile);
+        return scanner.getAllTokens();
     }
 
-    public void parse(List<Token> tokens) {
+    public TreeNode parse(List<Token> tokens) {
         Parser parser = new Parser(tokens);
-        parser.addObserver(errorHandler);
-        parser.parse();
+        parser.addObserver(listingFile);
+        return parser.parse();
 
     }
 

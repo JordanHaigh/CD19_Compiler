@@ -78,7 +78,7 @@ public class NExponentNode implements Node{
 
         TreeNode tail = varOrFnCallTail(parser);
 
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(), id.getStr()+"_"+parser.getScope()); //todo fix scope
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(), id.getStr()+"_"+parser.getScope());
         tail.setSymbol(record);
         return tail;
     }
@@ -87,7 +87,10 @@ public class NExponentNode implements Node{
         //	<varOrFNCallTail>	::=	<varTail> | <fnCallTail>
         Token token = parser.peek();
         if(token.getTokenID() == Token.TLPAR) {
-            return fnCallTail(parser); //fncalltail
+            //todo semantic check it exists and it returns the right thing
+            TreeNode treeNode= fnCallTail(parser); //fncalltail
+            //treeNode.setType(); //todo whatever type it returns - semantic lookup on the identifier to determine what the return type is
+            return treeNode;
         }
         else
             return nVarTailNode.make(parser); //todo fix data types, maybe speak to dan??
@@ -98,7 +101,8 @@ public class NExponentNode implements Node{
         parser.peekAndConsume(Token.TLPAR);
         TreeNode fncallelisttail = fnCallElistTail(parser);
         parser.peekAndConsume(Token.TRPAR); //todo return data type
-        return new TreeNode(TreeNode.NFCALL, fncallelisttail, null);
+        TreeNode treeNode = new TreeNode(TreeNode.NFCALL, fncallelisttail, null);
+        return treeNode;
     }
 
     private TreeNode fnCallElistTail(Parser parser){
