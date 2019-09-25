@@ -38,6 +38,8 @@ public class NFuncNode implements Node{
         parser.peekAndConsume(Token.TFUNC);
         Token id = parser.peek();
         parser.peekAndConsume(Token.TIDEN);
+        parser.enterScope("function_"+id.getStr());
+
 
         parser.peekAndConsume(Token.TLPAR);
         TreeNode plist = npListNode.make(parser);
@@ -45,7 +47,6 @@ public class NFuncNode implements Node{
         parser.peekAndConsume(Token.TCOLN);
         TreeNode rtype = nrTypeNode.make(parser);
 
-        parser.enterScope("function_"+id.getStr());
         TreeNode funcBody = nFuncBodyNode.make(parser);
         parser.leaveScope();
 
