@@ -53,9 +53,9 @@ public class NBoolNodeTests {
         TreeNode bool = nBoolNode1.make(parser);
 
         assertEquals(TreeNode.NNOT, bool.getValue());
-        assertEquals(TreeNode.NADD, bool.getLeft().getValue());
-        assertEquals(TreeNode.NPOW, bool.getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NPOW, bool.getRight().getValue());
+        assertEquals(TreeNode.NEQL, bool.getLeft().getValue());
+        assertEquals(TreeNode.NADD, bool.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NPOW, bool.getLeft().getRight().getValue());
 
     }
 

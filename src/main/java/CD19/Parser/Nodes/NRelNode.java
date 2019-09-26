@@ -80,7 +80,10 @@ public class NRelNode implements Node{
         TreeNode firstExpr = nExprNode.make(parser);
         TreeNode relop = nRelopNode.make(parser);
         TreeNode secondExpr = nExprNode.make(parser);
-        return new TreeNode(TreeNode.NNOT, firstExpr, relop, secondExpr);
+
+        relop.setLeft(firstExpr);
+        relop.setRight(secondExpr);
+        return new TreeNode(TreeNode.NNOT, relop, null);
     }
 }
 

@@ -120,9 +120,9 @@ public class NRelNodeTests {
         TreeNode rel = nRelNode.make(parser);
 
         assertEquals(TreeNode.NNOT, rel.getValue());
-        assertEquals(TreeNode.NADD, rel.getLeft().getValue());
-        assertEquals(TreeNode.NPOW, rel.getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NPOW, rel.getRight().getValue());
+        assertEquals(TreeNode.NEQL, rel.getLeft().getValue());
+        assertEquals(TreeNode.NADD, rel.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NPOW, rel.getLeft().getRight().getValue());
 
     }
 }
