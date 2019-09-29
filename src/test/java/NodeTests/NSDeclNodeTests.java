@@ -35,4 +35,53 @@ public class NSDeclNodeTests {
 
     }
 
+    @Test
+    public void syntactic_failiden(){
+        List<Token> tokens= new ArrayList<>();
+//        tokens.add(new Token(Token.TIDEN,1,1,"age"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TINTG,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NSDeclNode nsDeclNode = new NSDeclNode();
+        TreeNode sdecl = nsDeclNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, sdecl.getValue());
+
+    }
+
+    @Test
+    public void syntactic_failcoln(){
+        List<Token> tokens= new ArrayList<>();
+        tokens.add(new Token(Token.TIDEN,1,1,"age"));
+//        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TINTG,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NSDeclNode nsDeclNode = new NSDeclNode();
+        TreeNode sdecl = nsDeclNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, sdecl.getValue());
+
+    }
+
+
+    @Test
+    public void syntactic_failstype(){
+        List<Token> tokens= new ArrayList<>();
+        tokens.add(new Token(Token.TIDEN,1,1,"age"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NSDeclNode nsDeclNode = new NSDeclNode();
+        TreeNode sdecl = nsDeclNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, sdecl.getValue());
+
+    }
+
 }

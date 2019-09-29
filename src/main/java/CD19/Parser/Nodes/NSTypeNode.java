@@ -32,8 +32,11 @@ public class NSTypeNode implements Node{
             parser.consume();
             dummy.setType(NodeDataTypes.Boolean);
         }
-        else
-            return null; //todo meant to error
+        else{
+            parser.syntacticError("Expected a Primitive Type", parser.peek());
+            dummy = new TreeNode();
+            dummy.setType(NodeDataTypes.Undefined);
+        }
 
         return dummy;
     }

@@ -70,4 +70,144 @@ public class NReptStatNodeTests {
         assertEquals(TreeNode.NBOOL, reptstat.getRight().getValue());
     }
 
+    @Test
+    public void syntactic_failrept(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+//        tokens.add(new Token(Token.TREPT,1,1,null));
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"asgnlist stuff here "));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+        tokens.add(new Token(Token.TUNTL,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"bool stuff here"));
+
+
+        Parser parser = new Parser(tokens);
+
+        when(nAsgnListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NASGN);
+        });
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+        when(nBoolNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NBOOL);
+        });
+
+        nReptStatNode = new NReptStatNode(nAsgnListNode, nStatsNode, nBoolNode);
+        TreeNode reptstat = nReptStatNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, reptstat.getValue());
+    }
+
+
+    @Test
+    public void syntactic_failleftpar(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TREPT,1,1,null));
+//        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"asgnlist stuff here "));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+        tokens.add(new Token(Token.TUNTL,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"bool stuff here"));
+
+
+        Parser parser = new Parser(tokens);
+
+        when(nAsgnListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NASGN);
+        });
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+        when(nBoolNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NBOOL);
+        });
+
+        nReptStatNode = new NReptStatNode(nAsgnListNode, nStatsNode, nBoolNode);
+        TreeNode reptstat = nReptStatNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, reptstat.getValue());
+    }
+
+    @Test
+    public void syntactic_failrightpar(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TREPT,1,1,null));
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"asgnlist stuff here "));
+//        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+        tokens.add(new Token(Token.TUNTL,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"bool stuff here"));
+
+
+        Parser parser = new Parser(tokens);
+
+        when(nAsgnListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NASGN);
+        });
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+        when(nBoolNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NBOOL);
+        });
+
+        nReptStatNode = new NReptStatNode(nAsgnListNode, nStatsNode, nBoolNode);
+        TreeNode reptstat = nReptStatNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, reptstat.getValue());
+    }
+
+    @Test
+    public void syntactic_failuntilkeyword(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TREPT,1,1,null));
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"asgnlist stuff here "));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+//        tokens.add(new Token(Token.TUNTL,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"bool stuff here"));
+
+
+        Parser parser = new Parser(tokens);
+
+        when(nAsgnListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NASGN);
+        });
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+        when(nBoolNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NBOOL);
+        });
+
+        nReptStatNode = new NReptStatNode(nAsgnListNode, nStatsNode, nBoolNode);
+        TreeNode reptstat = nReptStatNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, reptstat.getValue());
+    }
 }

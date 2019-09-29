@@ -36,7 +36,6 @@ public class NVListNode implements Node{
         return new TreeNode(TreeNode.NVLIST, var, tail);
     }
 
-
     private TreeNode tail(Parser parser){
         if(parser.peekAndConsume(Token.TCOMA)){
             TreeNode var = nVarNode.make(parser);

@@ -196,4 +196,5 @@ public class NTermNodeTests {
         assertEquals(TreeNode.NILIT, term.getLeft().getRight().getValue());
 
     }
+
 }

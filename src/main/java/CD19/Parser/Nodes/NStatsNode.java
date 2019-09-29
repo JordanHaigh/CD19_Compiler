@@ -41,15 +41,20 @@ public class NStatsNode implements Node{
 
 
     private TreeNode statSemiColonPath(Parser parser){
+        TreeNode stats = new TreeNode();
         //<stat> ;  <StatsTail>
         TreeNode stat = nStatNode.make(parser);
-        parser.peekAndConsume(Token.TSEMI);
+        if(!parser.peekAndConsume(Token.TSEMI)){
+            parser.syntacticError("Expected a Semicolon", parser.peek());
+            return stats;
+        }
         TreeNode tail = tail(parser);
 
         if(tail == null)
             return stat;
 
-        return new TreeNode(TreeNode.NSTATS, stat, tail);
+        stats = new TreeNode(TreeNode.NSTATS, stat, tail);
+        return stats;
     }
 
 
@@ -66,26 +71,17 @@ public class NStatsNode implements Node{
 
     private TreeNode tail(Parser parser){
         //	//<statsTail>	::=	 eps |  {<stat> ;  <StatsTail> | <strstat> <statsTail>}
+        TreeNode stats = new TreeNode();
+
         Token token = parser.peek();
         if(token.getTokenID() == Token.TREPT  || token.getTokenID() == Token.TIDEN
                 || token.getTokenID() == Token.TINPT || token.getTokenID() == Token.TPRIN
                 || token.getTokenID() == Token.TPRLN || token.getTokenID() == Token.TRETN
         ){
-           TreeNode stat = nStatNode.make(parser);
-           parser.peekAndConsume(Token.TSEMI);
-           TreeNode tail = tail(parser);
-
-           if(tail == null)
-               return stat;
-            return new TreeNode(TreeNode.NSTATS, stat, tail);
+           return statSemiColonPath(parser);
         }
         else if(token.getTokenID() == Token.TIFTH  || token.getTokenID() == Token.TFOR){
-            TreeNode strstat = nStrStatNode.make(parser);
-            TreeNode tail = tail(parser);
-
-            if(tail == null)
-                return strstat;
-            return new TreeNode(TreeNode.NSTATS, strstat, tail);
+            return strstatPath(parser);
         }
         else
             return null; //eps trans

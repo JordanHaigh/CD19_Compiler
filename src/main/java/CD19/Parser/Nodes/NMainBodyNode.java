@@ -36,14 +36,33 @@ public class NMainBodyNode implements Node {
 
     @Override
     public TreeNode make(Parser parser) {
-        parser.peekAndConsume(Token.TMAIN);
+        TreeNode mainbody = new TreeNode();
+
+        if(!parser.peekAndConsume(Token.TMAIN)){
+            parser.syntacticError("Expecting the Main Keyword",parser.peek());
+            return mainbody;
+        }
+
         parser.enterScope("main");
+
         TreeNode slist = nsListNode.make(parser);
-        parser.peekAndConsume(Token.TBEGN);
+
+        if(!parser.peekAndConsume(Token.TBEGN)){
+            parser.syntacticError("Expecting the Begin Keyword", parser.peek());
+            return mainbody;
+        }
+
         TreeNode stats = nStatsNode.make(parser);
-        parser.peekAndConsume(Token.TEND);
+
+        if(!parser.peekAndConsume(Token.TEND)){
+            parser.syntacticError("Expecting the End Keyword", parser.peek());
+            return mainbody;
+        }
+
         parser.leaveScope();
-        return new TreeNode(TreeNode.NMAIN, slist, stats);
+
+        mainbody = new TreeNode(TreeNode.NMAIN, slist, stats);
+        return mainbody;
     }
 
 }

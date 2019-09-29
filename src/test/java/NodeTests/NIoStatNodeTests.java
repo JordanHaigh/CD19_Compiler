@@ -208,4 +208,28 @@ public class NIoStatNodeTests {
         assertEquals(TreeNode.NPRLN, iostat.getValue());
         assertEquals(TreeNode.NPRLST, iostat.getLeft().getValue());
     }
+
+    @Test
+    public void syntactic_failkeyword(){
+        //input <id>
+        SetupMocks.setup();
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"variable"));
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        NIoStatNode nIoStatNode = new NIoStatNode();
+
+        TreeNode iostat = nIoStatNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, iostat.getValue());
+
+
+    }
 }

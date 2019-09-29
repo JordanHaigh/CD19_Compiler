@@ -44,7 +44,6 @@ public class NVlistNodeTests {
 
         assertEquals(TreeNode.NARRV, vlist.getValue());
 
-
     }
 
     @Test

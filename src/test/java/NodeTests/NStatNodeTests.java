@@ -18,9 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 public class NStatNodeTests {
-
-    //	<stat>	::=	<reptstat> | <iostat> | <returnstat> |  <id><asgnStatOrCallStat>
-    //	<asgnStatOrCallStat>	::= 	(<callStat>) | <asgnStat>
+    //	<stat>	::=	<reptstat> | <iostat> | <returnstat> |  <asgnStatOrCallStat>
 
     @Mock
     NAsgnListNode nAsgnListNode;
@@ -219,6 +217,38 @@ public class NStatNodeTests {
         assertEquals(TreeNode.NASGN,stat.getValue());
         assertEquals(TreeNode.NARRV, stat.getLeft().getValue());
         assertEquals(TreeNode.NSIMV,stat.getRight().getValue());
+
+    }
+
+    @Test
+    public void syntactic_fail(){
+        SetupMocks.setup();
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCOMA,1,1,"variaboe"));
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TDOT,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"member"));
+
+        tokens.add(new Token(Token.TEQUL,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NVarTailNode nVarTailNode = new NVarTailNode();
+        nVarTailNode.setnExprNode(NExprNode.INSTANCE());
+        NBoolNode nBoolNode = new NBoolNode();
+        NAsgnStatNode nAsgnStatNode = new NAsgnStatNode(nVarTailNode, new NAsgnOpNode(), nBoolNode);
+        NAsgnStatOrCallStatNode nAsgnStatOrCallStatNode = new NAsgnStatOrCallStatNode(null, nAsgnStatNode);
+        NStatNode nStatNode = new NStatNode(null,null,null,nAsgnStatOrCallStatNode);
+        TreeNode stat = nStatNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF,stat.getValue());
 
     }
 }

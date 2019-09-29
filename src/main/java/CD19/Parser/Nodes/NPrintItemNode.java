@@ -32,6 +32,8 @@ public class NPrintItemNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
+        TreeNode printitem = new TreeNode();
+
         Token token = parser.peek();
         if(token.getTokenID() == Token.TIDEN || //expr check
             token.getTokenID() == Token.TILIT ||
@@ -40,12 +42,18 @@ public class NPrintItemNode implements Node{
             token.getTokenID() == Token.TFALS ||
             token.getTokenID() == Token.TLPAR
             ){
-            return nExprNode.make(parser);
+            printitem = nExprNode.make(parser);
+            return printitem;
         }
-        else{ //return string
+        else if(token.getTokenID() == Token.TSTRG){ //return string
             parser.consume(); //consume string token. we done with it
             SymbolTableRecord record = new SymbolTableRecord(token.getStr(), NodeDataTypes.String, token.getStr()+"_"+parser.getScope());
-            return new TreeNode(TreeNode.NSTRG,record);
+            printitem = new TreeNode(TreeNode.NSTRG,record);
+            return printitem;
+        }
+        else{
+            parser.syntacticError("Expected a valid PrintItem Token", parser.peek());
+            return printitem;
         }
     }
 }

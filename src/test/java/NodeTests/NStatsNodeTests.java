@@ -374,4 +374,73 @@ public class NStatsNodeTests {
         assertEquals(TreeNode.NRETN, stats.getRight().getRight().getValue());
 
     }
+
+    @Test
+    public void syntactic_failfirststatsemi(){
+        SetupMocks.setup();
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TRETN,1,1,null));
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TPLUS,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+//        tokens.add(new Token(Token.TSEMI,1,1,null));
+
+
+        tokens.add(new Token(Token.TMAIN,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NReturnStatNode nreturnStatNode = new NReturnStatNode();
+        nreturnStatNode.setnExprNode(NExprNode.INSTANCE());
+
+
+        NStatNode nStatNode = new NStatNode(null,null,nreturnStatNode,null );
+        NStatsNode nStatsNode = new NStatsNode(nStatNode, null);
+        TreeNode stats = nStatsNode.make(parser);
+
+
+        assertEquals(TreeNode.NUNDEF, stats.getValue());
+
+    }
+
+    @Test
+    public void syntactic_failsecondsemi(){
+        SetupMocks.setup();
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TRETN,1,1,null));
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TPLUS,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TSEMI,1,1,null));
+
+        tokens.add(new Token(Token.TRETN,1,1,null));
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TPLUS,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+//        tokens.add(new Token(Token.TSEMI,1,1,null));
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NReturnStatNode nreturnStatNode = new NReturnStatNode();
+        nreturnStatNode.setnExprNode(NExprNode.INSTANCE());
+
+
+        NStatNode nStatNode = new NStatNode(null,null,nreturnStatNode,null );
+        NStatsNode nStatsNode = new NStatsNode(nStatNode, null);
+        TreeNode stats = nStatsNode.make(parser);
+
+        assertEquals(TreeNode.NSTATS, stats.getValue());
+        assertEquals(TreeNode.NRETN, stats.getLeft().getValue());
+        assertEquals(TreeNode.NUNDEF, stats.getRight().getValue());
+
+    }
 }

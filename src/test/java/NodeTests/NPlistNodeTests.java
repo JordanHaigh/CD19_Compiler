@@ -50,8 +50,6 @@ public class NPlistNodeTests {
 
         assertEquals(TreeNode.NARRC, plist.getRight().getLeft().getValue());
         assertEquals(TreeNode.NARRP, plist.getRight().getRight().getValue());
-
-
     }
 
     @Test

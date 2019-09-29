@@ -35,7 +35,7 @@ public class NInitNodeTests {
         List<Token> tokens= new ArrayList<>();
 
         tokens.add(new Token(Token.TIDEN,1,1,"prog"));
-        tokens.add(new Token(Token.TEQEQ,1,1,null));
+        tokens.add(new Token(Token.TEQUL,1,1,null));
         tokens.add(new Token(Token.TILIT,1,1,null));
 
         Parser parser = new Parser(tokens);
@@ -45,6 +45,40 @@ public class NInitNodeTests {
         TreeNode init = nInitNode.make(parser);
 
         assertEquals(TreeNode.NINIT, init.getValue());
+    }
+
+    @Test
+    public void syntactic_failId() {
+        List<Token> tokens= new ArrayList<>();
+
+        //tokens.add(new Token(Token.TIDEN,1,1,"prog"));
+        tokens.add(new Token(Token.TEQEQ,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        when(nExprNode.make(parser)).thenReturn(new TreeNode(TreeNode.NILIT));
+
+        TreeNode init = nInitNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, init.getValue());
+    }
+
+    @Test
+    public void syntactic_faileq() {
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
+//        tokens.add(new Token(Token.TEQEQ,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        when(nExprNode.make(parser)).thenReturn(new TreeNode(TreeNode.NILIT));
+
+        TreeNode init = nInitNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, init.getValue());
     }
 
 

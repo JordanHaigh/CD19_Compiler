@@ -25,6 +25,7 @@ public class NTypesNode implements Node {
         return instance;
     }
 
+
     @Override
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TTYPS)){

@@ -34,10 +34,24 @@ public class NInitNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
+        TreeNode init = new TreeNode();
+
         Token id = parser.peek(); //id
-        parser.consume();
-        parser.peekAndConsume(Token.TEQUL);
+        if(!parser.peekAndConsume(Token.TIDEN)){
+            parser.syntacticError("Expected an Identifier", parser.peek());
+            return init;
+        }
+
+        if(!parser.peekAndConsume(Token.TEQUL)){
+            parser.syntacticError("Expected Equals Sign", parser.peek());
+            return init;
+        }
+
         TreeNode exprTreeNode = nExprNode.make(parser);
+
+        if(exprTreeNode.getValue() == TreeNode.NUNDEF){
+            return init; //todo bail here if expr is nundef?
+        }
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(),exprTreeNode.getType(),parser.getScope()); //global (program) scope
         parser.insertConstantRecord(record);

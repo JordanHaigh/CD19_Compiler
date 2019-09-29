@@ -126,4 +126,70 @@ public class NParamNodeTests {
         assertEquals(TreeNode.NARRD, param.getLeft().getValue());
 
     }
+
+    @Test
+    public void syntactic_failfirstkeyword(){
+        List<Token> tokens= new ArrayList<>();
+
+//        tokens.add(new Token(Token.TCNST,1,1,null));
+//        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"type"));
+
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NParamNode nParamNode = new NParamNode();
+
+        TreeNode param = nParamNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, param.getValue());
+
+    }
+
+    @Test
+    public void syntactic_fail_stypeortypepath_coln(){
+        List<Token> tokens= new ArrayList<>();
+
+//        tokens.add(new Token(Token.TCNST,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"type"));
+
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NParamNode nParamNode = new NParamNode();
+
+        TreeNode param = nParamNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, param.getValue());
+
+    }
+
+    @Test
+    public void syntactic_fail_stypeortypepath_tail(){
+        List<Token> tokens= new ArrayList<>();
+
+//        tokens.add(new Token(Token.TCNST,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NParamNode nParamNode = new NParamNode();
+
+        TreeNode param = nParamNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, param.getValue());
+
+    }
 }

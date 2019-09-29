@@ -49,4 +49,21 @@ public class NParamTypeTailNodeTests {
         assertEquals(TreeNode.NSDECL, paramtypetail.getValue());
     }
 
+    @Test
+    public void syntacticfail(){
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NParamTypeTailNode nparamTypeTailNode= new NParamTypeTailNode();
+
+        TreeNode paramtypetail = nparamTypeTailNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, paramtypetail.getValue());
+    }
+
+
 }

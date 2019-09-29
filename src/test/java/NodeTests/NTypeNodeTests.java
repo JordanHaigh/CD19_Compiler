@@ -102,4 +102,292 @@ public class NTypeNodeTests {
 
     }
 
+
+    @Test
+    public void syntactic_fields_missingend(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"struct"));
+        tokens.add(new Token(Token.TIS,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"fields here"));
+//        tokens.add(new Token(Token.TEND,1,1,null));
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nFieldsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFLIST);
+        });
+
+        when(nExprNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NILIT);
+        });
+
+        nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        TreeNode type = nTypeNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, type.getValue());
+
+    }
+
+    @Test
+    public void syntactic_missingfirstiden(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+//        tokens.add(new Token(Token.TIDEN,1,1,"arr"));
+        tokens.add(new Token(Token.TIS,1,1,null));
+        tokens.add(new Token(Token.TARAY,1,1,null));
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"expr here "));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TOF,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"struct id here"));
+
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nFieldsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFLIST);
+        });
+
+        when(nExprNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NILIT);
+        });
+
+        nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        TreeNode type = nTypeNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, type.getValue());
+
+    }
+
+    @Test
+    public void syntactic_missingis(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"arr"));
+//        tokens.add(new Token(Token.TIS,1,1,null));
+        tokens.add(new Token(Token.TARAY,1,1,null));
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"expr here "));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TOF,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"struct id here"));
+
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nFieldsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFLIST);
+        });
+
+        when(nExprNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NILIT);
+        });
+
+        nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        TreeNode type = nTypeNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, type.getValue());
+
+    }
+
+    @Test
+    public void syntactic_missingarray(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"arr"));
+        tokens.add(new Token(Token.TIS,1,1,null));
+//        tokens.add(new Token(Token.TARAY,1,1,null));
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"expr here "));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TOF,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"struct id here"));
+
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nFieldsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFLIST);
+        });
+
+        when(nExprNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NILIT);
+        });
+
+        nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        TreeNode type = nTypeNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, type.getValue());
+
+    }
+
+    @Test
+    public void syntactic_missinglbrk(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"arr"));
+        tokens.add(new Token(Token.TIS,1,1,null));
+        tokens.add(new Token(Token.TARAY,1,1,null));
+//        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"expr here "));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TOF,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"struct id here"));
+
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nFieldsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFLIST);
+        });
+
+        when(nExprNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NILIT);
+        });
+
+        nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        TreeNode type = nTypeNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, type.getValue());
+
+    }
+
+    @Test
+    public void syntactic_missingrbrk(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"arr"));
+        tokens.add(new Token(Token.TIS,1,1,null));
+        tokens.add(new Token(Token.TARAY,1,1,null));
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"expr here "));
+//        tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TOF,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"struct id here"));
+
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nFieldsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFLIST);
+        });
+
+        when(nExprNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NILIT);
+        });
+
+        nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        TreeNode type = nTypeNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, type.getValue());
+
+    }
+
+    @Test
+    public void syntactic_missingof(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"arr"));
+        tokens.add(new Token(Token.TIS,1,1,null));
+        tokens.add(new Token(Token.TARAY,1,1,null));
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"expr here "));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+//        tokens.add(new Token(Token.TOF,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"struct id here"));
+
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nFieldsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFLIST);
+        });
+
+        when(nExprNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NILIT);
+        });
+
+        nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        TreeNode type = nTypeNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, type.getValue());
+
+    }
+
+
+    @Test
+    public void syntactic_missingsecondiden(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"arr"));
+        tokens.add(new Token(Token.TIS,1,1,null));
+        tokens.add(new Token(Token.TARAY,1,1,null));
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"expr here "));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TOF,1,1,null));
+//        tokens.add(new Token(Token.TIDEN,1,1,"struct id here"));
+
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nFieldsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFLIST);
+        });
+
+        when(nExprNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NILIT);
+        });
+
+        nTypeNode.setnExprNode(NExprNode.INSTANCE());
+        TreeNode type = nTypeNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, type.getValue());
+
+    }
+
+
+
 }

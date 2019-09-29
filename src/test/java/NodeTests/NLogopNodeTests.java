@@ -49,13 +49,12 @@ public class NLogopNodeTests {
         assertEquals(TreeNode.NOR, logop.getValue());
     }
 
-    @Test
-    public void sunnyday_txor_nxor(){
-        //NXOR
 
+    @Test
+    public void syntactic_fail(){
         List<Token> tokens= new ArrayList<>();
 
-        tokens.add(new Token(Token.TXOR,1,1,null));
+//        tokens.add(new Token(Token.TXOR,1,1,null));
         tokens.add(new Token(Token.TILIT,1,1,null));
 
         Parser parser = new Parser(tokens);
@@ -64,6 +63,6 @@ public class NLogopNodeTests {
 
         TreeNode logop = nLogopNode.make(parser);
 
-        assertEquals(TreeNode.NXOR, logop.getValue());
+        assertEquals(TreeNode.NUNDEF, logop.getValue());
     }
 }

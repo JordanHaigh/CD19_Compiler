@@ -64,5 +64,95 @@ public class NMainBodyNodeTests {
         assertEquals(TreeNode.NSTATS, mainbody.getRight().getValue());
     }
 
+    @Test
+    public void syntactic_failmain(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+//        tokens.add(new Token(Token.TMAIN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"slist stuff here"));
+        tokens.add(new Token(Token.TBEGN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+
+        Parser parser = new Parser(tokens);
+
+        when(nsListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSDLST);
+        });
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+
+        nMainBodyNode = new NMainBodyNode(nsListNode, nStatsNode);
+        TreeNode mainbody = nMainBodyNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, mainbody.getValue());
+    }
+
+    @Test
+    public void syntactic_failbegin(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TMAIN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"slist stuff here"));
+//        tokens.add(new Token(Token.TBEGN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+
+        Parser parser = new Parser(tokens);
+
+        when(nsListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSDLST);
+        });
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+
+        nMainBodyNode = new NMainBodyNode(nsListNode, nStatsNode);
+        TreeNode mainbody = nMainBodyNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, mainbody.getValue());
+    }
+
+    @Test
+    public void syntactic_failend(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TMAIN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"slist stuff here"));
+        tokens.add(new Token(Token.TBEGN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+//        tokens.add(new Token(Token.TEND,1,1,null));
+
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+
+
+
+        Parser parser = new Parser(tokens);
+
+        when(nsListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSDLST);
+        });
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+
+        nMainBodyNode = new NMainBodyNode(nsListNode, nStatsNode);
+        TreeNode mainbody = nMainBodyNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, mainbody.getValue());
+    }
+
 
 }

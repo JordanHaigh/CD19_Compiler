@@ -22,6 +22,9 @@ public class NLogopNode implements Node{
             return new TreeNode(TreeNode.NOR, null);
         else if(parser.peekAndConsume(Token.TXOR))
             return new TreeNode(TreeNode.NXOR, null);
-        return null; //todo error check
+        else{
+            parser.syntacticError("Expecting a valid Logical Operator", parser.peek());
+            return new TreeNode(); //todo error recover
+        }
     }
 }

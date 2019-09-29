@@ -80,7 +80,6 @@ public class NTypesNodeTests {
         assertEquals(TreeNode.NRTYPE, types.getRight().getLeft().getValue());
         assertEquals(TreeNode.NRTYPE, types.getRight().getRight().getValue());
 
-
     }
 
     @Test
@@ -111,7 +110,6 @@ public class NTypesNodeTests {
         TreeNode types = nTypesNode.make(parser);
 
         assertEquals(null, types);
-
 
     }
 }

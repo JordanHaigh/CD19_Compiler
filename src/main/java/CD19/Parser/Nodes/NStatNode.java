@@ -5,7 +5,7 @@ import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
 public class NStatNode implements Node{
-
+//	<stat>	::=	<reptstat> | <iostat> | <returnstat> |  <asgnStatOrCallStat>
     NReptStatNode nReptStatNode;
     NIoStatNode nIoStatNode;
     NReturnStatNode nReturnStatNode;
@@ -44,10 +44,12 @@ public class NStatNode implements Node{
             return nReturnStatNode.make(parser);
         }
         else if(token.getTokenID() == Token.TIDEN){
-            return  nAsgnStatOrCallStatNode.make(parser);
+            return nAsgnStatOrCallStatNode.make(parser);
+        }else{
+            parser.syntacticError("Expected a Stat Keyword (Repeat, IO, Return, Asgn, Call)", parser.peek());
+            return new TreeNode();
         }
 
-        return null; //todo error
     }
 }
 

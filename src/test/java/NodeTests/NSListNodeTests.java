@@ -69,7 +69,6 @@ public class NSListNodeTests {
 
     }
 
-
     @Test
     public void sunnyday_threesdecls(){
         SetupMocks.setup();

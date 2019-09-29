@@ -39,16 +39,27 @@ public class NTypeNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
-        Token id = parser.peek();
-        parser.peekAndConsume(Token.TIDEN);
+        TreeNode type = new TreeNode();
 
-        parser.peekAndConsume(Token.TIS);
+        Token id = parser.peek();
+        if(!parser.peekAndConsume(Token.TIDEN)){ //todo semantic check data type
+            parser.syntacticError("Expected an Identifier", parser.peek());
+            return type;
+        }
+
+        if(!parser.peekAndConsume(Token.TIS)){
+            parser.syntacticError("Exoected an Is keyword", parser.peek());
+            return type;
+        }
 
         parser.enterScope(id.getStr()+"_struct");
+
         TreeNode tail = tail(parser);
+
         parser.leaveScope();
 
         NodeDataTypes dataType;
+
         if(tail.getValue() == TreeNode.NATYPE)
             dataType = NodeDataTypes.Array;
         else
@@ -72,20 +83,47 @@ public class NTypeNode implements Node{
 
     private TreeNode arrayTail(Parser parser){
         //array [<expr>] of <structid>
-        parser.peekAndConsume(Token.TARAY);
-        parser.peekAndConsume(Token.TLBRK);
+        TreeNode arrayTail = new TreeNode();
+        if(!parser.peekAndConsume(Token.TARAY)){
+            parser.syntacticError("Expected Array keyword", parser.peek());
+            return arrayTail;
+        }
+
+        if(!parser.peekAndConsume(Token.TLBRK)){
+            parser.syntacticError("Expected Left Bracket", parser.peek());
+            return arrayTail;
+        }
+
         TreeNode exprTNode = nExprNode.make(parser);
-        parser.peekAndConsume(Token.TRBRK);
-        parser.peekAndConsume(Token.TOF);
-        parser.peekAndConsume(Token.TIDEN); //todo check struct id is legit
-        return new TreeNode(TreeNode.NATYPE, exprTNode,null);
+
+        if(!parser.peekAndConsume(Token.TRBRK)){
+            parser.syntacticError("Expected Right Bracket", parser.peek());
+            return arrayTail;
+        }
+
+        if(!parser.peekAndConsume(Token.TOF)){
+            parser.syntacticError("Expected Of keyword", parser.peek());
+            return arrayTail;
+        }
+
+        if(!parser.peekAndConsume(Token.TIDEN)){ //todo check struct id is legit
+            parser.syntacticError("Expected Identifier", parser.peek());
+            return arrayTail;
+        }
+
+        arrayTail = new TreeNode(TreeNode.NATYPE, exprTNode,null);
+        return arrayTail;
     }
 
     private TreeNode structTail(Parser parser){
         //<fields> end
 
         TreeNode nFieldsTNode = nFieldsNode.make(parser);
-        parser.peekAndConsume(Token.TEND);
+
+        if(!parser.peekAndConsume(Token.TEND)){
+            parser.syntacticError("Expected End keyword",parser.peek());
+            return new TreeNode();
+        }
 
         return new TreeNode(TreeNode.NRTYPE, nFieldsTNode, null);
     }

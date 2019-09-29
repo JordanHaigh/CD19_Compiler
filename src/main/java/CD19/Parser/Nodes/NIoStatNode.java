@@ -42,8 +42,10 @@ public class NIoStatNode implements Node{
             TreeNode prlist = nPrListNode.make(parser);
             return new TreeNode(TreeNode.NPRLN, prlist, null);
         }
-        else return null; //todo error check
-
+        else{
+            parser.syntacticError("Expected Valid IoStat keyword (input, print, printline)", parser.peek());
+            return new TreeNode(); //todo error recover
+        }
     }
 }
 

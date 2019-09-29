@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,7 @@ public class NProgramNodeTests {
     //NPROG	<program>	::=	CD19 <id> <globals> <funcs> <mainbody>
     @Mock NGlobNode globs;
     @Mock NFuncsNode funcs;
-    @Mock
-    NMainBodyNode main;
+    @Mock NMainBodyNode main;
 
     @InjectMocks NProgNode prog;
 
@@ -35,19 +35,34 @@ public class NProgramNodeTests {
 
     @Test
     public void NProgNode_SunnyDayData() {
+        SetupMocks.setup();
         List<Token> tokens= new ArrayList<>();
 
         tokens.add(new Token(Token.TCD19,1,1,null));
         tokens.add(new Token(Token.TIDEN,1,1,"prog"));
-        tokens.add(new Token(Token.TCONS,1,1,null));
-        tokens.add(new Token(Token.TFUNC,1,1,null));
-        tokens.add(new Token(Token.TMAIN,1,1,null));
+
+        tokens.add(new Token(Token.TIDEN,1,1,"constants here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"funcs here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"main here"));
+
+        tokens.add(new Token(Token.TCD19,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
 
         Parser parser = new Parser(tokens);
 
-        when(globs.make(parser)).thenReturn(new TreeNode(TreeNode.NGLOB));
-        when(funcs.make(parser)).thenReturn(new TreeNode(TreeNode.NFUNCS));
-        when(main.make(parser)).thenReturn(new TreeNode(TreeNode.NMAIN));
+        when(globs.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NGLOB);
+        });
+        when(funcs.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFUNCS);
+        });
+        when(main.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NMAIN);
+        });
+
 
         TreeNode progs = prog.make(parser);
 
@@ -55,5 +70,151 @@ public class NProgramNodeTests {
         assertEquals(TreeNode.NGLOB, progs.getLeft().getValue());
         assertEquals(TreeNode.NFUNCS, progs.getMiddle().getValue());
         assertEquals(TreeNode.NMAIN, progs.getRight().getValue());
+    }
+
+    @Test
+    public void syntactic_failfirstcd19() {
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+//        tokens.add(new Token(Token.TCD19,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
+
+        tokens.add(new Token(Token.TIDEN,1,1,"constants here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"funcs here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"main here"));
+
+        tokens.add(new Token(Token.TCD19,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
+
+        Parser parser = new Parser(tokens);
+
+        when(globs.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NGLOB);
+        });
+        when(funcs.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFUNCS);
+        });
+        when(main.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NMAIN);
+        });
+
+
+        TreeNode progs = prog.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, progs.getValue());
+    }
+
+    @Test
+    public void syntactic_failfirstiden() {
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCD19,1,1,null));
+//        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
+
+        tokens.add(new Token(Token.TIDEN,1,1,"constants here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"funcs here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"main here"));
+
+        tokens.add(new Token(Token.TCD19,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
+
+        Parser parser = new Parser(tokens);
+
+        when(globs.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NGLOB);
+        });
+        when(funcs.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFUNCS);
+        });
+        when(main.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NMAIN);
+        });
+
+        TreeNode progs = prog.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, progs.getValue());
+
+    }
+
+    @Test
+    public void syntactic_failsecondcd19() {
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCD19,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
+
+        tokens.add(new Token(Token.TIDEN,1,1,"constants here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"funcs here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"main here"));
+
+//        tokens.add(new Token(Token.TCD19,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
+
+        Parser parser = new Parser(tokens);
+
+        when(globs.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NGLOB);
+        });
+        when(funcs.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFUNCS);
+        });
+        when(main.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NMAIN);
+        });
+
+        TreeNode progs = prog.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, progs.getValue());
+
+    }
+
+    @Test
+    public void syntactic_failsecondiden() {
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCD19,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
+
+        tokens.add(new Token(Token.TIDEN,1,1,"constants here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"funcs here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"main here"));
+
+        tokens.add(new Token(Token.TCD19,1,1,null));
+//        tokens.add(new Token(Token.TIDEN,1,1,"prog"));
+        tokens.add(new Token(Token.TCD19,1,1,null));
+
+
+        Parser parser = new Parser(tokens);
+
+        when(globs.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NGLOB);
+        });
+        when(funcs.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NFUNCS);
+        });
+        when(main.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NMAIN);
+        });
+
+        TreeNode progs = prog.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, progs.getValue());
+
     }
 }

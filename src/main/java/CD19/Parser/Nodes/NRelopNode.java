@@ -29,8 +29,9 @@ public class NRelopNode implements Node{
             return new TreeNode(TreeNode.NLSS);
         else if(parser.peekAndConsume(Token.TLEQL)) //<=
             return new TreeNode(TreeNode.NLEQ);
-        return null; //todo error check
-
-
+        else{
+            parser.syntacticError("Expected a valid Relational Operator", parser.peek());
+            return new TreeNode();
+        }
     }
 }

@@ -4,14 +4,15 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
-public class NReptStatNode implements Node{
+public class NReptStatNode implements Node {
     //NREPT	<repstat>	::=	repeat ( <asgnlist> ) <stats> until <bool>
     NAsgnListNode nAsgnListNode;
     NStatsNode nstatsNode;
     NBoolNode nBoolNode;
 
     public NReptStatNode() {
-        this(NAsgnListNode.INSTANCE(),null, null);}
+        this(NAsgnListNode.INSTANCE(), null, null);
+    }
 
     public NReptStatNode(NAsgnListNode nAsgnListNode, NStatsNode nstatsNode, NBoolNode nBoolNode) {
         this.nAsgnListNode = nAsgnListNode;
@@ -20,6 +21,7 @@ public class NReptStatNode implements Node{
     }
 
     private static NReptStatNode instance;
+
     public static NReptStatNode INSTANCE() {
         if (instance == null) {
             instance = new NReptStatNode();
@@ -37,15 +39,37 @@ public class NReptStatNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
-        parser.peekAndConsume(Token.TREPT);
-        parser.peekAndConsume(Token.TLPAR);
+        TreeNode repstat = new TreeNode();
+
+        if (!parser.peekAndConsume(Token.TREPT)) {
+            parser.syntacticError("Expected a Repeat Keyword", parser.peek());
+            return repstat;
+        }
+
+        if (!parser.peekAndConsume(Token.TLPAR)){
+             parser.syntacticError("Expected a Left Paraethesis", parser.peek());
+             return repstat;
+        }
+
         TreeNode asgnList = nAsgnListNode.make(parser);
-        parser.peekAndConsume(Token.TRPAR);
+
+
+        if(!parser.peekAndConsume(Token.TRPAR)){
+            parser.syntacticError("Expected a Right Parenthesis", parser.peek());
+            return repstat;
+        }
+
         TreeNode stats = nstatsNode.make(parser);
-        parser.peekAndConsume(Token.TUNTL);
+
+        if(!parser.peekAndConsume(Token.TUNTL)){
+            parser.syntacticError("Expected an Until keyword", parser.peek());
+            return repstat;
+        }
+
         TreeNode bool = nBoolNode.make(parser);
 
-        return new TreeNode(TreeNode.NREPT, asgnList, stats, bool);
+        repstat = new TreeNode(TreeNode.NREPT, asgnList, stats, bool);
+        return repstat;
 
     }
 }

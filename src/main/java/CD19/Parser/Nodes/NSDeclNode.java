@@ -30,15 +30,30 @@ public class NSDeclNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
+        TreeNode sdecl = new TreeNode();
+
         Token id =  parser.peek();
-        parser.consume();
-        parser.peekAndConsume(Token.TCOLN);
+        if(!parser.peekAndConsume(Token.TIDEN)){
+            parser.syntacticError("Expected an Identifier", parser.peek());
+            return sdecl;
+        }
+
+        if(!parser.peekAndConsume(Token.TCOLN)){
+            parser.syntacticError("Expected a Colon", parser.peek());
+            return sdecl;
+        }
+
         TreeNode stype = nsTypeNode.make(parser);
+
+        if(stype.getValue() == TreeNode.NUNDEF){
+            return sdecl;
+        }
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), stype.getType(),parser.getScope());
         parser.insertIdentifierRecord(record);
 
-        return new TreeNode(TreeNode.NSDECL, record);
+        sdecl = new TreeNode(TreeNode.NSDECL, record);
+        return sdecl;
     }
 }
 

@@ -37,7 +37,10 @@ public class NStrStatNode implements Node{
         else if(token.getTokenID() == Token.TIFTH){
             return nIfStatNode.make(parser);
         }
-        return null; //todo error
+        else{
+            parser.syntacticError("Expected a For or If keyword", parser.peek());
+            return new TreeNode();
+        }
     }
 }
 

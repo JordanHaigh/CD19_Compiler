@@ -109,6 +109,7 @@ public class NInitListNodeTests {
         assertEquals(TreeNode.NINIT ,initlist.getRight().getLeft().getValue());
         assertEquals(TreeNode.NINIT ,initlist.getRight().getRight().getValue());
     }
+
 }
 
 

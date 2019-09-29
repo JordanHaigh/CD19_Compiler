@@ -63,4 +63,20 @@ public class NStypeNodeTests {
 
         assertEquals(NodeDataTypes.Boolean, stype.getType());
     }
+
+    @Test
+    public void syntactic_fail(){
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NSTypeNode  nsTypeNode = new NSTypeNode();
+
+        TreeNode stype = nsTypeNode.make(parser);
+
+        assertEquals(NodeDataTypes.Undefined, stype.getType());
+    }
 }

@@ -53,5 +53,6 @@ public class NInitListNode implements Node {
         return null; //eps transition
 
     }
+
 }
 

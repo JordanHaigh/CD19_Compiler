@@ -35,5 +35,6 @@ public class NRTypeNode implements Node{
         }
 
         return nsTypeNode.make(parser); //stype trans
+        //todo this should be fine for error detection???
     }
 }

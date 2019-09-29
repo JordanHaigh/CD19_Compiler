@@ -29,20 +29,26 @@ public class NParamNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
+        TreeNode param = new TreeNode();
+
         Token token = parser.peek();
-        if(token.getTokenID() == Token.TCNST){
+        if(parser.peekAndConsume(Token.TCNST)){
             return constPath(parser);
         }
-        else{
+        else if(token.getTokenID() == Token.TIDEN){ //don't consume it yet
             return sTypeOrTypeIdPath(parser);
+        }
+        else{
+            parser.syntacticError("Expected Const Keyword or Identifier for param", parser.peek());
+            return param;
         }
     }
 
     private TreeNode constPath(Parser parser){
         //const <arrdecl>
-        NArrDeclNode nArrDeclNode = new NArrDeclNode();
+        //already consumed const
 
-        parser.peekAndConsume(Token.TCNST);
+        NArrDeclNode nArrDeclNode = new NArrDeclNode();
         TreeNode arrdecl =  nArrDeclNode.make(parser); //get narrd
 
         TreeNode returnTreeNode = new TreeNode(TreeNode.NARRC, arrdecl, null);
@@ -56,15 +62,22 @@ public class NParamNode implements Node{
 
     private TreeNode sTypeOrTypeIdPath(Parser parser){
         //<id> : <paramTypeTail>
-        Token token  = parser.peek();
-        parser.consume();
+        Token id  = parser.peek();
+        parser.consume(); //already know its an ident, so its cool
 
-        parser.peekAndConsume(Token.TCOLN);
+        if(!parser.peekAndConsume(Token.TCOLN)){
+            parser.syntacticError("Expected a Colon", parser.peek());
+            return new TreeNode();
+        }
 
         TreeNode tail = nParamTypeTailNode.make(parser);
 
+        if(tail.getValue() == TreeNode.NUNDEF){
+            return new TreeNode(); //todo check this.
+        }
+
         //since we LL(1), we already have the id of the variable, but we need to call param type tail to get the data type
-        SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(),token.getStr()+"_"+parser.getScope());
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(),id.getStr()+"_"+parser.getScope());
 
         parser.insertIdentifierRecord(record);
 

@@ -116,5 +116,23 @@ public class NRelopNodeTests {
 
         assertEquals(TreeNode.NGEQ,relop.getValue());
     }
+
+
+    @Test
+    public void syntactic_badrelop(){
+        //NLSS
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NRelopNode nRelopNode = new NRelopNode();
+
+        TreeNode relop = nRelopNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF,relop.getValue());
+    }
 }
 

@@ -108,7 +108,5 @@ public class NParamsNodeTests {
 
         assertEquals(TreeNode.NARRC, params.getRight().getLeft().getValue());
         assertEquals(TreeNode.NARRP, params.getRight().getRight().getValue());
-
-
     }
 }

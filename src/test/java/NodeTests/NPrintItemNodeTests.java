@@ -69,4 +69,26 @@ public class NPrintItemNodeTests {
 
     }
 
+
+    @Test
+    public void syntactic_fail(){
+        //"so you're trying to block me huh. whats your stoyle?"
+        SetupMocks.setup();
+
+        List<Token> tokens= new ArrayList<>();
+
+//        tokens.add(new Token(Token.TSTRG,1,1,null));
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NPrintItemNode nPrintItemNode = new NPrintItemNode();
+        nPrintItemNode.setnExprNode(NExprNode.INSTANCE());
+
+        TreeNode printitem = nPrintItemNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, printitem.getValue());
+
+    }
 }

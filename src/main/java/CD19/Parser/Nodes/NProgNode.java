@@ -31,10 +31,19 @@ public class NProgNode implements Node{
     }
 
     public TreeNode make(Parser parser) {
-        parser.peekAndConsume(Token.TCD19); //CD19 keyword
-        //error check
+        TreeNode program = new TreeNode();
+
+        if(!parser.peekAndConsume(Token.TCD19)){
+            parser.syntacticError("Expected Starting CD19 keyword", parser.peek());
+            return program;
+        }
+
         Token startId = parser.peek();
-        parser.peekAndConsume(Token.TIDEN); //name of program
+
+        if(!parser.peekAndConsume(Token.TIDEN)){
+            parser.syntacticError("Expected an Identifier", parser.peek());
+            return program;
+        }
 
         //error check
         parser.enterScope(startId.getStr());
@@ -42,10 +51,18 @@ public class NProgNode implements Node{
         TreeNode nGlobTreeNode = nGlobNode.make(parser);
         TreeNode nFuncsTreeNode = nFuncsNode.make(parser);
         TreeNode nMainTreeNode = nMainBodyNode.make(parser);
-        parser.peekAndConsume(Token.TCD19);
+
+        if(!parser.peekAndConsume(Token.TCD19)){
+            parser.syntacticError("Expected Ending CD19 keyword" , parser.peek());
+            return program;
+        }
 
         Token endId = parser.peek();
-        parser.peekAndConsume(Token.TIDEN);
+
+        if(!parser.peekAndConsume(Token.TIDEN)){
+            parser.syntacticError("Expected an Identifier", parser.peek());
+            return program;
+        }
 
         SymbolTableRecord startRecord = new SymbolTableRecord(startId.getStr(), null, "");
 

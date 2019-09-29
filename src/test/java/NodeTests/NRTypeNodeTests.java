@@ -76,6 +76,22 @@ public class NRTypeNodeTests {
         assertEquals(NodeDataTypes.Void, rtype.getType());
     }
 
+    @Test
+    public void syntactic_fail(){
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NRTypeNode nrTypeNode = new NRTypeNode();
+        TreeNode rtype = nrTypeNode.make(parser);
+
+        assertEquals(NodeDataTypes.Undefined, rtype.getType());
+    }
+
+
 
 
 }

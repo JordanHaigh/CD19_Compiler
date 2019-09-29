@@ -45,6 +45,7 @@ public class NParamTypeTailNode implements Node {
             parser.syntacticError("Expected a <stype> | <typeid>", type.getLine(),type.getCol());
             return new TreeNode(TreeNode.NUNDEF);
         }
+
     }
 
 
