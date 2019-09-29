@@ -161,4 +161,5 @@ public class NFactNodeTests {
         assertEquals(TreeNode.NILIT, fact.getLeft().getLeft().getRight().getValue());
 
     }
+
 }

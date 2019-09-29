@@ -35,33 +35,61 @@ public class NFuncNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
-        parser.peekAndConsume(Token.TFUNC);
+        TreeNode func = new TreeNode();
+
+        if(!parser.peekAndConsume(Token.TFUNC)){
+            parser.syntacticError("Expected function keyword", parser.peek());
+            return func;
+        }
+
         Token id = parser.peek();
-        parser.peekAndConsume(Token.TIDEN);
+
+        if(!parser.peekAndConsume(Token.TIDEN)){
+            parser.syntacticError("Expection Function Identifier", parser.peek());
+            return func;
+        }
+
         parser.enterScope("function_"+id.getStr());
 
+        if(!parser.peekAndConsume(Token.TLPAR)){
+            parser.syntacticError("Expected Left Parenthesis", parser.peek());
+            return func;
+        }
 
-        parser.peekAndConsume(Token.TLPAR);
         TreeNode plist = npListNode.make(parser);
-        parser.peekAndConsume(Token.TRPAR);
-        parser.peekAndConsume(Token.TCOLN);
+
+        if(!parser.peekAndConsume(Token.TRPAR)){
+            parser.syntacticError("Expected Right Parenthesis", parser.peek());
+            return func;
+        }
+
+        if(!parser.peekAndConsume(Token.TCOLN)){
+            parser.syntacticError("Expected Colon", parser.peek());
+            return func;
+        }
+
         TreeNode rtype = nrTypeNode.make(parser);
 
         TreeNode funcBody = nFuncBodyNode.make(parser);
+
         parser.leaveScope();
 
         TreeNode locals = funcBody.getLeft(); //from funcbody
         TreeNode stats = funcBody.getRight(); //from funcbody
 
-        TreeNode treenode = new TreeNode(TreeNode.NFUND, plist, locals, stats);
+        if(stats.getValue() == TreeNode.NUNDEF){
+            return func;//todo is this right? returning nundef here because we need rtype from here on
+        }
+
+        func = new TreeNode(TreeNode.NFUND, plist, locals, stats);
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), rtype.getType(), "function_"+id.getStr());
 
         parser.insertIdentifierRecord(record);
 
-        treenode.setSymbol(record);
-        treenode.setType(rtype.getType());
-        return treenode;
+        func.setSymbol(record);
+        func.setType(rtype.getType());
+        return func;
     }
 }
 

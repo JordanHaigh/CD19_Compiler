@@ -59,5 +59,6 @@ public class NFactNode implements Node{
             return null;
 
     }
+
 }
 

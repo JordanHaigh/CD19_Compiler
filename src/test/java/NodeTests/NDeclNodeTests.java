@@ -56,4 +56,69 @@ public class NDeclNodeTests {
         assertEquals(TreeNode.NARRD, decl.getValue());
     }
 
+    @Test
+    public void syntactis_firstidwrong(){
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"variable a"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TINTG,1,1,null));
+
+        tokens.add(new Token(Token.TINTG,1,1,null));
+
+
+        Parser parser = new Parser(tokens);
+
+        NDeclNode nDeclNode = new NDeclNode();
+
+        TreeNode decl = nDeclNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, decl.getValue());
+
+    }
+
+    @Test
+    public void syntactis_badcolon(){
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"variable a"));
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+        tokens.add(new Token(Token.TINTG,1,1,null));
+
+        tokens.add(new Token(Token.TINTG,1,1,null));
+
+
+        Parser parser = new Parser(tokens);
+
+        NDeclNode nDeclNode = new NDeclNode();
+
+        TreeNode decl = nDeclNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, decl.getValue());
+
+    }
+
+
+    @Test
+    public void syntactis_badend(){
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"variable a"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        tokens.add(new Token(Token.TINTG,1,1,null));
+
+
+        Parser parser = new Parser(tokens);
+
+        NDeclNode nDeclNode = new NDeclNode();
+
+        TreeNode decl = nDeclNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, decl.getValue());
+
+    }
+
 }

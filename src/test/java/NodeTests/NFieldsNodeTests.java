@@ -115,4 +115,5 @@ public class NFieldsNodeTests {
         assertEquals(TreeNode.NSDECL, fieldsList.getRight().getRight().getValue());
 
     }
+
 }

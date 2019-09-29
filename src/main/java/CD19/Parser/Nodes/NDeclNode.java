@@ -28,16 +28,33 @@ public class NDeclNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
+        TreeNode decl = new TreeNode();
+
         Token token = parser.peek();
-        parser.peekAndConsume(Token.TIDEN);
-        parser.peekAndConsume(Token.TCOLN);
+
+        if(!parser.peekAndConsume(Token.TIDEN)){
+            parser.syntacticError("Expected an Identifier", parser.peek()); //todo recover
+            return decl;
+        }
+
+        if(!parser.peekAndConsume(Token.TCOLN)){
+            parser.syntacticError("Expected a Colon", parser.peek()); //todo recover
+            return decl;
+        }
+
         TreeNode paramTypeTail = nParamTypeTailNode.make(parser);
+
+        if(paramTypeTail.getValue() == TreeNode.NUNDEF){
+            //we cant get datatype or make the strec
+            return decl; //todo is this right?
+        }
+
         NodeDataTypes dataType = paramTypeTail.getType();
 
         SymbolTableRecord record = new SymbolTableRecord(token.getStr(), dataType, parser.getScope());
         parser.insertIdentifierRecord(record);
 
-        TreeNode returnTreeNode = new TreeNode(paramTypeTail.getValue(), record); //todo this needs serious error checking
+        TreeNode returnTreeNode = new TreeNode(paramTypeTail.getValue(), record);
         return returnTreeNode;
     }
 

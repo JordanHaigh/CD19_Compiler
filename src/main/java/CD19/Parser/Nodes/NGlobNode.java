@@ -38,6 +38,5 @@ public class NGlobNode implements Node {
         return nGlobTreeNode;
     }
 
-
 }
 

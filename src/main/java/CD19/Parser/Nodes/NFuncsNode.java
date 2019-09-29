@@ -44,8 +44,5 @@ public class NFuncsNode implements Node {
             return null;
     }
 
-
-
-
 }
 

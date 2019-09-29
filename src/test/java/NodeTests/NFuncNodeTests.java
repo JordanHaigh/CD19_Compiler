@@ -78,4 +78,198 @@ public class NFuncNodeTests {
         assertEquals(TreeNode.NSTATS, func.getRight().getValue());
 
     }
+
+
+    @Test
+    public void syntactic_failfunc(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"id"));
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"plist here"));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"rtype here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"funcbody"));
+
+        Parser parser = new Parser(tokens);
+
+        when(npListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NPLIST);
+        });
+
+        when(nrTypeNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
+            dummy.setType(NodeDataTypes.Void);
+            return dummy;
+        });
+        when(nFuncBodyNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
+        });
+
+        TreeNode func = nFuncNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, func.getValue());
+
+    }
+
+    @Test
+    public void syntactic_failiden(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"plist here"));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"rtype here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"funcbody"));
+
+        Parser parser = new Parser(tokens);
+
+        when(npListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NPLIST);
+        });
+
+        when(nrTypeNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
+            dummy.setType(NodeDataTypes.Void);
+            return dummy;
+        });
+        when(nFuncBodyNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
+        });
+
+        TreeNode func = nFuncNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, func.getValue());
+
+    }
+
+    @Test
+    public void syntactic_faillpar(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+//        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"plist here"));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"rtype here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"funcbody"));
+
+        Parser parser = new Parser(tokens);
+
+        when(npListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NPLIST);
+        });
+
+        when(nrTypeNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
+            dummy.setType(NodeDataTypes.Void);
+            return dummy;
+        });
+        when(nFuncBodyNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
+        });
+
+        TreeNode func = nFuncNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, func.getValue());
+
+    }
+
+    @Test
+    public void syntactic_failrpar(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"plist here"));
+//        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"rtype here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"funcbody"));
+
+        Parser parser = new Parser(tokens);
+
+        when(npListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NPLIST);
+        });
+
+        when(nrTypeNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
+            dummy.setType(NodeDataTypes.Void);
+            return dummy;
+        });
+        when(nFuncBodyNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
+        });
+
+        TreeNode func = nFuncNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, func.getValue());
+
+    }
+
+
+    @Test
+    public void syntactic_failcoln(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"plist here"));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
+//        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"rtype here"));
+        tokens.add(new Token(Token.TIDEN,1,1,"funcbody"));
+
+        Parser parser = new Parser(tokens);
+
+        when(npListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NPLIST);
+        });
+
+        when(nrTypeNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
+            dummy.setType(NodeDataTypes.Void);
+            return dummy;
+        });
+        when(nFuncBodyNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
+        });
+
+        TreeNode func = nFuncNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, func.getValue());
+
+    }
 }

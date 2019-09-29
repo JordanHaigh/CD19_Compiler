@@ -7,8 +7,7 @@ import CD19.Scanner.Token;
 
 public class NExponentNode implements Node{
 
-//NILIT | NFLIT | NTRUE | NFALS	   <exponent>	::=	<varorfncall> |  <intlit> | <reallit>  |
-//                                                  TRUE | FALSE | (<bool>)
+//NILIT | NFLIT | NTRUE | NFALS	   <exponent>	::=	<varorfncall> |  <intlit> | <reallit>  | TRUE | FALSE | (<bool>)
 //  <varorfncall> ::= <id> <varOrFNCallTail>
 //	<varOrFNCallTail>	::=	<varTail> | <fnCallTail>
 //	<fncallTail>	::=	( <fnCallElistTail>)
@@ -68,8 +67,11 @@ public class NExponentNode implements Node{
             parser.peekAndConsume(Token.TRPAR);
             return bool;
         }
-        //todo else error
-        return null;
+        else{
+            parser.syntacticError("Expected a valid Exponent starting token", parser.peek());//todo recover
+            return new TreeNode();
+
+        }
     }
 
     private TreeNode varOrFnCall(Parser parser){

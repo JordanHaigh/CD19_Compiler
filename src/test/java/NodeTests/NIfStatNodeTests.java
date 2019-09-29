@@ -102,6 +102,125 @@ public class NIfStatNodeTests {
 
     }
 
+    @Test
+    public void syntactic_failif(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        //tokens.add(new Token(Token.TIFTH,1,1,null));
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"bool stuff here"));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nBoolNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NBOOL);
+        });
+
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+
+        TreeNode ifstat = nIfStatNode.make(parser);
+        assertEquals(TreeNode.NUNDEF, ifstat.getValue());
+
+    }
+
+    @Test
+    public void syntactic_faillpar(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIFTH,1,1,null));
+//        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"bool stuff here"));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nBoolNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NBOOL);
+        });
+
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+
+        TreeNode ifstat = nIfStatNode.make(parser);
+        assertEquals(TreeNode.NUNDEF, ifstat.getValue());
+
+    }
+
+    @Test
+    public void syntactic_failrpar(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIFTH,1,1,null));
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"bool stuff here"));
+//        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nBoolNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NBOOL);
+        });
+
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+
+        TreeNode ifstat = nIfStatNode.make(parser);
+        assertEquals(TreeNode.NUNDEF, ifstat.getValue());
+
+    }
+
+    @Test
+    public void syntactic_failend(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIFTH,1,1,null));
+        tokens.add(new Token(Token.TLPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"bool stuff here"));
+        tokens.add(new Token(Token.TRPAR,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+        tokens.add(new Token(Token.TIFTH,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+
+        when(nBoolNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NBOOL);
+        });
+
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+
+        TreeNode ifstat = nIfStatNode.make(parser);
+        assertEquals(TreeNode.NUNDEF, ifstat.getValue());
+
+    }
 
 
 

@@ -4,7 +4,7 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
-public class NIfStatNode implements Node{
+public class NIfStatNode implements Node {
     //NIFTH | NIFTE	<ifstat>	::=	if ( <bool> ) <stats> <ifStatTail> end
     //	<ifStatTail>	::=	eps |  else <stats>
 
@@ -21,6 +21,7 @@ public class NIfStatNode implements Node{
     }
 
     private static NIfStatNode instance;
+
     public static NIfStatNode INSTANCE() {
         if (instance == null) {
             instance = new NIfStatNode();
@@ -38,36 +39,50 @@ public class NIfStatNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
+        TreeNode ifstat = new TreeNode();
 
-        parser.peekAndConsume(Token.TIFTH);
-        parser.peekAndConsume(Token.TLPAR);
+        if (!parser.peekAndConsume(Token.TIFTH)) {
+            parser.syntacticError("Expected If Keyword", parser.peek());
+            return ifstat;
+        }
+
+        if (!parser.peekAndConsume(Token.TLPAR)) {
+            parser.syntacticError("Expected Left Parenthesis", parser.peek());
+            return ifstat;
+        }
 
         TreeNode bool = nBoolNode.make(parser);
 
-        parser.peekAndConsume(Token.TRPAR);
+        if (!parser.peekAndConsume(Token.TRPAR)) {
+            parser.syntacticError("Expected Right Parenthesis", parser.peek());
+            return ifstat;
+        }
 
         TreeNode stats = nStatsNode.make(parser);
 
         TreeNode tail = tail(parser);
 
-        parser.peekAndConsume(Token.TEND);
-
-
-        if(tail==null){ //if just an if statement, then we dont need tail node's stats
-            return new TreeNode(TreeNode.NIFTH, bool, stats);
+        if (!parser.peekAndConsume(Token.TEND)) {
+            parser.syntacticError("Expected End Keyword", parser.peek());
+            return ifstat;
         }
-        else{
-            return new TreeNode(TreeNode.NIFTE, bool, stats, tail); //contains an else statement so we need tail's stats
+
+        if (tail == null) { //if just an if statement, then we dont need tail node's stats
+            ifstat = new TreeNode(TreeNode.NIFTH, bool, stats);
+            return ifstat;
+        }
+        else {
+            ifstat = new TreeNode(TreeNode.NIFTE, bool, stats, tail); //contains an else statement so we need tail's stats
+            return ifstat;
         }
 
     }
 
-    private TreeNode tail(Parser parser){
-        if(parser.peekAndConsume(Token.TELSE)){
+    private TreeNode tail(Parser parser) {
+        if (parser.peekAndConsume(Token.TELSE)) {
             TreeNode stats = nStatsNode.make(parser);
             return stats;
-        }
-        else
+        } else
             return null;
 
     }

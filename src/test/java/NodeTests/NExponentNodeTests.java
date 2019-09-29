@@ -373,6 +373,32 @@ public class NExponentNodeTests {
         assertEquals(TreeNode.NFCALL, exponent.getLeft().getValue());
     }
 
+    @Test
+    public void syntactic_badstarttoken(){
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NBoolNode nBoolNode = mock(NBoolNode.class);
+        NExprNode nExprNode = mock(NExprNode.class);
+
+        NVarTailNode nVarTailNode= new NVarTailNode(nExprNode);
+
+        NEListNode neListNode = mock(NEListNode.class);
+        NExponentNode nExponentNode= new NExponentNode(nBoolNode, nVarTailNode, neListNode );
+
+        TreeNode exponent = nExponentNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, exponent.getValue());
+        assertEquals(null, exponent.getLeft());
+        assertEquals(null, exponent.getRight());
+
+    }
+
 
 
 

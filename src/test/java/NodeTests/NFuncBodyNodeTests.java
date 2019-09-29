@@ -42,6 +42,39 @@ public class NFuncBodyNodeTests {
         tokens.add(new Token(Token.TIDEN,1,1,"Stats stuff here"));
         tokens.add(new Token(Token.TEND,1,1,null));
 
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        when(nlocalsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NDLIST);
+        });
+
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+
+        nFuncBodyNode = new NFuncBodyNode(nlocalsNode, nStatsNode);
+
+        TreeNode funcbody = nFuncBodyNode.make(parser);
+
+        assertEquals(TreeNode.NDLIST, funcbody.getLeft().getValue());
+        assertEquals(TreeNode.NSTATS, funcbody.getRight().getValue());
+
+    }
+
+    @Test
+    public void syntactic_begin(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"locals here"));
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"Stats stuff here"));
+        tokens.add(new Token(Token.TEND,1,1,null));
+
         Parser parser = new Parser(tokens);
 
         when(nlocalsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
@@ -57,8 +90,40 @@ public class NFuncBodyNodeTests {
 
         TreeNode funcbody = nFuncBodyNode.make(parser);
 
-        assertEquals(TreeNode.NDLIST, funcbody.getLeft().getValue());
-        assertEquals(TreeNode.NSTATS, funcbody.getRight().getValue());
+        assertEquals(TreeNode.NUNDEF, funcbody.getValue());
+        assertEquals(null, funcbody.getLeft());
+        assertEquals(null, funcbody.getRight());
+
+    }
+
+    @Test
+    public void syntactic_end(){
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"locals here"));
+        tokens.add(new Token(Token.TBEGN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"Stats stuff here"));
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        when(nlocalsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NDLIST);
+        });
+
+        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NSTATS);
+        });
+
+
+        TreeNode funcbody = nFuncBodyNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, funcbody.getValue());
+        assertEquals(null, funcbody.getLeft());
+        assertEquals(null, funcbody.getRight());
 
     }
 }

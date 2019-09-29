@@ -83,4 +83,5 @@ public class NGlobalsNodeTests {
         assertEquals(null, globs.getRight());
     }
 
+
 }

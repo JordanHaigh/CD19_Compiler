@@ -42,14 +42,38 @@ public class NForStatNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
-        parser.peekAndConsume(Token.TFOR);
-        parser.peekAndConsume(Token.TLPAR);
+        TreeNode forstat = new TreeNode();
+
+        if(!parser.peekAndConsume(Token.TFOR)){
+            parser.syntacticError("Expected the For keyword", parser.peek());
+            return forstat;
+        }
+
+        if(!parser.peekAndConsume(Token.TLPAR)){
+            parser.syntacticError("Expected a left parenthesis", parser.peek());
+            return forstat;
+        }
+
         TreeNode asgnlist = nAsgnListNode.make(parser);
-        parser.peekAndConsume(Token.TSEMI);
+
+        if(!parser.peekAndConsume(Token.TSEMI)){
+            parser.syntacticError("Expected a semicolon", parser.peek());
+            return forstat;
+        }
+
         TreeNode bool = nBoolNode.make(parser);
-        parser.peekAndConsume(Token.TRPAR);
+
+        if(!parser.peekAndConsume(Token.TRPAR)){
+            parser.syntacticError("Expected a right parenthesis", parser.peek());
+            return forstat;
+        }
+
         TreeNode stats = nStatsNode.make(parser);
-        parser.peekAndConsume(Token.TEND);
+
+        if(!parser.peekAndConsume(Token.TEND)){
+            parser.syntacticError("Expected an end keyword", parser.peek());
+            return forstat;
+        }
 
         return new TreeNode(TreeNode.NFOR, asgnlist, bool, stats);
 
