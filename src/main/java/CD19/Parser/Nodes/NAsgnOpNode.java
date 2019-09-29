@@ -18,16 +18,19 @@ public class NAsgnOpNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TEQUL)) //=
-            return new TreeNode(TreeNode.NASGN, null);
+            return new TreeNode(TreeNode.NASGN);
         else if(parser.peekAndConsume(Token.TPLEQ)) //+=
-            return new TreeNode(TreeNode.NPLEQ, null);
+            return new TreeNode(TreeNode.NPLEQ);
         else if(parser.peekAndConsume(Token.TMNEQ)) //-=
-            return new TreeNode(TreeNode.NMNEQ, null);
+            return new TreeNode(TreeNode.NMNEQ);
         else if(parser.peekAndConsume(Token.TSTEQ)) //*=
-            return new TreeNode(TreeNode.NSTEQ, null);
+            return new TreeNode(TreeNode.NSTEQ);
         else if(parser.peekAndConsume(Token.TDVEQ)) // /=
-            return new TreeNode(TreeNode.NDVEQ, null);
-        return null; //todo error check
+            return new TreeNode(TreeNode.NDVEQ);
+        else{
+            parser.syntacticError("Expected an AsgnOp", parser.peek());
+            return new TreeNode();
+        }
 
 
 

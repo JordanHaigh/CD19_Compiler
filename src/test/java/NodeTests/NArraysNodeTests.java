@@ -64,6 +64,7 @@ public class NArraysNodeTests{
 
         assertEquals(TreeNode.NALIST, arrays.getValue());
         assertEquals(TreeNode.NARRD, arrays.getLeft().getValue());
-        assertEquals(TreeNode.NALIST, arrays.getRight().getValue());
+        assertEquals(TreeNode.NARRD, arrays.getRight().getValue());
     }
+
 }

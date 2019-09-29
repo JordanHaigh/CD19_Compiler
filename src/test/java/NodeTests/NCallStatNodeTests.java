@@ -73,4 +73,5 @@ public class NCallStatNodeTests {
         assertEquals(null, callstat.getLeft());
         assertEquals(null, callstat.getRight());
     }
+
 }

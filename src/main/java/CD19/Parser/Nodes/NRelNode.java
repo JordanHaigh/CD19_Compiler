@@ -5,7 +5,7 @@ import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
 public class NRelNode implements Node{
-//NNOT	<rel>	::=	<expr><relExprTail> | not <expr> <relop> <expr>
+//NNOT	<rel>	::=	<expr><relExprTail> | not <expr> <relExprTail>
 //	<relExprTail>	::=	ε | <relop><expr>
 
     NExprNode nExprNode;
@@ -46,6 +46,7 @@ public class NRelNode implements Node{
 
 
     private TreeNode exprPath(Parser parser){
+        //<expr><relExprTail>
         TreeNode expr = nExprNode.make(parser);
         TreeNode tail = tail(parser);
         if(tail != null){
@@ -56,7 +57,31 @@ public class NRelNode implements Node{
 
     }
 
+    private TreeNode notExprPath(Parser parser){
+        // not <expr> <relExprTail>
+        parser.peekAndConsume(Token.TNOT);
+        TreeNode expr= nExprNode.make(parser);
+        TreeNode tail = tail(parser);
+        if(tail != null){
+            tail.setLeft(expr);
+            TreeNode returnTreeNode = new TreeNode(TreeNode.NNOT, tail,null);
+            return returnTreeNode;
+        }
+
+
+        return new TreeNode(TreeNode.NNOT, expr,null);
+
+//
+//        TreeNode relop = nRelopNode.make(parser);
+//        TreeNode secondExpr = nExprNode.make(parser);
+//
+//        relop.setLeft(firstExpr);
+//        relop.setRight(secondExpr);
+//        return new TreeNode(TreeNode.NNOT, relop, null);
+    }
+
     private TreeNode tail(Parser parser){
+        ////	<relExprTail>	::=	ε | <relop><expr>
         Token token = parser.peek();
         if(token.getTokenID() == Token.TEQEQ ||
                 token.getTokenID() == Token.TNEQL ||
@@ -75,15 +100,5 @@ public class NRelNode implements Node{
         }
     }
 
-    private TreeNode notExprPath(Parser parser){
-        parser.peekAndConsume(Token.TNOT);
-        TreeNode firstExpr = nExprNode.make(parser);
-        TreeNode relop = nRelopNode.make(parser);
-        TreeNode secondExpr = nExprNode.make(parser);
-
-        relop.setLeft(firstExpr);
-        relop.setRight(secondExpr);
-        return new TreeNode(TreeNode.NNOT, relop, null);
-    }
 }
 

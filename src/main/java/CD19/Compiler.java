@@ -26,7 +26,7 @@ public class Compiler {
         List<Token> tokens = lexicalAnalysis(filePath);
 
         if(!listingFile.containsErrors()){
-            //parse(tokens);
+            parse(tokens);
         }
 
         listingFile.print();

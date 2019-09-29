@@ -40,9 +40,16 @@ public class Parser implements Subject {
         scopeStack.pop();
     }
 
-    public void addSyntacticErrorMessage(String message, int line, int column)
+    public void syntacticError(String message, int line, int column)
     {
-        syntacticErrors.add(new SyntacticErrorMessage(message,line, column));
+        String prepend = "Syntactic Error - ";
+        prepend += message;
+        syntacticErrors.add(new SyntacticErrorMessage(prepend,line, column));
+    }
+
+    public void syntacticError(String message, Token token)
+    {
+        syntacticError(message, token.getLine(), token.getCol());
     }
 
     public String getScope(){

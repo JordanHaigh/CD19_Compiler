@@ -39,5 +39,6 @@ public class NConstsNode implements Node{
 
         return null;
     }
+
 }
 

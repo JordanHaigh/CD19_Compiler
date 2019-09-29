@@ -1,6 +1,5 @@
 package CD19.Parser.Nodes;
 
-import CD19.Observer.SyntacticErrorMessage;
 import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
@@ -43,7 +42,7 @@ public class NParamTypeTailNode implements Node {
         }
         else{
             //error
-            parser.addSyntacticErrorMessage("Syntactic Error. Expected a <stype> | <typeid>", type.getLine(),type.getCol());
+            parser.syntacticError("Expected a <stype> | <typeid>", type.getLine(),type.getCol());
             return new TreeNode(TreeNode.NUNDEF);
         }
     }

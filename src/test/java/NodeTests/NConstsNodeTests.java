@@ -71,4 +71,5 @@ public class NConstsNodeTests {
 
         assertEquals(null, consts);
     }
+    
 }

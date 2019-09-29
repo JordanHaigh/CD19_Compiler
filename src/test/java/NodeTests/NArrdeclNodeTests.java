@@ -33,4 +33,65 @@ public class NArrdeclNodeTests {
         assertEquals(TreeNode.NARRD, arrdecl.getValue());
 
     }
+
+    @Test
+    public void syntacticerror_badfirstID(){
+        //people : person
+        List<Token> tokens= new ArrayList<>();
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"people"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"person"));
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NArrDeclNode nArrDeclNode = new NArrDeclNode();
+
+        TreeNode arrdecl = nArrDeclNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, arrdecl.getValue());
+
+    }
+
+    @Test
+    public void syntacticerror_badcolon(){
+        //people : person
+        List<Token> tokens= new ArrayList<>();
+        tokens.add(new Token(Token.TIDEN,1,1,"people"));
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"person"));
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NArrDeclNode nArrDeclNode = new NArrDeclNode();
+
+        TreeNode arrdecl = nArrDeclNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, arrdecl.getValue());
+
+    }
+
+    @Test
+    public void syntacticerror_badsecondid(){
+        //people : person
+        List<Token> tokens= new ArrayList<>();
+        tokens.add(new Token(Token.TIDEN,1,1,"people"));
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NArrDeclNode nArrDeclNode = new NArrDeclNode();
+
+        TreeNode arrdecl = nArrDeclNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, arrdecl.getValue());
+
+    }
 }

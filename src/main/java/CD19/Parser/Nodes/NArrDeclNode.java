@@ -5,10 +5,11 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
-public class NArrDeclNode implements Node{
+public class NArrDeclNode implements Node {
     //NARRD	<arrdecl>	::=	<id> : <typeid>
 
     private static NArrDeclNode instance;
+
     public static NArrDeclNode INSTANCE() {
         if (instance == null) {
             instance = new NArrDeclNode();
@@ -18,21 +19,33 @@ public class NArrDeclNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
-        Token id = parser.peek();
-        if(id.getTokenID() == Token.TIDEN){
-            parser.consume();
-            parser.peekAndConsume(Token.TCOLN);
-            Token type = parser.peek();
-            if(type.getTokenID() == Token.TIDEN){
-                parser.consume();
-                SymbolTableRecord record = new SymbolTableRecord(id.getStr(),NodeDataTypes.Array,parser.getScope());
-                parser.insertTypeRecord(record);
+        TreeNode arrdecl = new TreeNode();
 
-                TreeNode treeNode = new TreeNode(TreeNode.NARRD, record);
-                return treeNode;
-            }
+        Token id = parser.peek();
+        if (!parser.peekAndConsume(Token.TIDEN)) {
+            parser.syntacticError("Expected an Identifier", id);
+            return arrdecl;
         }
 
-        return null; //todo should error
+        if (!parser.peekAndConsume(Token.TCOLN)) {
+            parser.syntacticError("Expected a colon", parser.peek());
+            return arrdecl;
+        }
+
+        Token type = parser.peek(); //todo type isnt being set?
+
+        if (!parser.peekAndConsume(Token.TIDEN)) {
+            parser.syntacticError("Expected an Identifier", id);
+            return arrdecl;
+        }
+
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), NodeDataTypes.Array, parser.getScope());
+        parser.insertTypeRecord(record);
+
+        arrdecl.setValue(TreeNode.NARRD);
+        arrdecl.setSymbol(record);
+        return arrdecl;
+
+
     }
 }

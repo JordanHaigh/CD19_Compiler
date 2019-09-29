@@ -73,4 +73,5 @@ public class NAsgnStatNodeTests {
         assertEquals(TreeNode.NARRV, asgnstat.getLeft().getValue());
         assertEquals(TreeNode.NSIMV,asgnstat.getRight().getValue());
     }
+
 }

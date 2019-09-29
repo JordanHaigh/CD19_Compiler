@@ -149,5 +149,69 @@ public class NAlistNodeTests {
         assertEquals(TreeNode.NILIT, alist.getRight().getRight().getRight().getValue());
 
     }
+
+    @Test
+    public void NALIST_errordetect_firstID() {
+        SetupMocks.setup();
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TEQUL,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"variable"));
+        tokens.add(new Token(Token.TEQUL,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NVarTailNode nVarTailNode = new NVarTailNode();
+        nVarTailNode.setnExprNode(NExprNode.INSTANCE());
+
+        NAsgnStatNode nAsgnStatNode = new NAsgnStatNode();
+        nAsgnStatNode.setnBoolNode(NBoolNode.INSTANCE());
+
+        NAlistNode nAlistNode = new NAlistNode();
+
+        TreeNode alist = nAlistNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF,alist.getValue());
+        assertEquals(null,alist.getLeft());
+        assertEquals(null,alist.getRight());
+
+    }
+
+    @Test
+    public void NALIST_errordetect_aftercoma_in_tail() {
+        SetupMocks.setup();
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"variable"));
+        tokens.add(new Token(Token.TEQUL,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null)); //fail here
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NVarTailNode nVarTailNode = new NVarTailNode();
+        nVarTailNode.setnExprNode(NExprNode.INSTANCE());
+
+        NAsgnStatNode nAsgnStatNode = new NAsgnStatNode();
+        nAsgnStatNode.setnBoolNode(NBoolNode.INSTANCE());
+
+        NAlistNode nAlistNode = new NAlistNode();
+
+        TreeNode alist = nAlistNode.make(parser);
+
+        assertEquals(TreeNode.NASGNS,alist.getValue());
+        assertEquals(TreeNode.NASGN,alist.getLeft().getValue());
+        assertEquals(TreeNode.NUNDEF,alist.getRight().getValue());
+
+    }
 }
 

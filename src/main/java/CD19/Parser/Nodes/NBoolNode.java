@@ -59,6 +59,7 @@ public class NBoolNode implements Node{
           return null; //eps trans
 
     }
+
 }
 
 

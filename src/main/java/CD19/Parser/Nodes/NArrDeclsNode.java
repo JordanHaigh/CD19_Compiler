@@ -4,9 +4,15 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * NALIST	<arrdecls>	::=	<arrdecl> <arrDeclTail>
+ * <arrdeclsTail>	::=	eps |  , <arrdecl> <arrDeclTail>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class NArrDeclsNode implements Node{
-    //NALIST	<arrdecls>	::=	<arrdecl> <arrDeclTail>
-    //	<arrdeclsTail>	::=	eps |  , <arrdecls>
+
 
     NArrDeclNode nArrDeclNode;
 
@@ -27,17 +33,32 @@ public class NArrDeclsNode implements Node{
     }
 
 
+    /**
+     *  Attemps to generate a Arrdecls node
+     * @param parser The Parser
+     * @return Valid TreeNode for ArrDecls or NUNDEF
+     */
     @Override
     public TreeNode make(Parser parser) {
-        TreeNode arrDeclNode = nArrDeclNode.make(parser);
-        TreeNode tail = arrDeclTail(parser);
+        TreeNode arrdecl = nArrDeclNode.make(parser);
+        TreeNode tail = tail(parser);
 
-        return new TreeNode(TreeNode.NALIST, arrDeclNode, tail);
+        if(tail == null)
+            return arrdecl;
+
+        return new TreeNode(TreeNode.NALIST, arrdecl, tail);
     }
 
-    private TreeNode arrDeclTail(Parser parser){
+    private TreeNode tail(Parser parser){
         if(parser.peekAndConsume(Token.TCOMA)){
-            return this.make(parser); //<arrdecls>
+            TreeNode arrdecl = nArrDeclNode.make(parser);
+            TreeNode tail = tail(parser);
+
+            if(tail == null)
+                return arrdecl;
+
+            return new TreeNode(TreeNode.NALIST, arrdecl, tail);
+
         }
         return null; //epsilon transition
     }

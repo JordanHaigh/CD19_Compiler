@@ -103,5 +103,22 @@ public class NAsgnOpNodeTests {
         assertEquals(TreeNode.NDVEQ,asgnop.getValue());
     }
 
+    @Test
+    public void syntactic_bad(){
+
+        //NDVEQ
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NAsgnOpNode nAsgnOpNode = new NAsgnOpNode();
+
+        TreeNode asgnop= nAsgnOpNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF,asgnop.getValue());
+    }
+
 
 }

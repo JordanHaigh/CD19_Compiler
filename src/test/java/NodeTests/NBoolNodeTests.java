@@ -103,6 +103,7 @@ public class NBoolNodeTests {
     @Test
     public void sunnyday_bool_bool(){
         List<Token> tokens= new ArrayList<>();
+        tokens.add(new Token(Token.TNOT,1,1,null));
 
         tokens.add(new Token(Token.TILIT,1,1,null));
         tokens.add(new Token(Token.TCART,1,1,null));
@@ -141,7 +142,9 @@ public class NBoolNodeTests {
         TreeNode bool = nBoolNode1.make(parser);
 
         assertEquals(TreeNode.NBOOL, bool.getValue());
-        assertEquals(TreeNode.NADD, bool.getLeft().getValue());
+        assertEquals(TreeNode.NNOT, bool.getLeft().getValue());
+        assertEquals(TreeNode.NADD, bool.getLeft().getLeft().getValue());
+
         assertEquals(TreeNode.NBOOL, bool.getRight().getValue());
         assertEquals(TreeNode.NPOW, bool.getRight().getLeft().getValue());
         assertEquals(TreeNode.NMOD, bool.getRight().getRight().getValue());

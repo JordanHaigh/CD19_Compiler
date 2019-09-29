@@ -22,8 +22,6 @@ public class NAsgnStatOrCallStatNode implements Node{
         this.nAsgnStatNode = nAsgnStatNode;
     }
 
-
-
     private static NAsgnStatOrCallStatNode instance;
     public static NAsgnStatOrCallStatNode INSTANCE() {
         if (instance == null) {
@@ -36,29 +34,38 @@ public class NAsgnStatOrCallStatNode implements Node{
 
     @Override
     public TreeNode make(Parser parser) {
+        TreeNode asgnStatOrCallStat = new TreeNode();
+
         Token token = parser.peek();
-        parser.peekAndConsume(Token.TIDEN);
+        if(!parser.peekAndConsume(Token.TIDEN)){
+            parser.syntacticError("Expected an identifier", parser.peek());
+            return asgnStatOrCallStat;
+        }
 
         TreeNode tail = tail(parser);
 
-        SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(), token.getStr()+"_"+parser.getScope());
-        tail.getLeft().setSymbol(record);
-
+        if(tail.getValue() != TreeNode.NUNDEF){
+            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(), token.getStr()+"_"+parser.getScope());
+            tail.getLeft().setSymbol(record);
+        }
         return tail;
     }
 
 
 
     private TreeNode tail(Parser parser){
-        Token token = parser.peek();
         //todo fix type for semantics
-        if(token.getTokenID() == Token.TLPAR){
-            //(<callStat>)
-            parser.consume();
-            TreeNode callStat = nCallStatNode.make(parser);
-            parser.peekAndConsume(Token.TRPAR);
 
-            return callStat;
+        if(parser.peekAndConsume(Token.TLPAR)){
+            //(<callStat>)
+            TreeNode callStat = nCallStatNode.make(parser);
+
+            if(!parser.peekAndConsume(Token.TRPAR)){
+                parser.syntacticError("Expected a right parenthesis", parser.peek());
+                return new TreeNode();
+            }
+            else
+                return callStat;
         }
         else{
             //<asgnStat>

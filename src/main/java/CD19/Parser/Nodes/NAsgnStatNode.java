@@ -48,5 +48,6 @@ public class NAsgnStatNode implements Node{
         asgnop.setRight(bool);
         return asgnop;
     }
+
 }
 

@@ -35,9 +35,7 @@ public class NArrDeclsNodeTests {
 
         TreeNode arrdecls = nArrDeclsNode.make(parser);
 
-        assertEquals(TreeNode.NALIST, arrdecls.getValue());
-        assertEquals(TreeNode.NARRD, arrdecls.getLeft().getValue());
-        assertEquals(null, arrdecls.getRight());
+        assertEquals(TreeNode.NARRD, arrdecls.getValue());
 
     }
 
@@ -65,7 +63,42 @@ public class NArrDeclsNodeTests {
 
         assertEquals(TreeNode.NALIST, arrdecls.getValue());
         assertEquals(TreeNode.NARRD, arrdecls.getLeft().getValue());
+        assertEquals(TreeNode.NARRD, arrdecls.getRight().getValue());
+
+    }
+
+    @Test
+    public void sunnyday_three(){
+        //arrays person : people
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TIDEN,1,1,"people"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"person"));
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        tokens.add(new Token(Token.TIDEN,1,1,"class"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"person"));
+
+        tokens.add(new Token(Token.TCOMA,1,1,null));
+
+        tokens.add(new Token(Token.TIDEN,1,1,"class"));
+        tokens.add(new Token(Token.TCOLN,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"person"));
+
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        TreeNode arrdecls = nArrDeclsNode.make(parser);
+
+        assertEquals(TreeNode.NALIST, arrdecls.getValue());
+        assertEquals(TreeNode.NARRD, arrdecls.getLeft().getValue());
         assertEquals(TreeNode.NALIST, arrdecls.getRight().getValue());
+        assertEquals(TreeNode.NARRD, arrdecls.getRight().getLeft().getValue());
+        assertEquals(TreeNode.NARRD, arrdecls.getRight().getRight().getValue());
 
     }
 

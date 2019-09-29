@@ -35,8 +35,8 @@ public class TreeNode {
     private static final String PRINTNODE[] = {  	//  PRINTNODE[TreeNode Value] will produce the associated String
             //  e.g. PRINTNODE[NPROG] will be the String "NPROG".
             "NUNDEF",
-            "NPROG ",	"NGLOB ",	"NILIST",	"NINIT ",	"NFUNCS ",
-            "NMAIN",	"NSDLST",	"NTYPEL",	"NRTYPE",	"NATYPE",
+            "NPROG ",	"NGLOB ",	"NILIST",	"NINIT ",	"NFUNCS",
+            "NMAIN ",	"NSDLST",	"NTYPEL",	"NRTYPE",	"NATYPE",
             "NFLIST",	"NSDECL",	"NALIST",	"NARRD ",	"NFUND ",
             "NPLIST",	"NSIMP ",	"NARRP ",	"NARRC ",	"NDLIST",
             "NSTATS",	"NFOR  ",	"NREPT ",	"NASGNS",	"NIFTH ",
@@ -57,6 +57,10 @@ public class TreeNode {
     private TreeNode left,middle,right;
     private SymbolTableRecord symbol;
     private NodeDataTypes dataType;
+
+    public TreeNode(){
+        this(TreeNode.NUNDEF);
+    }
 
     public TreeNode (int value) {
         nodeValue = value;
@@ -139,7 +143,20 @@ public class TreeNode {
         count++;
         if (count%10 == 0) out.println();
         if (tr.symbol != null) {
-            out.print(tr.symbol.getLexeme() + " ");
+            int lengthOfLexeme = tr.symbol.getLexeme().length();
+            int remainingPad = 6-lengthOfLexeme;
+            if(remainingPad<0){
+                while(remainingPad <0){
+                    remainingPad +=7;
+                    count++;
+                }
+            }
+            out.print(tr.symbol.getLexeme());
+            out.print(" ");
+
+            for(int i = 0; i < remainingPad;i++){
+                out.print(" ");
+            }
             count++;
             if (count%10 == 0) out.println();
         }
