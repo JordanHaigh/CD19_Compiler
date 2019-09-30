@@ -12,8 +12,8 @@ types
 students is array [COUNT] of student
 
 arrays
-    classA : students
-    const classB : students 
+    classA : students,
+    classB : students
 
 
 
@@ -27,7 +27,7 @@ begin
 end
 
 
-function averageMark(const class : students) : real
+function averageMark(class : students) : real
     sum : integer,
     average : real,
     i : integer
@@ -49,7 +49,7 @@ begin
 end
 
 main
-    averageMark : real
+    averageMark : real,
     x : integer,
     y : integer,
     summedNumbers : integer

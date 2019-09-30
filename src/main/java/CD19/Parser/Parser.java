@@ -75,6 +75,9 @@ public class Parser implements Subject {
             TreeNode.printTree(out, tree);
             out.flush();
 
+            for(SyntacticErrorMessage message : syntacticErrors){
+                notifyObservers(message);
+            }
 
             return tree;
         }

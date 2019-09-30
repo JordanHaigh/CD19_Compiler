@@ -54,7 +54,7 @@ public class NVarNodeTests {
         tokens.add(new Token(Token.TILIT,1,1,null));
         tokens.add(new Token(Token.TRBRK,1,1,null));
         tokens.add(new Token(Token.TDOT,1,1,null));
-        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
 
         Parser parser = new Parser(tokens);
 
@@ -73,5 +73,35 @@ public class NVarNodeTests {
         TreeNode var = nVarNode.make(parser);
 
         assertEquals(TreeNode.NARRV, var.getValue());
+    }
+
+    @Test
+    public void syntactic_failiden(){
+        List<Token> tokens= new ArrayList<>();
+
+//        tokens.add(new Token(Token.TIDEN,1,1,"aaa"));
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TDOT,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NBoolNode nBoolNode = mock(NBoolNode.class);
+        NExprNode nExprNode = mock(NExprNode.class);
+        NVarTailNode nVarTailNode= new NVarTailNode(nExprNode);
+        NEListNode neListNode = mock(NEListNode.class);
+        NExponentNode nExponentNode = new NExponentNode(nBoolNode, nVarTailNode, neListNode);
+        NFactNode nFactNode = new NFactNode(nExponentNode);
+        NTermNode nTermNode = new NTermNode(nFactNode);
+        NExprNode nExprNode1 = new NExprNode(nTermNode);
+
+        NVarTailNode nVarTailNode1 = new NVarTailNode(nExprNode1);
+        NVarNode nVarNode = new NVarNode(nVarTailNode1);
+
+        TreeNode var = nVarNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, var.getValue());
     }
 }

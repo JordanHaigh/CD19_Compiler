@@ -48,22 +48,21 @@ public class NExponentNodeTests {
     }
 
     @Test
-    public void sunnyday_tidenarr_narrv(){
+    public void sunnyday_tiden_arr_narrv(){
+        SetupMocks.setup();
         List<Token> tokens= new ArrayList<>();
 
         tokens.add(new Token(Token.TIDEN,1,1,"aa"));
         tokens.add(new Token(Token.TLBRK,1,1,null));
         tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TDOT,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"Aa"));
 
         Parser parser = new Parser(tokens);
-
-        NBoolNode nBoolNode = mock(NBoolNode.class);
-        NExprNode nExprNode = mock(NExprNode.class);
-
-        NVarTailNode nVarTailNode= new NVarTailNode(nExprNode);
-
-        NEListNode neListNode = mock(NEListNode.class);
-        NExponentNode nExponentNode= new NExponentNode(nBoolNode, nVarTailNode, neListNode );
+        NVarTailNode nVarTailNode = new NVarTailNode();
+        nVarTailNode.setnExprNode(NExprNode.INSTANCE());
+        NExponentNode nExponentNode = new NExponentNode(null, nVarTailNode, null);
 
         TreeNode exponent = nExponentNode.make(parser);
 

@@ -5,7 +5,7 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
-public class NVarNode implements Node{
+public class NVarNode implements Node {
 
     //NSIMV | NARRV	<var>	::=	<id> <varTail>
     //	<varTail>	::=	ε | [<expr>] . <id>
@@ -21,6 +21,7 @@ public class NVarNode implements Node{
     }
 
     private static NVarNode instance;
+
     public static NVarNode INSTANCE() {
         if (instance == null) {
             instance = new NVarNode();
@@ -31,30 +32,27 @@ public class NVarNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         Token id = parser.peek();
-        if(id.getTokenID() == Token.TIDEN){
-            parser.consume();
-            TreeNode tail = nVarTailNode.make(parser);
-
-            if(tail.getValue() == TreeNode.NARRV){
-                //look up types symbol table with id
-                //get strec
-                //now we have strec of struct
-                //now i need to get the members of the struct
-                //use the name of the struct (scope) to get the member
-
-                return tail;
-            }
-            else{
-                SymbolTableRecord record = new SymbolTableRecord(id.getStr(),NodeDataTypes.String,parser.getScope()); //todo this var is called by vlist and vlist is only called in the "input". the inputs will be made as strings BUT YOU MUST PARSE THEM TO THE RESPECTIVE DATA TYPE
-                parser.insertIdentifierRecord(record);// todo remember to parse to appropriate data type.
-                tail.setSymbol(record);
-                return tail;
-            }
-
+        if (!parser.peekAndConsume(Token.TIDEN)) {
+            parser.syntacticError("Expected an Identifier", parser.peek());
+            return new TreeNode();
         }
-        else
-            return new TreeNode(TreeNode.NUNDEF); //error detect
+
+        TreeNode tail = nVarTailNode.make(parser);
+
+        if (tail.getValue() == TreeNode.NARRV) {
+            //look up types symbol table with id
+            //get strec
+            //now we have strec of struct
+            //now i need to get the members of the struct
+            //use the name of the struct (scope) to get the member
+
+            return tail;
+        } else { //var tail was null
+            SymbolTableRecord record = new SymbolTableRecord(id.getStr(), NodeDataTypes.String, parser.getScope()); //todo this var is called by vlist and vlist is only called in the "input". the inputs will be made as strings BUT YOU MUST PARSE THEM TO THE RESPECTIVE DATA TYPE
+            parser.insertIdentifierRecord(record);// todo remember to parse to appropriate data type.
+            tail.setSymbol(record);
+            return tail;
+        }
+
     }
-
-
 }

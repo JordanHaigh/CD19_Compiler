@@ -49,12 +49,42 @@ public class NVarTailNodeTests {
 
     @Test
     public void sunnyday_arrdec(){
-
+        SetupMocks.setup();
         List<Token> tokens= new ArrayList<>();
 
         tokens.add(new Token(Token.TLBRK,1,1,null));
         tokens.add(new Token(Token.TILIT,1,1,null));
         tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TDOT,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+
+        Parser parser = new Parser(tokens);
+
+        NBoolNode nBoolNode = mock(NBoolNode.class);
+        NExprNode nExprNode = mock(NExprNode.class);
+        NVarTailNode nVarTailNode= new NVarTailNode(nExprNode);
+        NEListNode neListNode = mock(NEListNode.class);
+        NExponentNode nExponentNode = new NExponentNode(nBoolNode, nVarTailNode, neListNode);
+        NFactNode nFactNode = new NFactNode(nExponentNode);
+        NTermNode nTermNode = new NTermNode(nFactNode);
+        NExprNode nExprNode1 = new NExprNode(nTermNode);
+
+        NVarTailNode nVarTailNode1 = new NVarTailNode(nExprNode1);
+        TreeNode vartail = nVarTailNode1.make(parser);
+
+        assertEquals(TreeNode.NARRV, vartail.getValue());
+    }
+
+    @Test
+    public void syntactic_failrbrk(){
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+//        tokens.add(new Token(Token.TRBRK,1,1,null));
         tokens.add(new Token(Token.TDOT,1,1,null));
         tokens.add(new Token(Token.TILIT,1,1,null));
 
@@ -72,6 +102,65 @@ public class NVarTailNodeTests {
         NVarTailNode nVarTailNode1 = new NVarTailNode(nExprNode1);
         TreeNode vartail = nVarTailNode1.make(parser);
 
-        assertEquals(TreeNode.NARRV, vartail.getValue());
+        assertEquals(TreeNode.NUNDEF, vartail.getValue());
+    }
+
+
+    @Test
+    public void syntactic_faildot(){
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+//        tokens.add(new Token(Token.TDOT,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NBoolNode nBoolNode = mock(NBoolNode.class);
+        NExprNode nExprNode = mock(NExprNode.class);
+        NVarTailNode nVarTailNode= new NVarTailNode(nExprNode);
+        NEListNode neListNode = mock(NEListNode.class);
+        NExponentNode nExponentNode = new NExponentNode(nBoolNode, nVarTailNode, neListNode);
+        NFactNode nFactNode = new NFactNode(nExponentNode);
+        NTermNode nTermNode = new NTermNode(nFactNode);
+        NExprNode nExprNode1 = new NExprNode(nTermNode);
+
+        NVarTailNode nVarTailNode1 = new NVarTailNode(nExprNode1);
+        TreeNode vartail = nVarTailNode1.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, vartail.getValue());
+    }
+
+
+    @Test
+    public void syntactic_failsecondiden(){
+
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TLBRK,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TRBRK,1,1,null));
+        tokens.add(new Token(Token.TDOT,1,1,null));
+//        tokens.add(new Token(Token.TIDEN,1,1,null));
+        tokens.add(new Token(Token.TDOT,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        NBoolNode nBoolNode = mock(NBoolNode.class);
+        NExprNode nExprNode = mock(NExprNode.class);
+        NVarTailNode nVarTailNode= new NVarTailNode(nExprNode);
+        NEListNode neListNode = mock(NEListNode.class);
+        NExponentNode nExponentNode = new NExponentNode(nBoolNode, nVarTailNode, neListNode);
+        NFactNode nFactNode = new NFactNode(nExponentNode);
+        NTermNode nTermNode = new NTermNode(nFactNode);
+        NExprNode nExprNode1 = new NExprNode(nTermNode);
+
+        NVarTailNode nVarTailNode1 = new NVarTailNode(nExprNode1);
+        TreeNode vartail = nVarTailNode1.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, vartail.getValue());
     }
 }

@@ -32,13 +32,33 @@ public class NVarTailNode implements Node{
     }
     @Override
     public TreeNode make(Parser parser) {
-        if(parser.peekAndConsume(Token.TLBRK)){
-            TreeNode expr = nExprNode.make(parser);
-            parser.peekAndConsume(Token.TRBRK);
-            parser.peekAndConsume(Token.TDOT);
-            parser.peekAndConsume(Token.TIDEN);
+        Token token = parser.peek();
+
+        if(token.getTokenID() == Token.TLBRK){
+            TreeNode vartail = new TreeNode();
+
+            parser.consume();
+
+            TreeNode expr = nExprNode.make(parser); //todo whats this used for
+
+            if(!parser.peekAndConsume(Token.TRBRK)){
+                parser.syntacticError("Expected a Right Bracket", parser.peek());
+                return vartail;
+            }
+
+            if(!parser.peekAndConsume(Token.TDOT)){
+                parser.syntacticError("Expected a Dot", parser.peek());
+                return vartail;
+            }
+
+            if(!parser.peekAndConsume(Token.TIDEN)){
+                parser.syntacticError("Expected an Identifier", parser.peek());
+                return vartail;
+            }
+
             SymbolTableRecord record = new SymbolTableRecord(); //todo fill this in
-            return new TreeNode(TreeNode.NARRV, record);
+            vartail = new TreeNode(TreeNode.NARRV, record);
+            return vartail;
         }
         else{
             return new TreeNode(TreeNode.NSIMV, null,null);

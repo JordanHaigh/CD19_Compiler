@@ -28,7 +28,7 @@ public class NVlistNodeTests {
         tokens.add(new Token(Token.TILIT,1,1,null));
         tokens.add(new Token(Token.TRBRK,1,1,null));
         tokens.add(new Token(Token.TDOT,1,1,null));
-        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
 
 
         tokens.add(new Token(Token.TILIT,1,1,null));

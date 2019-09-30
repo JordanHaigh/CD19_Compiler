@@ -76,7 +76,7 @@ public class NExponentNode implements Node{
 
     private TreeNode varOrFnCall(Parser parser){
         Token id = parser.peek();
-        parser.peekAndConsume(Token.TIDEN);
+        parser.peekAndConsume(Token.TIDEN); //already seen thats its an iden
 
         TreeNode tail = varOrFnCallTail(parser);
 
