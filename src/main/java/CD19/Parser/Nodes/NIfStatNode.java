@@ -5,7 +5,7 @@ import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
 public class NIfStatNode implements Node {
-    //NIFTH | NIFTE	<ifstat>	::=	if ( <bool> ) <stats> <ifStatTail> end
+    //NIFTH | NIFTE	<ifstat>	::=	if ( <bool> ) <stats> <ifStatTail>
     //	<ifStatTail>	::=	eps |  else <stats>
 
     NBoolNode nBoolNode;
@@ -62,10 +62,7 @@ public class NIfStatNode implements Node {
 
         TreeNode tail = tail(parser);
 
-        if (!parser.peekAndConsume(Token.TEND)) {
-            parser.syntacticError("Expected End Keyword", parser.peek());
-            return ifstat;
-        }
+
 
         if (tail == null) { //if just an if statement, then we dont need tail node's stats
             ifstat = new TreeNode(TreeNode.NIFTH, bool, stats);

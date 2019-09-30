@@ -91,7 +91,7 @@ public class NFuncBodyNodeTests {
         TreeNode funcbody = nFuncBodyNode.make(parser);
 
         assertEquals(TreeNode.NUNDEF, funcbody.getValue());
-        assertEquals(null, funcbody.getLeft());
+        assertEquals(TreeNode.NDLIST, funcbody.getLeft().getValue());
         assertEquals(null, funcbody.getRight());
 
     }
@@ -122,8 +122,8 @@ public class NFuncBodyNodeTests {
         TreeNode funcbody = nFuncBodyNode.make(parser);
 
         assertEquals(TreeNode.NUNDEF, funcbody.getValue());
-        assertEquals(null, funcbody.getLeft());
-        assertEquals(null, funcbody.getRight());
+        assertEquals(TreeNode.NDLIST, funcbody.getLeft().getValue());
+        assertEquals(TreeNode.NSTATS, funcbody.getRight().getValue());
 
     }
 }

@@ -60,6 +60,10 @@ public class Parser implements Subject {
     public void consume(){tokenIndex++;}
     public void consume(int amount) {tokenIndex += amount;}
 
+    public boolean outOfTokens(){
+        return tokenIndex == tokens.size();
+    }
+
     public TreeNode parse(){
 
         //try making an nprog node
@@ -74,6 +78,8 @@ public class Parser implements Subject {
             PrintWriter out = new PrintWriter(System.out);
             TreeNode.printTree(out, tree);
             out.flush();
+
+            System.out.println();
 
             for(SyntacticErrorMessage message : syntacticErrors){
                 notifyObservers(message);

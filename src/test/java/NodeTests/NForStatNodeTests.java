@@ -227,43 +227,43 @@ public class NForStatNodeTests {
         assertEquals(TreeNode.NUNDEF, forstat.getValue());
 
     }
-
-    @Test
-    public void syntacticerror_end(){
-        SetupMocks.setup();
-        List<Token> tokens= new ArrayList<>();
-
-        tokens.add(new Token(Token.TFOR,1,1,null));
-        tokens.add(new Token(Token.TLPAR,1,1,null));
-
-        tokens.add(new Token(Token.TIDEN,1,1,"asgnlist stuff here"));
-        tokens.add(new Token(Token.TSEMI,1,1,null));
-        tokens.add(new Token(Token.TIDEN,1,1,"bool stuff here"));
-
-        tokens.add(new Token(Token.TRPAR,1,1,null));
-        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
-        tokens.add(new Token(Token.TCOMA,1,1,null));
-
-        Parser parser = new Parser(tokens);
-
-        when(nAsgnListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
-            parser.consume();
-            return new TreeNode(TreeNode.NASGNS);
-        });
-        when(nBoolNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
-            parser.consume();
-            return new TreeNode(TreeNode.NBOOL);
-        });
-
-        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
-            parser.consume();
-            return new TreeNode(TreeNode.NSTATS);
-        });
-
-        TreeNode forstat = nForStatNode.make(parser);
-
-        assertEquals(TreeNode.NUNDEF, forstat.getValue());
-
-    }
+//
+//    @Test
+//    public void syntacticerror_end(){
+//        SetupMocks.setup();
+//        List<Token> tokens= new ArrayList<>();
+//
+//        tokens.add(new Token(Token.TFOR,1,1,null));
+//        tokens.add(new Token(Token.TLPAR,1,1,null));
+//
+//        tokens.add(new Token(Token.TIDEN,1,1,"asgnlist stuff here"));
+//        tokens.add(new Token(Token.TSEMI,1,1,null));
+//        tokens.add(new Token(Token.TIDEN,1,1,"bool stuff here"));
+//
+//        tokens.add(new Token(Token.TRPAR,1,1,null));
+//        tokens.add(new Token(Token.TIDEN,1,1,"stats stuff here"));
+//        tokens.add(new Token(Token.TCOMA,1,1,null));
+//
+//        Parser parser = new Parser(tokens);
+//
+//        when(nAsgnListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+//            parser.consume();
+//            return new TreeNode(TreeNode.NASGNS);
+//        });
+//        when(nBoolNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+//            parser.consume();
+//            return new TreeNode(TreeNode.NBOOL);
+//        });
+//
+//        when(nStatsNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+//            parser.consume();
+//            return new TreeNode(TreeNode.NSTATS);
+//        });
+//
+//        TreeNode forstat = nForStatNode.make(parser);
+//
+//        assertEquals(TreeNode.NUNDEF, forstat.getValue());
+//
+//    }
 
 }

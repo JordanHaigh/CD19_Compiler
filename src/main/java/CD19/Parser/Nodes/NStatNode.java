@@ -49,9 +49,9 @@ public class NStatNode implements Node{
             parser.syntacticError("Expected a Stat Keyword (Repeat, IO, Return, Asgn, Call)", parser.peek());
             return new TreeNode();
         }
-
     }
 
-    
+
+
 }
 

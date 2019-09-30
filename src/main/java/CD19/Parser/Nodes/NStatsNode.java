@@ -5,7 +5,7 @@ import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
 public class NStatsNode implements Node{
-    //NSTATS	<stats>	::=	<stat> ;  <StatsTail> | <strstat> <statsTail>
+    //NSTATS	<stats>	::=	<stat> ;  <StatsTail> | <strstat> end <statsTail>
 	//<statsTail>	::=	 eps |  {<stat> ;  <StatsTail> | <strstat> <statsTail>}
 
     NStatNode nStatNode;
@@ -42,8 +42,14 @@ public class NStatsNode implements Node{
 
     private TreeNode statSemiColonPath(Parser parser){
         TreeNode stats = new TreeNode();
+
         //<stat> ;  <StatsTail>
+
         TreeNode stat = nStatNode.make(parser);
+
+        if(stat.getValue() == TreeNode.NUNDEF){
+            errorRecovery_stat(parser); //error recovery to next semi
+        }
 
         if(!parser.peekAndConsume(Token.TSEMI)){
             parser.syntacticError("Expected a Semicolon", parser.peek());
@@ -62,7 +68,18 @@ public class NStatsNode implements Node{
     private TreeNode strstatPath(Parser parser){
         //<strstat> <statsTail>
         TreeNode strstat = nStrStatNode.make(parser);
+
+        if(strstat.getValue() == TreeNode.NUNDEF){
+            errorRecovery_strstat(parser);
+        }
+
+        if (!parser.peekAndConsume(Token.TEND)) {
+            parser.syntacticError("Expected End Keyword", parser.peek());
+            return new TreeNode();
+        }
+
         TreeNode tail = tail(parser);
+
         if(tail == null)
             return strstat;
         return new TreeNode(TreeNode.NSTATS, strstat, tail);
@@ -87,6 +104,37 @@ public class NStatsNode implements Node{
         else
             return null; //eps trans
 
+    }
+
+
+    private void errorRecovery_stat(Parser parser){
+        while(parser.peek().getTokenID() != Token.TSEMI && !parser.outOfTokens()){
+            parser.consume(); //PANIC MODE!!! PANIC MODE!!! THROW FECES AT THE WALLS WE ARE IN A CRISIS
+        }
+
+        //oh wait we good now
+        if(!parser.outOfTokens()){
+            //then we've seen a semi. consume it.
+            parser.consume();
+        }
+        else{
+            //todo idk..
+        }
+    }
+
+    private void errorRecovery_strstat(Parser parser){
+        while(parser.peek().getTokenID() != Token.TEND && !parser.outOfTokens()){
+            parser.consume(); //PANIC MODE!!! PANIC MODE!!! THROW FECES AT THE WALLS WE ARE IN A CRISIS
+        }
+
+        //oh wait we good now
+        if(!parser.outOfTokens()){
+            //then we've seen a semi. consume it.
+            parser.consume();
+        }
+        else{
+            //todo idk..
+        }
     }
 }
 

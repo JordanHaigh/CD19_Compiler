@@ -49,8 +49,14 @@ public class NProgNode implements Node{
         parser.enterScope(startId.getStr());
 
         TreeNode nGlobTreeNode = nGlobNode.make(parser);
+        program.setLeft(nGlobTreeNode);
+
         TreeNode nFuncsTreeNode = nFuncsNode.make(parser);
+        program.setMiddle(nFuncsTreeNode);
+
         TreeNode nMainTreeNode = nMainBodyNode.make(parser);
+        program.setRight(nMainTreeNode);
+
 
         if(!parser.peekAndConsume(Token.TCD19)){
             parser.syntacticError("Expected Ending CD19 keyword" , parser.peek());

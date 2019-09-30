@@ -70,11 +70,6 @@ public class NForStatNode implements Node{
 
         TreeNode stats = nStatsNode.make(parser);
 
-        if(!parser.peekAndConsume(Token.TEND)){
-            parser.syntacticError("Expected an end keyword", parser.peek());
-            return forstat;
-        }
-
         return new TreeNode(TreeNode.NFOR, asgnlist, bool, stats);
 
     }
