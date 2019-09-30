@@ -60,6 +60,9 @@ public class NReptStatNode implements Node {
         }
 
         TreeNode stats = nstatsNode.make(parser);
+        if(stats.getValue() == TreeNode.NUNDEF){
+            return repstat;
+        }
 
         if(!parser.peekAndConsume(Token.TUNTL)){
             parser.syntacticError("Expected an Until keyword", parser.peek());

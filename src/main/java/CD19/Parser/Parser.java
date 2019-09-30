@@ -87,7 +87,9 @@ public class Parser implements Subject {
             System.out.println();
 //            syntacticallyValid = false;
 //            semanticallyValid = false;
-
+            for(SyntacticErrorMessage message : syntacticErrors){
+                notifyObservers(message);
+            }
             return new TreeNode(TreeNode.NUNDEF);
         }
     }

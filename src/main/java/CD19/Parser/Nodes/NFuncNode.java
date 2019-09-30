@@ -75,9 +75,14 @@ public class NFuncNode implements Node{
         parser.leaveScope();
 
         TreeNode locals = funcBody.getLeft(); //from funcbody
+
+        if(locals == null || locals.getValue() == TreeNode.NUNDEF){
+            return func;
+        }
+
         TreeNode stats = funcBody.getRight(); //from funcbody
 
-        if(stats.getValue() == TreeNode.NUNDEF){
+        if(stats == null || stats.getValue() == TreeNode.NUNDEF){
             return func;//todo is this right? returning nundef here because we need rtype from here on
         }
 

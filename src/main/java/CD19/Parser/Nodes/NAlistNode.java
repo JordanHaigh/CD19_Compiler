@@ -42,6 +42,7 @@ public class NAlistNode implements Node {
         //So we have seen an TIDEN
 
         TreeNode asgnStat = nAsgnStatNode.make(parser);
+
         TreeNode tail = tail(parser);
 
         if (tail == null) {

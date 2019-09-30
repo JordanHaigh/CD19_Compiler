@@ -41,6 +41,8 @@ public class NFuncBodyNode implements Node{
 
         TreeNode locals = nLocalsNode.make(parser);
 
+        funcBody.setLeft(locals);
+
         if(!parser.peekAndConsume(Token.TBEGN)){
             parser.syntacticError("Expected a Begin Keyword", parser.peek());
             return funcBody;
@@ -48,13 +50,14 @@ public class NFuncBodyNode implements Node{
 
         TreeNode stats = nStatsNode.make(parser);
 
+        funcBody.setRight(stats);
+
         if(!parser.peekAndConsume(Token.TEND)){
             parser.syntacticError("Expected an End Keyword", parser.peek());
             return funcBody;
         }
 
-        funcBody.setLeft(locals);
-        funcBody.setRight(stats);
+
         return funcBody;
     }
 }

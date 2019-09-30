@@ -44,6 +44,7 @@ public class NStatsNode implements Node{
         TreeNode stats = new TreeNode();
         //<stat> ;  <StatsTail>
         TreeNode stat = nStatNode.make(parser);
+
         if(!parser.peekAndConsume(Token.TSEMI)){
             parser.syntacticError("Expected a Semicolon", parser.peek());
             return stats;
