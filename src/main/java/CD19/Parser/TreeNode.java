@@ -7,7 +7,6 @@ package CD19.Parser;
 //
 
 import CD19.Parser.Nodes.NodeDataTypes;
-import com.sun.corba.se.impl.orbutil.graph.NodeData;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -129,7 +128,7 @@ public class TreeNode {
 
     }
     //
-    // Call is: TreeNode.printTree(outfile, rootOfTree);
+    // Call is: TreeNode.danPrintTree(outfile, rootOfTree);
     //	-> prints tree pre-order as a flat 7 values per line
     //
     //   I am used to this type of print - if you cannot use
@@ -137,7 +136,7 @@ public class TreeNode {
     //	whatever you like tree output routine.
     //
 
-    public static void printTree(PrintWriter out, TreeNode tr) {
+    public void danPrintTree(PrintWriter out, TreeNode tr) {
         if (tr.nodeValue == NPROG) count = 0;
         out.print(PRINTNODE[tr.nodeValue]+" ");
         count++;
@@ -165,9 +164,9 @@ public class TreeNode {
 //            count++;
 //            if (count%7 == 0) out.println();
 //        }
-        if (tr.left   != null) { printTree(out,tr.left);   }
-        if (tr.middle != null) { printTree(out,tr.middle); }
-        if (tr.right  != null) { printTree(out,tr.right);  }
+        if (tr.left   != null) { danPrintTree(out,tr.left);   }
+        if (tr.middle != null) { danPrintTree(out,tr.middle); }
+        if (tr.right  != null) { danPrintTree(out,tr.right);  }
         if (tr.nodeValue == NPROG && count%10 != 0) out.println();
     }
 

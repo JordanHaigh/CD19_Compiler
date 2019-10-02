@@ -389,7 +389,16 @@ public class NStatsNodeTests {
 //        tokens.add(new Token(Token.TSEMI,1,1,null));
 
 
-        tokens.add(new Token(Token.TMAIN,1,1,null));
+        tokens.add(new Token(Token.TRETN,1,1,null));
+
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TPLUS,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TSEMI,1,1,null));
+
+
+        tokens.add(new Token(Token.TEOF,1,1,null));
+
 
         Parser parser = new Parser(tokens);
 
@@ -402,7 +411,7 @@ public class NStatsNodeTests {
         TreeNode stats = nStatsNode.make(parser);
 
 
-        assertEquals(TreeNode.NUNDEF, stats.getValue());
+        assertEquals(TreeNode.NRETN, stats.getValue());
 
     }
 
@@ -426,7 +435,15 @@ public class NStatsNodeTests {
         tokens.add(new Token(Token.TILIT,1,1,null));
 //        tokens.add(new Token(Token.TSEMI,1,1,null));
 
-        tokens.add(new Token(Token.TFUNC,1,1,null));
+        //this section will be consumed
+        tokens.add(new Token(Token.TRETN,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TPLUS,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
+        //to here
+        tokens.add(new Token(Token.TSEMI,1,1,null));
+
+        tokens.add(new Token(Token.TEOF,1,1,null));
 
         Parser parser = new Parser(tokens);
 
@@ -440,7 +457,7 @@ public class NStatsNodeTests {
 
         assertEquals(TreeNode.NSTATS, stats.getValue());
         assertEquals(TreeNode.NRETN, stats.getLeft().getValue());
-        assertEquals(TreeNode.NUNDEF, stats.getRight().getValue());
+        assertEquals(TreeNode.NRETN, stats.getRight().getValue());
 
     }
 }

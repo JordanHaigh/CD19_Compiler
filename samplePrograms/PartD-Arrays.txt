@@ -1,4 +1,4 @@
-CD19 arrays
+CD19 myarraysprog
 constants
     ARRLENGTH = 10
 
@@ -18,11 +18,11 @@ a : integer                                     /-- variable must be here for to
 
 begin
 
-for(a = 0; a < ARRLENGTH)                       /--access elements from 0-9 and assign
-    comp3290[a].id = a;
-    comp3290[a].mark = 0;
-    a = a+1;
+
+    for(a = 0; a < ARRLENGTH)                       /--access elements from 0-9 and assign
+            comp3290[a].id = a;
+            comp3290[a].mark = 0;
+            a = a+1;
+    end
 end
-
-
-CD19 arrays
+CD19 myarraysprog

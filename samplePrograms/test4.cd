@@ -1,7 +1,10 @@
-CD19 FlingingFeces
+CD19 FlingingFM
 main
-    i :integer
+    a :integer,
+    n : integer
 begin
-    printline k
-    a = 5;
-end CD19 FlingingFeces
+    printline "heres a rhyme"
+    a = 5
+    n = 5;
+
+end CD19 FlingingFM
