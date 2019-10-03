@@ -4,10 +4,20 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates an expr of the form:
+ * NADD | NSUB	<expr>	::=	<term><exprTail>
+ * <exprTail>	::=	ε | +<term><exprTail> | -<term><exprTail>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class NExprNode implements Node{
     //NADD | NSUB	<expr>	::=	<term><exprTail>
 	//<exprTail>	::=	ε | +<term><exprTail> | -<term><exprTail>
     NTermNode nTermNode;
+    private static NExprNode instance;
+
 
     public NExprNode() {
         this(NTermNode.INSTANCE());
@@ -17,8 +27,10 @@ public class NExprNode implements Node{
         this.nTermNode = nTermNode;
     }
 
-
-    private static NExprNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NExprNode INSTANCE() {
         if (instance == null) {
             instance = new NExprNode();
@@ -26,6 +38,11 @@ public class NExprNode implements Node{
         return instance;
     }
 
+    /**
+     * Attempts to generate the expr node. Builds left derived tree structure
+     * @param parser The parser
+     * @return A valid expr TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         TreeNode term = nTermNode.make(parser);
@@ -37,6 +54,12 @@ public class NExprNode implements Node{
             return term;
     }
 
+    /**
+     * Tail method that can parse more of the same node type or not
+     * @param parser The parser
+     * @param leftNode - Left Node to pass around and make tree left derived
+     * @return - Null if there are no subsequent expr nodes, or a TreeNode containing tailing expr nodes
+     */
     private TreeNode tail(Parser parser, TreeNode leftNode){
         //<exprTail>	::=	ε | +<expr> | -<expr>
         if(parser.peekAndConsume(Token.TPLUS)){
@@ -46,9 +69,16 @@ public class NExprNode implements Node{
             return buildLeftDerivedTree(parser, TreeNode.NSUB, leftNode);
         }
         else
-            return null; //eps - todo error handle
+            return null; //eps
     }
 
+    /**
+     * Builds tree in left derived form (good for code gen later on)
+     * @param parser the Parser
+     * @param expectedTreeNodeValue TreeNode value that will be the end result
+     * @param leftNode - Left Node to pass around and make tree left derived
+     * @return Left Derived TreeNode
+     */
     private TreeNode buildLeftDerivedTree(Parser parser, int expectedTreeNodeValue, TreeNode leftNode){
         TreeNode returnTreeNode = new TreeNode(expectedTreeNodeValue);
         returnTreeNode.setLeft(leftNode);

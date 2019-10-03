@@ -14,6 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NVarTailNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NVarTailNodeTests {
     //	<varTail>	::=	ε | [<expr>] . <id>
 

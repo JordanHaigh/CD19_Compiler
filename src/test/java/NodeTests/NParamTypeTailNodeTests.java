@@ -14,6 +14,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NParamTypeTailNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NParamTypeTailNodeTests {
     @Test
     public void sunnyday_arrpath(){

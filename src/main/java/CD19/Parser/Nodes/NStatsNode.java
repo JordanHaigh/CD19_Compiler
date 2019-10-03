@@ -4,12 +4,22 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a stats of the form:
+ * <stats>	::=	<arrstats> <arrstatsTail>
+ * <statsTail>	::=	eps |  , <arrstats> <arrstatsTail>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
+
 public class NStatsNode implements Node {
     //NSTATS	<stats>	::=	<stat> ;  <StatsTail> | <strstat> end <statsTail>
     //<statsTail>	::=	 eps |  {<stat> ;  <StatsTail> | <strstat> <statsTail>}
 
     NStatNode nStatNode;
     NStrStatNode nStrStatNode;
+    private static NStatsNode instance;
 
     public NStatsNode() {
         this(NStatNode.INSTANCE(), NStrStatNode.INSTANCE());
@@ -20,8 +30,10 @@ public class NStatsNode implements Node {
         this.nStrStatNode = nStrStatNode;
     }
 
-    private static NStatsNode instance;
-
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NStatsNode INSTANCE() {
         if (instance == null) {
             instance = new NStatsNode();
@@ -29,6 +41,11 @@ public class NStatsNode implements Node {
         return instance;
     }
 
+    /**
+     * Attempts to generate the stats node
+     * @param parser The parser
+     * @return A valid stats TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
@@ -40,24 +57,20 @@ public class NStatsNode implements Node {
             return statSemiColonPath(parser);
         }else{
             return null;
-            //parser.syntacticError("Expecting a Stat Token (For, If, Repeat, Identifier, Input, Print, PrintLine, Return", parser.peek());
-            //return new TreeNode();
         }
     }
 
-
+    /**
+     * Attempts to generate the stats node following the stat path
+     * @param parser The parser
+     * @return A valid stat treeNode with tail information
+     */
     private TreeNode statSemiColonPath(Parser parser) {
         TreeNode stats;
 
         //<stat> ;  <StatsTail>
 
         TreeNode stat = nStatNode.make(parser);
-
-//        if(stat.getValue() == TreeNode.NUNDEF){
-//            errorRecovery_stat(parser); //error recovery to next semi
-//            //try making again
-//            make(parser);
-//        }
 
         if (!parser.peekAndConsume(Token.TSEMI)) {
             parser.syntacticError("Expected a Semicolon. Parser will perform Panic Mode Recovery to the next semi colon", parser.peek());
@@ -73,7 +86,11 @@ public class NStatsNode implements Node {
         return stats;
     }
 
-
+    /**
+     * Attempts to generate the stats node following the strstat path
+     * @param parser The parser
+     * @return A valid strstat treeNode with tail information
+     */
     private TreeNode strstatPath(Parser parser) {
         //<strstat> <statsTail>
         TreeNode strstat = nStrStatNode.make(parser);
@@ -91,7 +108,11 @@ public class NStatsNode implements Node {
 
     }
 
-
+    /**
+     * Tail method that can parse more of the same node type or not
+     * @param parser The parser
+     * @return - Null if there are no subsequent stats nodes, or a TreeNode containing tailing stats nodes
+     */
     private TreeNode tail(Parser parser) {
         //	//<statsTail>	::=	 eps |  {<stat> ;  <StatsTail> | <strstat> <statsTail>}
         TreeNode stats = new TreeNode();
@@ -110,6 +131,10 @@ public class NStatsNode implements Node {
     }
 
 
+    /**
+     * Recover from error by searching for the next semi colon or until we are out of tokens (TEOF)
+     * @param parser The parser
+     */
     private void errorRecovery_stat(Parser parser) {
         while (parser.peek().getTokenID() != Token.TSEMI && parser.peek().getTokenID() != Token.TEOF) {
             parser.consume(); //PANIC MODE!!! PANIC MODE!!! THROW FECES AT THE WALLS WE ARE IN A CRISIS
@@ -125,6 +150,10 @@ public class NStatsNode implements Node {
         }
     }
 
+    /**
+     * Recover from error by searching for the next "end" keyword or until we are out of tokens (TEOF)
+     * @param parser The parser
+     */
     private void errorRecovery_strstat(Parser parser) {
         while (parser.peek().getTokenID() != Token.TEND && parser.peek().getTokenID() != Token.TEOF) {
             parser.consume(); //PANIC MODE!!! PANIC MODE!!! THROW FECES AT THE WALLS WE ARE IN A CRISIS

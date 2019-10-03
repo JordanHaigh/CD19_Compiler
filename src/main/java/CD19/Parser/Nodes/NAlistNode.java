@@ -5,8 +5,13 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * Generates an alist TreeNode of the form:
+ * <alist>	::=	<id><asgnstat> <alistTail>
+ * <alistTail>	::=	eps | , <id><asgnstat> <alistTail>
+ */
 public class NAlistNode implements Node {
-
     //NASGNS	<alist>	::=	<id><asgnstat> <alistTail>
     //<alistTail>	::=	eps | , <id><asgnstat> <alistTail>
 
@@ -22,6 +27,10 @@ public class NAlistNode implements Node {
 
     private static NAlistNode instance;
 
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NAlistNode INSTANCE() {
         if (instance == null) {
             instance = new NAlistNode();
@@ -29,6 +38,11 @@ public class NAlistNode implements Node {
         return instance;
     }
 
+    /**
+     * Attemps to generate the alist node
+     * @param parser The parser
+     * @return A valid alist TreeNode or NUNDEF
+     */
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
@@ -66,6 +80,11 @@ public class NAlistNode implements Node {
 
     }
 
+    /**
+     * Tail method that can either include more nodes or not
+     * @param parser The parser
+     * @return - Null if there are no subsequent alist nodes, or a TreeNode containing tailing alist nodes
+     */
     private TreeNode tail(Parser parser) {
         //	//<alistTail>	::=	eps | , <id><asgnstat> <alistTail>
 
@@ -78,7 +97,7 @@ public class NAlistNode implements Node {
 
         if (!parser.peekAndConsume(Token.TIDEN)) {
             parser.syntacticError("<alist> - Expected an Identifier", token);
-            return new TreeNode(TreeNode.NUNDEF); //todo error recovery here
+            return new TreeNode(TreeNode.NUNDEF);
         }
 
         TreeNode asgnStat = nAsgnStatNode.make(parser);

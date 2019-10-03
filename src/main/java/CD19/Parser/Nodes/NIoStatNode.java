@@ -3,12 +3,21 @@ package CD19.Parser.Nodes;
 import CD19.Parser.*;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a iostat of the form:
+ * <iostat>	::=	input <vlist> | print <prlist> | printline <prlist>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
+
 public class NIoStatNode implements Node{
 
     //NINPUT | NPRINT| NPRLN	<iostat>	::=	input <vlist> | print <prlist> | printline <prlist>
 
     NVListNode nvListNode;
     NPrListNode nPrListNode;
+    private static NIoStatNode instance;
 
     public NIoStatNode() {
         this(NVListNode.INSTANCE(), NPrListNode.INSTANCE());
@@ -19,8 +28,11 @@ public class NIoStatNode implements Node{
         this.nPrListNode = nPrListNode;
     }
 
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
 
-    private static NIoStatNode instance;
     public static NIoStatNode INSTANCE() {
         if (instance == null) {
             instance = new NIoStatNode();
@@ -28,6 +40,11 @@ public class NIoStatNode implements Node{
         return instance;
     }
 
+    /**
+     * Attempts to generate the iostat node
+     * @param parser The parser
+     * @return A valid iostat TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TINPT)){
@@ -44,7 +61,7 @@ public class NIoStatNode implements Node{
         }
         else{
             parser.syntacticError("Expected Valid IoStat keyword (input, print, printline)", parser.peek());
-            return new TreeNode(); //todo error recover
+            return new TreeNode();
         }
     }
 }

@@ -4,13 +4,22 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a fact of the form:
+ * NPOW	<fact>	::=	<exponent><factTail>
+ *      <factTail>	::=	ε | ^<exponent><factTail>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
+
 public class NFactNode implements Node{
 
     //NPOW	<fact>	::=	<exponent><factTail>
     //	<factTail>	::=	ε | ^<exponent><factTail>
 
-
     NExponentNode nExponentNode;
+    private static NFactNode instance;
 
     public NFactNode() {
         this(NExponentNode.INSTANCE());
@@ -20,8 +29,10 @@ public class NFactNode implements Node{
         this.nExponentNode = nExponentNode;
     }
 
-
-    private static NFactNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NFactNode INSTANCE() {
         if (instance == null) {
             instance = new NFactNode();
@@ -29,6 +40,11 @@ public class NFactNode implements Node{
         return instance;
     }
 
+    /**
+     * Attempts to generate the fact node
+     * @param parser The parser
+     * @return A valid fact TreeNode (may contain NUNDEF children)
+     */
     @Override
     public TreeNode make(Parser parser) {
         TreeNode exponent = nExponentNode.make(parser);
@@ -41,6 +57,12 @@ public class NFactNode implements Node{
 
     }
 
+    /**
+     * Tail method that can parse more of the same node type or not
+     * @param parser The parser
+     * @param leftNode Node to make the tree left derived
+     * @return - Null if there are no subsequent fact nodes, or a TreeNode containing tailing fact nodes
+     */
     private TreeNode tail(Parser parser, TreeNode leftNode){
         if(parser.peekAndConsume(Token.TCART)){
             TreeNode returnTreeNode = new TreeNode(TreeNode.NPOW);

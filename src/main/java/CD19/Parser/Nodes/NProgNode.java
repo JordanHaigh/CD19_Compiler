@@ -5,12 +5,24 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Entry point of parse tree
+ * Generates a program of the form:
+ * NPROG	<program>	::=	CD19 <id> <globals> <funcs> <mainbody>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
+
+
 public class NProgNode implements Node{
 
     //NPROG	<program>	::=	CD19 <id> <globals> <funcs> <mainbody>
     private NGlobNode nGlobNode;
     private NFuncsNode nFuncsNode;
     private NMainBodyNode nMainBodyNode;
+    private static NProgNode instance;
+
 
     public NProgNode() {
         this(NGlobNode.INSTANCE(), NFuncsNode.INSTANCE(), NMainBodyNode.INSTANCE());
@@ -22,7 +34,10 @@ public class NProgNode implements Node{
         this.nMainBodyNode = nMainBodyNode;
     }
 
-    private static NProgNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NProgNode INSTANCE() {
         if (instance == null) {
             instance = new NProgNode();
@@ -30,6 +45,11 @@ public class NProgNode implements Node{
         return instance;
     }
 
+    /**
+     * Attempts to generate the program node
+     * @param parser The parser
+     * @return A valid program TreeNode or NUNDEF if syntactic error
+     */
     public TreeNode make(Parser parser) {
         TreeNode program = new TreeNode();
 

@@ -2,6 +2,11 @@ package NodeTests;
 
 import CD19.Parser.Nodes.*;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class SetupMocks
+ * Used to remove cyclic constructors when making unit tests
+ * */
 public class SetupMocks {
 
     public static void setup(){

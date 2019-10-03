@@ -5,9 +5,18 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a decl of the form:
+ * <decl>	::=	<id>: <paramTypeTail>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
+
 public class NDeclNode implements Node{
     //	<decl>	::=	<id>: <paramTypeTail>
     NParamTypeTailNode nParamTypeTailNode;
+    private static NDeclNode instance;
 
     public NDeclNode() {
         this(NParamTypeTailNode.INSTANCE());
@@ -17,8 +26,10 @@ public class NDeclNode implements Node{
         this.nParamTypeTailNode = nParamTypeTailNode;
     }
 
-
-    private static NDeclNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NDeclNode INSTANCE() {
         if (instance == null) {
             instance = new NDeclNode();
@@ -26,6 +37,11 @@ public class NDeclNode implements Node{
         return instance;
     }
 
+    /**
+     * Attempts to generate the decl node
+     * @param parser The parser
+     * @return A valid decl TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         TreeNode decl = new TreeNode();
@@ -46,7 +62,7 @@ public class NDeclNode implements Node{
 
         if(paramTypeTail.getValue() == TreeNode.NUNDEF){
             //we cant get datatype or make the strec
-            return decl; //todo is this right?
+            return decl;
         }
 
         NodeDataTypes dataType = paramTypeTail.getType();

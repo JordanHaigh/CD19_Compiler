@@ -5,11 +5,21 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a param of the form:
+ * <param>	::=	<id> : <paramTypeTail> | const <arrdecl>
+ * <paramTypeTail>	::=	<stype> | <typeid>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class NParamNode implements Node{
     //NSIMP | NARRP | NARRC	<param>	::=	<id> : <paramTypeTail> | const <arrdecl>
     //	<paramTypeTail>	::=	<stype> | <typeid>
 
     NParamTypeTailNode nParamTypeTailNode;
+    private static NParamNode instance;
+
 
     public NParamNode() {
         this(NParamTypeTailNode.INSTANCE());
@@ -19,13 +29,22 @@ public class NParamNode implements Node{
         this.nParamTypeTailNode = nParamTypeTailNode;
     }
 
-    private static NParamNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NParamNode INSTANCE() {
         if (instance == null) {
             instance = new NParamNode();
         }
         return instance;
     }
+
+    /**
+     * Attempts to generate the param node
+     * @param parser The parser
+     * @return A valid param TreeNode or NUNDEF if syntactic error
+     */
 
     @Override
     public TreeNode make(Parser parser) {
@@ -44,6 +63,11 @@ public class NParamNode implements Node{
         }
     }
 
+    /**
+     * Generates a param node following the constant path
+     * @param parser The parser
+     * @return A valid const param TreeNode
+     */
     private TreeNode constPath(Parser parser){
         //const <arrdecl>
         //already consumed const
@@ -60,6 +84,12 @@ public class NParamNode implements Node{
 
     }
 
+    /**
+     * Generates a param node following the stype or typeid path
+     * Adds new record to symbol table if it has valid information
+     * @param parser The parser
+     * @return A valid stype or typeid param TreeNode
+     */
     private TreeNode sTypeOrTypeIdPath(Parser parser){
         //<id> : <paramTypeTail>
         Token id  = parser.peek();
@@ -72,8 +102,9 @@ public class NParamNode implements Node{
 
         TreeNode tail = nParamTypeTailNode.make(parser);
 
+        //we need valid tail information going forth, if its null abandon ship
         if(tail.getValue() == TreeNode.NUNDEF){
-            return new TreeNode(); //todo check this.
+            return new TreeNode();
         }
 
         //since we LL(1), we already have the id of the variable, but we need to call param type tail to get the data type

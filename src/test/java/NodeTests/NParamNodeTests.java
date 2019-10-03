@@ -11,6 +11,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NParamNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NParamNodeTests {
 
     @Test

@@ -16,7 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NExprNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NExprNodeTests {
     //NADD | NSUB	<expr>	::=	<term><exprTail>
     //<exprTail>	::=	ε | +<expr> | -<expr>

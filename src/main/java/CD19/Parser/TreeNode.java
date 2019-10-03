@@ -6,6 +6,13 @@ package CD19.Parser;
 //	By COMP3290 Staff - 2019
 //
 
+/**
+ * Code from Dan
+ * Defines TreeNode used in Parsing section
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 import CD19.Parser.Nodes.NodeDataTypes;
 
 import java.io.*;
@@ -115,18 +122,6 @@ public class TreeNode {
 
     public void setType(NodeDataTypes st) { dataType = st; }
 
-    public int childrenCount(){
-        int counter = 0;
-        if(left != null)
-            counter++;
-        if(middle != null)
-            counter++;
-        if(right != null)
-            counter++;
-
-        return counter;
-
-    }
     //
     // Call is: TreeNode.danPrintTree(outfile, rootOfTree);
     //	-> prints tree pre-order as a flat 7 values per line

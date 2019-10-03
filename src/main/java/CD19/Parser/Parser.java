@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * Used for syntactical and semantic analysis, as well as building a parse tree structure
+ * of the program
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class Parser implements Subject {
     private List<Token> tokens;
     private int tokenIndex = 0;
@@ -36,28 +43,54 @@ public class Parser implements Subject {
         return syntacticallyValid;
     }
 
+    /**
+     * Enter new scope of program
+     * @param scope - Scope to enter
+     */
     public void enterScope(String scope) {
         scopeStack.push(scope);
     }
 
+    /**
+     * Leave scope in program
+     */
     public void leaveScope() {
         scopeStack.pop();
     }
 
+    /**
+     * Create a new Syntactic Error message that will be added to the program listing file
+     * @param message - Error Message to print in listing
+     * @param line - Error Line
+     * @param column - Error Column
+     */
     public void syntacticError(String message, int line, int column) {
         String prepend = "Syntactic Error - ";
         prepend += message;
         syntacticErrors.add(new SyntacticErrorMessage(prepend, line, column));
     }
 
+    /**
+     * Create a new Syntactic Error message that will be added to the program listing file
+     * @param message - Error Message to print in listing
+     * @param token - Token containing line and column information
+     */
     public void syntacticError(String message, Token token) {
         syntacticError(message, token.getLine(), token.getCol());
     }
 
+    /**
+     * Get Current Scope of Program
+     * @return - Scope of Program
+     */
     public String getScope() {
         return scopeStack.peek();
     }
 
+    /**
+     * Peek at what the next token will be
+     * @return Next Token in token stream
+     */
     public Token peek() {
         if (tokenIndex < tokens.size())
             return tokens.get(tokenIndex);
@@ -65,20 +98,35 @@ public class Parser implements Subject {
             return tokens.get(tokens.size() - 1); //keep returning eof token
     }
 
+    /**
+     * Peek at a specific index of what the token is
+     * @param index - Index to peek
+     * @return - Token at index
+     */
     public Token peek(int index) {
         return tokens.get(index);
     }
 
+    /**
+     * Consume token. Moves token index forwards by one
+     */
     public void consume() {
         tokenIndex++;
     }
 
+    /**
+     * Consume token. Moves token index forwards by the amount
+     * @param amount amount to consume
+     */
     public void consume(int amount) {
         tokenIndex += amount;
     }
 
+    /**
+     * Parse the token stream into a parse tree
+     * @return - Parse tree of the token stream
+     */
     public TreeNode parse() {
-
         //try making an nprog node
 
         try {
@@ -88,7 +136,7 @@ public class Parser implements Subject {
 
             printTree(tree);
 
-            if(syntacticErrors.size() > 0)
+            if (syntacticErrors.size() > 0)
                 syntacticallyValid = false;
 
             //Send messages for listing file
@@ -112,7 +160,11 @@ public class Parser implements Subject {
         }
     }
 
-    private void printTree(TreeNode tree){
+    /**
+     * Print trees - One is pretty and the other is from Dan's code
+     * @param tree - Tree to print
+     */
+    private void printTree(TreeNode tree) {
 
         System.out.println(tree.prettyPrintTree());
 
@@ -124,6 +176,11 @@ public class Parser implements Subject {
 
     }
 
+    /**
+     * Peek and consume token if the next token in the stream matches the parameter
+     * @param tokenId - Token to consume if found next
+     * @return - True if consume, false if not
+     */
     public boolean peekAndConsume(int tokenId) {
         int peekedTokenId = peek().getTokenID();
         if (peekedTokenId == tokenId) {
@@ -134,18 +191,39 @@ public class Parser implements Subject {
     }
 
 
+    /**
+     * Find Symbol Table Record in the Types Table
+     * @param record - Record to find
+     * @return - record in table or null
+     */
     public SymbolTableRecord lookupTypeRecord(SymbolTableRecord record) {
         return lookup(record, types);
     }
 
+    /**
+     * Find Symbol Table Record in the Constants Table
+     * @param record - Record to find
+     * @return - record in table or null
+     */
     public SymbolTableRecord lookupConstantRecord(SymbolTableRecord record) {
         return lookup(record, constants);
     }
 
+    /**
+     * Find Symbol Table Record in the Identifiers Table
+     * @param record - Record to find
+     * @return - record in table or null
+     */
     public SymbolTableRecord lookupIdentifierRecord(SymbolTableRecord record) {
         return lookup(record, identifiers);
     }
 
+    /**
+     * Find Symbol Table Record in the Table argument
+     * @param record - Record to find
+     * @param  symbolTable - SymbolTable to Search
+     * @return - record in table or null
+     */
     public SymbolTableRecord lookup(SymbolTableRecord record, SymbolTable symbolTable) {
         if (symbolTable.contains(record)) {
             return record;
@@ -155,18 +233,35 @@ public class Parser implements Subject {
         }
     }
 
+    /**
+     * Insert new record into Type Symbol Symbol Table
+     * @param record - Record to add
+     */
     public void insertTypeRecord(SymbolTableRecord record) {
         insertRecord(record, types);
     }
 
+    /**
+     * Insert new record into Constant Symbol Table
+     * @param record - Record to add
+     */
     public void insertConstantRecord(SymbolTableRecord record) {
         insertRecord(record, constants);
     }
 
+    /**
+     * Insert new record into Identifier Symbol Table
+     * @param record - Record to add
+     */
     public void insertIdentifierRecord(SymbolTableRecord record) {
         insertRecord(record, identifiers);
     }
 
+    /**
+     * Insert new record into Symbol Table
+     * @param record - Record to add
+     * @param  symbolTable - SymbolTable to insert
+     */
     public void insertRecord(SymbolTableRecord record, SymbolTable symbolTable) {
         if (!symbolTable.contains(record)) {
             symbolTable.insert(record);
@@ -176,6 +271,10 @@ public class Parser implements Subject {
 
     }
 
+    /**
+     * Sets up instances that may cause cyclic constructors. Stop stack overflow exceptions
+     * @return  NProgNode setup with instances
+     */
     public NProgNode getProgNode() {
         // Create exponent node separately or else we get a recursive loop
         //bool
@@ -230,7 +329,6 @@ public class Parser implements Subject {
 
         return nProgNode;
     }
-
 
     @Override
     public void addObserver(Observer observer) {

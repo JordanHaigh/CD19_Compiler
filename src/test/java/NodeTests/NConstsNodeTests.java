@@ -17,6 +17,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NConstsNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NConstsNodeTests {
     //	<consts>	::=	constants <initlist> | ε
     //NILIST	<initlist>	::=	<init> <initListTail>
@@ -70,6 +75,27 @@ public class NConstsNodeTests {
         TreeNode consts = nConstsNode.make(parser);
 
         assertEquals(null, consts);
+    }
+
+    @Test
+    public void syntactic_fail_iden(){
+
+        SetupMocks.setup();
+        List<Token> tokens= new ArrayList<>();
+
+        tokens.add(new Token(Token.TCONS,1,1,null));
+        tokens.add(new Token(Token.TFUNC,1,1,null));
+
+        Parser parser = new Parser(tokens);
+
+        when(nInitListNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NILIST);
+        });
+
+        TreeNode consts = nConstsNode.make(parser);
+
+        assertEquals(TreeNode.NUNDEF, consts.getValue());
     }
 
 }

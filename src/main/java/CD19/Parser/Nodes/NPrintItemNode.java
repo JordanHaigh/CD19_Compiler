@@ -5,9 +5,18 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a printitem of the form:
+ * NSTRG	<printitem>	::=	<expr> | <string>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
+
 public class NPrintItemNode implements Node{
     //NSTRG	<printitem>	::=	<expr> | <string>
     NExprNode nExprNode;
+    private static NPrintItemNode instance;
 
     public NPrintItemNode() {
         this(null);
@@ -17,7 +26,10 @@ public class NPrintItemNode implements Node{
         this.nExprNode = nExprNode;
     }
 
-    private static NPrintItemNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NPrintItemNode INSTANCE() {
         if (instance == null) {
             instance = new NPrintItemNode();
@@ -25,11 +37,19 @@ public class NPrintItemNode implements Node{
         return instance;
     }
 
-
+    /**
+     * Sets the nExprNode in the class so cyclic constructors are prevented
+     * @param nExprNode - Node to set
+     */
     public void setnExprNode(NExprNode nExprNode) {
         this.nExprNode= nExprNode;
     }
 
+    /**
+     * Attempts to generate the printitem node
+     * @param parser The parser
+     * @return A valid printitem TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         TreeNode printitem = new TreeNode();

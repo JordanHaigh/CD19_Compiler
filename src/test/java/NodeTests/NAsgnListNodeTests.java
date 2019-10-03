@@ -12,7 +12,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NAsgnListNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NAsgnListNodeTests {
     //	<asgnlist>	::=	<alist> | ε
 

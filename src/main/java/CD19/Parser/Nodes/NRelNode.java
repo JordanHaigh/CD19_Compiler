@@ -4,12 +4,22 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a rel of the form:
+ * NNOT	<rel>	::=	<expr><relExprTail> | not <expr> <relExprTail>
+ * 	<relExprTail>	::=	eps | <relop><expr>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class NRelNode implements Node{
 //NNOT	<rel>	::=	<expr><relExprTail> | not <expr> <relExprTail>
 //	<relExprTail>	::=	ε | <relop><expr>
 
     NExprNode nExprNode;
     NRelopNode nRelopNode;
+    private static NRelNode instance;
+
 
     public NRelNode() {
         this(null, NRelopNode.INSTANCE());
@@ -20,7 +30,10 @@ public class NRelNode implements Node{
         this.nRelopNode = nRelopNode;
     }
 
-    private static NRelNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NRelNode INSTANCE() {
         if (instance == null) {
             instance = new NRelNode();
@@ -28,11 +41,20 @@ public class NRelNode implements Node{
         return instance;
     }
 
+    /**
+     * Sets the nExprNode in the class so cyclic constructors are prevented
+     * @param nExprNode - Node to set
+     */
     public void setnExprNode(NExprNode nExprNode) {
         this.nExprNode= nExprNode;
     }
 
 
+    /**
+     * Attempts to generate the rel node
+     * @param parser The parser
+     * @return A valid rel TreeNode
+     */
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
@@ -44,7 +66,11 @@ public class NRelNode implements Node{
         }
     }
 
-
+    /**
+     * Attempts to generate the expr path of the rel node
+     * @param parser The parser
+     * @return A valid rel TreeNode
+     */
     private TreeNode exprPath(Parser parser){
         //<expr><relExprTail>
         TreeNode expr = nExprNode.make(parser);
@@ -57,6 +83,11 @@ public class NRelNode implements Node{
 
     }
 
+    /**
+     * Attempts to generate the NOT expr path of the rel node
+     * @param parser The parser
+     * @return A valid rel TreeNode
+     */
     private TreeNode notExprPath(Parser parser){
         // not <expr> <relExprTail>
         parser.peekAndConsume(Token.TNOT);
@@ -70,16 +101,13 @@ public class NRelNode implements Node{
 
 
         return new TreeNode(TreeNode.NNOT, expr,null);
-
-//
-//        TreeNode relop = nRelopNode.make(parser);
-//        TreeNode secondExpr = nExprNode.make(parser);
-//
-//        relop.setLeft(firstExpr);
-//        relop.setRight(secondExpr);
-//        return new TreeNode(TreeNode.NNOT, relop, null);
     }
 
+    /**
+     * Tail method that can parse more of the same node type or not
+     * @param parser The parser
+     * @return - Null if there are no subsequent rel nodes, or a TreeNode containing tailing rel nodes
+     */
     private TreeNode tail(Parser parser){
         ////	<relExprTail>	::=	ε | <relop><expr>
         Token token = parser.peek();

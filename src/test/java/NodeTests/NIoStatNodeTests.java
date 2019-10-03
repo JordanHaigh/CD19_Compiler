@@ -12,6 +12,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NIoStatNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NIoStatNodeTests {
 
     //NINPUT | NPRINT| NPRLN	<iostat>	::=	input <vlist> | print <prlist> | printline <prlist>

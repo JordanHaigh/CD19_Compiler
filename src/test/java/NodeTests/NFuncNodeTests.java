@@ -18,6 +18,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NFuncNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NFuncNodeTests {
 
     //NFUND	<func>	::=	function <id> ( <plist> ) : <rtype> <funcbody>

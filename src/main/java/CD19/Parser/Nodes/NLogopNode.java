@@ -4,15 +4,33 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a logop of the form:
+ * <logop>	::=	and | or | xor
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class NLogopNode implements Node{
 
     private static NLogopNode instance;
+
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NLogopNode INSTANCE() {
         if (instance == null) {
             instance = new NLogopNode();
         }
         return instance;
     }
+
+    /**
+     * Attempts to generate the logop node
+     * @param parser The parser
+     * @return A valid logop TreeNode or NUNDEF if syntactic error
+     */
 
     @Override
     public TreeNode make(Parser parser) {

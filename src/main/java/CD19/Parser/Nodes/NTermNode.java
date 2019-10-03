@@ -5,11 +5,22 @@ import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 import sun.reflect.generics.tree.Tree;
 
+/**
+ * Generates a term of the form:
+ * NMUL | NDIV | NMOD	<term>	::=	<fact><termTail>
+ *  <termTail>	::=	eps | *<fact><termTail> | /<fact><termTail> | %<fact><termTail>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
+
 public class NTermNode implements Node{
     //NMUL | NDIV | NMOD	<term>	::=	<fact><termTail>
     //	<termTail	::=	ε | *<fact><termTail> | /<fact><termTail> | %<fact><termTail>
 
     NFactNode nFactNode;
+    private static NTermNode instance;
+
 
     public NTermNode() {
         this(NFactNode.INSTANCE());
@@ -18,8 +29,10 @@ public class NTermNode implements Node{
     public NTermNode(NFactNode nFactNode) {
         this.nFactNode = nFactNode;
     }
-
-    private static NTermNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NTermNode INSTANCE() {
         if (instance == null) {
             instance = new NTermNode();
@@ -27,6 +40,11 @@ public class NTermNode implements Node{
         return instance;
     }
 
+    /**
+     * Attempts to generate the term node
+     * @param parser The parser
+     * @return A valid term TreeNode
+     */
     @Override
     public TreeNode make(Parser parser) {
         TreeNode fact = nFactNode.make(parser);
@@ -37,31 +55,34 @@ public class NTermNode implements Node{
             return fact;
     }
 
+    /**
+     * Tail method that can parse more of the same node type or not
+     * @param parser The parser
+     * @param leftNode - Left Node to pass around and make tree left derived
+     * @return - Null if there are no subsequent expr nodes, or a TreeNode containing tailing expr nodes
+     */
     private TreeNode tail(Parser parser, TreeNode leftNode){
         //	<termTail	::=	ε | *<term> | /<term> | %<term>
         if(parser.peekAndConsume(Token.TSTAR)){
             return buildLeftDerivedTree(parser, TreeNode.NMUL, leftNode);
-
-            //TreeNode term = this.make(parser);
-            //return new TreeNode(TreeNode.NMUL, term, null);
         }
         else if(parser.peekAndConsume(Token.TDIVD)){
             return buildLeftDerivedTree(parser, TreeNode.NDIV, leftNode);
-
-            //TreeNode term = this.make(parser);
-            //return new TreeNode(TreeNode.NDIV, term, null);
         }
         else if(parser.peekAndConsume(Token.TPERC)){
             return buildLeftDerivedTree(parser, TreeNode.NMOD, leftNode);
-
-            //TreeNode term = this.make(parser);
-            //return new TreeNode(TreeNode.NMOD, term, null);
         }
         else
             return null; //epsilon transition
     }
 
-
+    /**
+     * Builds tree in left derived form (good for code gen later on)
+     * @param parser the Parser
+     * @param expectedTreeNodeValue TreeNode value that will be the end result
+     * @param leftNode - Left Node to pass around and make tree left derived
+     * @return Left Derived TreeNode
+     */
     private TreeNode buildLeftDerivedTree(Parser parser, int expectedTreeNodeValue, TreeNode leftNode){
         TreeNode returnTreeNode = new TreeNode(expectedTreeNodeValue);
         returnTreeNode.setLeft(leftNode);
@@ -74,9 +95,7 @@ public class NTermNode implements Node{
             return returnTreeNode;
         else
             return tail;
-
     }
-
 }
 
 

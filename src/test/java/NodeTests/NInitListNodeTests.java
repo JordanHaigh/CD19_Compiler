@@ -19,7 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NInitListNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NInitListNodeTests {
 
     //NILIST	<initlist>	::=	<init> <initListTail>

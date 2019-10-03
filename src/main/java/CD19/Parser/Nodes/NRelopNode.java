@@ -4,9 +4,22 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a relop of the form:
+ * <relop>	::=	 == | != | > | <= | < | >=
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class NRelopNode implements Node{
 
     private static NRelopNode instance;
+
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
+
     public static NRelopNode INSTANCE() {
         if (instance == null) {
             instance = new NRelopNode();
@@ -15,6 +28,12 @@ public class NRelopNode implements Node{
     }
 
     //NEQL, NNEQ, NGRT, NLEQ, NLSS, NGEQ	<relop>	::=	 == | != | > | <= | < | >=
+
+    /**
+     * Attempts to generate the relop node
+     * @param parser The parser
+     * @return A valid relop TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TEQEQ)) //==

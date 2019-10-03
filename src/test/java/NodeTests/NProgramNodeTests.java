@@ -18,7 +18,11 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 
-
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NProgramNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NProgramNodeTests {
     //NPROG	<program>	::=	CD19 <id> <globals> <funcs> <mainbody>
     @Mock NGlobNode globs;

@@ -15,7 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NExponentNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NExponentNodeTests {
 
     //NILIT | NFLIT | NTRUE | NFALS	<exponent>	::=	<id> <varOrFNCallTail>|  <intlit> | <reallit>  | TRUE | FALSE | (<bool>)

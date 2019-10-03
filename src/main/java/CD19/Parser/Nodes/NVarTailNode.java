@@ -5,10 +5,18 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a vartail of the form:
+ *	<varTail>	::=	eps | [<expr>] . <id>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class NVarTailNode implements Node{
 
-    //	<varTail>	::=	ε | [<expr>] . <id>
+    //	<varTail>	::=	eps | [<expr>] . <id>
     NExprNode nExprNode;
+    private static NVarTailNode instance;
 
     public NVarTailNode() {
         this(null);
@@ -18,7 +26,10 @@ public class NVarTailNode implements Node{
         this.nExprNode = nExprNode;
     }
 
-    private static NVarTailNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NVarTailNode INSTANCE() {
         if (instance == null) {
             instance = new NVarTailNode();
@@ -26,10 +37,19 @@ public class NVarTailNode implements Node{
         return instance;
     }
 
-
+    /**
+     * Sets the exprNode in the class so cyclic constructors are prevented
+     * @param exprNode - Node to set
+     */
     public void setnExprNode(NExprNode exprNode) {
         this.nExprNode= exprNode;
     }
+
+    /**
+     * Attempts to generate the vartail node
+     * @param parser The parser
+     * @return A valid vartail TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();

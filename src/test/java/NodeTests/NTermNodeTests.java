@@ -15,6 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NTermNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NTermNodeTests {
     //NMUL | NDIV | NMOD	<term>	::=	<fact><termTail>
     //	<termTail	::=	ε | *<term> | /<term> | %<term>

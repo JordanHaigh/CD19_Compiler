@@ -12,6 +12,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NRelNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NRelNodeTests {
 //NNOT	<rel>	::=	<expr><relExprTail> | not <expr> <relop> <expr>
 //	<relExprTail>	::=	ε | <relop><expr>

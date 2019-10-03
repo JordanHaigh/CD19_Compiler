@@ -11,6 +11,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NPrListNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NPrListNodeTests {
     //NPRLST	<prlist>	::=	<printitem><prlistTail>
     //	<prlistTail>	::=	ε |  , <printitem><prlistTail>

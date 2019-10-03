@@ -15,6 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NFactNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NFactNodeTests {
     //    //NPOW	<fact>	::=	<exponent><factTail>
     //    //	<factTail>	::=	ε | ^<fact>

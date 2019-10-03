@@ -11,6 +11,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Jordan Haigh c3256730 CD19
+ * public class NCallStatNodeTests
+ * Tests determine if TreeNode creation works as intended
+ * */
 public class NCallStatNodeTests {
     //NCALL	<callStat>	::=	ε | <elist>
 
@@ -69,9 +74,7 @@ public class NCallStatNodeTests {
         TreeNode callstat = nCallStatNode.make(parser);
 
 
-        assertEquals(TreeNode.NCALL, callstat.getValue());
-        assertEquals(null, callstat.getLeft());
-        assertEquals(null, callstat.getRight());
+        assertEquals(null, callstat);
     }
 
 }

@@ -4,13 +4,20 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates an asgnstat of the form:
+ * <asgnstat>	::=	 <varTail> <asgnop> <bool>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class NAsgnStatNode implements Node{
-
     //	<asgnstat>	::=	 <varTail> <asgnop> <bool>
 
     NVarTailNode nVarTailNode;
     NAsgnOpNode nAsgnOpNode;
     NBoolNode nBoolNode;
+    private static NAsgnStatNode instance;
 
     public NAsgnStatNode() {
         this(NVarTailNode.INSTANCE(), NAsgnOpNode.INSTANCE(), null);
@@ -22,7 +29,18 @@ public class NAsgnStatNode implements Node{
         this.nBoolNode = nBoolNode;
     }
 
-    private static NAsgnStatNode instance;
+    /**
+     * Sets the BoolNode in the class so cyclic constructors are prevented
+     * @param boolNode - Node to set
+     */
+    public void setnBoolNode(NBoolNode boolNode) {
+        this.nBoolNode = boolNode;
+    }
+
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NAsgnStatNode INSTANCE() {
         if (instance == null) {
             instance = new NAsgnStatNode();
@@ -30,11 +48,11 @@ public class NAsgnStatNode implements Node{
         return instance;
     }
 
-    public void setnBoolNode(NBoolNode boolNode) {
-        this.nBoolNode = boolNode;
-    }
-
-
+    /**
+     * Attempts to generate the asgnstat node
+     * @param parser The parser
+     * @return A valid asgnstat TreeNode
+     */
     @Override
     public TreeNode make(Parser parser) {
         TreeNode vartail = nVarTailNode.make(parser);

@@ -5,13 +5,19 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates an asgnStatOrCallStat of the form:
+ * <asgnStatOrCallStat>	::= 	<id><tail>
+ * <tail> ::= (<callStat>) | <asgnStat>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class NAsgnStatOrCallStatNode implements Node{
-
-//	<asgnStatOrCallStat>	::= 	<id><tail>
-//	<tail> ::= (<callStat>) | <asgnStat>
 
     NCallStatNode nCallStatNode;
     NAsgnStatNode nAsgnStatNode;
+    private static NAsgnStatOrCallStatNode instance;
 
     public NAsgnStatOrCallStatNode() {
         this(NCallStatNode.INSTANCE(), NAsgnStatNode.INSTANCE());
@@ -21,8 +27,10 @@ public class NAsgnStatOrCallStatNode implements Node{
         this.nCallStatNode = nCallStatNode;
         this.nAsgnStatNode = nAsgnStatNode;
     }
-
-    private static NAsgnStatOrCallStatNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NAsgnStatOrCallStatNode INSTANCE() {
         if (instance == null) {
             instance = new NAsgnStatOrCallStatNode();
@@ -31,7 +39,11 @@ public class NAsgnStatOrCallStatNode implements Node{
     }
 
 
-
+    /**
+     * Attempts to generate the asgnStatOrCallStat node
+     * @param parser The parser
+     * @return A valid asgnStatOrCallStat TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         TreeNode asgnStatOrCallStat = new TreeNode();
@@ -52,8 +64,13 @@ public class NAsgnStatOrCallStatNode implements Node{
     }
 
 
-
+    /**
+     * Tail method that can parse more of the same node type or not
+     * @param parser The parser
+     * @return - Null if there are no subsequent asgnStatOrCallStat nodes, or a TreeNode containing tailing asgnStatOrCallStat nodes
+     */
     private TreeNode tail(Parser parser){
+        //<tail> ::= (<callStat>) | <asgnStat>
         //todo fix type for semantics
 
         if(parser.peekAndConsume(Token.TLPAR)){

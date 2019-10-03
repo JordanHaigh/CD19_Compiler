@@ -4,12 +4,21 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a stat of the form:
+ * <stat>	::=	<reptstat> | <iostat> | <returnstat> |  <asgnStatOrCallStat>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
+
 public class NStatNode implements Node{
 //	<stat>	::=	<reptstat> | <iostat> | <returnstat> |  <asgnStatOrCallStat>
     NReptStatNode nReptStatNode;
     NIoStatNode nIoStatNode;
     NReturnStatNode nReturnStatNode;
     NAsgnStatOrCallStatNode nAsgnStatOrCallStatNode;
+    private static NStatNode instance;
 
     public NStatNode() {
         this(NReptStatNode.INSTANCE(), NIoStatNode.INSTANCE(), NReturnStatNode.INSTANCE(), NAsgnStatOrCallStatNode.INSTANCE());
@@ -23,7 +32,10 @@ public class NStatNode implements Node{
         this.nAsgnStatOrCallStatNode = nAsgnStatOrCallStatNode;
     }
 
-    private static NStatNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NStatNode INSTANCE() {
         if (instance == null) {
             instance = new NStatNode();
@@ -31,6 +43,11 @@ public class NStatNode implements Node{
         return instance;
     }
 
+    /**
+     * Attempts to generate the stat node
+     * @param parser The parser
+     * @return A valid stat TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
@@ -50,8 +67,5 @@ public class NStatNode implements Node{
             return new TreeNode();
         }
     }
-
-
-
 }
 

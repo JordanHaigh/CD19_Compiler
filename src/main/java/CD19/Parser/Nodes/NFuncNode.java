@@ -5,12 +5,20 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a func of the form:
+ * NFUND	<func>	::=	function <id> ( <plist> ) : <rtype> <funcbody>
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class NFuncNode implements Node{
     //NFUND	<func>	::=	function <id> ( <plist> ) : <rtype> <funcbody>
 
     NPListNode npListNode;
     NRTypeNode nrTypeNode;
     NFuncBodyNode nFuncBodyNode;
+    private static NFuncNode instance;
 
     public NFuncNode() {
         this(NPListNode.INSTANCE(), NRTypeNode.INSTANCE(), NFuncBodyNode.INSTANCE());
@@ -22,9 +30,10 @@ public class NFuncNode implements Node{
         this.nFuncBodyNode = nFuncBodyNode;
     }
 
-
-
-    private static NFuncNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NFuncNode INSTANCE() {
         if (instance == null) {
             instance = new NFuncNode();
@@ -32,7 +41,11 @@ public class NFuncNode implements Node{
         return instance;
     }
 
-
+    /**
+     * Attempts to generate the func node
+     * @param parser The parser
+     * @return A valid func TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         TreeNode func = new TreeNode();
@@ -82,8 +95,9 @@ public class NFuncNode implements Node{
 
         TreeNode stats = funcBody.getRight(); //from funcbody
 
+        //we need stats working from here on, so it cant be null or nundef
         if(stats == null || stats.getValue() == TreeNode.NUNDEF){
-            return func;//todo is this right? returning nundef here because we need rtype from here on
+            return func; //returns NUNDEF
         }
 
         func = new TreeNode(TreeNode.NFUND, plist, locals, stats);

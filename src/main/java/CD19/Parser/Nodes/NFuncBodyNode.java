@@ -4,11 +4,19 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+/**
+ * Generates a funcbody of the form:
+ * <funcbody>	::=	<locals> begin <stats> end
+ *
+ * @author Jordan Haigh c3256730
+ * @since 29/9/19
+ */
 public class NFuncBodyNode implements Node{
 	//<funcbody>	::=	<locals> begin <stats> end
 
     NLocalsNode nLocalsNode;
     NStatsNode nStatsNode;
+    private static NFuncBodyNode instance;
 
 
     public NFuncBodyNode() {
@@ -20,8 +28,10 @@ public class NFuncBodyNode implements Node{
         this.nStatsNode = nStatsNode;
     }
 
-
-    private static NFuncBodyNode instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
     public static NFuncBodyNode INSTANCE() {
         if (instance == null) {
             instance = new NFuncBodyNode();
@@ -29,12 +39,21 @@ public class NFuncBodyNode implements Node{
         return instance;
     }
 
+    /**
+     * Sets the nStatsNode in the class so cyclic constructors are prevented
+     * @param nStatsNode - Node to set
+     */
     public void setnStatsNode(NStatsNode nStatsNode) {
         this.nStatsNode = nStatsNode;
     }
 
 
 
+    /**
+     * Attempts to generate the funcbody node
+     * @param parser The parser
+     * @return A valid funcbody TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         TreeNode funcBody = new TreeNode();

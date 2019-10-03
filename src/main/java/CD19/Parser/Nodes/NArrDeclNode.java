@@ -4,11 +4,20 @@ import CD19.Parser.Parser;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
-
+/**
+ * Jordan Haigh c3256730 CD19
+ * Generates an arrdecl of the form:
+ * NARRD	<arrdecl>	::=	<id> : <typeid>
+ */
 public class NArrDeclNode implements Node {
     //NARRD	<arrdecl>	::=	<id> : <typeid>
 
     private static NArrDeclNode instance;
+
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
 
     public static NArrDeclNode INSTANCE() {
         if (instance == null) {
@@ -17,6 +26,11 @@ public class NArrDeclNode implements Node {
         return instance;
     }
 
+    /**
+     * Attempts to generate the arrdecl node
+     * @param parser The parser
+     * @return A valid arrdecl TreeNode or NUNDEF if syntactic error
+     */
     @Override
     public TreeNode make(Parser parser) {
         TreeNode arrdecl = new TreeNode();
