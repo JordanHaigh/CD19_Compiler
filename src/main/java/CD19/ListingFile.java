@@ -3,6 +3,7 @@ package CD19;
 import CD19.Observer.*;
 import CD19.Scanner.CodeFileReader;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,13 @@ public class ListingFile implements Observer {
         return null;
     }
 
-    public void print(){
+    public void print(PrintWriter printWriter){
+
+        if(printWriter == null){
+            printWriter = new PrintWriter(System.out);
+        }
+
+
         for(LineAndSource lineAndSource : inputFile){
             StringBuilder sb = new StringBuilder();
             sb.append(lineAndSource.lineNumber)
@@ -61,9 +68,12 @@ public class ListingFile implements Observer {
                         sb.append("\n");
                 }
             }
-            System.out.println(sb.toString());
+
+            printWriter.println(sb.toString());
         }
+        printWriter.flush();
     }
+
 
 
     @Override

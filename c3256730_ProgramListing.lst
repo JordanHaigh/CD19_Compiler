@@ -1,0 +1,11 @@
+1: CD19 FlingingFM
+2: main
+3:     a :integer,
+4:     n : integer
+5: begin
+6:     printline "heres a rhyme"
+7:     a = 5
+	Syntactic Error - Expected a Semicolon. Parser will perform Panic Mode Recovery to the next semi colon(Line 7, Column 1)
+8:     n = 5;
+9: 
+10: end CD19 FlingingFM

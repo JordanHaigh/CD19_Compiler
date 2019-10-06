@@ -4,6 +4,9 @@ import CD19.Observer.*;
 import CD19.Parser.Nodes.*;
 import CD19.Scanner.Token;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,8 +137,6 @@ public class Parser implements Subject {
             if (tree == null)
                 throw new Exception();
 
-            printTree(tree);
-
             if (syntacticErrors.size() > 0)
                 syntacticallyValid = false;
 
@@ -164,7 +165,7 @@ public class Parser implements Subject {
      * Print trees - One is pretty and the other is from Dan's code
      * @param tree - Tree to print
      */
-    private void printTree(TreeNode tree) {
+    public void printTree(TreeNode tree) {
 
         System.out.println(tree.prettyPrintTree());
 
