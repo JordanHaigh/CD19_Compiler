@@ -101,7 +101,6 @@ public class Token {
         }
 
 
-        //symbol = null;	// initially null, SymTab lookup is done by Parser for TIDEN/TILIT/TFLIT/TSTRG todo uncomment
 
 
     }
@@ -135,10 +134,6 @@ public class Token {
     public boolean isUndefined() {
         return tokenID == TUNDF;
     }
-
-    //public StRec getSymbol() { return symbol; } todo uncomment
-
-    //public void setSymbol(StRec x) {symbol = x; }		// Used by the Parser to set the ST Ref field of the CD19.Scanner.Token tuple todo uncomment
 
     public String toString() {                // This does NOT produce output for the CD19.Scanner.Scanner Phase	   *****
         String s = TPRINT[tokenID] + " " + line + " " + col;    // It is meant to be used for diagnostic printing only	   *****

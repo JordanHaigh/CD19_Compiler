@@ -95,7 +95,7 @@ public class CodeFileReader {
             columnNumber--;
 
         if (columnNumber < 0)
-            columnNumber = 0; //todo danger danger be careful with this
+            columnNumber = 0;
     }
 
 

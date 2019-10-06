@@ -131,38 +131,45 @@ public class TreeNode {
     //	whatever you like tree output routine.
     //
 
-    public void danPrintTree(PrintWriter out, TreeNode tr) {
+    public static void danPrintTree(PrintWriter out, TreeNode tr) {
         if (tr.nodeValue == NPROG) count = 0;
         out.print(PRINTNODE[tr.nodeValue]+" ");
         count++;
-        if (count%10 == 0) out.println();
+        if (count%10 == 0){
+            out.println();
+            count = 0;
+        }
         if (tr.symbol != null) {
-            int lengthOfLexeme = tr.symbol.getLexeme().length();
-            int remainingPad = 6-lengthOfLexeme;
-            if(remainingPad<0){
-                while(remainingPad <0){
-                    remainingPad +=7;
-                    count++;
-                }
-            }
-            out.print(tr.symbol.getLexeme());
-            out.print(" ");
+            int lexemeLength = tr.getSymbol().getLexeme().length();
+            int numberOfSpacesLexemeTakesUp =(int)Math.ceil(lexemeLength / 7.0);
+            int numberOfPads = numberOfSpacesLexemeTakesUp * 7 - lexemeLength;
 
-            for(int i = 0; i < remainingPad;i++){
+            out.print(tr.symbol.getLexeme() + " ");
+
+            for(int i = 0; i < numberOfPads;i++){
                 out.print(" ");
             }
-            count++;
-            if (count%10 == 0) out.println();
+
+            count += numberOfSpacesLexemeTakesUp;
+
+
+            if (count%10 == 0 || count > 10) {
+                out.println();
+                count = 0;
+            }
         }
-//        if (tr.dataType  != null) {
-//            out.print(  tr.dataType.toString().toLowerCase() + " ");
+//        if (tr.type   != null) {
+//            out.print(  tr.type.getName() + " ");
 //            count++;
 //            if (count%7 == 0) out.println();
 //        }
         if (tr.left   != null) { danPrintTree(out,tr.left);   }
         if (tr.middle != null) { danPrintTree(out,tr.middle); }
         if (tr.right  != null) { danPrintTree(out,tr.right);  }
-        if (tr.nodeValue == NPROG && count%10 != 0) out.println();
+        if (tr.nodeValue == NPROG && count%10 != 0) {
+            out.println();
+            count = 0;
+        }
     }
 
     //pretty version
