@@ -3,7 +3,6 @@ package CD19.Parser.Nodes;
 import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
-import sun.reflect.generics.tree.Tree;
 
 /**
  * Generates a term of the form:

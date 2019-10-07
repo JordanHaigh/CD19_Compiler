@@ -29,8 +29,9 @@ public class Compiler {
         TreeNode tree = parse(tokens);
 
 
-        printListingFileToFile();
-        printTrees(tree);
+        printListingFileToFile("./c3256730_ProgramListing.lst");
+        printErrorsToConsole();
+//        printTrees(tree);
 
     }
 
@@ -60,12 +61,12 @@ public class Compiler {
     /**
      * Print listing to file
      */
-    private void printListingFileToFile() {
+    private void  printListingFileToFile(String filename) {
         PrintWriter listingOut = null;
         try {
-            listingOut = new PrintWriter("./c3256730_ProgramListing.lst");
+            listingOut = new PrintWriter(filename);
         } catch (FileNotFoundException e) {
-            File file = new File("./c3256730_ProgramListing.lst");
+            File file = new File(filename);
             try {
                 file.createNewFile();
             } catch (IOException ex) {
@@ -77,12 +78,13 @@ public class Compiler {
             System.out.println("Couldn't print listing file");
             return;
         }
-        System.out.println("\n===== Program Listing (Can also be found at \"./c3256730_ProgramListing.lst\") =====\n");
-        listingFile.print(null); //print to console as well
+
+        listingFile.print(null); //todo comment before submission
         listingFile.print(listingOut);
+    }
 
-
-
+    private void printErrorsToConsole() {
+        System.out.println(listingFile.printErrors());
     }
 
     /**

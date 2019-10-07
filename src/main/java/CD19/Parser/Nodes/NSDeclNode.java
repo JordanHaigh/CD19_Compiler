@@ -4,8 +4,6 @@ import CD19.Parser.Parser;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
-import com.sun.corba.se.impl.orbutil.graph.NodeData;
-import sun.reflect.generics.tree.Tree;
 
 /**
  * Generates a sdecl of the form:
