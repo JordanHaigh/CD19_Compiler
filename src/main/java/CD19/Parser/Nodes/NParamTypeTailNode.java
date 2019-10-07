@@ -1,6 +1,7 @@
 package CD19.Parser.Nodes;
 
 import CD19.Parser.Parser;
+import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 /**
@@ -52,7 +53,13 @@ public class NParamTypeTailNode implements Node {
             return nsTypeNode.make(parser);
         }
         else if(parser.peekAndConsume(Token.TIDEN)){
-            //parser.consume(); //consume the type id
+
+            SymbolTableRecord typeIdRecord = new SymbolTableRecord(type.getStr(), null, parser.getProgramScope());//typeid is always global scope
+
+            if(parser.lookupTypeRecord(typeIdRecord) == null){
+                parser.semanticError("Array Type Id doesn't exist in symbol table", type);
+            }
+
             TreeNode dummy = new TreeNode(TreeNode.NARRD);
             dummy.setType(NodeDataTypes.Array);
             return dummy;

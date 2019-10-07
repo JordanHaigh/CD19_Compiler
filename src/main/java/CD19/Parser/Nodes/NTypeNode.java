@@ -136,9 +136,17 @@ public class NTypeNode implements Node {
             return arrayTail;
         }
 
+        Token structId = parser.peek();
+
         if (!parser.peekAndConsume(Token.TIDEN)) { //todo check struct id is legit
             parser.syntacticError("Expected Identifier", parser.peek());
             return arrayTail;
+        }
+
+        SymbolTableRecord structIdRecord = new SymbolTableRecord(structId.getStr(),null,parser.getScope()); //scope will be global
+
+        if(parser.lookupTypeRecord(structIdRecord) == null){
+            parser.semanticError("Struct name doesn't exist in symbol table", structId);
         }
 
         arrayTail = new TreeNode(TreeNode.NATYPE, exprTNode, null);

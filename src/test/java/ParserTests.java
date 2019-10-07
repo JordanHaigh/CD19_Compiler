@@ -1,3 +1,4 @@
+import CD19.Observer.SemanticErrorMessage;
 import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
@@ -189,6 +190,113 @@ public class ParserTests {
 
         assertEquals(TreeNode.NSDLST, tree.getRight().getLeft().getValue());
         assertEquals(TreeNode.NPRLN, tree.getRight().getRight().getValue());
+
+    }
+
+    @Test
+    public void semanticError_prog_idsdifferent() {
+        /**
+        CD19 Prog
+
+         main
+            a : integer
+         begin
+            a = 5;
+         end
+
+         CD19 Flinging
+        */
+        List<Token> tokens = new ArrayList<Token>();
+
+        tokens.add(new Token(Token.TCD19, 1, 1, null));
+        tokens.add(new Token(Token.TIDEN, 1, 1, "Prog"));
+
+        tokens.add(new Token(Token.TMAIN, 1, 1, null));
+
+        tokens.add(new Token(Token.TIDEN, 1, 1, "a"));
+        tokens.add(new Token(Token.TCOLN, 1, 1, null));
+        tokens.add(new Token(Token.TINTG, 1, 1, null));
+
+        tokens.add(new Token(Token.TBEGN, 1, 1, null));
+
+        tokens.add(new Token(Token.TIDEN, 1, 1, "a"));
+        tokens.add(new Token(Token.TEQUL, 1, 1, null));
+        tokens.add(new Token(Token.TILIT, 1, 1, null));
+        tokens.add(new Token(Token.TSEMI, 1, 1, null));
+
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        tokens.add(new Token(Token.TCD19, 1, 1, null));
+        tokens.add(new Token(Token.TIDEN, 1, 1, "Flinging"));
+        tokens.add(new Token(Token.TEOF, 1, 1, null));
+
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+
+        assertEquals(true, parser.getSemanticErrors().size() == 1);
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Start and End"));
+
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_type_structiddoesntexist() {
+        /**
+         CD19 Prog
+
+         main
+         a : integer
+         begin
+         a = 5;
+         end
+
+         CD19 Prog
+         */
+        List<Token> tokens = new ArrayList<Token>();
+
+        tokens.add(new Token(Token.TCD19, 1, 1, null));
+        tokens.add(new Token(Token.TIDEN, 1, 1, "Prog"));
+
+        tokens.add(new Token(Token.TIDEN, 1, 1, "mystruct"));
+        tokens.add(new Token(Token.TIS, 1, 1, null));
+        tokens.add(new Token(Token.TIDEN, 1, 1, "a"));
+        tokens.add(new Token(Token.TCOLN, 1, 1, null));
+        tokens.add(new Token(Token.TINTG, 1, 1, null));
+        tokens.add(new Token(Token.TEND, 1, 1, null));
+
+
+
+        tokens.add(new Token(Token.TMAIN, 1, 1, null));
+
+        tokens.add(new Token(Token.TIDEN, 1, 1, "a"));
+        tokens.add(new Token(Token.TCOLN, 1, 1, null));
+        tokens.add(new Token(Token.TINTG, 1, 1, null));
+
+        tokens.add(new Token(Token.TBEGN, 1, 1, null));
+
+        tokens.add(new Token(Token.TIDEN, 1, 1, "a"));
+        tokens.add(new Token(Token.TEQUL, 1, 1, null));
+        tokens.add(new Token(Token.TILIT, 1, 1, null));
+        tokens.add(new Token(Token.TSEMI, 1, 1, null));
+
+        tokens.add(new Token(Token.TEND,1,1,null));
+
+        tokens.add(new Token(Token.TCD19, 1, 1, null));
+        tokens.add(new Token(Token.TIDEN, 1, 1, "Prog"));
+        tokens.add(new Token(Token.TEOF, 1, 1, null));
+
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+
+        assertEquals(true, parser.getSemanticErrors().size() == 1);
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Start and End"));
+
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
 
     }
 }

@@ -102,7 +102,7 @@ public class NFuncNode implements Node{
 
         func = new TreeNode(TreeNode.NFUND, plist, locals, stats);
 
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), rtype.getType(), "function_"+id.getStr());
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), rtype.getType(), parser.getScope()); //should be global scope
 
         parser.insertIdentifierRecord(record);
 

@@ -31,7 +31,7 @@ public class Compiler {
 
         printListingFileToFile("./c3256730_ProgramListing.lst");
         printErrorsToConsole();
-//        printTrees(tree);
+        printTrees(tree);
 
     }
 

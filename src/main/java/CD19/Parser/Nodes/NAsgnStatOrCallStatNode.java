@@ -54,7 +54,7 @@ public class NAsgnStatOrCallStatNode implements Node{
             return asgnStatOrCallStat;
         }
 
-        TreeNode tail = tail(parser);
+        TreeNode tail = tail(parser,token);
 
         if(tail.getValue() != TreeNode.NUNDEF){
             SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(), token.getStr()+"_"+parser.getScope());
@@ -69,12 +69,19 @@ public class NAsgnStatOrCallStatNode implements Node{
      * @param parser The parser
      * @return - Null if there are no subsequent asgnStatOrCallStat nodes, or a TreeNode containing tailing asgnStatOrCallStat nodes
      */
-    private TreeNode tail(Parser parser){
+    private TreeNode tail(Parser parser, Token id){
         //<tail> ::= (<callStat>) | <asgnStat>
-        //todo fix type for semantics
 
         if(parser.peekAndConsume(Token.TLPAR)){
             //(<callStat>)
+
+            //check the function id exists
+            SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(),null,parser.getProgramScope());
+            if(parser.lookupIdentifierRecord(idRecord) == null){
+                parser.semanticError("Function name doesn't exist", id);
+            }
+
+
             TreeNode callStat = nCallStatNode.make(parser);
 
             if(!parser.peekAndConsume(Token.TRPAR)){
@@ -86,6 +93,14 @@ public class NAsgnStatOrCallStatNode implements Node{
         }
         else{
             //<asgnStat>
+
+            //check id exists as variable
+            SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(),null,parser.getScope()); //get the current scope - could be function or main
+            if(parser.lookupIdentifierRecord(idRecord) == null){
+                parser.semanticError("Variable name doesn't exist", id);
+            }
+
+
             return nAsgnStatNode.make(parser);
         }
 

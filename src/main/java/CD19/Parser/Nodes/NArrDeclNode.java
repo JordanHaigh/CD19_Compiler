@@ -46,12 +46,19 @@ public class NArrDeclNode implements Node {
             return arrdecl;
         }
 
-        Token type = parser.peek(); //todo type isnt being set?
+        Token typeId = parser.peek();
 
         if (!parser.peekAndConsume(Token.TIDEN)) {
             parser.syntacticError("Expected an Identifier", id);
             return arrdecl;
         }
+
+        SymbolTableRecord typeIdRecord = new SymbolTableRecord(typeId.getStr(), null, parser.getProgramScope());//typeid is always global scope
+
+        if(parser.lookupTypeRecord(typeIdRecord) == null){
+            parser.semanticError("Array Type Id doesn't exist", typeId);
+        }
+
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), NodeDataTypes.Array, parser.getScope());
         parser.insertTypeRecord(record);
