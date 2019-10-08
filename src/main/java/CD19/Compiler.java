@@ -22,10 +22,10 @@ public class Compiler {
     /**
      * Compile source file
      *
-     * @param filePath - Path to File
+     * @param file - File
      */
-    public void compile(String filePath) {
-        List<Token> tokens = lexicalAnalysis(filePath);
+    public void compile(File file) {
+        List<Token> tokens = lexicalAnalysis(file);
         TreeNode tree = parse(tokens);
 
 
@@ -40,12 +40,12 @@ public class Compiler {
      * Perform Lexical Analysis on File
      * Return and print the list of tokens
      *
-     * @param filePath - Path to File
+     * @param file - File
      */
-    public List<Token> lexicalAnalysis(String filePath) {
-        listingFile = new ListingFile(new CodeFileReader(filePath));
+    public List<Token> lexicalAnalysis(File file) {
+        listingFile = new ListingFile(new CodeFileReader(file));
 
-        Scanner scanner = new Scanner(new CodeFileReader(filePath));
+        Scanner scanner = new Scanner(new CodeFileReader(file));
         scanner.addObserver(listingFile);
         return scanner.getAllTokens();
     }

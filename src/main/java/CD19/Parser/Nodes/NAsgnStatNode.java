@@ -1,6 +1,7 @@
 package CD19.Parser.Nodes;
 
 import CD19.Parser.Parser;
+import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
@@ -59,7 +60,7 @@ public class NAsgnStatNode implements Node{
         TreeNode asgnop = nAsgnOpNode.make(parser);
         TreeNode bool = nBoolNode.make(parser);
         //nodetype will be what is returned from the nasgnop node (nasgn, npleq...)
-        
+
         //return new TreeNode(asgnop.getValue(), vartail, bool);
         //asgnop.setType(bool.getType()); //todo data types come later
         asgnop.setLeft(vartail);
@@ -67,5 +68,35 @@ public class NAsgnStatNode implements Node{
         return asgnop;
     }
 
+
+    public TreeNode makeWithId(Parser parser, Token id) {
+        TreeNode vartail = nVarTailNode.makeWithIdFromVar(parser,id);
+
+        if(vartail.getValue() == TreeNode.NSIMV){
+            //then its just a variable
+            SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(),null,parser.getScope()); //get the current scope - could be function or main
+            if(parser.lookupIdentifierRecord(idRecord) == null){
+                parser.semanticError("Variable name " + id.getStr()+" doesn't exist", id);
+            }
+        }
+        else{
+            //then its a a struct array
+            SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(),null,parser.getProgramScope()); //get the current scope - could be function or main
+            if(parser.lookupTypeRecord(idRecord) == null){
+                parser.semanticError("Array Variable " + id.getStr()+" doesn't exist", id);
+            }
+
+        }
+
+        TreeNode asgnop = nAsgnOpNode.make(parser);
+        TreeNode bool = nBoolNode.make(parser);
+        //nodetype will be what is returned from the nasgnop node (nasgn, npleq...)
+
+        //return new TreeNode(asgnop.getValue(), vartail, bool);
+        //asgnop.setType(bool.getType()); //todo data types come later
+        asgnop.setLeft(vartail);
+        asgnop.setRight(bool);
+        return asgnop;
+    }
 }
 

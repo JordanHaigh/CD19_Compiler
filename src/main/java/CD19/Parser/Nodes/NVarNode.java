@@ -53,7 +53,13 @@ public class NVarNode implements Node {
             return new TreeNode();
         }
 
-        TreeNode tail = nVarTailNode.make(parser);
+        //check id exists
+        SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(), null, parser.getScope());
+        if(parser.lookupIdentifierRecord(idRecord) == null){
+            parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
+        }
+
+        TreeNode tail = nVarTailNode.makeWithIdFromVar(parser,id);
 
         if (tail.getValue() == TreeNode.NARRV) {
             //look up types symbol table with id

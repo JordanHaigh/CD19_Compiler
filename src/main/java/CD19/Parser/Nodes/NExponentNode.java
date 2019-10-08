@@ -114,6 +114,20 @@ public class NExponentNode implements Node{
         Token id = parser.peek();
         parser.peekAndConsume(Token.TIDEN); //already seen thats its an iden
 
+        SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(), null, parser.getScope());
+        if(parser.lookupIdentifierRecord(idRecord) == null){
+            if(parser.peek().getTokenID() == Token.TLPAR){
+                parser.semanticError("Function " + id.getStr() + " doesn't exist", id);
+            }
+            else{
+                //if variable is not in this scope, check that it might be a constant
+                idRecord = new SymbolTableRecord(id.getStr(), null, parser.getProgramScope());
+                if(parser.lookupConstantRecord(idRecord) == null){
+                    parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
+                }
+            }
+        }
+
         TreeNode tail = varOrFnCallTail(parser);
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(), id.getStr()+"_"+parser.getScope());

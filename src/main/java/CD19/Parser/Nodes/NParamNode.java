@@ -108,7 +108,7 @@ public class NParamNode implements Node{
         }
 
         //since we LL(1), we already have the id of the variable, but we need to call param type tail to get the data type
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(),id.getStr()+"_"+parser.getScope());
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(),parser.getScope());
 
         parser.insertIdentifierRecord(record);
 

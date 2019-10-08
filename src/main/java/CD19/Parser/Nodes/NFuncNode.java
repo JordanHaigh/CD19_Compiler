@@ -62,7 +62,7 @@ public class NFuncNode implements Node{
             return func;
         }
 
-        parser.enterScope("function_"+id.getStr());
+        parser.enterScope(id.getStr()+"_function");
 
         if(!parser.peekAndConsume(Token.TLPAR)){
             parser.syntacticError("Expected Left Parenthesis", parser.peek());

@@ -1205,4 +1205,18 @@ public class ScannerTests {
         assertEquals(Token.TEOF, tokens.get(3).getTokenID());
     }
 
+    @Test
+    public void Scanner_getAllTokens_array(){
+        List<String> code = new ArrayList<>();
+        code.add("array[]");
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+
+        List<Token> tokens = scanner.getAllTokens();
+        assertEquals(Token.TARAY, tokens.get(0).getTokenID());
+        assertEquals(Token.TLBRK, tokens.get(1).getTokenID());
+        assertEquals(Token.TRBRK, tokens.get(2).getTokenID());
+        assertEquals(Token.TEOF, tokens.get(3).getTokenID());
+    }
+
+
 }

@@ -26,6 +26,6 @@ public class A3 {
         }
 
         Compiler compiler = new Compiler();
-        compiler.compile(filePath);
+        compiler.compile(file);
     }
 }

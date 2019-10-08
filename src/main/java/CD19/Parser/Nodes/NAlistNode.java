@@ -54,6 +54,10 @@ public class NAlistNode implements Node {
         }
 
         //So we have seen an TIDEN
+        SymbolTableRecord idRecord = new SymbolTableRecord(token.getStr(), null, parser.getScope());
+        if(parser.lookupIdentifierRecord(idRecord) == null){
+            parser.semanticError("Variable " + token.getStr() + " doesn't exist", token);
+        }
 
         TreeNode asgnStat = nAsgnStatNode.make(parser);
 
@@ -98,6 +102,11 @@ public class NAlistNode implements Node {
         if (!parser.peekAndConsume(Token.TIDEN)) {
             parser.syntacticError("<alist> - Expected an Identifier", token);
             return new TreeNode(TreeNode.NUNDEF);
+        }
+
+        SymbolTableRecord idRecord = new SymbolTableRecord(token.getStr(), null, parser.getScope());
+        if(parser.lookupIdentifierRecord(idRecord) == null){
+            parser.semanticError("Variable " + token.getStr() + " doesn't exist", token);
         }
 
         TreeNode asgnStat = nAsgnStatNode.make(parser);

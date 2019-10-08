@@ -55,7 +55,7 @@ public class NArrDeclNode implements Node {
 
         SymbolTableRecord typeIdRecord = new SymbolTableRecord(typeId.getStr(), null, parser.getProgramScope());//typeid is always global scope
 
-        if(parser.lookupTypeRecord(typeIdRecord) == null){
+        if(parser.lookupIdentifierRecord(typeIdRecord) == null){
             parser.semanticError("Array Type Id doesn't exist", typeId);
         }
 

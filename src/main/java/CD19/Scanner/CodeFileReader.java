@@ -1,6 +1,7 @@
 package CD19.Scanner;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,21 +24,21 @@ public class CodeFileReader {
         lineNumber = columnNumber = 0;
     }
 
-    public CodeFileReader(String filePath) {
-        this.codeLines = readFile(filePath);
+    public CodeFileReader(File file) {
+        this.codeLines = readFile(file);
         lineNumber = columnNumber = 0;
     }
 
     /**
      * Reads a file from argument file path
-     * @param filePath - File to read
+     * @param file - File to read
      * @return - List of Strings of each line in the file
      */
-    public List<String> readFile(String filePath) {
+    public List<String> readFile(File file) {
         List<String> lines = new ArrayList<>();
 
         //https://stackoverflow.com/a/5868528/8566833
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
                 lines.add(line);

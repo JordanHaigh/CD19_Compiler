@@ -1,7 +1,9 @@
 import CD19.Scanner.CodeFileReader;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,13 @@ public class CodeFileReaderTests {
 
     @Test
     public void codeFileReader_emptyFile_returnBlank(){
-        CodeFileReader codeFileReader = new CodeFileReader("./src/test/java/emptyFile.cd");
+        File file = new File("./src/test/java/emptyFile.cd");
+
+        if(!file.exists()){
+            fail("File doesn't exist");
+        }
+
+        CodeFileReader codeFileReader = new CodeFileReader(file);
         List<String> lines = codeFileReader.getCodeLines();
 
         assertEquals(0, lines.size());
@@ -22,7 +30,13 @@ public class CodeFileReaderTests {
 
     @Test
     public void codeFileReader_nonEmptyFile_returnAllLines(){
-        CodeFileReader codeFileReader = new CodeFileReader("./src/test/java/nonEmptyFile.cd");
+        File file = new File("./src/test/java/nonEmptyFile.cd");
+
+        if(!file.exists()){
+            fail("File doesn't exist");
+        }
+
+        CodeFileReader codeFileReader = new CodeFileReader(file);
         List<String> lines = codeFileReader.getCodeLines();
 
         assertEquals("CD19 test", lines.get(0));

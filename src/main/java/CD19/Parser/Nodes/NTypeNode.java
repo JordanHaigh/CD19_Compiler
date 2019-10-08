@@ -73,11 +73,8 @@ public class NTypeNode implements Node {
             return type;
         }
 
-        parser.enterScope(id.getStr() + "_struct");
+        TreeNode tail = tail(parser,id);
 
-        TreeNode tail = tail(parser);
-
-        parser.leaveScope();
 
         NodeDataTypes dataType;
 
@@ -88,6 +85,13 @@ public class NTypeNode implements Node {
 
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), dataType, parser.getScope()); //global (program) scope
+
+        if(record.getDataType() == NodeDataTypes.Struct){
+            parser.insertTypeRecord(record);
+        }
+        else{
+            parser.insertIdentifierRecord(record);
+        }
         tail.setSymbol(record);
         return tail;
     }
@@ -97,12 +101,12 @@ public class NTypeNode implements Node {
      * @param parser The parser
      * @return - TreeNode containing tailing information
      */
-    private TreeNode tail(Parser parser) {
+    private TreeNode tail(Parser parser, Token id) {
         Token token = parser.peek();
         if (token.getTokenID() == Token.TARAY) {
             return arrayTail(parser);
         } else {
-            return structTail(parser);
+            return structTail(parser,id);
         }
     }
 
@@ -138,7 +142,7 @@ public class NTypeNode implements Node {
 
         Token structId = parser.peek();
 
-        if (!parser.peekAndConsume(Token.TIDEN)) { //todo check struct id is legit
+        if (!parser.peekAndConsume(Token.TIDEN)) {
             parser.syntacticError("Expected Identifier", parser.peek());
             return arrayTail;
         }
@@ -158,15 +162,17 @@ public class NTypeNode implements Node {
      * @type parser The parser
      * @return - TreeNode containing tailing information
      */
-    private TreeNode structTail(Parser parser) {
+    private TreeNode structTail(Parser parser, Token structId) {
         //<fields> end
-
+        parser.enterScope(structId.getStr() + "_struct");
         TreeNode nFieldsTNode = nFieldsNode.make(parser);
+        parser.leaveScope();
 
         if (!parser.peekAndConsume(Token.TEND)) {
             parser.syntacticError("Expected End keyword", parser.peek());
             return new TreeNode();
         }
+
 
         return new TreeNode(TreeNode.NRTYPE, nFieldsTNode, null);
     }

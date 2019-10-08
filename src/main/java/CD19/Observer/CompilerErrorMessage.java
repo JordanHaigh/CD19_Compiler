@@ -21,4 +21,6 @@ public class CompilerErrorMessage extends ObservableMessage {
     public String getErrorMessage() {return errorMessage; }
     public int getLine() { return line; }
     public int getColumn() {  return column; }
+
+    public String printAll(){return errorMessage + " Line(" + line + "), Column (" + column + ")";}
 }

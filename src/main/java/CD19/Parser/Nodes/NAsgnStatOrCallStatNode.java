@@ -56,7 +56,7 @@ public class NAsgnStatOrCallStatNode implements Node{
 
         TreeNode tail = tail(parser,token);
 
-        if(tail.getValue() != TreeNode.NUNDEF){
+        if(tail.getValue() != TreeNode.NUNDEF && tail.getLeft() != null){ //if tail isnt undefined and has function arguments
             SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(), token.getStr()+"_"+parser.getScope());
             tail.getLeft().setSymbol(record);
         }
@@ -88,20 +88,17 @@ public class NAsgnStatOrCallStatNode implements Node{
                 parser.syntacticError("Expected a right parenthesis", parser.peek());
                 return new TreeNode();
             }
-            else
+
+            if(callStat == null){
+                return new TreeNode(TreeNode.NCALL);
+            }else
                 return callStat;
         }
         else{
             //<asgnStat>
 
-            //check id exists as variable
-            SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(),null,parser.getScope()); //get the current scope - could be function or main
-            if(parser.lookupIdentifierRecord(idRecord) == null){
-                parser.semanticError("Variable name doesn't exist", id);
-            }
-
-
-            return nAsgnStatNode.make(parser);
+            //we do the ssemantic check inside asgnstat because at the moment we don't know if its a variable or array
+           return nAsgnStatNode.makeWithId(parser,id);
         }
 
     }

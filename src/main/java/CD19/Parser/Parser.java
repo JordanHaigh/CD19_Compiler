@@ -190,7 +190,7 @@ public class Parser implements Subject {
             return tree;
 
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
             syntacticallyValid = false;
             semanticallyValid = false;
 
@@ -329,6 +329,8 @@ public class Parser implements Subject {
     }
 
     public List<SemanticErrorMessage> getSemanticErrors(){return semanticErrors;}
+
+    public List<SyntacticErrorMessage> getSyntacticErrors(){return syntacticErrors;}
 
     public String getProgramScope() {
         return scopeStack.get(0);
