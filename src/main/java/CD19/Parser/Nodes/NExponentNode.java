@@ -79,20 +79,30 @@ public class NExponentNode implements Node{
      */
     @Override
     public TreeNode make(Parser parser) {
+        TreeNode exponent = new TreeNode();
+
         if(parser.peek().getTokenID() == Token.TIDEN){
             return varOrFnCall(parser);
         }
         else if(parser.peekAndConsume(Token.TILIT)){ //integer literal
-            return new TreeNode(TreeNode.NILIT, null,null);
+            exponent = new TreeNode(TreeNode.NILIT, null,null);
+            exponent.setType("Integer");
+            return exponent;
         }
         else if(parser.peekAndConsume(Token.TFLIT)){//float literal
-            return new TreeNode(TreeNode.NFLIT, null,null);
+            exponent = new TreeNode(TreeNode.NFLIT, null,null);
+            exponent.setType("Real");
+            return exponent;
         }
         else if(parser.peekAndConsume(Token.TTRUE)){//true keyword
-            return new TreeNode(TreeNode.NTRUE, null,null);
+            exponent = new TreeNode(TreeNode.NTRUE, null,null);
+            exponent.setType("Boolean");
+            return exponent;
         }
         else if(parser.peekAndConsume(Token.TFALS)){//false keyword
-            return new TreeNode(TreeNode.NFALS, null,null);
+            exponent = new TreeNode(TreeNode.NFALS, null,null);
+            exponent.setType("Boolean");
+            return exponent;
         }
         else if(parser.peekAndConsume(Token.TLPAR)){ //left parenthesis
             TreeNode bool = nBoolNode.make(parser);
@@ -115,7 +125,9 @@ public class NExponentNode implements Node{
         parser.peekAndConsume(Token.TIDEN); //already seen thats its an iden
 
         SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(), null, parser.getScope());
-        if(parser.lookupIdentifierRecord(idRecord) == null){
+        idRecord = parser.lookupIdentifierRecord(idRecord);
+        if(idRecord == null){
+            //print out different message depending on if its a function (look at next token and see if its a left par)
             if(parser.peek().getTokenID() == Token.TLPAR){
                 parser.semanticError("Function " + id.getStr() + " doesn't exist", id);
             }
@@ -130,8 +142,8 @@ public class NExponentNode implements Node{
 
         TreeNode tail = varOrFnCallTail(parser);
 
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(), id.getStr()+"_"+parser.getScope());
-        tail.setSymbol(record);
+        //SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(), id.getStr()+"_"+parser.getScope());
+        tail.setSymbol(idRecord);
         return tail;
     }
 

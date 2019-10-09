@@ -47,13 +47,22 @@ public class NFactNode implements Node{
      */
     @Override
     public TreeNode make(Parser parser) {
+        Token peek = parser.peek();
         TreeNode exponent = nExponentNode.make(parser);
         TreeNode tail = tail(parser,exponent);
+
+
+
         //left derivation
         if(tail == null)
             return exponent;
-        else
-            return tail;
+
+
+        String typing = tail.getType();
+        if(typing.equals("Mixed")){
+            parser.semanticError("Bad typing in variable assignment", peek);
+        }
+        return tail;
 
     }
 
@@ -68,7 +77,19 @@ public class NFactNode implements Node{
             TreeNode returnTreeNode = new TreeNode(TreeNode.NPOW);
             returnTreeNode.setLeft(leftNode);
 
+            String firstType = returnTreeNode.getLeft().getType();
+
             TreeNode fact = nExponentNode.make(parser);
+
+            String secondType = fact.getType();
+
+            if(!firstType.equals(secondType)){
+                returnTreeNode.setType("Mixed");
+            }
+            else{
+                returnTreeNode.setType(fact.getType());
+            }
+
             TreeNode tail = tail(parser,returnTreeNode);
 
             returnTreeNode.setRight(fact);
