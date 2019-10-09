@@ -62,7 +62,7 @@ public class TreeNode {
     private String nodeValueString;
     private TreeNode left,middle,right;
     private SymbolTableRecord symbol;
-    private NodeDataTypes dataType;
+    private String dataType;
 
     public TreeNode(){
         this(TreeNode.NUNDEF);
@@ -106,7 +106,7 @@ public class TreeNode {
 
     public SymbolTableRecord getSymbol() { return symbol; }
 
-    public NodeDataTypes getType() { return dataType; }
+    public String getType() { return dataType; }
 
     public void setValue(int value) { nodeValue = value;
         nodeValueString = PRINTNODE[value];
@@ -120,7 +120,10 @@ public class TreeNode {
 
     public void setSymbol(SymbolTableRecord st) { symbol = st; }
 
-    public void setType(NodeDataTypes st) { dataType = st; }
+    public void setType(String st) {
+        dataType = st;
+        NodeDataTypes.addDataType(st);
+    }
 
     //
     // Call is: TreeNode.danPrintTree(outfile, rootOfTree);

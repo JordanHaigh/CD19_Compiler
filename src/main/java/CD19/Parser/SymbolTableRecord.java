@@ -15,23 +15,24 @@ public class SymbolTableRecord {
     private int symbolTableKey;
 
     private String lexeme;
-    private NodeDataTypes dataType;
+    private String dataType;
     private String scope;
 
     public SymbolTableRecord(){
         this("",null, "");
     }
 
-    public SymbolTableRecord(String lexeme, NodeDataTypes dataType, String scope){
+    public SymbolTableRecord(String lexeme, String dataType, String scope){
         this.lexeme = lexeme;
         this.dataType = dataType;
         this.scope = scope;
         symbolTableKey = hashCode();
+        NodeDataTypes.addDataType(dataType);
     }
 
     public int getSymbolTableKey() { return symbolTableKey; }
     public String getLexeme() { return lexeme; }
-    public NodeDataTypes getDataType() { return dataType; }
+    public String getDataType() { return dataType; }
     public String getScope() { return scope; }
 
     @Override

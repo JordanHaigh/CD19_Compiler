@@ -47,7 +47,7 @@ public class NRTypeNode implements Node{
     public TreeNode make(Parser parser) {
         if(parser.peekAndConsume(Token.TVOID)){ //void
             TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
-            dummy.setType(NodeDataTypes.Void);
+            dummy.setType("Void");
             return dummy;
         }
 

@@ -197,7 +197,7 @@ public class ParserTests {
     }
 
     @Test
-    public void semanticError_prog_idsdifferent() {
+    public void semanticError_badID_prog_idsdifferent() {
         /**
          CD19 Prog
 
@@ -241,7 +241,7 @@ public class ParserTests {
     }
 
     @Test
-    public void semanticError_type_structiddoesntexist() {
+    public void semanticError_badID_type_structiddoesntexist() {
         /**
          CD19 Prog
 
@@ -291,7 +291,7 @@ public class ParserTests {
             System.out.println(message.getErrorMessage());
 
         assertEquals(true, parser.getSemanticErrors().size() == 1);
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Struct"));
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("blah"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -300,11 +300,11 @@ public class ParserTests {
 
 
     @Test
-    public void semanticError_paramtypetail_arrtypedoesntexist() {
+    public void semanticError_badID_paramtypetail_typedoesntexist() {
         List<String> code = new ArrayList<>();
 
         code.add("CD19 Prog");
-        code.add("function myfunction(a : fake) : void");
+        code.add("function myfunction(a : fake) : void"); //error here
         code.add("begin");
         code.add("print a;");
         code.add("end");
@@ -329,7 +329,7 @@ public class ParserTests {
             System.out.println(message.printAll());
 
         assertEquals(true, parser.getSemanticErrors().size() == 1);
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Array"));
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("fake"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -337,14 +337,14 @@ public class ParserTests {
     }
 
     @Test
-    public void semanticError_asgnstatorcallstat_asgnstat_iddoesntexist() {
+    public void semanticError_badID_asgnstatorcallstat_asgnstat_iddoesntexist() {
         List<String> code = new ArrayList<>();
 
         code.add("CD19 Prog");
         code.add("main");
         code.add("a : integer");
         code.add("begin");
-        code.add("b = 5;");
+        code.add("b = 5;"); //error ere
         code.add("end");
         code.add("CD19 Prog");
 
@@ -361,7 +361,7 @@ public class ParserTests {
             System.out.println(message.printAll());
 
         assertEquals(true, parser.getSemanticErrors().size() == 1);
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Variable"));
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("b"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -369,7 +369,7 @@ public class ParserTests {
     }
 
     @Test
-    public void semanticError_asgnstatorcallstat_callstat_iddoesntexist() {
+    public void semanticError_badID_asgnstatorcallstat_callstat_iddoesntexist() {
         List<String> code = new ArrayList<>();
 
         code.add("CD19 Prog");
@@ -393,7 +393,7 @@ public class ParserTests {
             System.out.println(message.printAll());
 
         assertEquals(true, parser.getSemanticErrors().size() == 1);
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Function"));
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Function name b"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -401,14 +401,14 @@ public class ParserTests {
     }
 
     @Test
-    public void semanticError_alist_iddoesntexist() {
+    public void semanticError_badID_alist_iddoesntexist() {
         List<String> code = new ArrayList<>();
 
         code.add("CD19 Prog");
         code.add("main");
         code.add("a : integer");
         code.add("begin");
-        code.add("repeat(b = 5) a = 5; until TRUE;");
+        code.add("repeat(b = 5) a = 5; until TRUE;"); //error onb
         code.add("end");
         code.add("CD19 Prog");
 
@@ -425,7 +425,7 @@ public class ParserTests {
             System.out.println(message.printAll());
 
         assertEquals(true, parser.getSemanticErrors().size() == 1);
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Variable"));
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Variable b"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -433,7 +433,7 @@ public class ParserTests {
     }
 
     @Test
-    public void semanticError_alist_twoiddoesntexist() {
+    public void semanticError_badID_alist_twoiddoesntexist() {
         List<String> code = new ArrayList<>();
 
         code.add("CD19 Prog");
@@ -457,8 +457,8 @@ public class ParserTests {
             System.out.println(message.printAll());
 
         assertEquals(2, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Variable"));
-        assertEquals(true, parser.getSemanticErrors().get(1).getErrorMessage().contains("Variable"));
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Variable b"));
+        assertEquals(true, parser.getSemanticErrors().get(1).getErrorMessage().contains("Variable c"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -467,7 +467,7 @@ public class ParserTests {
 
 
     @Test
-    public void semanticError_var_iddoesntexist() {
+    public void semanticError_badID_var_iddoesntexist() {
         List<String> code = new ArrayList<>();
 
         code.add("CD19 Prog");
@@ -491,7 +491,7 @@ public class ParserTests {
             System.out.println(message.printAll());
 
         assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Variable"));
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Variable b"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -499,7 +499,7 @@ public class ParserTests {
     }
 
     @Test
-    public void semanticError_vartail_iddoesntexist() {
+    public void semanticError_goodid_vartail_idexists() {
         List<String> code = new ArrayList<>();
 
         code.add("CD19 Prog");
@@ -529,9 +529,46 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Struct"));
+        assertEquals(0, parser.getSemanticErrors().size());
 
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(true, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_badid_vartail_iddoesntexists() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("types");
+        code.add("mystruct is");
+        code.add("a : integer");
+        code.add("end");
+        code.add("myarray is array[10] of mystruct");
+        code.add("arrays");
+        code.add("programarray : myarray");
+        code.add("main");
+        code.add("b : integer");
+        code.add("begin");
+        code.add("programarray[0].b = 5;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("variable b"));
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
 
@@ -539,7 +576,7 @@ public class ParserTests {
 
 
     @Test
-    public void semanticError_vexponent_varorfncalliddoesntexist_var() {
+    public void semanticError_badID_exponent_varorfncalliddoesntexist_var() {
         List<String> code = new ArrayList<>();
 
         code.add("CD19 Prog");
@@ -563,7 +600,7 @@ public class ParserTests {
             System.out.println(message.printAll());
 
         assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("b"));
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Variable b"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -597,6 +634,88 @@ public class ParserTests {
 
         assertEquals(1, parser.getSemanticErrors().size());
         assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Function b"));
+
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_arraysize_arraysizedoesntexist() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+//        code.add("constants");
+//        code.add("mynum =10");
+        code.add("types");
+        code.add("mystruct is");
+        code.add("a : integer");
+        code.add("end");
+        code.add("myarray is array[mynum] of mystruct");
+        code.add("arrays");
+        code.add("programarray : myarray");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("a =5;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("mynum"));
+
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_arraysize_arraysizedoesntexist_usingprogramname() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+//        code.add("constants");
+//        code.add("mynum =10");
+        code.add("types");
+        code.add("mystruct is");
+        code.add("a : integer");
+        code.add("end");
+        code.add("myarray is array[Prog] of mystruct");
+        code.add("arrays");
+        code.add("programarray : myarray");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("a =5;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Prog"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());

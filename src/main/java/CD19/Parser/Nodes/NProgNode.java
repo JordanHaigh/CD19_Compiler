@@ -52,6 +52,7 @@ public class NProgNode implements Node{
      */
     public TreeNode make(Parser parser) {
         TreeNode program = new TreeNode();
+        NodeDataTypes.instantiate();
 
         if(!parser.peekAndConsume(Token.TCD19)){
             parser.syntacticError("Expected Starting CD19 keyword", parser.peek());
@@ -99,9 +100,9 @@ public class NProgNode implements Node{
 
         parser.insertIdentifierRecord(startRecord);
 
-        SymbolTableRecord endRecord = new SymbolTableRecord(endId.getStr(), null, "");
-
-        parser.insertIdentifierRecord(endRecord);
+//        SymbolTableRecord endRecord = new SymbolTableRecord(endId.getStr(), null, "");
+//
+//        parser.insertIdentifierRecord(endRecord);
 
         TreeNode nProgTreeNode = new TreeNode(TreeNode.NPROG,nGlobTreeNode,nFuncsTreeNode, nMainTreeNode);
 

@@ -67,7 +67,7 @@ public class NFuncsNodeTests {
         when(nrTypeNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
             parser.consume();
             TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
-            dummy.setType(NodeDataTypes.Void);
+            dummy.setType("Void");
             return dummy;
         });
         when(nFuncBodyNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
@@ -124,7 +124,7 @@ public class NFuncsNodeTests {
         when(nrTypeNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
             parser.consume();
             TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
-            dummy.setType(NodeDataTypes.Void);
+            dummy.setType("Void");
             return dummy;
         });
         when(nFuncBodyNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
@@ -191,7 +191,7 @@ public class NFuncsNodeTests {
         when(nrTypeNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
             parser.consume();
             TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
-            dummy.setType(NodeDataTypes.Void);
+            dummy.setType("Void");
             return dummy;
         });
         when(nFuncBodyNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
@@ -231,7 +231,7 @@ public class NFuncsNodeTests {
         when(nrTypeNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
             parser.consume();
             TreeNode dummy = new TreeNode(TreeNode.NUNDEF);
-            dummy.setType(NodeDataTypes.Void);
+            dummy.setType("Void");
             return dummy;
         });
         when(nFuncBodyNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {

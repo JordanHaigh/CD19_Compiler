@@ -32,7 +32,7 @@ public class NRTypeNodeTests {
         NRTypeNode nrTypeNode = new NRTypeNode();
         TreeNode rtype = nrTypeNode.make(parser);
 
-        assertEquals(NodeDataTypes.Integer, rtype.getType());
+        assertEquals("Integer", rtype.getType());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class NRTypeNodeTests {
         NRTypeNode nrTypeNode = new NRTypeNode();
         TreeNode rtype = nrTypeNode.make(parser);
 
-        assertEquals(NodeDataTypes.Real, rtype.getType());
+        assertEquals("Real", rtype.getType());
     }
 
 @Test
@@ -62,7 +62,7 @@ public class NRTypeNodeTests {
         NRTypeNode nrTypeNode = new NRTypeNode();
         TreeNode rtype = nrTypeNode.make(parser);
 
-        assertEquals(NodeDataTypes.Boolean, rtype.getType());
+        assertEquals("Boolean", rtype.getType());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class NRTypeNodeTests {
         NRTypeNode nrTypeNode = new NRTypeNode();
         TreeNode rtype = nrTypeNode.make(parser);
 
-        assertEquals(NodeDataTypes.Void, rtype.getType());
+        assertEquals("Void", rtype.getType());
     }
 
     @Test
@@ -92,7 +92,7 @@ public class NRTypeNodeTests {
         NRTypeNode nrTypeNode = new NRTypeNode();
         TreeNode rtype = nrTypeNode.make(parser);
 
-        assertEquals(NodeDataTypes.Undefined, rtype.getType());
+        assertEquals("Undefined", rtype.getType());
     }
 
 

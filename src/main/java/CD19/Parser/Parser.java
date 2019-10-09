@@ -279,7 +279,7 @@ public class Parser implements Subject {
      */
     public SymbolTableRecord lookup(SymbolTableRecord record, SymbolTable symbolTable) {
         if (symbolTable.contains(record.getSymbolTableKey())) {
-            return record;
+            return symbolTable.get(record.getSymbolTableKey()); //return the version of the record that already exists in the table
         } else {
             return null;
         }

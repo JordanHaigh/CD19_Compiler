@@ -33,7 +33,7 @@ public class NStypeNodeTests {
 
         TreeNode stype = nsTypeNode.make(parser);
 
-        assertEquals(NodeDataTypes.Integer, stype.getType());
+        assertEquals("Integer", stype.getType());
     }
 
     @Test
@@ -49,7 +49,7 @@ public class NStypeNodeTests {
 
         TreeNode stype = nsTypeNode.make(parser);
 
-        assertEquals(NodeDataTypes.Real, stype.getType());
+        assertEquals("Real", stype.getType());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class NStypeNodeTests {
 
         TreeNode stype = nsTypeNode.make(parser);
 
-        assertEquals(NodeDataTypes.Boolean, stype.getType());
+        assertEquals("Boolean", stype.getType());
     }
 
     @Test
@@ -81,6 +81,6 @@ public class NStypeNodeTests {
 
         TreeNode stype = nsTypeNode.make(parser);
 
-        assertEquals(NodeDataTypes.Undefined, stype.getType());
+        assertEquals("Undefined", stype.getType());
     }
 }

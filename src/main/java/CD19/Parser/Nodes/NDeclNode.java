@@ -65,7 +65,7 @@ public class NDeclNode implements Node{
             return decl;
         }
 
-        NodeDataTypes dataType = paramTypeTail.getType();
+        String dataType = paramTypeTail.getType();
 
         SymbolTableRecord record = new SymbolTableRecord(token.getStr(), dataType, parser.getScope());
         parser.insertIdentifierRecord(record);

@@ -54,13 +54,18 @@ public class NArrDeclNode implements Node {
         }
 
         SymbolTableRecord typeIdRecord = new SymbolTableRecord(typeId.getStr(), null, parser.getProgramScope());//typeid is always global scope
+        typeIdRecord = parser.lookupIdentifierRecord(typeIdRecord);
 
-        if(parser.lookupIdentifierRecord(typeIdRecord) == null){
-            parser.semanticError("Array Type Id doesn't exist", typeId);
+        //weird edge case for when trying to access array struct elements - don't start on me this is already a heachache
+        String appendForDataType = "";
+        if( typeIdRecord == null){
+            parser.semanticError("Type Id "+typeId.getStr()+" doesn't exist", typeId);
+        }
+        else{
+            appendForDataType += "Is"+typeIdRecord.getDataType();
         }
 
-
-        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), NodeDataTypes.Array, parser.getScope());
+        SymbolTableRecord record = new SymbolTableRecord(id.getStr(), typeId.getStr()+appendForDataType, parser.getScope());
         parser.insertTypeRecord(record);
 
         arrdecl.setValue(TreeNode.NARRD);

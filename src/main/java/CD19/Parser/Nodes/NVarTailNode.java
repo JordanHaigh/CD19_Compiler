@@ -113,9 +113,24 @@ public class NVarTailNode implements Node{
                 return vartail;
             }
 
-            SymbolTableRecord secondIdRecord = new SymbolTableRecord(secondId.getStr(),null,id.getStr()+"_struct");
-            if(parser.lookupIdentifierRecord(secondIdRecord) == null){
-                parser.semanticError("Could not find variable " + secondId.getStr() + " in Struct " + id.getStr(), secondId);
+            //need to get struct to see if the variable is in the struct
+            //currently have the id of the array
+            //we use the id of the array to get the strec for the array
+            SymbolTableRecord arrayRecord = new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()); //arrays defined globally
+            arrayRecord = parser.lookupTypeRecord(arrayRecord);
+
+            //the strec will reveal the lexeme, scope and data type
+            if(arrayRecord != null){
+                String arrayDataType = arrayRecord.getDataType();
+
+                //strip out the "array of "bit to get struct name
+                arrayDataType = arrayDataType.replaceAll("IsArrayOf"," ");
+                String[] split = arrayDataType.split(" ");
+                String structDataType = split[1];
+                SymbolTableRecord secondIdRecord = new SymbolTableRecord(secondId.getStr(),null,structDataType+"_struct");
+                if(parser.lookupIdentifierRecord(secondIdRecord) == null){
+                    parser.semanticError("Could not find variable " + secondId.getStr() + " in Struct " + id.getStr(), secondId);
+                }
             }
 
             SymbolTableRecord record = new SymbolTableRecord(); //todo fill this in

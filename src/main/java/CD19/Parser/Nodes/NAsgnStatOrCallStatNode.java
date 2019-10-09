@@ -78,7 +78,7 @@ public class NAsgnStatOrCallStatNode implements Node{
             //check the function id exists
             SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(),null,parser.getProgramScope());
             if(parser.lookupIdentifierRecord(idRecord) == null){
-                parser.semanticError("Function name doesn't exist", id);
+                parser.semanticError("Function name "+ id.getStr()+" doesn't exist", id);
             }
 
 

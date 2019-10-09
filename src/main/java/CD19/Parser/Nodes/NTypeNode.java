@@ -69,24 +69,29 @@ public class NTypeNode implements Node {
         }
 
         if (!parser.peekAndConsume(Token.TIS)) {
-            parser.syntacticError("Exoected an Is keyword", parser.peek());
+            parser.syntacticError("Expected an \"is\" keyword", parser.peek());
             return type;
         }
 
         TreeNode tail = tail(parser,id);
+        if(tail == null){
+            return type;// fail
+        }
 
-
-        NodeDataTypes dataType;
+        String dataType;
+        boolean isStruct = false;
 
         if (tail.getValue() == TreeNode.NATYPE)
-            dataType = NodeDataTypes.Array;
-        else
-            dataType = NodeDataTypes.Struct;
+            dataType = tail.getType();
+        else{
+            dataType = id.getStr();
+            isStruct = true;
+        }
 
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), dataType, parser.getScope()); //global (program) scope
 
-        if(record.getDataType() == NodeDataTypes.Struct){
+        if(isStruct){
             parser.insertTypeRecord(record);
         }
         else{
@@ -147,13 +152,15 @@ public class NTypeNode implements Node {
             return arrayTail;
         }
 
+        //semantic check that struct id exists
         SymbolTableRecord structIdRecord = new SymbolTableRecord(structId.getStr(),null,parser.getScope()); //scope will be global
 
         if(parser.lookupTypeRecord(structIdRecord) == null){
-            parser.semanticError("Struct name doesn't exist in symbol table", structId);
+            parser.semanticError("Struct name "+ structId.getStr()+" doesn't exist in symbol table", structId);
         }
 
         arrayTail = new TreeNode(TreeNode.NATYPE, exprTNode, null);
+        arrayTail.setType("ArrayOf"+structId.getStr());
         return arrayTail;
     }
 

@@ -40,20 +40,20 @@ public class NSTypeNode implements Node{
 
         if(token.getTokenID() == Token.TINTG){
             parser.consume();
-            dummy.setType(NodeDataTypes.Integer);
+            dummy.setType("Integer");
         }
         else if(token.getTokenID() == Token.TREAL){
             parser.consume();
-            dummy.setType(NodeDataTypes.Real);
+            dummy.setType("Real");
         }
         else if(token.getTokenID() == Token.TBOOL){
             parser.consume();
-            dummy.setType(NodeDataTypes.Boolean);
+            dummy.setType("Boolean");
         }
         else{
             parser.syntacticError("Expected a Primitive Type", parser.peek());
             dummy = new TreeNode();
-            dummy.setType(NodeDataTypes.Undefined);
+            dummy.setType("Undefined");
         }
 
         return dummy;
