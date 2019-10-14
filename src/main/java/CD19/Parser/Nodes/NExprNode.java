@@ -45,13 +45,21 @@ public class NExprNode implements Node{
      */
     @Override
     public TreeNode make(Parser parser) {
+        Token peek = parser.peek();
+
         TreeNode term = nTermNode.make(parser);
         TreeNode tail = tail(parser,term);
 
-        if(tail != null)
-            return tail;
-        else
+        if(tail == null)
             return term;
+
+        if(tail.getType() != null){
+            if(tail.getType().equals("Boolean") || tail.getType().equals("Mixed")){
+                parser.semanticError("Cannot use booleans in expression", peek);
+            }
+        }
+
+        return tail;
     }
 
     /**
@@ -87,10 +95,18 @@ public class NExprNode implements Node{
         TreeNode tail = tail(parser, returnTreeNode);
 
         returnTreeNode.setRight(fact);
-        if(tail == null)
+
+        String firstType = returnTreeNode.getLeft().getType();
+        String secondType = fact.getType();
+
+        if(tail == null){
+            returnTreeNode.updateType(firstType,secondType);
             return returnTreeNode;
-        else
+        }
+        else{
+            tail.updateType(firstType, secondType);
             return tail;
+        }
 
     }
 

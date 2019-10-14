@@ -47,6 +47,7 @@ public class NTermNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         Token peek = parser.peek();
+
         TreeNode fact = nFactNode.make(parser);
         TreeNode tail = tail(parser, fact);
 

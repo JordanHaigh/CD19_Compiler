@@ -225,6 +225,9 @@ public class TreeNode {
             this.setType(secondType);
             return;
         }
+        if(secondType == null){
+            return; //fail if null - more in the case of bad syntax or token
+        }
         boolean typePromotion = (firstType.equals("Integer") && secondType.equals("Real")) || //if one is int and one is real, promote to real
                 (firstType.equals("Real") && secondType.equals("Integer"));
 
