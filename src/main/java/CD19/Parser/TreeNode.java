@@ -218,4 +218,28 @@ public class TreeNode {
 
         return sb.toString();
     }
+
+    public void updateType(String firstType, String secondType){
+        if(firstType == null){
+            System.out.println(); //weird left factoring edge case. just set to left and hope it doesnt come back to bite you in the ass
+            this.setType(secondType);
+            return;
+        }
+        boolean typePromotion = (firstType.equals("Integer") && secondType.equals("Real")) || //if one is int and one is real, promote to real
+                (firstType.equals("Real") && secondType.equals("Integer"));
+
+        if(firstType.equals("Boolean")){
+            this.setType("Boolean");
+        }
+        else if(typePromotion){
+            this.setType("Real");
+        }
+        else if(!firstType.equals(secondType)){ //edge case for when you have int a = 5^5^true. the true part wouldn't be picked up at the end so this should hopefully get it
+            this.setType("Mixed");
+        }
+        else{
+             //same types all good
+        }
+
+    }
 }

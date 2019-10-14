@@ -51,17 +51,16 @@ public class NFactNode implements Node{
         TreeNode exponent = nExponentNode.make(parser);
         TreeNode tail = tail(parser,exponent);
 
-
-
         //left derivation
         if(tail == null)
             return exponent;
 
-
-        String typing = tail.getType();
-        if(typing.equals("Mixed")){
-            parser.semanticError("Bad typing in variable assignment", peek);
+        if(tail.getType() != null){
+            if(tail.getType().equals("Boolean") || tail.getType().equals("Mixed")){
+                parser.semanticError("Cannot use booleans in expression", peek);
+            }
         }
+
         return tail;
 
     }
@@ -77,26 +76,44 @@ public class NFactNode implements Node{
             TreeNode returnTreeNode = new TreeNode(TreeNode.NPOW);
             returnTreeNode.setLeft(leftNode);
 
-            String firstType = returnTreeNode.getLeft().getType();
-
             TreeNode fact = nExponentNode.make(parser);
 
-            String secondType = fact.getType();
 
-            if(!firstType.equals(secondType)){
-                returnTreeNode.setType("Mixed");
-            }
-            else{
-                returnTreeNode.setType(fact.getType());
-            }
+
+//            boolean typePromotion = (firstType.equals("Integer") && secondType.equals("Real")) || //if one is int and one is real, promote to real
+//                    (firstType.equals("Real") && secondType.equals("Integer"));
+//
+//            if(firstType.equals("Boolean")){
+//                returnTreeNode.setType("Boolean");
+//            }
+//            else if(typePromotion){
+//                returnTreeNode.setType("Real");
+//            }
+//            else{
+//                returnTreeNode.setType(fact.getType()); //same types all good
+//            }
 
             TreeNode tail = tail(parser,returnTreeNode);
-
             returnTreeNode.setRight(fact);
-            if(tail == null)
+
+
+            String firstType = returnTreeNode.getLeft().getType();
+            String secondType = fact.getType();
+
+            if(tail == null){
+                returnTreeNode.updateType(firstType,secondType);
                 return returnTreeNode;
-            else
+            }
+            else{
+//                if(firstType.equals("Boolean")){
+//                    tail.setType("Boolean");
+//                }
+//                else if(typePromotion){
+//                    tail.setType("Real");
+//                }
+                tail.updateType(firstType, secondType);
                 return tail;
+            }
         }
         else //eps trans
             return null;
