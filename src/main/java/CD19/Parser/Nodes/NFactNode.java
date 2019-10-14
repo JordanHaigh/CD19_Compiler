@@ -77,22 +77,6 @@ public class NFactNode implements Node{
             returnTreeNode.setLeft(leftNode);
 
             TreeNode fact = nExponentNode.make(parser);
-
-
-
-//            boolean typePromotion = (firstType.equals("Integer") && secondType.equals("Real")) || //if one is int and one is real, promote to real
-//                    (firstType.equals("Real") && secondType.equals("Integer"));
-//
-//            if(firstType.equals("Boolean")){
-//                returnTreeNode.setType("Boolean");
-//            }
-//            else if(typePromotion){
-//                returnTreeNode.setType("Real");
-//            }
-//            else{
-//                returnTreeNode.setType(fact.getType()); //same types all good
-//            }
-
             TreeNode tail = tail(parser,returnTreeNode);
             returnTreeNode.setRight(fact);
 
@@ -105,12 +89,6 @@ public class NFactNode implements Node{
                 return returnTreeNode;
             }
             else{
-//                if(firstType.equals("Boolean")){
-//                    tail.setType("Boolean");
-//                }
-//                else if(typePromotion){
-//                    tail.setType("Real");
-//                }
                 tail.updateType(firstType, secondType);
                 return tail;
             }

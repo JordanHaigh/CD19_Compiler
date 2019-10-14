@@ -45,7 +45,10 @@ public class Parser implements Subject {
     public boolean isSyntacticallyValid() {
         return syntacticallyValid;
     }
-    public boolean isSemanticallyValid(){return semanticallyValid;}
+
+    public boolean isSemanticallyValid() {
+        return semanticallyValid;
+    }
 
     /**
      * Enter new scope of program
@@ -73,7 +76,10 @@ public class Parser implements Subject {
     public void syntacticError(String message, int line, int column) {
         String prepend = "Syntactic Error - ";
         prepend += message;
-        syntacticErrors.add(new SyntacticErrorMessage(prepend, line, column));
+
+        SyntacticErrorMessage syntacticErrorMessage = new SyntacticErrorMessage(prepend, line, column);
+        if (!syntacticErrorAlreadyExists(syntacticErrorMessage))
+            syntacticErrors.add(syntacticErrorMessage);
     }
 
     /**
@@ -96,7 +102,31 @@ public class Parser implements Subject {
     public void semanticError(String message, int line, int column) {
         String prepend = "Semantic Error - ";
         prepend += message;
-        semanticErrors.add(new SemanticErrorMessage(prepend, line, column));
+        SemanticErrorMessage semanticErrorMessage = new SemanticErrorMessage(prepend, line, column);
+        if (!semanticErrorAlreadyExists(semanticErrorMessage))
+            semanticErrors.add(semanticErrorMessage);
+    }
+
+    public boolean syntacticErrorAlreadyExists(SyntacticErrorMessage newM) {
+        for (SyntacticErrorMessage m : syntacticErrors) {
+            if (m.getErrorMessage().equals(newM.getErrorMessage()) &&
+                    m.getLine() == newM.getLine() &&
+                    m.getColumn() == newM.getColumn()
+            )
+                return true;
+        }
+        return false;
+    }
+
+    public boolean semanticErrorAlreadyExists(SemanticErrorMessage newM) {
+        for (SemanticErrorMessage m : semanticErrors) {
+            if (m.getErrorMessage().equals(newM.getErrorMessage()) &&
+                    m.getLine() == newM.getLine() &&
+                    m.getColumn() == newM.getColumn()
+            )
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -328,9 +358,13 @@ public class Parser implements Subject {
 
     }
 
-    public List<SemanticErrorMessage> getSemanticErrors(){return semanticErrors;}
+    public List<SemanticErrorMessage> getSemanticErrors() {
+        return semanticErrors;
+    }
 
-    public List<SyntacticErrorMessage> getSyntacticErrors(){return syntacticErrors;}
+    public List<SyntacticErrorMessage> getSyntacticErrors() {
+        return syntacticErrors;
+    }
 
     public String getProgramScope() {
         return scopeStack.get(0);

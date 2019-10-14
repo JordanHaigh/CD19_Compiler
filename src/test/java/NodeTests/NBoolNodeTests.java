@@ -119,15 +119,15 @@ public class NBoolNodeTests {
 
         tokens.add(new Token(Token.TAND,1,1,null));
 
-        tokens.add(new Token(Token.TTRUE,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
         tokens.add(new Token(Token.TCART,1,1,null));
-        tokens.add(new Token(Token.TFALS,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
 
         tokens.add(new Token(Token.TOR,1,1,null));
 
-        tokens.add(new Token(Token.TTRUE,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
         tokens.add(new Token(Token.TPERC,1,1,null));
-        tokens.add(new Token(Token.TFALS,1,1,null));
+        tokens.add(new Token(Token.TILIT,1,1,null));
 
 
         tokens.add(new Token(Token.TILIT,1,1,null));
