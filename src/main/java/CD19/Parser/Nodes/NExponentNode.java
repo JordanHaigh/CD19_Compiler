@@ -134,7 +134,15 @@ public class NExponentNode implements Node{
                 //if variable is not in this scope, check that it might be a constant
                 idRecord =parser.lookupConstantRecord(new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()));
                 if(idRecord == null){
-                    parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
+                    //oh no! it's not a constant? check to see if its a predefined array
+                    idRecord =parser.lookupTypeRecord(new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()));
+                    if(idRecord == null){
+                        parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
+                    }else{
+
+                        //hurray it exists!
+                    }
+
                 }
             }
         }

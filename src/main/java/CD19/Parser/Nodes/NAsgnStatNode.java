@@ -84,7 +84,15 @@ public class NAsgnStatNode implements Node {
             //then its just a variable
             idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(), null, parser.getScope())); //get the current scope - could be function or main
             if (idRecord == null) {
-                parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
+                //ok ok just check to see if we are working with a predefined array here
+                idRecord = parser.lookupTypeRecord(new SymbolTableRecord(id.getStr(),null,parser.getProgramScope())); //target global scope to get array
+                if(idRecord == null){
+                    parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
+                }
+                else{
+                    //hurray it exists
+                    System.out.println();
+                }
             }
         } else {
             //then its a a struct array
@@ -108,7 +116,7 @@ public class NAsgnStatNode implements Node {
 
             if (idRecordType != null && boolType != null) {
                 if(idRecordType.equals("Real") && boolType.equals("Integer")){
-                    //allow it
+                    //allow it - type promotion
                 }
                 else if (!idRecordType.equals(boolType)) {
                     parser.semanticError("Invalid assignment to variable " + idRecord.getLexeme(), id);

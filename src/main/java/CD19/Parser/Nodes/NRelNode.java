@@ -74,7 +74,7 @@ public class NRelNode implements Node{
     private TreeNode exprPath(Parser parser){
         //<expr><relExprTail>
         TreeNode expr = nExprNode.make(parser);
-        TreeNode tail = tail(parser);
+        TreeNode tail = tail(parser,expr);
         if(tail != null){
             tail.setLeft(expr);
             return tail;
@@ -95,7 +95,7 @@ public class NRelNode implements Node{
         Token peek = parser.peek();
 
         TreeNode expr= nExprNode.make(parser);
-        TreeNode tail = tail(parser);
+        TreeNode tail = tail(parser,expr);
 
         if(tail != null){
             tail.setLeft(expr);
@@ -124,7 +124,7 @@ public class NRelNode implements Node{
      * @param parser The parser
      * @return - Null if there are no subsequent rel nodes, or a TreeNode containing tailing rel nodes
      */
-    private TreeNode tail(Parser parser){
+    private TreeNode tail(Parser parser, TreeNode firstExpr){
         ////	<relExprTail>	::=	ε | <relop><expr>
         Token token = parser.peek();
         if(token.getTokenID() == Token.TEQEQ ||
@@ -136,8 +136,39 @@ public class NRelNode implements Node{
 
 
             TreeNode relop = nRelopNode.make(parser);
-            TreeNode expr = nExprNode.make(parser);
-            return new TreeNode(relop.getValue(), relop, expr);
+
+            Token peek = parser.peek();
+            TreeNode secondExpr = nExprNode.make(parser);
+
+            String firstExprType;
+            if(firstExpr.getValue() == TreeNode.NSIMV){
+                firstExprType = firstExpr.getSymbol().getDataType();
+            }
+            else{
+                firstExprType = firstExpr.getType();
+            }
+
+            String secondExprType;
+            if(secondExpr.getValue() == TreeNode.NSIMV){
+                secondExprType = secondExpr.getSymbol().getDataType();
+            }
+            else{
+                secondExprType = secondExpr.getType();
+            }
+
+            TreeNode node = new TreeNode(relop.getValue(), relop, secondExpr);
+            node.updateType(firstExprType, secondExprType);
+
+            //accepted:
+            //bool and bool
+            //int/float and int/float
+            //so the expression should look if one is a boolean and the other isnt
+            if((firstExprType.equals("Boolean") && !secondExprType.equals("Boolean")) ||
+                (!firstExprType.equals("Boolean") && secondExprType.equals("Boolean"))){
+                parser.semanticError("Incompatible types for relational operation", peek);
+            }
+
+            return node;
         }
         else{
             return null; //epsilon
