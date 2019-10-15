@@ -41,7 +41,8 @@ public class NAsgnStatNodeTests {
         NBoolNode nBoolNode = new NBoolNode();
         NAsgnStatNode nAsgnStatNode = new NAsgnStatNode(nVarTailNode, new NAsgnOpNode(), nBoolNode);
 
-        TreeNode asgnstat = nAsgnStatNode.make(parser);
+        TreeNode asgnstat = nAsgnStatNode.makeWithId(parser, new Token(Token.TIDEN,1,1,"aa"));
+
 
         assertEquals(TreeNode.NASGN,asgnstat.getValue());
         assertEquals(TreeNode.NSIMV, asgnstat.getLeft().getValue());
@@ -61,7 +62,7 @@ public class NAsgnStatNodeTests {
         tokens.add(new Token(Token.TIDEN,1,1,"aa"));
 
         tokens.add(new Token(Token.TEQUL,1,1,null));
-        tokens.add(new Token(Token.TIDEN,1,1,"aa"));
+        tokens.add(new Token(Token.TIDEN,1,1,"bb"));
 
 
         tokens.add(new Token(Token.TIDEN,1,1,"fake"));
@@ -73,7 +74,7 @@ public class NAsgnStatNodeTests {
         NBoolNode nBoolNode = new NBoolNode();
         NAsgnStatNode nAsgnStatNode = new NAsgnStatNode(nVarTailNode, new NAsgnOpNode(), nBoolNode);
 
-        TreeNode asgnstat = nAsgnStatNode.make(parser);
+        TreeNode asgnstat = nAsgnStatNode.makeWithId(parser, new Token(Token.TIDEN,1,1,"aa"));
 
         assertEquals(TreeNode.NASGN,asgnstat.getValue());
         assertEquals(TreeNode.NARRV, asgnstat.getLeft().getValue());

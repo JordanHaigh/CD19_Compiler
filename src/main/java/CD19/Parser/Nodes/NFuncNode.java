@@ -89,9 +89,9 @@ public class NFuncNode implements Node{
 
         TreeNode locals = funcBody.getLeft(); //from funcbody
 
-        if(locals == null || locals.getValue() == TreeNode.NUNDEF){
-            return func;
-        }
+//        if(locals == null || locals.getValue() == TreeNode.NUNDEF){
+//            return func;
+//        }
 
         TreeNode stats = funcBody.getRight(); //from funcbody
 

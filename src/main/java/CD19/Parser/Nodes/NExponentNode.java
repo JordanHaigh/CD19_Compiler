@@ -124,8 +124,7 @@ public class NExponentNode implements Node{
         Token id = parser.peek();
         parser.peekAndConsume(Token.TIDEN); //already seen thats its an iden
 
-        SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(), null, parser.getScope());
-        idRecord = parser.lookupIdentifierRecord(idRecord);
+        SymbolTableRecord idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(), null, parser.getScope()));
         if(idRecord == null){
             //print out different message depending on if its a function (look at next token and see if its a left par)
             if(parser.peek().getTokenID() == Token.TLPAR){
@@ -133,8 +132,8 @@ public class NExponentNode implements Node{
             }
             else{
                 //if variable is not in this scope, check that it might be a constant
-                idRecord = new SymbolTableRecord(id.getStr(), null, parser.getProgramScope());
-                if(parser.lookupConstantRecord(idRecord) == null){
+                idRecord =parser.lookupConstantRecord(new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()));
+                if(idRecord == null){
                     parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
                 }
             }

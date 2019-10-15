@@ -59,7 +59,7 @@ public class NAlistNode implements Node {
             parser.semanticError("Variable " + token.getStr() + " doesn't exist", token);
         }
 
-        TreeNode asgnStat = nAsgnStatNode.make(parser);
+        TreeNode asgnStat = nAsgnStatNode.makeWithId(parser, token); //todo swap out to makewithid
 
         TreeNode tail = tail(parser);
 
@@ -109,7 +109,7 @@ public class NAlistNode implements Node {
             parser.semanticError("Variable " + token.getStr() + " doesn't exist", token);
         }
 
-        TreeNode asgnStat = nAsgnStatNode.make(parser);
+        TreeNode asgnStat = nAsgnStatNode.makeWithId(parser,token);
         TreeNode tail = tail(parser);
 
         if (tail == null) {

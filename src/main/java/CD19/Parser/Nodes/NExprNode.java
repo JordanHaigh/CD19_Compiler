@@ -117,7 +117,11 @@ public class NExprNode implements Node{
         if(node.getValue() == TreeNode.NSIMV){
             //its a variable
             //get symbol table record data type
-            return node.getSymbol().getDataType();
+            if(node.getSymbol() != null){
+                return node.getSymbol().getDataType();
+            }else{
+                return null;
+            }
         }
         else{
             //probs a number or boolean
