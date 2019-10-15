@@ -56,8 +56,12 @@ public class NFactNode implements Node{
             return exponent;
 
         if(tail.getType() != null){
-            if(tail.getType().equals("Boolean") || tail.getType().equals("Mixed")){
-                parser.semanticError("Cannot use booleans in expression", peek);
+            if(tail.getType().equals("Mixed")){
+                parser.semanticError("Mixed variable types in expression", peek);
+            }
+
+            if(tail.getType().equals("Boolean")){
+                parser.semanticError("Cannot use booleans in math operators", peek);
             }
         }
 
@@ -77,19 +81,22 @@ public class NFactNode implements Node{
             returnTreeNode.setLeft(leftNode);
 
             TreeNode fact = nExponentNode.make(parser);
-            TreeNode tail = tail(parser,returnTreeNode);
             returnTreeNode.setRight(fact);
 
-
             String firstType = returnTreeNode.getLeft().getType();
-            String secondType = fact.getType();
+            String secondType = returnTreeNode.getRight().getType();
+
+            returnTreeNode.updateType(firstType,secondType);
+
+            TreeNode tail = tail(parser,returnTreeNode);
+
 
             if(tail == null){
-                returnTreeNode.updateType(firstType,secondType);
+                //returnTreeNode.updateType(firstType,secondType);
                 return returnTreeNode;
             }
             else{
-                tail.updateType(firstType, secondType);
+                //.updateType(firstType, secondType);
                 return tail;
             }
         }

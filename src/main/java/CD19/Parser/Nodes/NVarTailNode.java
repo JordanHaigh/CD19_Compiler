@@ -1,6 +1,7 @@
 package CD19.Parser.Nodes;
 
 import CD19.Parser.Parser;
+import CD19.Parser.SymbolTable;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
@@ -116,9 +117,9 @@ public class NVarTailNode implements Node{
             //need to get struct to see if the variable is in the struct
             //currently have the id of the array
             //we use the id of the array to get the strec for the array
-            SymbolTableRecord arrayRecord = new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()); //arrays defined globally
-            arrayRecord = parser.lookupTypeRecord(arrayRecord);
-
+            //arrays defined globally
+            SymbolTableRecord arrayRecord = parser.lookupTypeRecord(new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()));
+            SymbolTableRecord variableInArrayRecord = null;
             //the strec will reveal the lexeme, scope and data type
             if(arrayRecord != null){
                 String arrayDataType = arrayRecord.getDataType();
@@ -127,18 +128,18 @@ public class NVarTailNode implements Node{
                 arrayDataType = arrayDataType.replaceAll("IsArrayOf"," ");
                 String[] split = arrayDataType.split(" ");
                 String structDataType = split[1];
-                SymbolTableRecord secondIdRecord = new SymbolTableRecord(secondId.getStr(),null,structDataType+"_struct");
-                if(parser.lookupIdentifierRecord(secondIdRecord) == null){
+                variableInArrayRecord = new SymbolTableRecord(secondId.getStr(),null,structDataType+"_struct");
+                if(parser.lookupIdentifierRecord(variableInArrayRecord) == null){
                     parser.semanticError("Could not find variable " + secondId.getStr() + " in Struct " + id.getStr(), secondId);
                 }
             }
 
-            SymbolTableRecord record = new SymbolTableRecord(); //todo fill this in
-            vartail = new TreeNode(TreeNode.NARRV, record);
+            //SymbolTableRecord record = new SymbolTableRecord(); //todo fill this in
+            vartail = new TreeNode(TreeNode.NARRV, variableInArrayRecord);
             return vartail;
         }
         else{
-            return new TreeNode(TreeNode.NSIMV, null,null);
+            return new TreeNode(TreeNode.NSIMV, null,null); //you just working with a variable boy
         }
     }
 }

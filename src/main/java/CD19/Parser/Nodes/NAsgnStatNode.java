@@ -72,31 +72,47 @@ public class NAsgnStatNode implements Node{
     public TreeNode makeWithId(Parser parser, Token id) {
         TreeNode vartail = nVarTailNode.makeWithIdFromVar(parser,id);
 
+        SymbolTableRecord idRecord;
+
         if(vartail.getValue() == TreeNode.NSIMV){
             //then its just a variable
-            SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(),null,parser.getScope()); //get the current scope - could be function or main
-            if(parser.lookupIdentifierRecord(idRecord) == null){
+            idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(),null,parser.getScope())); //get the current scope - could be function or main
+            if(idRecord == null){
                 parser.semanticError("Variable name " + id.getStr()+" doesn't exist", id);
             }
         }
         else{
             //then its a a struct array
-            SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(),null,parser.getProgramScope()); //get the current scope - could be function or main
-            if(parser.lookupTypeRecord(idRecord) == null){
+            idRecord = parser.lookupTypeRecord(new SymbolTableRecord(id.getStr(),null,parser.getProgramScope()));//get the current scope - could be function or main
+            if(idRecord == null){
                 parser.semanticError("Array Variable " + id.getStr()+" doesn't exist", id);
             }
+            //change idRecord to the variable we are trying to assign to
+            idRecord = vartail.getSymbol();
 
         }
 
+
         TreeNode asgnop = nAsgnOpNode.make(parser);
         TreeNode bool = nBoolNode.make(parser);
-        //nodetype will be what is returned from the nasgnop node (nasgn, npleq...)
 
-        //return new TreeNode(asgnop.getValue(), vartail, bool);
-        //asgnop.setType(bool.getType()); //todo data types come later
+        if(idRecord != null){ //this is here for the unit tests (don't remove it)
+
+            String idRecordType = idRecord.getDataType();
+            String boolType = bool.getType();
+
+            if(idRecordType != null && boolType != null && !idRecordType.equals(boolType)){
+                parser.semanticError("Invalid assignment to variable " + idRecord.getLexeme(), id);
+            }
+        }
+
+
+
         asgnop.setLeft(vartail);
         asgnop.setRight(bool);
         return asgnop;
     }
+
+
 }
 

@@ -54,8 +54,11 @@ public class NExprNode implements Node{
             return term;
 
         if(tail.getType() != null){
-            if(tail.getType().equals("Boolean") || tail.getType().equals("Mixed")){
-                parser.semanticError("Cannot use booleans in expression", peek);
+            if(tail.getType().equals("Mixed")){
+                parser.semanticError("Mixed variable types in expression", peek);
+            }
+            if(tail.getType().equals("Boolean")){
+                parser.semanticError("Cannot use booleans in math operators", peek);
             }
         }
 
@@ -92,22 +95,34 @@ public class NExprNode implements Node{
         returnTreeNode.setLeft(leftNode);
 
         TreeNode fact = nTermNode.make(parser);
-        TreeNode tail = tail(parser, returnTreeNode);
-
         returnTreeNode.setRight(fact);
 
-        String firstType = returnTreeNode.getLeft().getType();
-        String secondType = fact.getType();
+        String firstType = getDataTypeOfNode(returnTreeNode.getLeft());
+        String secondType = getDataTypeOfNode(returnTreeNode.getRight());
+
+        returnTreeNode.updateType(firstType,secondType);
+
+        TreeNode tail = tail(parser, returnTreeNode);
 
         if(tail == null){
-            returnTreeNode.updateType(firstType,secondType);
             return returnTreeNode;
         }
         else{
-            tail.updateType(firstType, secondType);
             return tail;
         }
 
+    }
+
+    private String getDataTypeOfNode(TreeNode node){
+        if(node.getValue() == TreeNode.NSIMV){
+            //its a variable
+            //get symbol table record data type
+            return node.getSymbol().getDataType();
+        }
+        else{
+            //probs a number or boolean
+            return node.getType();
+        }
     }
 
 }

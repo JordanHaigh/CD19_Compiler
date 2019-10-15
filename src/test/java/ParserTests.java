@@ -779,8 +779,8 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+        assertEquals(2, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Mixed"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -811,8 +811,8 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+        assertEquals(2, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Mixed"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -825,9 +825,10 @@ public class ParserTests {
 
         code.add("CD19 Prog");
         code.add("main");
-        code.add("a : integer");
+        code.add("a : integer,");
+        code.add("b : integer");
         code.add("begin");
-        code.add("a = 5^5^true;");
+        code.add("a = b^5^true;");
         code.add("end");
         code.add("CD19 Prog");
 
@@ -843,8 +844,8 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+        assertEquals(2, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Mixed"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -876,7 +877,7 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(2, parser.getSemanticErrors().size());
         assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
 
         assertEquals(true, parser.isSyntacticallyValid());
@@ -908,7 +909,7 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(2, parser.getSemanticErrors().size());
         assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
 
         assertEquals(true, parser.isSyntacticallyValid());
@@ -923,6 +924,38 @@ public class ParserTests {
         code.add("CD19 Prog");
         code.add("main");
         code.add("a : integer");
+        code.add("begin");
+        code.add("a = 5^5.0;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+//        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_strongtyping_typepromote_inttofloat() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : real");
         code.add("begin");
         code.add("a = 5^5.0;");
         code.add("end");
@@ -1004,8 +1037,8 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+        assertEquals(2, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Mixed"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -1036,8 +1069,8 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+        assertEquals(2, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Mixed"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -1068,8 +1101,8 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+        assertEquals(2, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Mixed"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -1100,7 +1133,7 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(2, parser.getSemanticErrors().size());
         assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
 
         assertEquals(true, parser.isSyntacticallyValid());
@@ -1114,7 +1147,7 @@ public class ParserTests {
 
         code.add("CD19 Prog");
         code.add("main");
-        code.add("a : integer");
+        code.add("a : real");
         code.add("begin");
         code.add("a = 5.5 * 5;");
         code.add("end");
@@ -1165,8 +1198,8 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+        assertEquals(2, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Mixed"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -1197,8 +1230,8 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+        assertEquals(2, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Mixed"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -1229,8 +1262,8 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
-        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+        assertEquals(2, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("Mixed"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
@@ -1261,8 +1294,110 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(2, parser.getSemanticErrors().size());
         assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_strongtyping_withvariable_good() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : integer,");
+        code.add("b : integer,");
+        code.add("c : integer,");
+        code.add("d : integer");
+        code.add("begin");
+        code.add("a = b+c+d;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(0, parser.getSemanticErrors().size());
+//        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("booleans"));
+
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(true, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_strongtyping_withvariable_bad_floatsassignedtoint() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : integer,");
+        code.add("b : real,");
+        code.add("c : real,");
+        code.add("d : integer");
+        code.add("begin");
+        code.add("a = b+c+d;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("assign"));
+
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_strongtyping_assignjustbooltoint() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("a = true;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("assign"));
 
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
