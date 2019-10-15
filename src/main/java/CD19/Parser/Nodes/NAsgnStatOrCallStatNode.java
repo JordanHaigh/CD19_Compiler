@@ -5,6 +5,8 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+import java.util.List;
+
 /**
  * Generates an asgnStatOrCallStat of the form:
  * <asgnStatOrCallStat>	::= 	<id><tail>
@@ -74,15 +76,38 @@ public class NAsgnStatOrCallStatNode implements Node{
 
         if(parser.peekAndConsume(Token.TLPAR)){
             //(<callStat>)
-
+            Token peek = parser.peek();
             //check the function id exists
-            SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(),null,parser.getProgramScope());
-            if(parser.lookupIdentifierRecord(idRecord) == null){
+            SymbolTableRecord idRecord =parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(),null,parser.getProgramScope()));
+            if(idRecord == null){
                 parser.semanticError("Function name "+ id.getStr()+" doesn't exist", id);
             }
 
-
             TreeNode callStat = nCallStatNode.make(parser);
+
+            if(idRecord != null){
+                //get the number of args we expect from the st rec
+                List<String> expectedFunctionArgs = idRecord.getFunctionVariableTypesAndOrdering();
+                List<String> actualFunctionArgs = callStat.getDataTypeOrderingForFunctions();
+
+                if (expectedFunctionArgs.size() != actualFunctionArgs.size()) {
+                    parser.semanticError("Function argument size doesn't match", peek);
+                }
+
+                //check if args are in same order
+                int maxSize = (expectedFunctionArgs.size() < actualFunctionArgs.size()) ? expectedFunctionArgs.size() : actualFunctionArgs.size();
+                for (int i = 0; i < maxSize; i++) {
+                    String expected = expectedFunctionArgs.get(i);
+                    String actual = actualFunctionArgs.get(i);
+
+                    if (!expected.equals(actual)){
+                        parser.semanticError("Argument Types do not match. Expected: " + expected +", Actual: "+ actual , peek);
+                    }
+                }
+
+            }
+
+
 
             if(!parser.peekAndConsume(Token.TRPAR)){
                 parser.syntacticError("Expected a right parenthesis", parser.peek());

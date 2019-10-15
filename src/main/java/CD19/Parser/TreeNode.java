@@ -250,4 +250,35 @@ public class TreeNode {
         }
 
     }
+
+
+
+
+    List<String> dataTypeOrderingForFunctions = new ArrayList<>();
+
+    public List<String> getDataTypeOrderingForFunctions(){
+        List<String> clone = new ArrayList<>(dataTypeOrderingForFunctions);
+        dataTypeOrderingForFunctions = new ArrayList<>();
+        return clone; //don't judge me i'm trying to get this done
+    }
+    public void setDataTypeOrderingForFunctions(List<String> dataTypeOrderingForFunctions) {
+        this.dataTypeOrderingForFunctions = dataTypeOrderingForFunctions;
+    }
+
+    public void calculateNumberChildren(TreeNode root){
+        if(root == null)
+            return;
+
+        if(root.getLeft() == null && root.getMiddle() == null && root.getRight() == null){
+            if(root.getValue() == NSIMV && root.getSymbol() != null)
+                dataTypeOrderingForFunctions.add(root.getSymbol().getDataType());
+            else
+                dataTypeOrderingForFunctions.add(root.getType());
+
+        }
+
+        calculateNumberChildren(root.getLeft());
+        calculateNumberChildren(root.getMiddle());
+        calculateNumberChildren(root.getRight());
+    }
 }

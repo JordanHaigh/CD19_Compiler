@@ -3,6 +3,7 @@ package CD19.Parser;
 import CD19.Parser.Nodes.NodeDataTypes;
 import CD19.Scanner.Token;
 
+import java.util.List;
 import java.util.Objects;
 /**
  * Plain Old Java Object containing symbol table record information
@@ -34,6 +35,17 @@ public class SymbolTableRecord {
     public String getLexeme() { return lexeme; }
     public String getDataType() { return dataType; }
     public String getScope() { return scope; }
+
+
+    public List<String> functionVariableTypesAndOrdering;
+
+    public List<String> getFunctionVariableTypesAndOrdering() {
+        return functionVariableTypesAndOrdering;
+    }
+
+    public void setFunctionVariableTypesAndOrdering(List<String> functionVariableTypesAndOrdering) {
+        this.functionVariableTypesAndOrdering = functionVariableTypesAndOrdering;
+    }
 
     @Override
     public boolean equals(Object o) {

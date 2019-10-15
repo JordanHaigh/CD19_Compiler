@@ -5,6 +5,8 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+import java.util.List;
+
 /**
  * Generates a func of the form:
  * NFUND	<func>	::=	function <id> ( <plist> ) : <rtype> <funcbody>
@@ -70,6 +72,12 @@ public class NFuncNode implements Node{
         }
 
         TreeNode plist = npListNode.make(parser);
+        plist.calculateNumberChildren(plist);
+        List<String> dataTypeOrdering = plist.getDataTypeOrderingForFunctions();
+
+//        for(String s : dataTypeOrdering){
+//            System.out.println(s);
+//        }
 
         if(!parser.peekAndConsume(Token.TRPAR)){
             parser.syntacticError("Expected Right Parenthesis", parser.peek());
@@ -103,7 +111,7 @@ public class NFuncNode implements Node{
         func = new TreeNode(TreeNode.NFUND, plist, locals, stats);
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), rtype.getType(), parser.getScope()); //should be global scope
-
+        record.setFunctionVariableTypesAndOrdering(dataTypeOrdering);
         parser.insertIdentifierRecord(record);
 
         func.setSymbol(record);

@@ -4,6 +4,8 @@ import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+import java.util.List;
+
 /**
  * Generates a callStat of the form:
  * NCALL	<callStat>	::=	ε | <elist>
@@ -53,7 +55,15 @@ public class NCallStatNode implements Node{
                 token.getTokenID() == Token.TLPAR){
 
             TreeNode elist = neListNode.make(parser);
-            return new TreeNode(TreeNode.NCALL, elist,null);
+            elist.calculateNumberChildren(elist);
+            List<String> dataTypesInOrder = elist.getDataTypeOrderingForFunctions();
+//
+//            for(String s : dataTypesInOrder)
+//                System.out.println(s);
+
+            TreeNode node = new TreeNode(TreeNode.NCALL, elist,null);
+            node.setDataTypeOrderingForFunctions(dataTypesInOrder);
+            return node;
         }
         return null;
     }
