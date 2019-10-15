@@ -1,6 +1,7 @@
 package CD19.Parser.Nodes;
 
 import CD19.Parser.Parser;
+import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
@@ -47,8 +48,9 @@ public class NBoolNode implements Node{
      */
     @Override
     public TreeNode make(Parser parser) {
+        Token peek = parser.peek();
         TreeNode rel = nRelNode.make(parser);
-        TreeNode tail = tail(parser);
+        TreeNode tail = tail(parser,peek);
 
         if (tail != null) {
             tail.setLeft(rel); //the tail value will be the relop, reassign the tail left to the first rel
@@ -63,7 +65,7 @@ public class NBoolNode implements Node{
      * @param parser The parser
      * @return - Null if there are no subsequent bool nodes, or a TreeNode containing tailing bool nodes
      */
-    private TreeNode tail(Parser parser){
+    private TreeNode tail(Parser parser, Token id){
         Token token = parser.peek();
         if(token.getTokenID() == Token.TAND ||
                 token.getTokenID() == Token.TOR ||
@@ -71,6 +73,23 @@ public class NBoolNode implements Node{
 
             TreeNode logop = nLogopNode.make(parser);
             TreeNode bool = this.make(parser);
+
+
+
+            SymbolTableRecord idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(),null,parser.getScope()));
+
+            if (idRecord != null) { //this is here for the unit tests (don't remove it)
+
+                String idRecordType = idRecord.getDataType();
+                String boolType = bool.getType();
+
+                if (idRecordType != null && boolType != null) {
+                    if (!idRecordType.equals(boolType)) {
+                        parser.semanticError("Invalid logical expression", id);
+                    }
+                }
+            }
+
             return new TreeNode (TreeNode.NBOOL, null, logop, bool);
         }
         else

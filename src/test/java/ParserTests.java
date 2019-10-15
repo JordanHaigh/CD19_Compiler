@@ -2100,4 +2100,227 @@ public class ParserTests {
 
 
 
+    @Test
+    public void semanticError_strongtyping_logic_trueeqeqtrue() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : boolean");
+        code.add("begin");
+        code.add("if(a and true)");
+        code.add("a=true;");
+        code.add("end");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(0, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(true, parser.isSemanticallyValid());
+    }
+
+    @Test
+    public void semanticError_strongtyping_logic_BAD() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("if(a and true)");
+        code.add("a=5;");
+        code.add("end");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+    }
+
+
+    @Test
+    public void semanticError_strongtyping_logic_twobooleanvariables() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : boolean,");
+        code.add("b : boolean");
+        code.add("begin");
+        code.add("if(not a or b)");
+        code.add("print \"INTERNAL SCREAMING\";");
+        code.add("end");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(0, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(true, parser.isSemanticallyValid());
+    }
+
+    @Test
+    public void semanticError_strongtyping_logic_notwithint() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : integer,");
+        code.add("b : boolean");
+        code.add("begin");
+        code.add("if(not a)");
+        code.add("print \"INTERNAL SCREAMING\";");
+        code.add("end");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+    }
+
+    @Test
+    public void semanticError_strongtyping_logic_notandint() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : integer,");
+        code.add("b : integer");
+        code.add("begin");
+        code.add("if(not a or b)");
+        code.add("print \"INTERNAL SCREAMING\";");
+        code.add("end");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+    }
+
+    @Test
+    public void semanticError_strongtyping_logic_notandint2() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : integer,");
+        code.add("b : boolean");
+        code.add("begin");
+        code.add("if(not a or b)");
+        code.add("print \"INTERNAL SCREAMING\";");
+        code.add("end");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+    }
+
+    @Test
+    public void semanticError_strongtyping_logic_notandbools() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : boolean ,");
+        code.add("b : boolean");
+        code.add("begin");
+        code.add("if(not a or b)");
+        code.add("print \"INTERNAL SCREAMING\";");
+        code.add("end");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(0, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(true, parser.isSemanticallyValid());
+    }
+
 }

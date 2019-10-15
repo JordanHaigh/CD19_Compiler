@@ -91,12 +91,28 @@ public class NRelNode implements Node{
     private TreeNode notExprPath(Parser parser){
         // not <expr> <relExprTail>
         parser.peekAndConsume(Token.TNOT);
+
+        Token peek = parser.peek();
+
         TreeNode expr= nExprNode.make(parser);
         TreeNode tail = tail(parser);
+
         if(tail != null){
             tail.setLeft(expr);
             TreeNode returnTreeNode = new TreeNode(TreeNode.NNOT, tail,null);
             return returnTreeNode;
+        }
+
+        String idDataType;
+        if(expr.getValue() == TreeNode.NSIMV){
+            idDataType = expr.getSymbol().getDataType();
+        }
+        else{
+            idDataType = expr.getType();
+        }
+
+        if(!idDataType.equals("Boolean")){
+            parser.semanticError("Expected a boolean expression",peek);
         }
 
 
