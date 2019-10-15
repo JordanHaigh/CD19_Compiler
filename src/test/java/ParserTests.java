@@ -328,7 +328,7 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(true, parser.getSemanticErrors().size() == 1);
+        assertEquals(2, parser.getSemanticErrors().size());
         assertEquals(true, parser.getSemanticErrors().get(0).getErrorMessage().contains("fake"));
 
         assertEquals(true, parser.isSyntacticallyValid());
@@ -1827,6 +1827,7 @@ public class ParserTests {
         code.add("function myfunc(x : integer) : void");
         code.add("begin");
         code.add("x = 5;");
+        code.add("return;");
         code.add("end");
 
         code.add("main");
@@ -1884,7 +1885,7 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(2, parser.getSemanticErrors().size());
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
     }
@@ -1897,6 +1898,7 @@ public class ParserTests {
         code.add("function myfunc(x : integer) : void");
         code.add("begin");
         code.add("x = 5;");
+        code.add("return;");
         code.add("end");
 
         code.add("main");
@@ -2625,6 +2627,7 @@ public class ParserTests {
         code.add("function myfunc(x : integer, y : real, z : boolean) : void");
         code.add("begin");
         code.add("x = 54;");
+        code.add("return;");
         code.add("end");
         code.add("main");
         code.add("a : integer");
@@ -2661,6 +2664,7 @@ public class ParserTests {
         code.add("function myfunc(x : integer, y : real, z : boolean) : void");
         code.add("begin");
         code.add("x = 54;");
+        code.add("return;");
         code.add("end");
         code.add("main");
         code.add("a : integer");
@@ -2715,7 +2719,7 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(3, parser.getSemanticErrors().size());
+        assertEquals(4, parser.getSemanticErrors().size());
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
 
@@ -2726,16 +2730,18 @@ public class ParserTests {
         List<String> code = new ArrayList<>();
 
         code.add("CD19 Prog");
-        code.add("function myfunc(x : integer, y : real, z : boolean) : void");
+        code.add("function myfunc(x : integer, y : real, z : boolean) : integer");
         code.add("begin");
         code.add("x = 54;");
+        code.add("return x;");
         code.add("end");
         code.add("main");
         code.add("a : boolean,");
         code.add("b : boolean,");
-        code.add("c : integer");
+        code.add("c : integer,");
+        code.add("d : integer");
         code.add("begin");
-        code.add("myfunc(a,b,c);");
+        code.add("d = myfunc(a,b,c);");
         code.add("end");
         code.add("CD19 Prog");
 

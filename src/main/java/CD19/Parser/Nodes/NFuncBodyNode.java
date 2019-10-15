@@ -68,6 +68,13 @@ public class NFuncBodyNode implements Node{
         }
 
         TreeNode stats = nStatsNode.make(parser);
+        int numberOfReturns = stats.getNumberOfReturns();
+//        System.out.println("number of returns is" + numberOfReturns);
+
+        Token peek = parser.peek();
+        if(numberOfReturns == 0){
+            parser.semanticError("Function has no return statements", peek); //todo extra semantic check that it returns the right thing
+        }
 
         funcBody.setRight(stats);
 
@@ -78,6 +85,42 @@ public class NFuncBodyNode implements Node{
 
 
         return funcBody;
+
+    }
+
+    public TreeNode makeWithReturnType(Parser parser, TreeNode returnType){
+        TreeNode funcBody = new TreeNode();
+
+        TreeNode locals = nLocalsNode.make(parser);
+
+        funcBody.setLeft(locals);
+
+        if(!parser.peekAndConsume(Token.TBEGN)){
+            parser.syntacticError("Expected a Begin Keyword", parser.peek());
+            return funcBody;
+        }
+
+        TreeNode stats = nStatsNode.make(parser);
+        int numberOfReturns = stats.getNumberOfReturns();
+//        System.out.println("number of returns is" + numberOfReturns);
+
+        Token peek = parser.peek();
+        if(numberOfReturns == 0){
+            parser.semanticError("Function has no return statements", peek); //todo extra semantic check that it returns the right thing
+        }
+
+        funcBody.setRight(stats);
+
+        if(!parser.peekAndConsume(Token.TEND)){
+            parser.syntacticError("Expected an End Keyword", parser.peek());
+            return funcBody;
+        }
+
+
+        return funcBody;
+
+
+
     }
 }
 

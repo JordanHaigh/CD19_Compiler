@@ -79,5 +79,13 @@ public class SymbolTable {
         return records;
     }
 
+    public void printRecords(){
+        List<SymbolTableRecord> records = getAllRecords();
+        for(SymbolTableRecord s : records){
+            System.out.println(s);
+        }
+
+    }
+
 
 }

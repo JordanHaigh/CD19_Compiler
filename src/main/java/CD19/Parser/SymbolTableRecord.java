@@ -61,4 +61,12 @@ public class SymbolTableRecord {
         return Objects.hash(lexeme, scope);
     }
 
+    @Override
+    public String toString() {
+        return "SymbolTableRecord{" +
+                "lexeme='" + lexeme + '\'' +
+                ", dataType='" + dataType + '\'' +
+                ", scope='" + scope + '\'' +
+                '}';
+    }
 }

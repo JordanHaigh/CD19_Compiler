@@ -128,57 +128,70 @@ public class NExponentNode implements Node {
         Token id = parser.peek();
         parser.peekAndConsume(Token.TIDEN); //already seen thats its an iden
 
-        SymbolTableRecord idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(), null, parser.getScope()));
+        SymbolTableRecord checker = new SymbolTableRecord(id.getStr(), null, parser.getScope());
+        SymbolTableRecord idRecord = parser.lookupIdentifierRecord(checker);
         if (idRecord == null) {
             //print out different message depending on if its a function (look at next token and see if its a left par)
-            if (parser.peek().getTokenID() == Token.TLPAR) {
-                parser.semanticError("Function " + id.getStr() + " doesn't exist", id);
-            } else {
+            //check that it might be a fncall
+            idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()));
+            if (idRecord == null) {
                 //if variable is not in this scope, check that it might be a constant
                 idRecord = parser.lookupConstantRecord(new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()));
                 if (idRecord == null) {
                     //oh no! it's not a constant? check to see if its a predefined array
                     idRecord = parser.lookupTypeRecord(new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()));
                     if (idRecord == null) {
-                        parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
+                        Token peek = parser.peek();
+                        if(peek.getTokenID() == Token.TLPAR){
+                            parser.semanticError("Function " + id.getStr() + " doesn't exist", id);
+                        }
+                        else{
+                            parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
+                        }
                     } else {
-
                         //hurray it exists!
                     }
-
                 }
+            } else {
+                //hurray it exists
             }
         }
         Token peek = parser.peek();
         TreeNode tail = varOrFnCallTail(parser);
 
-//        //now if its a function we're trying to call, we need to check and see if the number of variables and args in ordermatch
-//        if (tail.getValue() == TreeNode.NFCALL) {
-//            if (idRecord != null) {
-//                //get the number of args we expect from the st rec
-//                List<String> expectedFunctionArgs = idRecord.getFunctionVariableTypesAndOrdering();
-//                List<String> actualFunctionArgs = tail.getDataTypeOrderingForFunctions();
-//
-//                if (expectedFunctionArgs.size() != actualFunctionArgs.size()) {
-//                    parser.semanticError("Function argument size doesn't match", peek);
-//                }
-//
-//                //check if args are in same order
-//                for (int i = 0; i < expectedFunctionArgs.size(); i++) {
-//                    String expected = expectedFunctionArgs.get(i);
-//                    String actual = actualFunctionArgs.get(i);
-//
-//                    if (!expected.equals(actual)){
-//                        parser.semanticError("Argument Types do not match. Expected: " + expected +", Actual: "+ actual , peek);
-//                    }
-//                }
-//
-//            }
-//
-//        }
+        //now if its a function we're trying to call, we need to check and see if the number of variables and args in ordermatch
+        if (tail.getValue() == TreeNode.NFCALL) {
+            if (idRecord != null) {
+                //get the number of args we expect from the st rec
+                List<String> expectedFunctionArgs = idRecord.getFunctionVariableTypesAndOrdering();
+                List<String> actualFunctionArgs = tail.getDataTypeOrderingForFunctions();
+
+                if (expectedFunctionArgs.size() != actualFunctionArgs.size()) {
+                    parser.semanticError("Function argument size doesn't match", peek);
+                }
+
+                if (expectedFunctionArgs.size() > 0 && actualFunctionArgs.size() > 0) { //prevents index out of bounds exceptiopn
+                    //check if args are in same order
+                    for (int i = 0; i < expectedFunctionArgs.size(); i++) {
+                        String expected = expectedFunctionArgs.get(i);
+                        String actual = actualFunctionArgs.get(i);
+
+                        if (!expected.equals(actual)) {
+                            parser.semanticError("Argument Types do not match. Expected: " + expected + ", Actual: " + actual, peek);
+                        }
+                    }
+                }
+
+
+            }
+
+        }
 
         //SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(), id.getStr()+"_"+parser.getScope());
         tail.setSymbol(idRecord);
+        if(idRecord != null){
+            tail.setType(idRecord.getDataType());
+        }
         return tail;
     }
 
@@ -215,7 +228,7 @@ public class NExponentNode implements Node {
         TreeNode fncallelisttail = fnCallElistTail(parser);
 
         List<String> dataTypesInOrder = new ArrayList<>();
-        if(fncallelisttail != null){
+        if (fncallelisttail != null) {
             dataTypesInOrder = fncallelisttail.getDataTypeOrderingForFunctions();
         }
 
@@ -226,7 +239,7 @@ public class NExponentNode implements Node {
 
         TreeNode treeNode = new TreeNode(TreeNode.NFCALL, fncallelisttail, null);
 
-        if(fncallelisttail != null){
+        if (fncallelisttail != null) {
             treeNode.setDataTypeOrderingForFunctions(dataTypesInOrder);
         }
 
@@ -250,7 +263,10 @@ public class NExponentNode implements Node {
                 token.getTokenID() == Token.TFALS ||
                 token.getTokenID() == Token.TLPAR) {
 
-            return nEListNode.make(parser);
+            TreeNode node = nEListNode.make(parser);
+            node.calculateNumberChildren(node);
+            //List<String> argumentList = node.getDataTypeOrderingForFunctions();
+            return node;
         } else
             return null;
 

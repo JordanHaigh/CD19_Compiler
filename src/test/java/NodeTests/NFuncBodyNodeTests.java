@@ -63,7 +63,7 @@ public class NFuncBodyNodeTests {
 
         nFuncBodyNode = new NFuncBodyNode(nlocalsNode, nStatsNode);
 
-        TreeNode funcbody = nFuncBodyNode.make(parser);
+        TreeNode funcbody = nFuncBodyNode.makeWithReturnType(parser,null);
 
         assertEquals(TreeNode.NDLIST, funcbody.getLeft().getValue());
         assertEquals(TreeNode.NSTATS, funcbody.getRight().getValue());
@@ -93,7 +93,7 @@ public class NFuncBodyNodeTests {
         });
 
 
-        TreeNode funcbody = nFuncBodyNode.make(parser);
+        TreeNode funcbody = nFuncBodyNode.makeWithReturnType(parser,null);
 
         assertEquals(TreeNode.NUNDEF, funcbody.getValue());
         assertEquals(TreeNode.NDLIST, funcbody.getLeft().getValue());
@@ -123,8 +123,8 @@ public class NFuncBodyNodeTests {
             return new TreeNode(TreeNode.NSTATS);
         });
 
+        TreeNode funcbody = nFuncBodyNode.makeWithReturnType(parser,null);
 
-        TreeNode funcbody = nFuncBodyNode.make(parser);
 
         assertEquals(TreeNode.NUNDEF, funcbody.getValue());
         assertEquals(TreeNode.NDLIST, funcbody.getLeft().getValue());

@@ -366,6 +366,8 @@ public class Parser implements Subject {
         return syntacticErrors;
     }
 
+
+
     public String getProgramScope() {
         return scopeStack.get(0);
     }

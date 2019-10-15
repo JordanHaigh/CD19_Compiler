@@ -74,6 +74,10 @@ public class NFuncsNodeTests {
             parser.consume();
             return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
         });
+        when(nFuncBodyNode.makeWithReturnType(parser,null)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
+        });
 
         NFuncNode nFuncNode = new NFuncNode(npListNode, nrTypeNode, nFuncBodyNode);
         nFuncsNode = new NFuncsNode(nFuncNode);
@@ -128,6 +132,10 @@ public class NFuncsNodeTests {
             return dummy;
         });
         when(nFuncBodyNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
+        });
+        when(nFuncBodyNode.makeWithReturnType(parser,null)).thenAnswer((Answer) invocationOnMock -> {
             parser.consume();
             return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
         });
@@ -198,6 +206,10 @@ public class NFuncsNodeTests {
             parser.consume();
             return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
         });
+        when(nFuncBodyNode.makeWithReturnType(parser,null)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
+        });
 
         NFuncNode nFuncNode = new NFuncNode(npListNode, nrTypeNode, nFuncBodyNode);
         nFuncsNode = new NFuncsNode(nFuncNode);
@@ -235,6 +247,10 @@ public class NFuncsNodeTests {
             return dummy;
         });
         when(nFuncBodyNode.make(parser)).thenAnswer((Answer) invocationOnMock -> {
+            parser.consume();
+            return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
+        });
+        when(nFuncBodyNode.makeWithReturnType(parser,null)).thenAnswer((Answer) invocationOnMock -> {
             parser.consume();
             return new TreeNode(TreeNode.NUNDEF, new TreeNode(TreeNode.NDLIST), new TreeNode(TreeNode.NSTATS));
         });

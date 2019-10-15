@@ -254,9 +254,14 @@ public class TreeNode {
 
 
 
-    List<String> dataTypeOrderingForFunctions = new ArrayList<>();
+    private List<String> dataTypeOrderingForFunctions = new ArrayList<>();
+    int numberOfReturns = 0;
+
 
     public List<String> getDataTypeOrderingForFunctions(){
+        if(dataTypeOrderingForFunctions.size() > 0)
+            return dataTypeOrderingForFunctions;
+
         List<String> clone = new ArrayList<>(dataTypeOrderingForFunctions);
         dataTypeOrderingForFunctions = new ArrayList<>();
         return clone; //don't judge me i'm trying to get this done
@@ -281,4 +286,28 @@ public class TreeNode {
         calculateNumberChildren(root.getMiddle());
         calculateNumberChildren(root.getRight());
     }
+
+
+
+    public int getNumberOfReturns() {
+        calculateNumberOfReturns(this);
+        int clone = numberOfReturns;
+        numberOfReturns = 0;
+
+        return clone;
+    }
+
+    public void calculateNumberOfReturns(TreeNode root){
+        if(root == null)
+            return;
+
+        if(root.getValue() == NRETN){
+            numberOfReturns++;
+        }
+
+        calculateNumberOfReturns(root.getLeft());
+        calculateNumberOfReturns(root.getMiddle());
+        calculateNumberOfReturns(root.getRight());
+    }
+
 }
