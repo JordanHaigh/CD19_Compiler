@@ -100,6 +100,15 @@ public class NAsgnStatOrCallStatNode implements Node{
                     String expected = expectedFunctionArgs.get(i);
                     String actual = actualFunctionArgs.get(i);
 
+                    if(expected.contains("Array")){
+                        expected = expected.replaceAll("Array","");
+                    }
+                    if(actual.contains("IsArrayOf")){
+                        actual = actual.replaceAll("IsArrayOf", " ");
+                        String[] split = actual.split(" ");
+                        actual = split[0];
+                    }
+
                     if (!expected.equals(actual)){
                         parser.semanticError("Argument Types do not match. Expected: " + expected +", Actual: "+ actual , peek);
                     }

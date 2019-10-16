@@ -57,10 +57,10 @@ function getNoOfInputs():integer
       input noOfPoints;
 
 			/-- a shape needs to have at least 3 points (my assumption) and cannot have more points than the array can hold
-      if(noOfPoints<=2 or noOfPoints>LENGTH)
-        printline "The shape must have at least 3 points and at most " , length, " points";
+      if((noOfPoints<=2) or (noOfPoints>LENGTH))
+        printline "The shape must have at least 3 points and at most " , LENGTH, " points";
       end
-    until (noOfPoints > 2 and noOfPoints <= LENGTH);
+    until ((noOfPoints > 2) and (noOfPoints <= LENGTH));
 
     return noOfPoints;
   end
@@ -78,6 +78,8 @@ function getInputPoints(arrayToPopulate: points, noOfPoints: integer ): void
 			counter +=1;
 		end
 
+		return;
+
 	end
 
 main
@@ -87,7 +89,7 @@ main
 begin
 	noOfPts = getNoOfInputs();/-- get the number of points from the user
 	getInputPoints(inputPoints, noOfPts);/-- get the points from the user
-	totalArea = calculateArea(inputPoints, noOfPoints); /-- calculate the area of the shape given by the user
+	totalArea = calculateArea(inputPoints, noOfPts); /-- calculate the area of the shape given by the user
 	printline "areas of shape is ", totalArea; /-- output area
 
 end

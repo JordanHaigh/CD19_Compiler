@@ -1,67 +1,96 @@
-1: CD19 PolygonArea
-2: 
-3: constants
-4:     MAXARRLENGTH = 20
-5: 
-6: types
-7:     point is
-8:         x : integer,
-9:         y : integer
-10:     end
-11: 
-12: points is array[MAXARRLENGTH] of point
-13: 
-14: arrays
-15:     polygon : points
+1: 
+2: /-- e) Write a program in CD19 that will compute the area of a polygon from a set of (x, y) Cartesian points.
+3: /-- The program should have functions to (i) input the number of points (up to 20) and the
+4: /-- points themselves, and (ii) compute the area of the polygon.
+5: /-- The main program should be used to output the result.
+6: 
+7: CD19 area_calculator
+8: constants
+9: 	LENGTH = 20
+10: 
+11: types
+12: 	point is
+13: 		x : real,
+14: 		y : real
+15: 	end
 16: 
-17: 
-18: function inputPoints() : integer
-19:     numberOfPoints : integer,
-20:     i : integer
-21: begin
-22:     repeat()
-23:         printline "Enter the number of points";
-24:         input numberOfPoints;
-25:     until (numberOfPoints > 2) and (numberOfPoints <= MAXARRLENGTH);
-26: 
-27:     for(i=0; i < numberOfPoints)
-28:         printline "Enter X and Y for point", i,".";
-29:         input polygon[i].x, polygon[i].y;
-30:     end
-31: 
-32:     return numberOfPoints;
-33: end
+17:     points is array [LENGTH+1] of point /-- final point needs to be a copy of the first point therefore the array needs to be LENGTH +1 to fit this copy
+18: 
+19: arrays
+20: 	inputPoints : points
+21: 
+22: /-- given a points array and the number of points the shape has calculate the area
+23: function calculateArea(pts : points, noOfPoints: integer): real
+24: 
+25: 	sum : real,
+26: 	counter: integer
+27: 
+28: 	begin
+29: 
+30: 		/-- copy the first point to the end of the array
+31: 		pts[noOfPoints].x = pts[0].x;
+32: 		pts[noOfPoints].y = pts[0].y;
+33: 		noOfPoints+=1;
 34: 
 35: 
-36: function computeArea(polygon : points, arraySize : integer) : real
-37:     sum : integer,
-38:     area : real,
-39:     i : integer
-40: begin
-41:     for(sum = 0,i = 0; i < arraySize-1)
-42:         sum += (polygon[i+1].x + polygon[i].x) * (polygon[i+1].y - polygon[i].y);
-43:         i = i+1;
-44:     end
-45: 
-46:     if(sum < 0)
-47:         sum = 0 - sum; /--should make it positive
-48:     end
-49: 
-50:     area = (1/2) * sum;
-51:     return area;
-52: end
+36: 		for(sum = 0, counter = 0; counter <= noOfPoints-2)
+37: 			sum += (pts[counter].x + pts[counter+1].x) * (pts[counter+1].y - pts[counter].y);
+38: 			counter+=1;
+39: 		end
+40: 
+41: 		/-- absolute value
+42: 		if(sum < 0)
+43: 			sum *= 0-1;
+44: 		end
+45: 		/--divide the sum by 2 then return
+46: 		return sum/2;
+47: 	end
+48: 
+49: /-- gets the number of points the shape has from the user
+50: function getNoOfInputs():integer
+51:   noOfPoints : integer
+52:   begin
 53: 
-54: 
+54: 		repeat()
 55: 
-56: 
-57: main
-58:     numberOfPoints : integer,
-59:     area : real
-60: begin
-61:     numberOfPoints = inputPoints();
-62:     area = computeArea(polygon, numberOfPoints);
-63:     printline "The area is: ", area, ".";
-64: end
-65: 
-66: 
-67: CD19 PolygonArea
+56: 	    printline "gimmie the number of points you want to input";
+57:       input noOfPoints;
+58: 
+59: 			/-- a shape needs to have at least 3 points (my assumption) and cannot have more points than the array can hold
+60:       if((noOfPoints<=2) or (noOfPoints>LENGTH))
+61:         printline "The shape must have at least 3 points and at most " , LENGTH, " points";
+62:       end
+63:     until ((noOfPoints > 2) and (noOfPoints <= LENGTH));
+64: 
+65:     return noOfPoints;
+66:   end
+67: 
+68: /-- gets the input points from the user
+69: function getInputPoints(arrayToPopulate: points, noOfPoints: integer ): void
+70: 	counter: integer
+71: 
+72: 	begin
+73: 
+74: 		/-- iterate through the array and ask the user to enter values for the x and y coordinates
+75: 		for(counter = 0; counter<noOfPoints)
+76: 			printline "please enter the X and Y coordinatates for point ", counter+1, "/", noOfPoints;
+77: 			input inputPoints[counter].x, inputPoints[counter].y;
+78: 			counter +=1;
+79: 		end
+80: 
+81: 		return;
+82: 
+83: 	end
+84: 
+85: main
+86: 	noOfPts : integer,
+87: 	totalArea : real
+88: 
+89: begin
+90: 	noOfPts = getNoOfInputs();/-- get the number of points from the user
+91: 	getInputPoints(inputPoints, noOfPts);/-- get the points from the user
+92: 	totalArea = calculateArea(inputPoints, noOfPts); /-- calculate the area of the shape given by the user
+93: 	printline "areas of shape is ", totalArea; /-- output area
+94: 
+95: end
+96: CD19 area_calculator
