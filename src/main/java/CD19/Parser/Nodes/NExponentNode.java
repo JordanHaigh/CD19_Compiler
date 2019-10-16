@@ -142,10 +142,9 @@ public class NExponentNode implements Node {
                     idRecord = parser.lookupTypeRecord(new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()));
                     if (idRecord == null) {
                         Token peek = parser.peek();
-                        if(peek.getTokenID() == Token.TLPAR){
+                        if (peek.getTokenID() == Token.TLPAR) {
                             parser.semanticError("Function " + id.getStr() + " doesn't exist", id);
-                        }
-                        else{
+                        } else {
                             parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
                         }
                     } else {
@@ -157,7 +156,7 @@ public class NExponentNode implements Node {
             }
         }
         Token peek = parser.peek();
-        TreeNode tail = varOrFnCallTail(parser);
+        TreeNode tail = varOrFnCallTail(parser, id);
 
         //now if its a function we're trying to call, we need to check and see if the number of variables and args in ordermatch
         if (tail.getValue() == TreeNode.NFCALL) {
@@ -187,11 +186,14 @@ public class NExponentNode implements Node {
 
         }
 
-        //SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(), id.getStr()+"_"+parser.getScope());
-        tail.setSymbol(idRecord);
-        if(idRecord != null){
-            tail.setType(idRecord.getDataType());
+        if (tail.getValue() != TreeNode.NARRV) {
+            tail.setSymbol(idRecord);
+            if (idRecord != null) {
+                tail.setType(idRecord.getDataType());
+            }
         }
+        //SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(), id.getStr()+"_"+parser.getScope());
+
         return tail;
     }
 
@@ -201,7 +203,7 @@ public class NExponentNode implements Node {
      * @param parser The parser
      * @return - Null if there are no subsequent vartail or fncall tail nodes, or proper treenode
      */
-    private TreeNode varOrFnCallTail(Parser parser) {
+    private TreeNode varOrFnCallTail(Parser parser, Token idFromVar) {
         //	<varOrFNCallTail>	::=	<varTail> | <fnCallTail>
         Token token = parser.peek();
         if (token.getTokenID() == Token.TLPAR) {
@@ -210,7 +212,7 @@ public class NExponentNode implements Node {
             //treeNode.setType(); //todo whatever type it returns - semantic lookup on the identifier to determine what the return type is
             return treeNode;
         } else
-            return nVarTailNode.make(parser); //todo fix data types, maybe speak to dan??
+            return nVarTailNode.makeWithIdFromVar(parser, idFromVar); //todo fix data types, maybe speak to dan??
     }
 
     /**

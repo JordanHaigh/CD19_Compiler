@@ -96,10 +96,18 @@ public class NAsgnStatNode implements Node {
             }
         } else {
             //then its a a struct array
-            idRecord = parser.lookupTypeRecord(new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()));//get the current scope - could be function or main
-            if (idRecord == null) {
-                parser.semanticError("Array Variable " + id.getStr() + " doesn't exist", id);
+
+            //check if its a func arg
+            idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(), null, parser.getScope()));
+            if(idRecord == null){
+                //then it could be a program array variable
+                idRecord = parser.lookupTypeRecord(new SymbolTableRecord(id.getStr(), null, parser.getProgramScope()));//get the current scope - could be function or main
+                if (idRecord == null) {
+                    parser.semanticError("Array Variable " + id.getStr() + " doesn't exist", id);
+                }
             }
+
+
             //change idRecord to the variable we are trying to assign to
             idRecord = vartail.getSymbol();
 

@@ -15,18 +15,6 @@ arrays
     classA : students,
     classB : students
 
-
-
-function forceFail(class : students) : void
-    i : integer
-begin
-    for(i = 0; i < COUNT)
-        class[i].mark = 0;
-        i = i+1;
-    end
-end
-
-
 function averageMark(class : students) : real
     sum : integer,
     average : real,
@@ -41,6 +29,18 @@ begin
     return average;
 end
 
+function forceFail(class : students) : void
+    i : integer
+begin
+    for(i = 0; i < COUNT)
+        class[i].mark = 0;
+        i = i+1;
+    end
+
+    return;
+end
+
+
 function sumTwoInts(a : integer, b : integer) : integer
     sum : integer
 begin
@@ -49,14 +49,14 @@ begin
 end
 
 main
-    averageMark : real,
+    myavg : real,
     x : integer,
     y : integer,
     summedNumbers : integer
 begin
 forceFail(classA);
-averageMark = average(classB);
-summedNumbers = sum(x,y);
+myavg = averageMark(classB);
+summedNumbers = sumTwoInts(x,y);
 
 end
 

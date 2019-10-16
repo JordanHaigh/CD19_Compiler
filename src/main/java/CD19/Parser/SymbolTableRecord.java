@@ -36,6 +36,7 @@ public class SymbolTableRecord {
     public String getDataType() { return dataType; }
     public String getScope() { return scope; }
 
+    public void setScope(String scope) {this.scope = scope; }
 
     public List<String> functionVariableTypesAndOrdering;
 

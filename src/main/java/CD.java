@@ -8,7 +8,7 @@ import java.io.File;
 * public class A3
 * Used as main entry point for first assignment submission
 * */
-public class A3 {
+public class CD {
 
     public static void main(String[] args){
 

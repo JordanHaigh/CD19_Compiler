@@ -1,102 +1,65 @@
-1: 
-2: /-- e) Write a program in CD19 that will compute the area of a polygon from a set of (x, y) Cartesian points.
-3: /-- The program should have functions to (i) input the number of points (up to 20) and the
-4: /-- points themselves, and (ii) compute the area of the polygon.
-5: /-- The main program should be used to output the result.
-6: 
-7: CD19 area_calculator
-8: constants
-9: 	LENGTH = 20
-10: 
-11: types
-12: 	point is
-13: 		x : real,
-14: 		y : real
-15: 	end
-16: 
-17:     points is array [LENGTH+1] of point /-- final point needs to be a copy of the first point therefore the array needs to be LENGTH +1 to fit this copy
-	Semantic Error - Struct name doesn't exist in symbol table(Line 17, Column 35)
-18: 
-19: arrays
-20: 	inputPoints : points
-	Semantic Error - Array Type Id doesn't exist(Line 20, Column 15)
-21: 
-22: /-- given a points array and the number of points the shape has calculate the area
-23: function calculateArea(pts : points, noOfPoints: integer): real
-	Semantic Error - Array Type Id doesn't exist in symbol table(Line 23, Column 29)
-24: 
-25: 	sum : real,
-26: 	counter: integer
+1: CD19 FunctionsAndParamPassing
+2: 
+3: constants
+4:     COUNT = 10
+5: 
+6: types
+7:     student is
+8:         id : integer,
+9:         mark : integer
+10:     end
+11: 
+12: students is array [COUNT] of student
+13: 
+14: arrays
+15:     classA : students,
+16:     classB : students
+17: 
+18: function averageMark(class : students) : real
+19:     sum : integer,
+20:     average : real,
+21:     i : integer
+22: begin
+23:     for(i = 0,sum=0; i < COUNT)
+24:         sum += class[i].mark;
+25:         i = i+1;
+26:     end
 27: 
-28: 	begin
-29: 
-30: 		/-- copy the first point to the end of the array
-31: 		pts[noOfPoints].x = pts[0].x;
-	Semantic Error - Variable name doesn't exist(Line 31, Column 1)
-32: 		pts[noOfPoints].y = pts[0].y;
-	Semantic Error - Variable name doesn't exist(Line 32, Column 1)
-33: 		noOfPoints+=1;
-	Semantic Error - Variable name doesn't exist(Line 33, Column 1)
-34: 
-35: 
-36: 		for(sum = 0, counter = 0; counter <= noOfPoints-2)
-37: 			sum += (pts[counter].x + pts[counter+1].x) * (pts[counter+1].y - pts[counter].y);
-38: 			counter+=1;
-39: 		end
-40: 
-41: 		/-- absolute value
-42: 		if(sum < 0)
-43: 			sum *= 0-1;
-44: 		end
-45: 		/--divide the sum by 2 then return
-46: 		return sum/2;
-47: 	end
-48: 
-49: /-- gets the number of points the shape has from the user
-50: function getNoOfInputs():integer
-51:   noOfPoints : integer
-52:   begin
-53: 
-54: 		repeat()
-55: 
-56: 	    printline "gimmie the number of points you want to input";
-57:       input noOfPoints;
-58: 
-59: 			/-- a shape needs to have at least 3 points (my assumption) and cannot have more points than the array can hold
-60:       if(noOfPoints<=2 or noOfPoints>LENGTH)
-61:         printline "The shape must have at least 3 points and at most " , length, " points";
-62:       end
-63:     until (noOfPoints > 2 and noOfPoints <= LENGTH);
-64: 
-65:     return noOfPoints;
-66:   end
-67: 
-68: /-- gets the input points from the user
-69: function getInputPoints(arrayToPopulate: points, noOfPoints: integer ): void
-	Semantic Error - Array Type Id doesn't exist in symbol table(Line 69, Column 41)
-70: 	counter: integer
-71: 
-72: 	begin
-73: 
-74: 		/-- iterate through the array and ask the user to enter values for the x and y coordinates
-75: 		for(counter = 0; counter<noOfPoints)
-76: 			printline "please enter the X and Y coordinatates for point ", counter+1, "/", noOfPoints;
-77: 			input inputPoints[counter].x, inputPoints[counter].y;
-78: 			counter +=1;
-79: 		end
-80: 
-81: 	end
-82: 
-83: main
-84: 	noOfPts : integer,
-85: 	totalArea : real
-86: 
-87: begin
-88: 	noOfPts = getNoOfInputs();/-- get the number of points from the user
-89: 	getInputPoints(inputPoints, noOfPts);/-- get the points from the user
-	Semantic Error - Function name doesn't exist(Line 89, Column 1)
-90: 	totalArea = calculateArea(inputPoints, noOfPoints); /-- calculate the area of the shape given by the user
-91: 	printline "areas of shape is ", totalArea; /-- output area
-92: 
-93: end
-94: CD19 area_calculator
+28:     average = sum / COUNT;
+29:     return average;
+30: end
+31: 
+32: function forceFail(class : students) : void
+33:     i : integer
+34: begin
+35:     for(i = 0; i < COUNT)
+36:         class[i].mark = 0;
+37:         i = i+1;
+38:     end
+39: 
+40:     return;
+41: end
+42: 
+43: 
+44: function sumTwoInts(a : integer, b : integer) : integer
+45:     sum : integer
+46: begin
+47:     sum = a + b;
+48:     return sum;
+49: end
+50: 
+51: main
+52:     myavg : real,
+53:     x : integer,
+54:     y : integer,
+55:     summedNumbers : integer
+56: begin
+57: forceFail(classA);
+	Semantic Error - Argument Types do not match. Expected: studentsArray, Actual: studentsIsArrayOfstudent(Line 57, Column 11)
+58: myavg = averageMark(classB);
+	Semantic Error - Argument Types do not match. Expected: studentsArray, Actual: studentsIsArrayOfstudent(Line 58, Column 20)
+59: summedNumbers = sumTwoInts(x,y);
+60: 
+61: end
+62: 
+63: CD19 FunctionsAndParamPassing

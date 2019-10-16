@@ -56,7 +56,7 @@ public class NParamTypeTailNode implements Node {
 
             SymbolTableRecord typeIdRecord = new SymbolTableRecord(type.getStr(), null, parser.getProgramScope());//typeid is always global scope
 
-            if(parser.lookupTypeRecord(typeIdRecord) == null){
+            if(parser.lookupIdentifierRecord(typeIdRecord) == null){
                 parser.semanticError("Array Identifier "+type.getStr()+" doesn't exist in symbol table", type);
             }
 

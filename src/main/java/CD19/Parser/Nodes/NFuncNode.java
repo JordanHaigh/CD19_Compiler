@@ -72,6 +72,9 @@ public class NFuncNode implements Node{
         }
 
         TreeNode plist = npListNode.make(parser);
+//        if(plist == null){
+//            System.out.println();
+//        }
         plist.calculateNumberChildren(plist);
         List<String> dataTypeOrdering = plist.getDataTypeOrderingForFunctions();
 
