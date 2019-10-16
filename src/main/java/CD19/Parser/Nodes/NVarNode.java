@@ -54,9 +54,14 @@ public class NVarNode implements Node {
         }
 
         //check id exists
-        SymbolTableRecord idRecord = new SymbolTableRecord(id.getStr(), null, parser.getScope());
-        if(parser.lookupIdentifierRecord(idRecord) == null){
-            parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
+        SymbolTableRecord idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(), null, parser.getScope()));
+        if((idRecord) == null){
+            //then check if we are trying to do something with global array variable
+            SymbolTableRecord checker  = new SymbolTableRecord(id.getStr(), null, parser.getProgramScope());
+            idRecord = parser.lookupTypeRecord(checker);
+            if(idRecord == null){
+                parser.semanticError("Variable " + id.getStr() + " doesn't exist", id);
+            }
         }
 
         TreeNode tail = nVarTailNode.makeWithIdFromVar(parser,id);

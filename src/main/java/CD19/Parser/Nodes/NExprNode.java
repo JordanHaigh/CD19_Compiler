@@ -98,8 +98,13 @@ public class NExprNode implements Node{
         returnTreeNode.setRight(fact);
 
         String firstType = getDataTypeOfNode(returnTreeNode.getLeft());
+        if(returnTreeNode.getLeft().getValue() == TreeNode.NARRV){
+            firstType = returnTreeNode.getLeft().getSymbol().getDataType();
+        }
         String secondType = getDataTypeOfNode(returnTreeNode.getRight());
-
+        if(returnTreeNode.getRight().getValue() == TreeNode.NARRV){
+            secondType = returnTreeNode.getRight().getSymbol().getDataType();
+        }
         returnTreeNode.updateType(firstType,secondType);
 
         TreeNode tail = tail(parser, returnTreeNode);

@@ -5,6 +5,7 @@ import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,15 +73,11 @@ public class NFuncNode implements Node{
         }
 
         TreeNode plist = npListNode.make(parser);
-//        if(plist == null){
-//            System.out.println();
-//        }
-        plist.calculateNumberChildren(plist);
-        List<String> dataTypeOrdering = plist.getDataTypeOrderingForFunctions();
-
-//        for(String s : dataTypeOrdering){
-//            System.out.println(s);
-//        }
+        List<String> dataTypeOrdering = new ArrayList<>();
+        if(plist != null){
+            plist.calculateNumberChildren(plist);
+            dataTypeOrdering = plist.getDataTypeOrderingForFunctions();
+        }
 
         if(!parser.peekAndConsume(Token.TRPAR)){
             parser.syntacticError("Expected Right Parenthesis", parser.peek());

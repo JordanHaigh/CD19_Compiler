@@ -9,7 +9,7 @@ types
         y : integer
     end
 
-points is array[ARRLENGTH] of point
+points is array[MAXARRLENGTH] of point
 
 arrays
     polygon : points
@@ -22,7 +22,7 @@ begin
     repeat()
         printline "Enter the number of points";
         input numberOfPoints;
-    until numberOfPoints > 2 and numberOfPoints <=MAXARRLENGTH;
+    until (numberOfPoints > 2) and (numberOfPoints <= MAXARRLENGTH);
 
     for(i=0; i < numberOfPoints)
         printline "Enter X and Y for point", i,".";
@@ -39,7 +39,7 @@ function computeArea(polygon : points, arraySize : integer) : real
     i : integer
 begin
     for(sum = 0,i = 0; i < arraySize-1)
-        sum += (points[i+1].x + points[i].x) * (points[i+1].y - points[i].y);
+        sum += (polygon[i+1].x + polygon[i].x) * (polygon[i+1].y - polygon[i].y);
         i = i+1;
     end
 

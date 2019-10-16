@@ -140,8 +140,9 @@ public class NVarTailNode implements Node {
                     arrayDataType = arrayDataType.replaceAll("IsArrayOf", " ");
                     String[] split = arrayDataType.split(" ");
                     String structDataType = split[1];
-                    variable = new SymbolTableRecord(secondId.getStr(), null, structDataType + "_struct");
-                    if (parser.lookupIdentifierRecord(variable) == null) {
+                    SymbolTableRecord checker = new SymbolTableRecord(secondId.getStr(), null, structDataType + "_struct");
+                    variable = parser.lookupIdentifierRecord(checker);
+                    if (variable == null) {
                         parser.semanticError("Could not find variable " + secondId.getStr() + " in Struct " + id.getStr(), secondId);
                     }
                 } else {

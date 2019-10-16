@@ -229,6 +229,12 @@ public class TreeNode {
             this.setType(firstType);
             return;
         }
+        if(firstType == null && secondType == null){
+            //weird left factoring edge case. just set to left and hope it doesnt come back to bite you in the ass
+            //this.setType(secondType);
+            return;
+        }
+
         boolean typePromotion = (firstType.equals("Integer") && secondType.equals("Real")) || //if one is int and one is real, promote to real
                 (firstType.equals("Real") && secondType.equals("Integer"));
 

@@ -1,63 +1,67 @@
-1: CD19 FunctionsAndParamPassing
+1: CD19 PolygonArea
 2: 
 3: constants
-4:     COUNT = 10
+4:     MAXARRLENGTH = 20
 5: 
 6: types
-7:     student is
-8:         id : integer,
-9:         mark : integer
+7:     point is
+8:         x : integer,
+9:         y : integer
 10:     end
 11: 
-12: students is array [COUNT] of student
+12: points is array[MAXARRLENGTH] of point
 13: 
 14: arrays
-15:     classA : students,
-16:     classB : students
+15:     polygon : points
+16: 
 17: 
-18: function averageMark(class : students) : real
-19:     sum : integer,
-20:     average : real,
-21:     i : integer
-22: begin
-23:     for(i = 0,sum=0; i < COUNT)
-24:         sum += class[i].mark;
-25:         i = i+1;
-26:     end
-27: 
-28:     average = sum / COUNT;
-29:     return average;
-30: end
+18: function inputPoints() : integer
+19:     numberOfPoints : integer,
+20:     i : integer
+21: begin
+22:     repeat()
+23:         printline "Enter the number of points";
+24:         input numberOfPoints;
+25:     until (numberOfPoints > 2) and (numberOfPoints <= MAXARRLENGTH);
+26: 
+27:     for(i=0; i < numberOfPoints)
+28:         printline "Enter X and Y for point", i,".";
+29:         input polygon[i].x, polygon[i].y;
+30:     end
 31: 
-32: function forceFail(class : students) : void
-33:     i : integer
-34: begin
-35:     for(i = 0; i < COUNT)
-36:         class[i].mark = 0;
-37:         i = i+1;
-38:     end
-39: 
-40:     return;
-41: end
-42: 
-43: 
-44: function sumTwoInts(a : integer, b : integer) : integer
-45:     sum : integer
-46: begin
-47:     sum = a + b;
-48:     return sum;
-49: end
-50: 
-51: main
-52:     myavg : real,
-53:     x : integer,
-54:     y : integer,
-55:     summedNumbers : integer
-56: begin
-57: /--forceFail(classA);
-58: myavg = averageMark(classB);
-59: summedNumbers = sumTwoInts(x,y);
-60: 
-61: end
-62: 
-63: CD19 FunctionsAndParamPassing
+32:     return numberOfPoints;
+33: end
+34: 
+35: 
+36: function computeArea(polygon : points, arraySize : integer) : real
+37:     sum : integer,
+38:     area : real,
+39:     i : integer
+40: begin
+41:     for(sum = 0,i = 0; i < arraySize-1)
+42:         sum += (polygon[i+1].x + polygon[i].x) * (polygon[i+1].y - polygon[i].y);
+43:         i = i+1;
+44:     end
+45: 
+46:     if(sum < 0)
+47:         sum = 0 - sum; /--should make it positive
+48:     end
+49: 
+50:     area = (1/2) * sum;
+51:     return area;
+52: end
+53: 
+54: 
+55: 
+56: 
+57: main
+58:     numberOfPoints : integer,
+59:     area : real
+60: begin
+61:     numberOfPoints = inputPoints();
+62:     area = computeArea(polygon, numberOfPoints);
+63:     printline "The area is: ", area, ".";
+64: end
+65: 
+66: 
+67: CD19 PolygonArea
