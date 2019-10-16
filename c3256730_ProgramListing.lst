@@ -54,10 +54,8 @@
 54:     y : integer,
 55:     summedNumbers : integer
 56: begin
-57: forceFail(classA);
-	Semantic Error - Argument Types do not match. Expected: studentsArray, Actual: studentsIsArrayOfstudent(Line 57, Column 11)
+57: /--forceFail(classA);
 58: myavg = averageMark(classB);
-	Semantic Error - Argument Types do not match. Expected: studentsArray, Actual: studentsIsArrayOfstudent(Line 58, Column 20)
 59: summedNumbers = sumTwoInts(x,y);
 60: 
 61: end

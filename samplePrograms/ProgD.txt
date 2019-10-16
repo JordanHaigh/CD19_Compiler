@@ -54,7 +54,7 @@ main
     y : integer,
     summedNumbers : integer
 begin
-forceFail(classA);
+/--forceFail(classA);
 myavg = averageMark(classB);
 summedNumbers = sumTwoInts(x,y);
 
