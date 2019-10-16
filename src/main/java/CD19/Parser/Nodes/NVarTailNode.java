@@ -164,7 +164,6 @@ public class NVarTailNode implements Node {
                         } else {
                             //so struct id exists
                             //now (jesus finally) we need to check that the variable inside the struct exists, as well as type
-                            System.out.println();
                             //use the second Id that we grabbed eons ago to see if it exists in the struct
                             SymbolTableRecord variableInsideStruct = parser.lookupIdentifierRecord(new SymbolTableRecord(secondId.getStr(), null, structName + "_struct"));
                             if (variableInsideStruct == null){
@@ -176,7 +175,6 @@ public class NVarTailNode implements Node {
                                 //VARIABLE EXISTS INSIDE THE STRUCT INSIDE THE ARRAY INSIDE THE VARIABLE ARRAY INSIDE THE FUNCTION YOU ARE CALLING IT FROM
                                 //WHY IS THIS SO MUCH WORK
                                 //check variable type
-                                System.out.println("");
                                 variable = variableInsideStruct;
                                 variable.setScope(parser.getScope());
                             }
