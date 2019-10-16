@@ -100,6 +100,9 @@ public class NAsgnStatOrCallStatNode implements Node{
                     String expected = expectedFunctionArgs.get(i);
                     String actual = actualFunctionArgs.get(i);
 
+                    if(expected == null || actual == null)
+                        continue;
+
                     if(expected.contains("Array")){
                         expected = expected.replaceAll("Array","");
                     }

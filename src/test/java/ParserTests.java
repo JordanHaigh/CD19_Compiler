@@ -1920,7 +1920,7 @@ public class ParserTests {
         for (SyntacticErrorMessage message : parser.getSyntacticErrors())
             System.out.println(message.printAll());
 
-        assertEquals(2, parser.getSemanticErrors().size());
+        assertEquals(1, parser.getSemanticErrors().size());
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
     }

@@ -27,6 +27,7 @@ function populateArrayWithMultiples(a1: numbers, no: integer):void
         a1[counter].no = no*(counter+1);/-- populate array
         counter +=1;
       end
+      return;
   end
 
 
@@ -38,6 +39,7 @@ function addArrays(a1 : numbers, const a2 : numbers): void
 			array1[counter].no += array2[counter].no;
 			counter+=1;
 		end
+		return;
 	end
 
 main
