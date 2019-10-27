@@ -349,7 +349,7 @@ public class Parser implements Subject {
      * @param symbolTable - SymbolTable to insert
      */
     public boolean insertRecord(SymbolTableRecord record, SymbolTable symbolTable) {
-        if (!symbolTable.contains(record)) {
+        if (!symbolTable.contains(record.getSymbolTableKey())) {
             symbolTable.insert(record);
             return true;
         } else {

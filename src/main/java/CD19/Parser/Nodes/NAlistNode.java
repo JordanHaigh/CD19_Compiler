@@ -50,7 +50,7 @@ public class NAlistNode implements Node {
         if (!parser.peekAndConsume(Token.TIDEN)) {
             //Token is not a TIDEN, throw syntactic error and recover if possible
             parser.syntacticError("<alist> - Expected an Identifier", token);
-            return new TreeNode(); //todo error recovery here
+            return new TreeNode();
         }
 
         //So we have seen an TIDEN
@@ -59,7 +59,7 @@ public class NAlistNode implements Node {
             parser.semanticError("Variable " + token.getStr() + " doesn't exist", token);
         }
 
-        TreeNode asgnStat = nAsgnStatNode.makeWithId(parser, token); //todo swap out to makewithid
+        TreeNode asgnStat = nAsgnStatNode.makeWithId(parser, token);
 
         TreeNode tail = tail(parser);
 
@@ -68,8 +68,6 @@ public class NAlistNode implements Node {
             SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(), token.getStr() + "_" + parser.getScope());
             parser.insertIdentifierRecord(record);
             asgnStat.setSymbol(record);
-
-            //todo data types come later
 
             return asgnStat;
         } else {

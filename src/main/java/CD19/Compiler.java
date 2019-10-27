@@ -1,5 +1,6 @@
 package CD19;
 
+import CD19.CodeGen.CodeGen;
 import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.CodeFileReader;
@@ -31,7 +32,10 @@ public class Compiler {
 
         printListingFileToFile("./c3256730_ProgramListing.lst");
         printErrorsToConsole();
-        //printTrees(tree);
+        printTrees(tree);
+
+
+        codeGeneration(tree);
 
     }
 
@@ -54,14 +58,18 @@ public class Compiler {
         Parser parser = new Parser(tokens);
         parser.addObserver(listingFile);
         return parser.parse();
+    }
 
+    public void codeGeneration(TreeNode tree){
+        CodeGen codeGen = new CodeGen(tree);
+        codeGen.run();
 
     }
 
     /**
      * Print listing to file
      */
-    private void  printListingFileToFile(String filename) {
+    private void printListingFileToFile(String filename) {
         PrintWriter listingOut = null;
         try {
             listingOut = new PrintWriter(filename);

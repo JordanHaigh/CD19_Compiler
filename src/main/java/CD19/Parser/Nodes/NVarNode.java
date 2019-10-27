@@ -75,9 +75,20 @@ public class NVarNode implements Node {
 
             return tail;
         } else { //var tail was null
-            SymbolTableRecord record = new SymbolTableRecord(id.getStr(), "String", parser.getScope()); //todo this var is called by vlist and vlist is only called in the "input". the inputs will be made as strings BUT YOU MUST PARSE THEM TO THE RESPECTIVE DATA TYPE
-            parser.insertIdentifierRecord(record);// todo remember to parse to appropriate data type.
-            tail.setSymbol(record);
+            SymbolTableRecord checker = new SymbolTableRecord(id.getStr(), "String", parser.getScope());
+
+            //see if record already exists
+            SymbolTableRecord record = parser.lookupIdentifierRecord(checker);
+            if (record != null) {
+                //then record already exists
+                //use this record version instead
+                tail.setSymbol(record);
+            }
+            else{
+                //insert identifier record as normal, data type is a string
+                parser.insertIdentifierRecord(checker);
+                tail.setSymbol(checker);
+            }
             return tail;
         }
 

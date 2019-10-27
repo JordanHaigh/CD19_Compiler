@@ -61,16 +61,6 @@ public class NAsgnStatNode implements Node {
     public TreeNode make(Parser parser) {
         //NOBODY USES ME BOOHOO
 
-//        TreeNode vartail = nVarTailNode.make(parser);
-//        TreeNode asgnop = nAsgnOpNode.make(parser);
-//        TreeNode bool = nBoolNode.make(parser);
-//        //nodetype will be what is returned from the nasgnop node (nasgn, npleq...)
-//
-//        //return new TreeNode(asgnop.getValue(), vartail, bool);
-//        //asgnop.setType(bool.getType()); //todo data types come later
-//        asgnop.setLeft(vartail);
-//        asgnop.setRight(bool);
-//        return asgnop;
         return new TreeNode();
     }
 

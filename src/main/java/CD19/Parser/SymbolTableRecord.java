@@ -19,6 +19,26 @@ public class SymbolTableRecord {
     private String dataType;
     private String scope;
 
+    //Code Gen Stuff
+    private int baseIndex;
+    private int memoryAddress;
+
+    public int getBaseIndex() {
+        return baseIndex;
+    }
+
+    public void setBaseIndex(int baseIndex) {
+        this.baseIndex = baseIndex;
+    }
+
+    public int getMemoryAddress() {
+        return memoryAddress;
+    }
+
+    public void setMemoryAddress(int memoryAddress) {
+        this.memoryAddress = memoryAddress;
+    }
+
     public SymbolTableRecord(){
         this("",null, "");
     }

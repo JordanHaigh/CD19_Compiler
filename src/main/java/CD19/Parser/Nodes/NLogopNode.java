@@ -42,7 +42,7 @@ public class NLogopNode implements Node{
             return new TreeNode(TreeNode.NXOR, null);
         else{
             parser.syntacticError("Expecting a valid Logical Operator", parser.peek());
-            return new TreeNode(); //todo error recover
+            return new TreeNode();
         }
     }
 }

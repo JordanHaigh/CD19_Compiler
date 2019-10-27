@@ -63,7 +63,7 @@ public class NTypeNode implements Node {
         TreeNode type = new TreeNode();
 
         Token id = parser.peek();
-        if (!parser.peekAndConsume(Token.TIDEN)) { //todo semantic check data type
+        if (!parser.peekAndConsume(Token.TIDEN)) {
             parser.syntacticError("Expected an Identifier", parser.peek());
             return type;
         }

@@ -78,8 +78,9 @@ public class NInitNode implements Node{
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(),exprTreeNode.getType(),parser.getScope()); //global (program) scope
         parser.insertConstantRecord(record);
-
-        return new TreeNode(TreeNode.NINIT, record);
+        TreeNode treeNode = new TreeNode(TreeNode.NINIT, exprTreeNode,null);
+        treeNode.setSymbol(record);
+        return treeNode;
 
     }
 }

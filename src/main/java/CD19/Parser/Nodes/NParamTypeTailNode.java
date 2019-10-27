@@ -12,7 +12,7 @@ import CD19.Scanner.Token;
  * @since 29/9/19
  */
 public class NParamTypeTailNode implements Node {
-    //	<paramTypeTail>	::=	<stype> | <typeid> //todo struct or primitive
+    //	<paramTypeTail>	::=	<stype> | <typeid>
 
     NSTypeNode nsTypeNode;
     private static NParamTypeTailNode instance;

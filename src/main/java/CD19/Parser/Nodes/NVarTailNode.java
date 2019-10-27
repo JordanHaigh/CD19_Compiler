@@ -57,6 +57,7 @@ public class NVarTailNode implements Node {
      */
     @Override
     public TreeNode make(Parser parser) {
+        //this isn;t used in actual program. only used by tests. dw about empty record
         Token token = parser.peek();
 
         if (token.getTokenID() == Token.TLBRK) {
@@ -64,7 +65,7 @@ public class NVarTailNode implements Node {
 
             parser.consume();
 
-            TreeNode expr = nExprNode.make(parser); //todo whats this used for
+            TreeNode expr = nExprNode.make(parser);
 
             if (!parser.peekAndConsume(Token.TRBRK)) {
                 parser.syntacticError("Expected a Right Bracket", parser.peek());
@@ -82,8 +83,9 @@ public class NVarTailNode implements Node {
             }
 
 
-            SymbolTableRecord record = new SymbolTableRecord(); //todo fill this in
-            vartail = new TreeNode(TreeNode.NARRV, record);
+            SymbolTableRecord record = new SymbolTableRecord();
+            vartail = new TreeNode(TreeNode.NARRV, expr,null);
+            vartail.setSymbol(record);
             return vartail;
         } else {
             return new TreeNode(TreeNode.NSIMV, null, null);
@@ -98,7 +100,7 @@ public class NVarTailNode implements Node {
 
             parser.consume();
 
-            TreeNode expr = nExprNode.make(parser); //todo whats this used for
+            TreeNode expr = nExprNode.make(parser);
 
             if (!parser.peekAndConsume(Token.TRBRK)) {
                 parser.syntacticError("Expected a Right Bracket", parser.peek());
@@ -185,7 +187,8 @@ public class NVarTailNode implements Node {
 
             }
 
-            vartail = new TreeNode(TreeNode.NARRV, variable);
+            vartail = new TreeNode(TreeNode.NARRV, expr,null);
+            vartail.setSymbol(variable);
             return vartail;
         } else {
             return new TreeNode(TreeNode.NSIMV, null, null); //you just working with a variable boy

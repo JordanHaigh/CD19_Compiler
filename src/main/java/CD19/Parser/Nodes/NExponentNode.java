@@ -112,7 +112,7 @@ public class NExponentNode implements Node {
             parser.peekAndConsume(Token.TRPAR);
             return bool;
         } else {
-            parser.syntacticError("Expected a valid Exponent starting token", parser.peek());//todo recover
+            parser.syntacticError("Expected a valid Exponent starting token", parser.peek());
             return new TreeNode();
 
         }
@@ -216,12 +216,11 @@ public class NExponentNode implements Node {
         //	<varOrFNCallTail>	::=	<varTail> | <fnCallTail>
         Token token = parser.peek();
         if (token.getTokenID() == Token.TLPAR) {
-            //todo semantic check it exists and it returns the right thing
             TreeNode treeNode = fnCallTail(parser); //fncalltail
-            //treeNode.setType(); //todo whatever type it returns - semantic lookup on the identifier to determine what the return type is
+            //treeNode.setType();
             return treeNode;
         } else
-            return nVarTailNode.makeWithIdFromVar(parser, idFromVar); //todo fix data types, maybe speak to dan??
+            return nVarTailNode.makeWithIdFromVar(parser, idFromVar);
     }
 
     /**

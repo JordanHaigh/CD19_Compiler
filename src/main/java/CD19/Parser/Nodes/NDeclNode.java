@@ -49,12 +49,12 @@ public class NDeclNode implements Node{
         Token token = parser.peek();
 
         if(!parser.peekAndConsume(Token.TIDEN)){
-            parser.syntacticError("Expected an Identifier", parser.peek()); //todo recover
+            parser.syntacticError("Expected an Identifier", parser.peek());
             return decl;
         }
 
         if(!parser.peekAndConsume(Token.TCOLN)){
-            parser.syntacticError("Expected a Colon", parser.peek()); //todo recover
+            parser.syntacticError("Expected a Colon", parser.peek());
             return decl;
         }
 

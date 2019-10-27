@@ -73,7 +73,7 @@ public class NFuncBodyNode implements Node{
 
         Token peek = parser.peek();
         if(numberOfReturns == 0){
-            parser.semanticError("Function has no return statements", peek); //todo extra semantic check that it returns the right thing
+            parser.semanticError("Function has no return statements", peek);
         }
 
         funcBody.setRight(stats);
@@ -106,7 +106,7 @@ public class NFuncBodyNode implements Node{
 
         Token peek = parser.peek();
         if(numberOfReturns == 0){
-            parser.semanticError("Function has no return statements", peek); //todo extra semantic check that it returns the right thing
+            parser.semanticError("Function has no return statements", peek);
         }
 
         funcBody.setRight(stats);

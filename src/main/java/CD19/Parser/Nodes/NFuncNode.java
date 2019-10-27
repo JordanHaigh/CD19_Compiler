@@ -91,7 +91,7 @@ public class NFuncNode implements Node{
 
         TreeNode rtype = nrTypeNode.make(parser);
 
-        TreeNode funcBody = nFuncBodyNode.make(parser);//todo use make with return type later
+        TreeNode funcBody = nFuncBodyNode.make(parser);
 
         parser.leaveScope();
 

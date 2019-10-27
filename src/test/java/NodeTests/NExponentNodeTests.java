@@ -71,7 +71,7 @@ public class NExponentNodeTests {
         TreeNode exponent = nExponentNode.make(parser);
 
         assertEquals(TreeNode.NARRV, exponent.getValue());
-        assertEquals(null, exponent.getLeft());
+        assertEquals(TreeNode.NILIT, exponent.getLeft().getValue());
         assertEquals(null, exponent.getRight());
     }
 
