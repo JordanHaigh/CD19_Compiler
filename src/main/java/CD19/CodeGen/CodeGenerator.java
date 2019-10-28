@@ -19,22 +19,13 @@ public class CodeGenerator {
     public CodeGenerator(TreeNode tree){
         this.tree = tree;
         program = new InstructionMatrix();
-
     }
-
-    public InstructionMatrix getProgram() { return program; }
 
     public void run(){
         run(tree);
     }
 
-    public void populateStringConstants(SymbolTable constants){
-        List<SymbolTableRecord> constantsList = constants.getAllRecords();
-        for(SymbolTableRecord record : constantsList){
-            program.addString(record.getLexeme());
-        }
-
-    }
+    public InstructionMatrix getProgram() { return program; }
 
     public void run(TreeNode root){
         //post order traversal
@@ -81,6 +72,16 @@ public class CodeGenerator {
         program.addString(string);
     }
 
+    public void generateInteger(String lexeme){
+        int i = Integer.parseInt(lexeme);
+        program.addInteger(i);
+    }
+
+    public void generateReal(String lexeme){
+        double d = Double.parseDouble(lexeme);
+        program.addReal(d);
+    }
+
     public void generate1Byte(OpCodes opCode) {
         program.addByte(opCode.getValue());
     }
@@ -116,6 +117,20 @@ public class CodeGenerator {
         }
     }
 
+    public void populateConstants(SymbolTable constants){
+        List<SymbolTableRecord> constantsList = constants.getAllRecords();
+        for(SymbolTableRecord record : constantsList){
+            if(record.getDataType().equals("String")){
+                generateString(record.getLexeme());
+            }
+            else if(record.getDataType().equals("Integer")){
+                generateInteger(record.getLexeme());
+            }
+            else if(record.getDataType().equals("Real")){
+                generateReal(record.getLexeme());
+            }
+        }
+    }
 }
 
 

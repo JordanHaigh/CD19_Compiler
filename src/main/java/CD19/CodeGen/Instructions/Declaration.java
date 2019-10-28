@@ -24,8 +24,6 @@ public class Declaration {
 
         allocateVariable(generator, node);
         initialiseVariableToDefault(generator, node);
-
-
     }
 
 

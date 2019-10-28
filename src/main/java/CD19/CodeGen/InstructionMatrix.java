@@ -6,6 +6,8 @@ import java.util.List;
 public class InstructionMatrix {
 
     List<int[]> matrix;
+    List<Integer> integerMatrix;
+    List<Double> realMatrix;
     List<int[]> stringMatrix;
 
     ProgramCounter programCounter;
@@ -24,6 +26,10 @@ public class InstructionMatrix {
 
         matrix.add(new int[ProgramCounter.ROWLENGTH]);
         stringMatrix.add(new int[ProgramCounter.ROWLENGTH]);
+
+        integerMatrix = new ArrayList<>();
+        realMatrix = new ArrayList<>();
+
     }
 
     public ProgramCounter getProgramCounter(){return programCounter;}
@@ -69,20 +75,32 @@ public class InstructionMatrix {
         addByteToStringMatrix(0); //cap off with zero
     }
 
+    public void addInteger(int i){
+        integerMatrix.add(i);
+    }
+    public void addReal(double d){
+        realMatrix.add(d);
+    }
+
 
     public void printMatrices(){
-        printMatrix(matrix);
-        printMatrix(stringMatrix);
+        printMatrix(matrix,false);
+        printMatrix(stringMatrix,true);
 
 
 
     }
 
-    private void printMatrix(List<int[]> matrix){
+    private void printMatrix(List<int[]> matrix, boolean printByteAsChar){
         System.out.println(matrix.size());
         for(int[] row : matrix){
             for(int i = 0; i < row.length;i++){
-                System.out.print(String.format("%02d ", row[i]));
+                System.out.print(String.format("%02d", row[i]));
+                if(printByteAsChar)
+                    System.out.print("(" + (char)row[i]+")");
+
+                System.out.print(" ");
+
             }
             System.out.println();
         }
