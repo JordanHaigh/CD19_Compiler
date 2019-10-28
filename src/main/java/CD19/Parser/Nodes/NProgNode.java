@@ -68,7 +68,7 @@ public class NProgNode implements Node{
 
         //error check
         parser.leaveScope(); //get rid of empty string scope
-        parser.enterScope(startId.getStr());
+        parser.enterScope("program");
 
         TreeNode nGlobTreeNode = nGlobNode.make(parser);
         program.setLeft(nGlobTreeNode);

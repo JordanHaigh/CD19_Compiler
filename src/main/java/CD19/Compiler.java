@@ -1,6 +1,6 @@
 package CD19;
 
-import CD19.CodeGen.CodeGen;
+import CD19.CodeGen.CodeGenerator;
 import CD19.Parser.Parser;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.CodeFileReader;
@@ -8,7 +8,6 @@ import CD19.Scanner.Scanner;
 import CD19.Scanner.Token;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -19,6 +18,9 @@ import java.util.List;
 public class Compiler {
 
     ListingFile listingFile;
+    Scanner scanner;
+    Parser parser;
+    CodeGenerator codeGenerator;
 
     /**
      * Compile source file
@@ -32,8 +34,8 @@ public class Compiler {
 
         printListingFileToFile("./c3256730_ProgramListing.lst");
         printErrorsToConsole();
-        printTrees(tree);
-
+        //printTrees(tree);
+        System.out.println();
 
         codeGeneration(tree);
 
@@ -49,21 +51,22 @@ public class Compiler {
     public List<Token> lexicalAnalysis(File file) {
         listingFile = new ListingFile(new CodeFileReader(file));
 
-        Scanner scanner = new Scanner(new CodeFileReader(file));
+        scanner = new Scanner(new CodeFileReader(file));
         scanner.addObserver(listingFile);
         return scanner.getAllTokens();
     }
 
     public TreeNode parse(List<Token> tokens) {
-        Parser parser = new Parser(tokens);
+        parser = new Parser(tokens);
         parser.addObserver(listingFile);
         return parser.parse();
     }
 
     public void codeGeneration(TreeNode tree){
-        CodeGen codeGen = new CodeGen(tree);
-        codeGen.run();
-
+        codeGenerator = new CodeGenerator(tree);
+        codeGenerator.populateStringConstants(parser.getConstants());
+        codeGenerator.run();
+        codeGenerator.getProgram().printMatrices();
     }
 
     /**

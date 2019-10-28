@@ -19,25 +19,18 @@ public class SymbolTableRecord {
     private String dataType;
     private String scope;
 
+    //semantic stuff
+    public List<String> functionVariableTypesAndOrdering;
+
+
     //Code Gen Stuff
-    private int baseIndex;
-    private int memoryAddress;
+    private int baseRegister;
+    private int offset;
 
-    public int getBaseIndex() {
-        return baseIndex;
+    public int getAddress(){
+        return baseRegister + offset;
     }
 
-    public void setBaseIndex(int baseIndex) {
-        this.baseIndex = baseIndex;
-    }
-
-    public int getMemoryAddress() {
-        return memoryAddress;
-    }
-
-    public void setMemoryAddress(int memoryAddress) {
-        this.memoryAddress = memoryAddress;
-    }
 
     public SymbolTableRecord(){
         this("",null, "");
@@ -49,6 +42,7 @@ public class SymbolTableRecord {
         this.scope = scope;
         symbolTableKey = hashCode();
         NodeDataTypes.addDataType(dataType);
+
     }
 
     public int getSymbolTableKey() { return symbolTableKey; }
@@ -58,15 +52,13 @@ public class SymbolTableRecord {
 
     public void setScope(String scope) {this.scope = scope; }
 
-    public List<String> functionVariableTypesAndOrdering;
+    public List<String> getFunctionVariableTypesAndOrdering() { return functionVariableTypesAndOrdering; }
+    public void setFunctionVariableTypesAndOrdering(List<String> functionVariableTypesAndOrdering) { this.functionVariableTypesAndOrdering = functionVariableTypesAndOrdering; }
 
-    public List<String> getFunctionVariableTypesAndOrdering() {
-        return functionVariableTypesAndOrdering;
-    }
-
-    public void setFunctionVariableTypesAndOrdering(List<String> functionVariableTypesAndOrdering) {
-        this.functionVariableTypesAndOrdering = functionVariableTypesAndOrdering;
-    }
+    public int getBaseRegister() { return baseRegister; }
+    public int getOffset() { return offset; }
+    public void setBaseRegister(int baseRegister) { this.baseRegister = baseRegister; }
+    public void setOffset(int offset) { this.offset = offset;  }
 
     @Override
     public boolean equals(Object o) {

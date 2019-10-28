@@ -6,7 +6,6 @@
 CD19 SimpleProgram
 main
     a: integer
-
 begin
     printline "Hello World";
 end

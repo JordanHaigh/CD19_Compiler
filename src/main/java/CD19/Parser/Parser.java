@@ -366,7 +366,7 @@ public class Parser implements Subject {
         return syntacticErrors;
     }
 
-
+    public SymbolTable getConstants(){return constants;}
 
     public String getProgramScope() {
         return scopeStack.get(0);
