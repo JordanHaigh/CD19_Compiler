@@ -133,7 +133,14 @@ public class NTypeNode implements Node {
             return arrayTail;
         }
 
+        Token peek = parser.peek();
         TreeNode exprTNode = nExprNode.make(parser);
+
+        if(exprTNode != null && exprTNode.getType() != null){ //this stays here for unit tests
+            if(!exprTNode.getType().equals("Integer")){
+                parser.semanticError("Must use integer for array index", peek);
+            }
+        }
 
         if (!parser.peekAndConsume(Token.TRBRK)) {
             parser.syntacticError("Expected Right Bracket", parser.peek());

@@ -100,7 +100,12 @@ public class NVarTailNode implements Node {
 
             parser.consume();
 
+            Token peek = parser.peek();
             TreeNode expr = nExprNode.make(parser);
+
+            if(!expr.getType().equals("Integer")){
+                parser.semanticError("Must use integer for array index", peek);
+            }
 
             if (!parser.peekAndConsume(Token.TRBRK)) {
                 parser.syntacticError("Expected a Right Bracket", parser.peek());
