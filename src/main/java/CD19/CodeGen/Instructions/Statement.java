@@ -6,6 +6,7 @@ import CD19.Observer.InstructionOverrideMessage;
 import CD19.Observer.ObservableMessage;
 import CD19.Observer.Observer;
 import CD19.Observer.Subject;
+import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 
 import java.util.ArrayList;
@@ -35,23 +36,26 @@ public class Statement implements Subject {
             case TreeNode.NPRLN : {
                 generatePrintLineStatement(generator,node);
             }
+            case TreeNode.NINPUT: {
+                generateInputStatement(generator,node);
+            }
         }
     }
 
     private static void generatePrintStatement(CodeGenerator generator, TreeNode node){
         //LA0 - get constant
-        int operand = -99; //todo need to second sweep
+        int operand = -99;
 
-        InstructionOverrideMessage message = new InstructionOverrideMessage(     //todo only applies to string print
+        //todo maybe check that this is a string before sending off a message, you might not need to do this for ints and variables
+        InstructionOverrideMessage message = new InstructionOverrideMessage(
                 generator.getProgram().getProgramCounter().getRow(),
                 generator.getProgram().getProgramCounter().getByte(),
                 5,
-                OpCodes.LA0,
+                OpCodes.LA0, //todo try printing out single number, variable, TRUE, etc.
                 node.getLeft()
         );
 
         generator.generate5Bytes(OpCodes.LA0,operand);
-
 
         instance.notifyObservers(message);
 
@@ -63,6 +67,19 @@ public class Statement implements Subject {
     private static void generatePrintLineStatement(CodeGenerator generator, TreeNode node){
         generatePrintStatement(generator, node);
         generator.generate1Byte(OpCodes.NEWLN);
+    }
+
+    private static void generateInputStatement(CodeGenerator generator, TreeNode node){
+        SymbolTableRecord record = node.getLeft().getSymbol();
+        //that will tell us the variable to print
+
+        int baseRegister = record.getBaseRegister();
+        int offset = record.getOffset();
+
+        String LA = "LA" + baseRegister;
+        generator.generate5Bytes(OpCodes.valueOf(LA), offset);
+        generator.generate1Byte(OpCodes.READI);
+        generator.generate1Byte(OpCodes.ST);
     }
 
 

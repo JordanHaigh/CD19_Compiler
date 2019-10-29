@@ -367,6 +367,7 @@ public class Parser implements Subject {
     }
 
     public SymbolTable getConstants(){return constants;}
+    public SymbolTable getIdentifiers(){return identifiers;}
 
     public String getProgramScope() {
         return scopeStack.get(0);

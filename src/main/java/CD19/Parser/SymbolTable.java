@@ -32,7 +32,9 @@ public class SymbolTable {
      * @param record  - Record to remove
      */
     public void remove(SymbolTableRecord record){
-        map.remove(record);
+        if(map.containsValue(record)){
+            map.remove(record.getSymbolTableKey());
+        }
     }
 
     /**

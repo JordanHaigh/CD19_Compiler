@@ -63,7 +63,7 @@ public class Compiler {
     }
 
     public void codeGeneration(TreeNode tree){
-        codeGenerator = new CodeGenerator(tree,parser.getConstants());
+        codeGenerator = new CodeGenerator(tree,parser.getConstants(), parser.getIdentifiers());
         codeGenerator.run();
         codeGenerator.getProgram().printMatrix(false);
     }

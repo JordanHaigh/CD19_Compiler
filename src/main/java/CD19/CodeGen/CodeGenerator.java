@@ -16,6 +16,7 @@ public class CodeGenerator implements Observer {
 
     TreeNode tree;
     SymbolTable constants;
+    SymbolTable identifiers;
     InstructionMatrix program;
     public static final int REGISTERSIZE = 8;
     public static int offset = 0;
@@ -24,9 +25,13 @@ public class CodeGenerator implements Observer {
     List<SymbolTableRecord> realConstants = new ArrayList<>();
     List<InstructionOverrideMessage> overrideMessages = new ArrayList<>();
 
-    public CodeGenerator(TreeNode tree, SymbolTable constants){
+    public CodeGenerator(TreeNode tree, SymbolTable constants, SymbolTable identifiers){
         this.tree = tree;
         this.constants = constants;
+        this.identifiers = identifiers;
+
+        Declaration.INSTANCE().setIdentifiers(identifiers);
+
         program = new InstructionMatrix();
 
         Statement.INSTANCE().addObserver(this);
@@ -58,6 +63,7 @@ public class CodeGenerator implements Observer {
                 Declaration.generate(this, root);
                 break;
             case TreeNode.NPRLN:
+            case TreeNode.NINPUT:
                 Statement.generate(this, root);
                 break;
             case TreeNode.NILIT:
@@ -120,7 +126,6 @@ public class CodeGenerator implements Observer {
     }
 
     public void allocateVariable(SymbolTableRecord record){
-        generate1Byte(OpCodes.ALLOC);
 
         String scope = record.getScope();
         if(scope.equals("program")){
