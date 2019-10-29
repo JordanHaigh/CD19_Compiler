@@ -3,6 +3,5 @@ main
 	x : integer
 begin
 	printline "Hello World";
-
 end
 CD19 test

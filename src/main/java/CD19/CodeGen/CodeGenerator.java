@@ -60,8 +60,8 @@ public class CodeGenerator implements Observer {
             case TreeNode.NPRLN:
                 Statement.generate(this, root);
                 break;
-            case TreeNode.NILIT: //todo more logic. lb < 256, lh < 65536, only add to int constants when too big
-                intConstants.add(root.getSymbol());
+            case TreeNode.NILIT:
+                integerLiteral(root);
                 break;
             case TreeNode.NFLIT:
                 realConstants.add(root.getSymbol());
@@ -70,6 +70,34 @@ public class CodeGenerator implements Observer {
 
         }
         System.out.println(root + " ");
+    }
+
+    private void integerLiteral(TreeNode node){
+        int value = Integer.parseInt(node.getSymbol().getLexeme());
+
+        if(value < 256){
+            //LB Operation
+            generate2Bytes(OpCodes.LB, value);
+        }
+        else if(value < 65536){
+            generate3Bytes(OpCodes.LH,value);
+        }
+        else{
+            //add to constants
+            intConstants.add(node.getSymbol());
+
+            InstructionOverrideMessage message = new InstructionOverrideMessage(
+                    getProgram().getProgramCounter().getRow(),
+                    getProgram().getProgramCounter().getByte(),
+                    5,
+                    OpCodes.LV0,
+                    node
+            );
+
+            overrideMessages.add(message);
+
+            generate5Bytes(OpCodes.LV0,-99); //placeholder - updated in second run
+        }
     }
 
     public void secondRun(){
