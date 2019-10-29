@@ -34,7 +34,7 @@ public class Compiler {
 
         printListingFileToFile("./c3256730_ProgramListing.lst");
         printErrorsToConsole();
-        //printTrees(tree);
+        printTree(tree);
         System.out.println();
 
         codeGeneration(tree);
@@ -63,10 +63,9 @@ public class Compiler {
     }
 
     public void codeGeneration(TreeNode tree){
-        codeGenerator = new CodeGenerator(tree);
-        codeGenerator.populateConstants(parser.getConstants());
+        codeGenerator = new CodeGenerator(tree,parser.getConstants());
         codeGenerator.run();
-        codeGenerator.getProgram().printMatrices();
+        codeGenerator.getProgram().printMatrix(false);
     }
 
     /**
@@ -103,14 +102,14 @@ public class Compiler {
      *
      * @param tree - Tree to print
      */
-    private void printTrees(TreeNode tree) {
+    private void printTree(TreeNode tree) {
         System.out.println("\n=================== XML Version of Tree =========================\n");
         System.out.println(tree.prettyPrintTree());
-        System.out.println("\n=================== Dans Version of Tree =========================\n");
-
-        PrintWriter out = new PrintWriter(System.out);
-        tree.danPrintTree(out, tree);
-        out.flush();
+//        System.out.println("\n=================== Dans Version of Tree =========================\n");
+//
+//        PrintWriter out = new PrintWriter(System.out);
+//        tree.danPrintTree(out, tree);
+//        out.flush();
     }
 
 

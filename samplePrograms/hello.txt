@@ -1,10 +1,8 @@
 CD19 test
-constants
-    aaaa = 5
-
 main
 	x : integer
 begin
 	printline "Hello World";
+
 end
 CD19 test

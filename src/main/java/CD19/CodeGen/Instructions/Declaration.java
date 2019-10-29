@@ -2,10 +2,16 @@ package CD19.CodeGen.Instructions;
 
 import CD19.CodeGen.CodeGenerator;
 import CD19.CodeGen.OpCodes;
+import CD19.Observer.ObservableMessage;
+import CD19.Observer.Observer;
+import CD19.Observer.Subject;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 
-public class Declaration {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Declaration implements Subject {
 
     public static void generate(CodeGenerator generator, TreeNode node){
         if(node == null)
@@ -21,7 +27,7 @@ public class Declaration {
     }
 
     private static void genSDecl(CodeGenerator generator, TreeNode node){
-
+        //todo differen timplementations for int, real bool
         allocateVariable(generator, node);
         initialiseVariableToDefault(generator, node);
     }
@@ -60,6 +66,21 @@ public class Declaration {
         generator.generate1Byte(OpCodes.ST);
     }
 
+    List<Observer> observers = new ArrayList<>();
+    @Override
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
 
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
 
+    @Override
+    public void notifyObservers(ObservableMessage message) {
+        for(Observer observer : observers){
+            observer.handleMessage(message);
+        }
+    }
 }

@@ -89,15 +89,20 @@ public class NExponentNode implements Node {
     public TreeNode make(Parser parser) {
         TreeNode exponent = new TreeNode();
 
+        Token token = parser.peek();
         if (parser.peek().getTokenID() == Token.TIDEN) {
             return varOrFnCall(parser);
         } else if (parser.peekAndConsume(Token.TILIT)) { //integer literal
             exponent = new TreeNode(TreeNode.NILIT, null, null);
             exponent.setType("Integer");
+            SymbolTableRecord record = new SymbolTableRecord(token.getStr(),"Integer", parser.getScope());
+            exponent.setSymbol(record);
             return exponent;
         } else if (parser.peekAndConsume(Token.TFLIT)) {//float literal
             exponent = new TreeNode(TreeNode.NFLIT, null, null);
             exponent.setType("Real");
+            SymbolTableRecord record = new SymbolTableRecord(token.getStr(),"Real", parser.getScope());
+            exponent.setSymbol(record);
             return exponent;
         } else if (parser.peekAndConsume(Token.TTRUE)) {//true keyword
             exponent = new TreeNode(TreeNode.NTRUE, null, null);

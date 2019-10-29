@@ -2,6 +2,9 @@ package CD19.CodeGen;
 
 import CD19.CodeGen.Instructions.Declaration;
 import CD19.CodeGen.Instructions.Statement;
+import CD19.Observer.CodeGenInstructionOverrideMessage;
+import CD19.Observer.ObservableMessage;
+import CD19.Observer.Observer;
 import CD19.Parser.SymbolTable;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
@@ -9,20 +12,27 @@ import CD19.Parser.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CodeGenerator {
+public class CodeGenerator implements Observer {
 
     TreeNode tree;
+    SymbolTable constants;
     InstructionMatrix program;
     public static final int REGISTERSIZE = 8;
     public static int offset = 0;
 
-    public CodeGenerator(TreeNode tree){
+    List<SymbolTableRecord> intConstants = new ArrayList<>();
+    List<SymbolTableRecord> realConstants = new ArrayList<>();
+
+    public CodeGenerator(TreeNode tree, SymbolTable constants){
         this.tree = tree;
+        this.constants = constants;
         program = new InstructionMatrix();
     }
 
     public void run(){
-        run(tree);
+        run(tree); //first run for building most of matrix. need to do post code gen sweep for string constant locations
+        program.populateConstants(constants, intConstants, realConstants);
+        //secondRun(tree);
     }
 
     public InstructionMatrix getProgram() { return program; }
@@ -37,11 +47,22 @@ public class CodeGenerator {
         run(root.getRight());
 
         // now deal with the node
-        if(root.getValue() == TreeNode.NSDECL){
-            Declaration.generate(this, root);
-        }
-        if(root.getValue() == TreeNode.NPRLN){
-            Statement.generate(this,root);
+        int rootValue = root.getValue();
+        switch(rootValue) {
+            case TreeNode.NSDECL:
+                Declaration.generate(this, root);
+                break;
+            case TreeNode.NPRLN:
+                Statement.generate(this, root);
+                break;
+            case TreeNode.NILIT: //todo more logic. lb < 256, lh < 65536, only add to int constants when too big
+                intConstants.add(root.getSymbol());
+                break;
+            case TreeNode.NFLIT:
+                realConstants.add(root.getSymbol());
+                break;
+
+
         }
         System.out.println(root + " ");
     }
@@ -68,19 +89,19 @@ public class CodeGenerator {
         incrementOffset();
     }
 
-    public void generateString(String string){
-        program.addString(string);
-    }
-
-    public void generateInteger(String lexeme){
-        int i = Integer.parseInt(lexeme);
-        program.addInteger(i);
-    }
-
-    public void generateReal(String lexeme){
-        double d = Double.parseDouble(lexeme);
-        program.addReal(d);
-    }
+//    public void generateString(String string){
+//        program.addString(string);
+//    }
+//
+//    public void generateInteger(String lexeme){
+//        int i = Integer.parseInt(lexeme);
+//        program.addInteger(i);
+//    }
+//
+//    public void generateReal(String lexeme){
+//        double d = Double.parseDouble(lexeme);
+//        program.addReal(d);
+//    }
 
     public void generate1Byte(OpCodes opCode) {
         program.addByte(opCode.getValue());
@@ -117,18 +138,14 @@ public class CodeGenerator {
         }
     }
 
-    public void populateConstants(SymbolTable constants){
-        List<SymbolTableRecord> constantsList = constants.getAllRecords();
-        for(SymbolTableRecord record : constantsList){
-            if(record.getDataType().equals("String")){
-                generateString(record.getLexeme());
-            }
-            else if(record.getDataType().equals("Integer")){
-                generateInteger(record.getLexeme());
-            }
-            else if(record.getDataType().equals("Real")){
-                generateReal(record.getLexeme());
-            }
+
+
+    List<CodeGenInstructionOverrideMessage> instructionsToOverrideInSecondSweep = new ArrayList<>();
+    @Override
+    public void handleMessage(ObservableMessage message) {
+        if(message instanceof CodeGenInstructionOverrideMessage){
+            CodeGenInstructionOverrideMessage typedMessage = (CodeGenInstructionOverrideMessage)message;
+            instructionsToOverrideInSecondSweep.add(typedMessage);
         }
     }
 }
