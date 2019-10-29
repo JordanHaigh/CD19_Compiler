@@ -24,7 +24,7 @@ public class InstructionMatrix {
     public ProgramCounter getProgramCounter(){return programCounter;}
     public void setProgramCounter(ProgramCounter programCounter){this.programCounter = programCounter;}
 
-    public void addByte(int byteToAdd){
+    public void addByte(int byteToAdd, boolean overridingAddress){
         int rowIndex = programCounter.getRow();
         int byteIndex = programCounter.getByte();
         matrix.get(rowIndex)[byteIndex] = byteToAdd;
@@ -35,7 +35,8 @@ public class InstructionMatrix {
             //new line
             programCounter.incrementRow();
             programCounter.setByte(0);
-            matrix.add(new int[programCounter.ROWLENGTH]);
+            if(!overridingAddress)
+                matrix.add(new int[programCounter.ROWLENGTH]);
         }
     }
 
@@ -55,9 +56,23 @@ public class InstructionMatrix {
         record.setOffset(programCounter.getRow() * 8 + programCounter.getByte());
 
         for(byte b : bytearray){
-            addByte(b);
+            addByte(b,false);
         }
-        addByte(0); //cap off with zero
+        addByte(0,false); //cap off with zero
+    }
+
+    public void moveProgramCounter(int rowTomoveTo, int byteToMoveTo){
+        if(rowTomoveTo < 0 || rowTomoveTo > matrix.size()-1){
+            return;
+        }
+        if(byteToMoveTo < 0 || byteToMoveTo > programCounter.ROWLENGTH){
+            return;
+        }
+        //todo probs error here
+        programCounter.setRow(rowTomoveTo);
+        programCounter.setByte(byteToMoveTo);
+
+
     }
 
     public void populateConstants(SymbolTable constants, List<SymbolTableRecord> integerConstants, List<SymbolTableRecord> realConstants){

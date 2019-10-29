@@ -41,9 +41,18 @@ public class Statement implements Subject {
     private static void generatePrintStatement(CodeGenerator generator, TreeNode node){
         //LA0 - get constant
         int operand = -99; //todo need to second sweep
+
+        InstructionOverrideMessage message = new InstructionOverrideMessage(     //todo only applies to string print
+                generator.getProgram().getProgramCounter().getRow(),
+                generator.getProgram().getProgramCounter().getByte(),
+                5,
+                OpCodes.LA0,
+                node.getLeft()
+        );
+
         generator.generate5Bytes(OpCodes.LA0,operand);
 
-        InstructionOverrideMessage message = new InstructionOverrideMessage(generator.getProgram().getProgramCounter().getRow(),generator.getProgram().getProgramCounter().getByte(),5,OpCodes.LA0,node);
+
         instance.notifyObservers(message);
 
         generator.generate1Byte(OpCodes.STRPR);

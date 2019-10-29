@@ -34,4 +34,12 @@ public class ProgramCounter {
     public void incrementByte(){byte_++;}
     public void incrementRow(){ row_++;}
 
+
+    @Override
+    public String toString() {
+        return "ProgramCounter{" +
+                "ROW:" + row_ +
+                " BYTE:" + byte_ +
+                '}';
+    }
 }

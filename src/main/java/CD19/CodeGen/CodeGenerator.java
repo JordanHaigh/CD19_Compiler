@@ -35,6 +35,7 @@ public class CodeGenerator implements Observer {
 
     public void run(){
         run(tree); //first run for building most of matrix. need to do post code gen sweep for string constant locations
+        generate1Byte(OpCodes.RETN); //use this when finished program
         program.populateConstants(constants, intConstants, realConstants);
         secondRun();
     }
@@ -75,7 +76,14 @@ public class CodeGenerator implements Observer {
         //fix up any addressing that was borked in first run
         for(InstructionOverrideMessage message : overrideMessages){
             //do the thing
-            System.out.println();
+            program.moveProgramCounter(message.getPcRowStart(),message.getPcByteStart());
+
+            int baseRegister = message.getNode().getSymbol().getBaseRegister();
+            int operand = message.getNode().getSymbol().getOffset();
+
+            String LA = "LA" + baseRegister; //todo probs need to make this generic and use the opcode found in message
+            generateXBytes(OpCodes.valueOf(LA),operand, message.getGenerateXBytes(), true);
+
         }
     }
 
@@ -101,37 +109,23 @@ public class CodeGenerator implements Observer {
         incrementOffset();
     }
 
-//    public void generateString(String string){
-//        program.addString(string);
-//    }
-//
-//    public void generateInteger(String lexeme){
-//        int i = Integer.parseInt(lexeme);
-//        program.addInteger(i);
-//    }
-//
-//    public void generateReal(String lexeme){
-//        double d = Double.parseDouble(lexeme);
-//        program.addReal(d);
-//    }
-
     public void generate1Byte(OpCodes opCode) {
-        program.addByte(opCode.getValue());
+        program.addByte(opCode.getValue(),false);
     }
 
     public void generate2Bytes(OpCodes opCode, int operand) {
-        generateXBytes(opCode, operand, 2);
+        generateXBytes(opCode, operand, 2,false);
     }
 
     public void generate3Bytes(OpCodes opCode, int operand) {
-        generateXBytes(opCode, operand, 3);
+        generateXBytes(opCode, operand, 3,false);
     }
 
     public void generate5Bytes(OpCodes opCode, int operand) {
-        generateXBytes(opCode, operand, 5);
+        generateXBytes(opCode, operand, 5,false);
     }
 
-    public void generateXBytes(OpCodes opCode, int operand, int x){
+    public void generateXBytes(OpCodes opCode, int operand, int x, boolean overridingAddresses){
         if(x < 0)
             return;
 
@@ -146,11 +140,9 @@ public class CodeGenerator implements Observer {
         }
 
         for(int i = 0; i < x; i++){
-            program.addByte(operands[i]);
+            program.addByte(operands[i], overridingAddresses);
         }
     }
-
-
 
     @Override
     public void handleMessage(ObservableMessage message) {
