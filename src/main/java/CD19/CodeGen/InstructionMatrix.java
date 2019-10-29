@@ -68,7 +68,6 @@ public class InstructionMatrix {
         if(byteToMoveTo < 0 || byteToMoveTo > programCounter.ROWLENGTH){
             return;
         }
-        //todo probs error here
         programCounter.setRow(rowTomoveTo);
         programCounter.setByte(byteToMoveTo);
 

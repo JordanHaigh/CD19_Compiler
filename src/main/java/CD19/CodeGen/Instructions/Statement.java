@@ -47,8 +47,6 @@ public class Statement implements Subject {
 
     private static void generatePrintStatement(CodeGenerator generator, TreeNode node){
         //LA0 - get constant
-        int operand = -99;
-
         String dataType = node.getLeft().getType();
         //todo try printing out single number, variable, TRUE, etc.
         if(dataType.equals("String")){
@@ -59,16 +57,31 @@ public class Statement implements Subject {
                     OpCodes.LA0,
                     node.getLeft()
             );
-
-            generator.generate5Bytes(OpCodes.LA0,operand);
-
             instance.notifyObservers(message);
 
+            generator.generate5Bytes(OpCodes.LA0,-99);
             generator.generate1Byte(OpCodes.STRPR);
 
         }
         else if(dataType.equals("Integer")){
-            generator.generate1Byte(OpCodes.VALPR);
+            //check if its an integer variable or just an ilit
+            int nodeValue = node.getLeft().getValue();
+            if(nodeValue == TreeNode.NSIMV){
+                //integer variable
+                //load addr integer in
+                SymbolTableRecord record = node.getLeft().getSymbol();
+                int baseRegister = record.getBaseRegister();
+                int offset = record.getOffset();
+
+                String LV = "LV" + baseRegister;
+                generator.generate5Bytes(OpCodes.valueOf(LV), offset);
+                generator.generate1Byte(OpCodes.VALPR);
+            }
+
+            else{
+                //must be a straight number
+                generator.generate1Byte(OpCodes.VALPR);
+            }
         }
         else if(dataType.equals("Real")){
             //todo implement later
@@ -83,8 +96,22 @@ public class Statement implements Subject {
 
 
     private static void generatePrintLineStatement(CodeGenerator generator, TreeNode node){
+        //what if there are child nodes of the prln? e.g.
+//        \--- NPRLN
+//               \--- NPRLST
+//                    |--- NSTRG "Hello World"
+//                    \--- NPRLST
+//                          |--- NSTRG "please"
+//                          \--- NSTRG  "let me graduate"
+
+        //todo....
         generatePrintStatement(generator, node);
         generator.generate1Byte(OpCodes.NEWLN);
+    }
+
+    private static void generatePrintLineStatement_Recurse(CodeGenerator generator, TreeNode root){
+
+
     }
 
     private static void generateInputStatement(CodeGenerator generator, TreeNode node){

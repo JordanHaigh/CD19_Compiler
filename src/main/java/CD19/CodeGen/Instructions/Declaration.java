@@ -55,7 +55,6 @@ public class Declaration implements Subject {
             generator.generate1Byte(OpCodes.ALLOC);
 
             for(SymbolTableRecord record : recordsInScope){
-                //todo differen timplementations for int, real bool
                 generator.allocateVariable(record);
                 //initialiseVariableToDefault(generator, record); //todo k=i+j doesnt initialise, but hello world does??
             }
@@ -84,6 +83,8 @@ public class Declaration implements Subject {
     }
 
     private static void initialiseVariableToDefault(CodeGenerator generator, SymbolTableRecord record) {
+        //todo differen initialisers for int, real bool
+
         int baseAddr = record.getBaseRegister();
         String LA ="LA" + baseAddr;
 

@@ -63,6 +63,7 @@ public class CodeGenerator implements Observer {
                 Declaration.generate(this, root);
                 break;
             case TreeNode.NPRLN:
+            case TreeNode.NPRLST:
             case TreeNode.NINPUT:
                 Statement.generate(this, root);
                 break;
@@ -72,6 +73,7 @@ public class CodeGenerator implements Observer {
             case TreeNode.NFLIT:
                 realConstants.add(root.getSymbol());
                 break;
+
 
 
         }

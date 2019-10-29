@@ -65,14 +65,14 @@ public class NAlistNode implements Node {
 
         if (tail == null) {
             //tail is null, so we only have one asgnstat
-            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(), token.getStr() + "_" + parser.getScope());
+            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(), parser.getScope());
             parser.insertIdentifierRecord(record);
             asgnStat.setSymbol(record);
 
             return asgnStat;
         } else {
             //insert SymbolTable Record for the AList
-            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(), token.getStr() + "_" + parser.getScope());
+            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(), parser.getScope());
             parser.insertIdentifierRecord(record);
 
             asgnStat.setSymbol(record);
