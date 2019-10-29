@@ -1,0 +1,9 @@
+CD19 test
+main
+	i : integer, j : integer, k : integer
+begin
+    input i;
+    input j;
+    k = i + j;
+end
+CD19 test
