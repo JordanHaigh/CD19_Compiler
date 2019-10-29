@@ -1,8 +1,7 @@
 CD19 test
 main
-	x : integer, y : integer, z : integer
+	x : integer
 begin
-	input x;
-	input y;
+    printline 500000;
 end
 CD19 test

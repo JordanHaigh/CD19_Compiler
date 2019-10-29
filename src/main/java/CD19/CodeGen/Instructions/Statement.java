@@ -32,12 +32,15 @@ public class Statement implements Subject {
         switch(nodeValue){
             case TreeNode.NPRINT: {
                 generatePrintStatement(generator,node);
+                break;
             }
             case TreeNode.NPRLN : {
                 generatePrintLineStatement(generator,node);
+                break;
             }
             case TreeNode.NINPUT: {
                 generateInputStatement(generator,node);
+                break;
             }
         }
     }
@@ -46,20 +49,35 @@ public class Statement implements Subject {
         //LA0 - get constant
         int operand = -99;
 
-        //todo maybe check that this is a string before sending off a message, you might not need to do this for ints and variables
-        InstructionOverrideMessage message = new InstructionOverrideMessage(
-                generator.getProgram().getProgramCounter().getRow(),
-                generator.getProgram().getProgramCounter().getByte(),
-                5,
-                OpCodes.LA0, //todo try printing out single number, variable, TRUE, etc.
-                node.getLeft()
-        );
+        String dataType = node.getLeft().getType();
+        //todo try printing out single number, variable, TRUE, etc.
+        if(dataType.equals("String")){
+            InstructionOverrideMessage message = new InstructionOverrideMessage(
+                    generator.getProgram().getProgramCounter().getRow(),
+                    generator.getProgram().getProgramCounter().getByte(),
+                    5,
+                    OpCodes.LA0,
+                    node.getLeft()
+            );
 
-        generator.generate5Bytes(OpCodes.LA0,operand);
+            generator.generate5Bytes(OpCodes.LA0,operand);
 
-        instance.notifyObservers(message);
+            instance.notifyObservers(message);
 
-        generator.generate1Byte(OpCodes.STRPR);
+            generator.generate1Byte(OpCodes.STRPR);
+
+        }
+        else if(dataType.equals("Integer")){
+            generator.generate1Byte(OpCodes.VALPR);
+        }
+        else if(dataType.equals("Real")){
+            //todo implement later
+        }
+        else if(dataType.equals("Boolean")){
+            //todo implement later
+        }
+
+
     }
 
 

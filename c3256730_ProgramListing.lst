@@ -1,8 +1,7 @@
 1: CD19 test
 2: main
-3: 	x : integer, y : integer, z : integer
+3: 	x : integer
 4: begin
-5: 	input x;
-6: 	input y;
-7: end
-8: CD19 test
+5:     printline 500000;
+6: end
+7: CD19 test

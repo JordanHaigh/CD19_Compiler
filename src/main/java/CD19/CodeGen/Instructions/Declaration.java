@@ -88,18 +88,12 @@ public class Declaration implements Subject {
         String LA ="LA" + baseAddr;
 
         // 91 = LA (Load Address)
-        //      Loads Address from Base Reg 1 (Main Stack)
-        //      Pushes an address pointer to the stack which points to the address
-        //      of where x is defined
         generator.generate5Bytes(OpCodes.valueOf(LA),record.getOffset());
 
         // 42 = LB (Load Byte)
-        //      Push 1 byte of data to the stack with a value of x's initial value
         generator.generate3Bytes(OpCodes.LH,record.getOffset());
 
         // 43 = ST (Store)
-        //      Store the top value on the stack, to the Address pointer ref that
-        //      is second on the stack
         generator.generate1Byte(OpCodes.ST);
     }
 
