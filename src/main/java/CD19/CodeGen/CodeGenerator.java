@@ -2,7 +2,7 @@ package CD19.CodeGen;
 
 import CD19.CodeGen.Instructions.Declaration;
 import CD19.CodeGen.Instructions.Statement;
-import CD19.Observer.CodeGenInstructionOverrideMessage;
+import CD19.Observer.InstructionOverrideMessage;
 import CD19.Observer.ObservableMessage;
 import CD19.Observer.Observer;
 import CD19.Parser.SymbolTable;
@@ -22,17 +22,21 @@ public class CodeGenerator implements Observer {
 
     List<SymbolTableRecord> intConstants = new ArrayList<>();
     List<SymbolTableRecord> realConstants = new ArrayList<>();
+    List<InstructionOverrideMessage> overrideMessages = new ArrayList<>();
 
     public CodeGenerator(TreeNode tree, SymbolTable constants){
         this.tree = tree;
         this.constants = constants;
         program = new InstructionMatrix();
+
+        Statement.INSTANCE().addObserver(this);
+        Declaration.INSTANCE().addObserver(this);
     }
 
     public void run(){
         run(tree); //first run for building most of matrix. need to do post code gen sweep for string constant locations
         program.populateConstants(constants, intConstants, realConstants);
-        //secondRun(tree);
+        secondRun();
     }
 
     public InstructionMatrix getProgram() { return program; }
@@ -65,6 +69,14 @@ public class CodeGenerator implements Observer {
 
         }
         System.out.println(root + " ");
+    }
+
+    public void secondRun(){
+        //fix up any addressing that was borked in first run
+        for(InstructionOverrideMessage message : overrideMessages){
+            //do the thing
+            System.out.println();
+        }
     }
 
     public void incrementOffset(){
@@ -140,12 +152,11 @@ public class CodeGenerator implements Observer {
 
 
 
-    List<CodeGenInstructionOverrideMessage> instructionsToOverrideInSecondSweep = new ArrayList<>();
     @Override
     public void handleMessage(ObservableMessage message) {
-        if(message instanceof CodeGenInstructionOverrideMessage){
-            CodeGenInstructionOverrideMessage typedMessage = (CodeGenInstructionOverrideMessage)message;
-            instructionsToOverrideInSecondSweep.add(typedMessage);
+        if(message instanceof InstructionOverrideMessage){
+            InstructionOverrideMessage typedMessage = (InstructionOverrideMessage)message;
+            overrideMessages.add(typedMessage);
         }
     }
 }

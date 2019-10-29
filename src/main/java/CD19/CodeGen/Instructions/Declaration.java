@@ -13,6 +13,19 @@ import java.util.List;
 
 public class Declaration implements Subject {
 
+    private static Declaration instance;
+    /**
+     * Singleton method used so only one instance of the class is created throughout the entire program
+     * @return - Instance of the class
+     */
+    public static Declaration INSTANCE() {
+        if (instance == null) {
+            instance = new Declaration();
+        }
+        return instance;
+    }
+
+
     public static void generate(CodeGenerator generator, TreeNode node){
         if(node == null)
             return;
@@ -67,6 +80,7 @@ public class Declaration implements Subject {
     }
 
     List<Observer> observers = new ArrayList<>();
+
     @Override
     public void addObserver(Observer observer) {
         observers.add(observer);
