@@ -60,7 +60,18 @@ public class Statement{
                 generateDivideEqualsStatement(generator,node);
                 break;
             }
+            //------------------------RETNSTAT----------------------------
+            case TreeNode.NRETN: {
+                generateReturnStatement(generator, node);
+                break;
+            }
+
         }
+    }
+
+    private static void generateReturnStatement(CodeGenerator generator, TreeNode node){
+        generator.generate1Byte(OpCodes.RETN);
+        generator.stopProcessing();
     }
 
     private static void generateDivideEqualsStatement(CodeGenerator generator, TreeNode node){
@@ -128,7 +139,6 @@ public class Statement{
         generator.generate1Byte(OpCodes.ADD); //final add opcode
         generator.generate1Byte(OpCodes.ST); //store as normal
     }
-
 
     private static void generateAssignStatement(CodeGenerator generator, TreeNode node){
 //        Example:

@@ -20,6 +20,7 @@ public class CodeGenerator {
     SymbolTable constants;
     SymbolTable identifiers;
     InstructionMatrix program;
+    boolean stopProcessing = false;
     public static final int REGISTERSIZE = 8;
     public static int offset = 0;
 
@@ -37,7 +38,8 @@ public class CodeGenerator {
     public void run(){
         Declaration.generate(this, identifiers);
         run(tree); //first run for building most of matrix. need to do post code gen sweep for string constant locations
-        generate1Byte(OpCodes.RETN); //use this when finished program
+        if(!stopProcessing) //if user hadn't stopped code-genning manually (didn't use a return statement)
+            generate1Byte(OpCodes.RETN); //use this when finished program
         program.populateConstants(constants, intConstants, realConstants);
         secondRun();
     }
@@ -45,6 +47,10 @@ public class CodeGenerator {
     public InstructionMatrix getProgram() { return program; }
 
     public void run(TreeNode root){
+        if(stopProcessing){
+            return;
+        }
+
         //post order traversal
         if (root == null)
             return;
@@ -58,12 +64,12 @@ public class CodeGenerator {
         switch(rootValue) {
             case TreeNode.NPRLN: case TreeNode.NPRINT: case TreeNode.NINPUT: //iostat
             case TreeNode.NASGN: case TreeNode.NPLEQ : case TreeNode.NMNEQ : case TreeNode.NSTEQ: case TreeNode.NDVEQ: //asgnstat
-            // reptstat
-            //return stat
-            //callstat
-
+            case TreeNode.NRETN : //return stat
                 Statement.generate(this, root);
                 break;
+            // reptstat
+
+            //callstat
         }
         System.out.println(root + " ");
     }
@@ -73,7 +79,6 @@ public class CodeGenerator {
     public void secondRun(){
         //fix up any addressing that was borked in first run
         for(InstructionOverrideMessage message : overrideMessages){
-            //do the thing
             program.moveProgramCounter(message.getPcRowStart(),message.getPcByteStart());
 
             int baseRegister = message.getNode().getSymbol().getBaseRegister();
@@ -207,6 +212,9 @@ public class CodeGenerator {
         if(root.getRight() != null) detreeify_recurse(root.getRight());
     }
 
+    public void stopProcessing(){
+        stopProcessing = true;
+    }
 }
 
 
