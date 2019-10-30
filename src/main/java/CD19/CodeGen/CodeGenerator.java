@@ -8,6 +8,7 @@ import CD19.Observer.Observer;
 import CD19.Parser.SymbolTable;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
+import com.sun.org.apache.bcel.internal.classfile.Code;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -30,13 +31,11 @@ public class CodeGenerator {
         this.tree = tree;
         this.constants = constants;
         this.identifiers = identifiers;
-
-        Declaration.INSTANCE().setIdentifiers(identifiers);
-
         program = new InstructionMatrix();
     }
 
     public void run(){
+        Declaration.generate(this, identifiers);
         run(tree); //first run for building most of matrix. need to do post code gen sweep for string constant locations
         generate1Byte(OpCodes.RETN); //use this when finished program
         program.populateConstants(constants, intConstants, realConstants);
@@ -57,12 +56,15 @@ public class CodeGenerator {
         // now deal with the node
         int rootValue = root.getValue();
         switch(rootValue) {
-            case TreeNode.NSDECL:
-                Declaration.generate(this, root);
-                break;
-            case TreeNode.NPRLN:
-            case TreeNode.NPRINT:
-            case TreeNode.NINPUT:
+//            case TreeNode.NSDECL:
+//                Declaration.generate(this, root);
+//                break;
+            case TreeNode.NPRLN: case TreeNode.NPRINT: case TreeNode.NINPUT: //iostat
+            case TreeNode.NASGN: //pleq,mneq,etc... asgnstat
+            // reptstat
+            //return stat
+            //callstat
+
                 Statement.generate(this, root);
                 break;
         }

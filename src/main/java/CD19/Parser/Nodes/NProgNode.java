@@ -96,9 +96,9 @@ public class NProgNode implements Node{
             parser.semanticError("Program Start and End names do not match", endId);
         }
 
-        SymbolTableRecord startRecord = new SymbolTableRecord(startId.getStr(), null, "");
+        //SymbolTableRecord startRecord = new SymbolTableRecord(startId.getStr(), null, "");
 
-        parser.insertIdentifierRecord(startRecord);
+        //parser.insertIdentifierRecord(startRecord);
 
 //        SymbolTableRecord endRecord = new SymbolTableRecord(endId.getStr(), null, "");
 //
@@ -106,7 +106,7 @@ public class NProgNode implements Node{
 
         TreeNode nProgTreeNode = new TreeNode(TreeNode.NPROG,nGlobTreeNode,nFuncsTreeNode, nMainTreeNode);
 
-        nProgTreeNode.setSymbol(startRecord);
+        //nProgTreeNode.setSymbol(startRecord);
 
         parser.leaveScope();
 

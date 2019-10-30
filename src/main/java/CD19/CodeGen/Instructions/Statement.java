@@ -30,6 +30,7 @@ public class Statement{
     public static void generate(CodeGenerator generator, TreeNode node){
         int nodeValue = node.getValue();
         switch(nodeValue){
+            //IO STATS
             case TreeNode.NPRINT: {
                 generatePrintStatement(generator,node);
                 break;
@@ -42,7 +43,42 @@ public class Statement{
                 generateInputStatement(generator,node);
                 break;
             }
+            //ASGNSTATS
+            case TreeNode.NASGN: {
+                generateAssignStatement(generator, node);
+
+            }
         }
+    }
+
+    private static void generateAssignStatement(CodeGenerator generator, TreeNode node){
+//        Example:
+//        k = i + j;    LA “k”
+//                      LV “i”
+//                      LV “j”
+//                      ADD
+//                      ST
+
+        //we have the main root which is the NASGN
+        //the left child will be the thing to assign to
+        //the right child will be the expr
+        // the expr will be a list of asgnops (add,mul,pow,etc.) and can be a mixed list. you will need to change detreeify to accommodate this
+        SymbolTableRecord assignee = node.getLeft().getSymbol();
+        String LA = "LA" + assignee.getBaseRegister();
+        generator.generate5Bytes(OpCodes.valueOf(LA), assignee.getOffset());
+
+        //Start working with right side of tree
+        TreeNode addNode = node.getRight();
+        List<TreeNode> childrenOfAddNode = generator.detreeify(addNode);
+
+        for(TreeNode leaf : childrenOfAddNode){
+            SymbolTableRecord record = leaf.getSymbol();
+            String LV = "LV" + record.getBaseRegister();
+            generator.generate5Bytes(OpCodes.valueOf(LV), record.getOffset());
+        }
+
+        generator.generate1Byte(OpCodes.ADD);
+        generator.generate1Byte(OpCodes.ST);
     }
 
     private static void generatePrintLineStatement(CodeGenerator generator, TreeNode node){
@@ -59,7 +95,6 @@ public class Statement{
             generatePrintOpCodes(generator, leaf);
         }
     }
-
 
     private static void generatePrintOpCodes(CodeGenerator generator, TreeNode node){
         //LA0 - get constant
@@ -130,6 +165,7 @@ public class Statement{
 
 
     }
+
     private static void generateInputOpCodes(CodeGenerator generator, TreeNode node){
         SymbolTableRecord record = node.getSymbol();
 

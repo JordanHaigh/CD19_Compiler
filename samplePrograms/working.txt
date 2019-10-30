@@ -1,8 +1,12 @@
 CD19 test
 main
-	i : boolean
+	i : integer, j : integer, k : integer
 begin
-    printline 5;
+    input i;
+    input j;
+    k = i + j;
+    k = k * 10;
+    printline k;
 
 end
 CD19 test

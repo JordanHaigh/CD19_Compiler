@@ -59,8 +59,16 @@ public class NAsgnStatOrCallStatNode implements Node{
         TreeNode tail = tail(parser,token);
 
         if(tail.getValue() != TreeNode.NUNDEF && tail.getLeft() != null){ //if tail isnt undefined and has function arguments
-            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), tail.getType(), parser.getScope());
-            tail.getLeft().setSymbol(record);
+            SymbolTableRecord checker = new SymbolTableRecord(token.getStr(), tail.getType(), parser.getScope());
+            SymbolTableRecord record = parser.lookupIdentifierRecord(checker);
+
+            if(record != null){
+                tail.getLeft().setSymbol(record);
+            }
+            else{
+                parser.insertIdentifierRecord(checker);
+                tail.getLeft().setSymbol(checker);
+            }
         }
         return tail;
     }

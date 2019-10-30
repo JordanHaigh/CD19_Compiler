@@ -65,17 +65,28 @@ public class NAlistNode implements Node {
 
         if (tail == null) {
             //tail is null, so we only have one asgnstat
-            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(), parser.getScope());
-            parser.insertIdentifierRecord(record);
-            asgnStat.setSymbol(record);
+            SymbolTableRecord checker = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(), parser.getScope());
+            SymbolTableRecord record = parser.lookupIdentifierRecord(checker);
+
+            if(record != null){ //used for unit tests
+                asgnStat.setSymbol(record);
+            }else{
+                parser.insertIdentifierRecord(checker);
+                asgnStat.setSymbol(checker);
+            }
 
             return asgnStat;
         } else {
             //insert SymbolTable Record for the AList
-            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(), parser.getScope());
-            parser.insertIdentifierRecord(record);
+            SymbolTableRecord checker = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(), parser.getScope());
+            SymbolTableRecord record = parser.lookupIdentifierRecord(checker);
 
-            asgnStat.setSymbol(record);
+            if(record != null){ //used for unit tests
+                asgnStat.setSymbol(record);
+            }else{
+                parser.insertIdentifierRecord(checker);
+                asgnStat.setSymbol(checker);
+            }
 
             return new TreeNode(TreeNode.NASGNS, asgnStat, tail);
         }
