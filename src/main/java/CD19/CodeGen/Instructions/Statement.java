@@ -45,34 +45,44 @@ public class Statement{
         }
     }
 
+    private static void generatePrintLineStatement(CodeGenerator generator, TreeNode node){
+        List<TreeNode> leafNodes = generator.detreeify(node); //checks if we're dealing with PLIST or not. Deforest regardless.
+        for(TreeNode leaf : leafNodes){
+            generatePrintStatement(generator,leaf);
+            generator.generate1Byte(OpCodes.NEWLN);
+        }
+    }
+
     private static void generatePrintStatement(CodeGenerator generator, TreeNode node){
+        List<TreeNode> leafNodes = generator.detreeify(node);//checks if we're dealing with PLIST or not. Deforest regardless.
+        for(TreeNode leaf : leafNodes){
+            generatePrintOpCodes(generator, leaf);
+        }
+    }
+
+
+    private static void generatePrintOpCodes(CodeGenerator generator, TreeNode node){
         //LA0 - get constant
         String dataType = node.getType();
-        //todo try printing out single number, variable, TRUE, etc.
         if(dataType.equals("String")){
             generator.generateInstructionOverrideMessage(OpCodes.LV0, 5, node.getLeft());
             generator.generate5Bytes(OpCodes.LA0,-99);
-
             generator.generate1Byte(OpCodes.STRPR);
-
         }
         else if(dataType.equals("Integer")){
             //check if its an integer variable or just an ilit
             int nodeValue = node.getValue();
-            if(nodeValue == TreeNode.NSIMV){
-                //integer variable
-                //load addr integer in
+            if(nodeValue == TreeNode.NSIMV){ //integer variable
                 SymbolTableRecord record = node.getSymbol();
+
                 int baseRegister = record.getBaseRegister();
                 int offset = record.getOffset();
-
                 String LV = "LV" + baseRegister;
                 generator.generate5Bytes(OpCodes.valueOf(LV), offset);
                 generator.generate1Byte(OpCodes.VALPR);
             }
 
-            else{
-                //must be a straight number
+            else{//straight number
                 generator.integerLiteral(node);
                 generator.generate1Byte(OpCodes.VALPR);
             }
@@ -80,9 +90,7 @@ public class Statement{
         else if(dataType.equals("Real")){
             //check if real variable or flit
             int nodeValue = node.getValue();
-            if(nodeValue == TreeNode.NSIMV){
-                //variable
-                //load addr real in
+            if(nodeValue == TreeNode.NSIMV){//variable
                 SymbolTableRecord record = node.getSymbol();
                 int baseRegister = record.getBaseRegister();
                 int offset = record.getOffset();
@@ -91,44 +99,20 @@ public class Statement{
                 generator.generate5Bytes(OpCodes.valueOf(LV), offset);
                 generator.generate1Byte(OpCodes.VALPR);
             }
-            else{
+            else{ //number
                 generator.realLiteral(node);
-                generator.generate1Byte(OpCodes.VALPR);//todo does this even work?
+                generator.generate1Byte(OpCodes.VALPR);
             }
 
         }
         else if(dataType.equals("Boolean")){
-            if(node.getValue() == TreeNode.NTRUE){
+            if(node.getValue() == TreeNode.NTRUE)
                 generator.generate1Byte(OpCodes.TRUE);
-            }
-            else{
+            else
                 generator.generate1Byte(OpCodes.FALSE);
-            }
+
             generator.generate1Byte(OpCodes.VALPR);
         }
-    }
-
-
-
-    private static void generatePrintLineStatement(CodeGenerator generator, TreeNode node){
-        //what if there are child nodes of the prln? e.g.
-//        \--- NPRLN
-//               \--- NPRLST
-//                    |--- NSTRG "Hello World"
-//                    \--- NPRLST
-//                          |--- NSTRG "please"
-//                          \--- NSTRG  "let me graduate"
-
-        List<TreeNode> leafNodes = generator.detreeify(node);
-        for(TreeNode leaf : leafNodes){
-            generatePrintStatement(generator,leaf);
-            generator.generate1Byte(OpCodes.NEWLN);
-        }
-    }
-
-    private static void generatePrintLineStatement_Recurse(CodeGenerator generator, TreeNode root){
-
-
     }
 
     private static void generateInputStatement(CodeGenerator generator, TreeNode node){

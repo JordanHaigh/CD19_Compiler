@@ -61,6 +61,7 @@ public class CodeGenerator {
                 Declaration.generate(this, root);
                 break;
             case TreeNode.NPRLN:
+            case TreeNode.NPRINT:
             case TreeNode.NINPUT:
                 Statement.generate(this, root);
                 break;

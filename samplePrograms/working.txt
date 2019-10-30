@@ -2,7 +2,7 @@ CD19 test
 main
 	i : integer
 begin
-    printline 100,101,102;
+    print 100,101,102;
 
 end
 CD19 test
