@@ -8,7 +8,7 @@ import java.util.List;
 
 public class InstructionMatrix {
 
-    List<int[]> matrix;
+    List<String[]> matrix;
     ProgramCounter programCounter;
 
     public InstructionMatrix() {
@@ -18,7 +18,15 @@ public class InstructionMatrix {
     private void initialiseMatrices(){
         matrix = new ArrayList<>();
         programCounter = new ProgramCounter();
-        matrix.add(new int[ProgramCounter.ROWLENGTH]);
+        addNewRowToMatrix();
+    }
+
+    private void addNewRowToMatrix(){
+        matrix.add(new String[ProgramCounter.ROWLENGTH]);
+        int newInt = matrix.size()-1;
+        for(int i = 0; i < ProgramCounter.ROWLENGTH;i++){
+            matrix.get(newInt)[i] = ""+0;
+        }
     }
 
     public ProgramCounter getProgramCounter(){return programCounter;}
@@ -27,23 +35,36 @@ public class InstructionMatrix {
     public void addByte(int byteToAdd, boolean overridingAddress){
         int rowIndex = programCounter.getRow();
         int byteIndex = programCounter.getByte();
-        matrix.get(rowIndex)[byteIndex] = byteToAdd;
+        matrix.get(rowIndex)[byteIndex] = ""+byteToAdd;
 
         programCounter.incrementByte();
 
         if(programCounter.getByte() > 7){
+            if(byteToAdd == OpCodes.RETN.getValue()){
+                return; //this is an edge case where we have added a retn at the very end of a line. we don't need to make a new thingy
+            }
+
             //new line
             programCounter.incrementRow();
             programCounter.setByte(0);
             if(!overridingAddress)
-                matrix.add(new int[programCounter.ROWLENGTH]);
+                addNewRowToMatrix();
+
         }
     }
 
     public void addNumber(int number){
         int rowIndex = programCounter.getRow();
         int byteIndex = programCounter.getByte();
-        matrix.get(rowIndex)[byteIndex] = number;
+
+        matrix.get(rowIndex)[byteIndex] = ""+number;
+    }
+
+    public void addReal(double number){
+        int rowIndex = programCounter.getRow();
+        int byteIndex = programCounter.getByte();
+
+        matrix.get(rowIndex)[byteIndex] = ""+number;
     }
 
     public void addString(SymbolTableRecord record){
@@ -82,7 +103,7 @@ public class InstructionMatrix {
         for(SymbolTableRecord record : integerConstants){
             int i = Integer.parseInt(record.getLexeme());
 
-            matrix.add(new int[programCounter.ROWLENGTH]);
+            addNewRowToMatrix();
             programCounter.incrementRow();
             programCounter.setByte(0);
 
@@ -97,15 +118,14 @@ public class InstructionMatrix {
         for(SymbolTableRecord record : realConstants){
             Double d = Double.parseDouble(record.getLexeme());
 
-            matrix.add(new int[programCounter.ROWLENGTH]);
+            addNewRowToMatrix();
             programCounter.incrementRow();
             programCounter.setByte(0);
 
             record.setBaseRegister(0);
             record.setOffset(programCounter.getRow() * 8 + programCounter.getByte());
 
-            //todo - current matrix doesnt support doubles. UGHHHHHHHHHHHHHHH
-            addNumber(d.intValue());//TODO CHANGE THIS THIS IS CRITICAL
+            addReal(d);
         }
         //--------------STRINGS--------------
         List<SymbolTableRecord> constantsList = constants.getAllRecords();
@@ -116,10 +136,11 @@ public class InstructionMatrix {
             }
         }
 
+
         programCounter.setStartOfStringRow(matrix.size());
 
         if(stringConstants.size() > 0){
-            matrix.add(new int[ProgramCounter.ROWLENGTH]);
+            addNewRowToMatrix();
             programCounter.incrementRow();
             programCounter.setByte(0);
 
@@ -139,9 +160,9 @@ public class InstructionMatrix {
         System.out.println(instructionSize);
         for(int i = 0; i < instructionSize; i++){
             for(int j = 0; j < matrix.get(i).length;j++){
-                System.out.print(String.format("%02d", matrix.get(i)[j]));
+                System.out.print(String.format("%02d", Integer.parseInt(matrix.get(i)[j])));
                 if(printByteAsChar)
-                    System.out.print("(" + (char)matrix.get(i)[j]+")");
+                    System.out.print("(" + (char)Integer.parseInt(matrix.get(i)[j])+")");
                 System.out.print(" ");
             }
             System.out.println();
@@ -164,7 +185,7 @@ public class InstructionMatrix {
             for(int j = 0; j < matrix.get(i).length;j++){
                 System.out.print(String.format("%02d", matrix.get(i)[j]));
                 if(printByteAsChar)
-                    System.out.print("(" + (char)matrix.get(i)[j]+")");
+                    System.out.print("(" + (char)Integer.parseInt(matrix.get(i)[j])+")");
                 System.out.print(" ");
             }
             System.out.println();

@@ -87,10 +87,14 @@ public class Statement implements Subject {
             //todo implement later
         }
         else if(dataType.equals("Boolean")){
-            //todo implement later
+            if(node.getLeft().getValue() == TreeNode.NTRUE){
+                generator.generate1Byte(OpCodes.TRUE);
+            }
+            else{
+                generator.generate1Byte(OpCodes.FALSE);
+            }
+            generator.generate1Byte(OpCodes.VALPR);
         }
-
-
     }
 
 

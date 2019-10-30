@@ -50,13 +50,13 @@ public class Declaration implements Subject {
 
 
         if(recordsInScope.size() > 0){
-            generator.generate2Bytes(OpCodes.LB, recordsInScope.size()); //todo lb or lh - ask dan
+            generator.generate2Bytes(OpCodes.LB, recordsInScope.size());
             //generator.generate3Bytes(OpCodes.LH, recordsInScope.size());
             generator.generate1Byte(OpCodes.ALLOC);
 
             for(SymbolTableRecord record : recordsInScope){
                 generator.allocateVariable(record);
-                //initialiseVariableToDefault(generator, record); //todo k=i+j doesnt initialise, but hello world does??
+                initialiseVariableToDefault(generator, record); //k=i+j doesnt initialise, but hello world does. so just initialise regardless
             }
         }
 

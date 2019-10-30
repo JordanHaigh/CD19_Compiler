@@ -1,0 +1,8 @@
+CD19 test
+main
+	i : integer
+begin
+    printline 5.5;
+
+end
+CD19 test

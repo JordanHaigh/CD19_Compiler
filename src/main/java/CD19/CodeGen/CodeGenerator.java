@@ -71,13 +71,30 @@ public class CodeGenerator implements Observer {
                 integerLiteral(root);
                 break;
             case TreeNode.NFLIT:
-                realConstants.add(root.getSymbol());
+                realLiteral(root);
                 break;
 
 
 
         }
         System.out.println(root + " ");
+    }
+
+    private void realLiteral(TreeNode node){
+        realConstants.add(node.getSymbol());
+        
+        InstructionOverrideMessage message = new InstructionOverrideMessage(
+                getProgram().getProgramCounter().getRow(),
+                getProgram().getProgramCounter().getByte(),
+                5,
+                OpCodes.LV0,
+                node
+        );
+
+        overrideMessages.add(message);
+
+        generate5Bytes(OpCodes.LV0,-99); //placeholder - updated in second run
+
     }
 
     private void integerLiteral(TreeNode node){

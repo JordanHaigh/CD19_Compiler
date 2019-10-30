@@ -107,10 +107,14 @@ public class NExponentNode implements Node {
         } else if (parser.peekAndConsume(Token.TTRUE)) {//true keyword
             exponent = new TreeNode(TreeNode.NTRUE, null, null);
             exponent.setType("Boolean");
+            SymbolTableRecord record = new SymbolTableRecord(token.getStr(),"Boolean", parser.getScope());
+            exponent.setSymbol(record);
             return exponent;
         } else if (parser.peekAndConsume(Token.TFALS)) {//false keyword
             exponent = new TreeNode(TreeNode.NFALS, null, null);
             exponent.setType("Boolean");
+            SymbolTableRecord record = new SymbolTableRecord(token.getStr(),"Boolean", parser.getScope());
+            exponent.setSymbol(record);
             return exponent;
         } else if (parser.peekAndConsume(Token.TLPAR)) { //left parenthesis
             TreeNode bool = nBoolNode.make(parser);
