@@ -1,8 +1,8 @@
 CD19 test
 main
-	i : integer
+	i : real
 begin
-    print 100,101,102;
+    input i;
 
 end
 CD19 test

@@ -65,15 +65,6 @@ public class CodeGenerator {
             case TreeNode.NINPUT:
                 Statement.generate(this, root);
                 break;
-//            case TreeNode.NILIT:
-//                integerLiteral(root);
-//                break;
-//            case TreeNode.NFLIT:
-//                realLiteral(root);
-//                break;
-
-
-
         }
         System.out.println(root + " ");
     }

@@ -92,7 +92,7 @@ public class Declaration {
         generator.generate5Bytes(OpCodes.valueOf(LA),record.getOffset());
 
         // 42 = LB (Load Byte)
-        generator.generate2Bytes(OpCodes.LB,record.getOffset());
+        generator.generate2Bytes(OpCodes.LB,0);
         //generator.generate3Bytes(OpCodes.LH,record.getOffset());
 
         // 43 = ST (Store)

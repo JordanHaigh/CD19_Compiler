@@ -116,15 +116,35 @@ public class Statement{
     }
 
     private static void generateInputStatement(CodeGenerator generator, TreeNode node){
-        SymbolTableRecord record = node.getLeft().getSymbol();
-        //that will tell us the variable to print
+        //could be list
+        List<TreeNode> leafNodes = generator.detreeify(node);
+        if(leafNodes.size() == 1){
+            generateInputOpCodes(generator, node.getLeft()); //only 1 NINPUT
+        }
+        else{
+            for(TreeNode leaf : leafNodes){
+                generateInputOpCodes(generator, leaf); //probs VLIST
+            }
+        }
+
+
+
+    }
+    private static void generateInputOpCodes(CodeGenerator generator, TreeNode node){
+        SymbolTableRecord record = node.getSymbol();
 
         int baseRegister = record.getBaseRegister();
         int offset = record.getOffset();
 
         String LA = "LA" + baseRegister;
+
         generator.generate5Bytes(OpCodes.valueOf(LA), offset);
-        generator.generate1Byte(OpCodes.READI);
+
+        if(record.getDataType().equals("Integer"))
+            generator.generate1Byte(OpCodes.READI);
+        else
+            generator.generate1Byte(OpCodes.READF);
+
         generator.generate1Byte(OpCodes.ST);
     }
 }

@@ -1,8 +1,8 @@
 1: CD19 test
 2: main
-3: 	i : integer
+3: 	i : real
 4: begin
-5:     print 100,101,102;
+5:     input i;
 6: 
 7: end
 8: CD19 test
