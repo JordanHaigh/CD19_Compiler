@@ -83,19 +83,20 @@ public class Declaration {
     }
 
     private static void initialiseVariableToDefault(CodeGenerator generator, SymbolTableRecord record) {
-        //todo differen initialisers for int, real bool
-
         int baseAddr = record.getBaseRegister();
         String LA ="LA" + baseAddr;
 
         // 91 = LA (Load Address)
         generator.generate5Bytes(OpCodes.valueOf(LA),record.getOffset());
+        if(record.getDataType().equals("Boolean")){
+            generator.generate1Byte(OpCodes.FALSE);
+        }
+        else{
+            generator.generate2Bytes(OpCodes.LB,0);
+            //generator.generate3Bytes(OpCodes.LH,record.getOffset());
 
-        // 42 = LB (Load Byte)
-        generator.generate2Bytes(OpCodes.LB,0);
-        //generator.generate3Bytes(OpCodes.LH,record.getOffset());
+        }
 
-        // 43 = ST (Store)
         generator.generate1Byte(OpCodes.ST);
     }
 }

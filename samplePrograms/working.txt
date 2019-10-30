@@ -1,8 +1,8 @@
 CD19 test
 main
-	i : real
+	i : boolean
 begin
-    input i;
+    printline 5;
 
 end
 CD19 test
