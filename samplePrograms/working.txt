@@ -1,12 +1,12 @@
 CD19 test
 main
-	i : integer, j : integer
+	i : integer, j : integer, k : integer
 begin
     input i;
     input j;
-    i = 5-j+5*j/5;
-    /--k = k * 10;
-    printline i;
+    k = i + j;
+    k = k * 10;
+    printline k;
 
 end
 CD19 test
