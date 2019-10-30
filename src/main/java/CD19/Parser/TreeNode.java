@@ -316,4 +316,9 @@ public class TreeNode {
         calculateNumberOfReturns(root.getRight());
     }
 
+    public boolean hasNoChildren(){
+        return left == null && middle == null && right == null;
+    }
+
+
 }

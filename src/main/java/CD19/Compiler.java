@@ -35,8 +35,14 @@ public class Compiler {
         printErrorsToConsole();
         printTree(tree);
 
-        codeGeneration(tree);
-        printModToFile(getFileNameWithoutExtension(file.getName()));
+        if(parser.isSyntacticallyValid() && parser.isSemanticallyValid()){
+            codeGeneration(tree);
+            printModToFile(getFileNameWithoutExtension(file.getName()));
+        }
+        else{
+            System.out.println("Fix program errors before Code Gen");
+        }
+
     }
 
     private String getFileNameWithoutExtension(String fileName){

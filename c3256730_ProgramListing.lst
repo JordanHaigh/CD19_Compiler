@@ -1,12 +1,12 @@
 1: CD19 test
 2: main
-3: 	i : integer, j : integer, k : integer
+3: 	i : integer
 4: begin
-5:     input i;
-6:     input j;
-7:     k = i + j;
+5:     /--input i;
+6:     /--input j;
+7:     i = 1+2+3+4+5;
 8:     /--k = k * 10;
-9:     printline k;
+9:     printline i;
 10: 
 11: end
 12: CD19 test

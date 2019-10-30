@@ -68,17 +68,64 @@ public class Statement{
         generator.generate5Bytes(OpCodes.valueOf(LA), assignee.getOffset());
 
         //Start working with right side of tree
-        TreeNode addNode = node.getRight();
-        List<TreeNode> childrenOfAddNode = generator.detreeify(addNode);
+        TreeNode exprNode = node.getRight();
 
-        for(TreeNode leaf : childrenOfAddNode){
-            SymbolTableRecord record = leaf.getSymbol();
-            String LV = "LV" + record.getBaseRegister();
-            generator.generate5Bytes(OpCodes.valueOf(LV), record.getOffset());
-        }
+        //post order and build
+        postOrderOpCodesAssignStatement(generator, exprNode);
+//        List<TreeNode> childrenOfAddNode = generator.detreeify(addNode);
+//
+//        for(TreeNode leaf : childrenOfAddNode){
+//            if(leaf.getValue() == TreeNode.NSIMV){//variable
+//                SymbolTableRecord record = leaf.getSymbol();
+//                String LV = "LV" + record.getBaseRegister();
+//                generator.generate5Bytes(OpCodes.valueOf(LV), record.getOffset());
+//            }
+//            else if(leaf.getValue() == TreeNode.NILIT){ //integer
+//                generator.integerLiteral(leaf);
+//            }
+//            else if(leaf.getValue() == TreeNode.NFLIT){//real
+//                generator.realLiteral(leaf);
+//            }
+//
+//        }
 
-        generator.generate1Byte(OpCodes.ADD);
+//      generator.generate1Byte(OpCodes.ADD);
         generator.generate1Byte(OpCodes.ST);
+    }
+
+    private static void postOrderOpCodesAssignStatement(CodeGenerator generator, TreeNode root){
+        //post order traversal
+        if (root == null)
+            return;
+
+        postOrderOpCodesAssignStatement(generator, root.getLeft());
+        postOrderOpCodesAssignStatement(generator, root.getRight());
+
+        // now deal with the node
+        if(root.hasNoChildren()){
+            //then is leaf node
+            if(root.getValue() == TreeNode.NSIMV){ //variable
+                SymbolTableRecord record = root.getSymbol();
+                String LV = "LV" + record.getBaseRegister();
+
+                generator.generate5Bytes(OpCodes.valueOf(LV), record.getOffset());
+            }
+            else{ //value
+                if(root.getValue() == TreeNode.NILIT){ //INT
+                    generator.integerLiteral(root);
+                }
+                else{//must be NFLIT
+                    generator.realLiteral(root);
+                }
+            }
+        }
+        else{
+            //is intermediate node
+            if(root.getValue() == TreeNode.NADD){
+                generator.generate1Byte(OpCodes.ADD);
+            }
+            //todo else if mul, pow, etc...
+        }
     }
 
     private static void generatePrintLineStatement(CodeGenerator generator, TreeNode node){
