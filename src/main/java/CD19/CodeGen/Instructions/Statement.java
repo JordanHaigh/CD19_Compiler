@@ -124,6 +124,18 @@ public class Statement{
             if(root.getValue() == TreeNode.NADD){
                 generator.generate1Byte(OpCodes.ADD);
             }
+            else if(root.getValue() == TreeNode.NSUB)
+                generator.generate1Byte(OpCodes.SUB);
+            else if(root.getValue() == TreeNode.NMUL)
+                generator.generate1Byte(OpCodes.MUL);
+            else if(root.getValue() == TreeNode.NDIV)
+                generator.generate1Byte(OpCodes.DIV);
+            else if(root.getValue() == TreeNode.NMOD)
+                generator.generate1Byte(OpCodes.REM);//todo is this right?
+            else if(root.getValue() == TreeNode.NPOW)
+                generator.generate1Byte(OpCodes.POW);
+
+
             //todo else if mul, pow, etc...
         }
     }

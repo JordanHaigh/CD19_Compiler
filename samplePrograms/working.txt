@@ -1,10 +1,10 @@
 CD19 test
 main
-	i : integer
+	i : integer, j : integer
 begin
-    /--input i;
-    /--input j;
-    i = 1+2+3+4+5;
+    input i;
+    input j;
+    i = 5-j+5*j/5;
     /--k = k * 10;
     printline i;
 
