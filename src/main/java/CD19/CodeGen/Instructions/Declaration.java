@@ -2,9 +2,6 @@ package CD19.CodeGen.Instructions;
 
 import CD19.CodeGen.CodeGenerator;
 import CD19.CodeGen.OpCodes;
-import CD19.Observer.ObservableMessage;
-import CD19.Observer.Observer;
-import CD19.Observer.Subject;
 import CD19.Parser.SymbolTable;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;

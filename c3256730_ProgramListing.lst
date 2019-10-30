@@ -4,8 +4,8 @@
 4: begin
 5:     input i;
 6:     input j;
-7:     k = i + j;
-8:     k = k * 10;
+7:     i *= 5-5;
+8:     /--k = k * 10;
 9:     printline k;
 10: 
 11: end

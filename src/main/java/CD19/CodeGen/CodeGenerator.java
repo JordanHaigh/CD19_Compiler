@@ -56,11 +56,8 @@ public class CodeGenerator {
         // now deal with the node
         int rootValue = root.getValue();
         switch(rootValue) {
-//            case TreeNode.NSDECL:
-//                Declaration.generate(this, root);
-//                break;
             case TreeNode.NPRLN: case TreeNode.NPRINT: case TreeNode.NINPUT: //iostat
-            case TreeNode.NASGN: //pleq,mneq,etc... asgnstat
+            case TreeNode.NASGN: case TreeNode.NPLEQ : case TreeNode.NMNEQ : case TreeNode.NSTEQ: case TreeNode.NDVEQ: //asgnstat
             // reptstat
             //return stat
             //callstat
