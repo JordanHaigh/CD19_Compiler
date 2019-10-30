@@ -12,7 +12,7 @@ import CD19.Parser.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Statement implements Subject {
+public class Statement{
 
     private static Statement instance;
 
@@ -47,29 +47,22 @@ public class Statement implements Subject {
 
     private static void generatePrintStatement(CodeGenerator generator, TreeNode node){
         //LA0 - get constant
-        String dataType = node.getLeft().getType();
+        String dataType = node.getType();
         //todo try printing out single number, variable, TRUE, etc.
         if(dataType.equals("String")){
-            InstructionOverrideMessage message = new InstructionOverrideMessage(
-                    generator.getProgram().getProgramCounter().getRow(),
-                    generator.getProgram().getProgramCounter().getByte(),
-                    5,
-                    OpCodes.LA0,
-                    node.getLeft()
-            );
-            instance.notifyObservers(message);
-
+            generator.generateInstructionOverrideMessage(OpCodes.LV0, 5, node.getLeft());
             generator.generate5Bytes(OpCodes.LA0,-99);
+
             generator.generate1Byte(OpCodes.STRPR);
 
         }
         else if(dataType.equals("Integer")){
             //check if its an integer variable or just an ilit
-            int nodeValue = node.getLeft().getValue();
+            int nodeValue = node.getValue();
             if(nodeValue == TreeNode.NSIMV){
                 //integer variable
                 //load addr integer in
-                SymbolTableRecord record = node.getLeft().getSymbol();
+                SymbolTableRecord record = node.getSymbol();
                 int baseRegister = record.getBaseRegister();
                 int offset = record.getOffset();
 
@@ -80,14 +73,32 @@ public class Statement implements Subject {
 
             else{
                 //must be a straight number
+                generator.integerLiteral(node);
                 generator.generate1Byte(OpCodes.VALPR);
             }
         }
         else if(dataType.equals("Real")){
-            //todo implement later
+            //check if real variable or flit
+            int nodeValue = node.getValue();
+            if(nodeValue == TreeNode.NSIMV){
+                //variable
+                //load addr real in
+                SymbolTableRecord record = node.getSymbol();
+                int baseRegister = record.getBaseRegister();
+                int offset = record.getOffset();
+
+                String LV = "LV" + baseRegister;
+                generator.generate5Bytes(OpCodes.valueOf(LV), offset);
+                generator.generate1Byte(OpCodes.VALPR);
+            }
+            else{
+                generator.realLiteral(node);
+                generator.generate1Byte(OpCodes.VALPR);//todo does this even work?
+            }
+
         }
         else if(dataType.equals("Boolean")){
-            if(node.getLeft().getValue() == TreeNode.NTRUE){
+            if(node.getValue() == TreeNode.NTRUE){
                 generator.generate1Byte(OpCodes.TRUE);
             }
             else{
@@ -108,9 +119,11 @@ public class Statement implements Subject {
 //                          |--- NSTRG "please"
 //                          \--- NSTRG  "let me graduate"
 
-        //todo....
-        generatePrintStatement(generator, node);
-        generator.generate1Byte(OpCodes.NEWLN);
+        List<TreeNode> leafNodes = generator.detreeify(node);
+        for(TreeNode leaf : leafNodes){
+            generatePrintStatement(generator,leaf);
+            generator.generate1Byte(OpCodes.NEWLN);
+        }
     }
 
     private static void generatePrintLineStatement_Recurse(CodeGenerator generator, TreeNode root){
@@ -129,24 +142,5 @@ public class Statement implements Subject {
         generator.generate5Bytes(OpCodes.valueOf(LA), offset);
         generator.generate1Byte(OpCodes.READI);
         generator.generate1Byte(OpCodes.ST);
-    }
-
-
-    static List<Observer> observers = new ArrayList<>();
-    @Override
-    public void addObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers(ObservableMessage message) {
-        for(Observer observer : observers){
-            observer.handleMessage(message);
-        }
     }
 }

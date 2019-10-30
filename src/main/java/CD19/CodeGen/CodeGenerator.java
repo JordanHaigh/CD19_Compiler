@@ -9,10 +9,11 @@ import CD19.Parser.SymbolTable;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CodeGenerator implements Observer {
+public class CodeGenerator {
 
     TreeNode tree;
     SymbolTable constants;
@@ -33,9 +34,6 @@ public class CodeGenerator implements Observer {
         Declaration.INSTANCE().setIdentifiers(identifiers);
 
         program = new InstructionMatrix();
-
-        Statement.INSTANCE().addObserver(this);
-        Declaration.INSTANCE().addObserver(this);
     }
 
     public void run(){
@@ -63,16 +61,15 @@ public class CodeGenerator implements Observer {
                 Declaration.generate(this, root);
                 break;
             case TreeNode.NPRLN:
-            case TreeNode.NPRLST:
             case TreeNode.NINPUT:
                 Statement.generate(this, root);
                 break;
-            case TreeNode.NILIT:
-                integerLiteral(root);
-                break;
-            case TreeNode.NFLIT:
-                realLiteral(root);
-                break;
+//            case TreeNode.NILIT:
+//                integerLiteral(root);
+//                break;
+//            case TreeNode.NFLIT:
+//                realLiteral(root);
+//                break;
 
 
 
@@ -80,50 +77,7 @@ public class CodeGenerator implements Observer {
         System.out.println(root + " ");
     }
 
-    private void realLiteral(TreeNode node){
-        realConstants.add(node.getSymbol());
-        
-        InstructionOverrideMessage message = new InstructionOverrideMessage(
-                getProgram().getProgramCounter().getRow(),
-                getProgram().getProgramCounter().getByte(),
-                5,
-                OpCodes.LV0,
-                node
-        );
 
-        overrideMessages.add(message);
-
-        generate5Bytes(OpCodes.LV0,-99); //placeholder - updated in second run
-
-    }
-
-    private void integerLiteral(TreeNode node){
-        int value = Integer.parseInt(node.getSymbol().getLexeme());
-
-        if(value < 256){
-            //LB Operation
-            generate2Bytes(OpCodes.LB, value);
-        }
-        else if(value < 65536){
-            generate3Bytes(OpCodes.LH,value);
-        }
-        else{
-            //add to constants
-            intConstants.add(node.getSymbol());
-
-            InstructionOverrideMessage message = new InstructionOverrideMessage(
-                    getProgram().getProgramCounter().getRow(),
-                    getProgram().getProgramCounter().getByte(),
-                    5,
-                    OpCodes.LV0,
-                    node
-            );
-
-            overrideMessages.add(message);
-
-            generate5Bytes(OpCodes.LV0,-99); //placeholder - updated in second run
-        }
-    }
 
     public void secondRun(){
         //fix up any addressing that was borked in first run
@@ -196,13 +150,72 @@ public class CodeGenerator implements Observer {
         }
     }
 
-    @Override
-    public void handleMessage(ObservableMessage message) {
-        if(message instanceof InstructionOverrideMessage){
-            InstructionOverrideMessage typedMessage = (InstructionOverrideMessage)message;
-            overrideMessages.add(typedMessage);
+    public void printMatrix(boolean printByteAsChar, PrintWriter printWriter){
+        program.printMatrix(printByteAsChar, printWriter);
+    }
+
+    public void realLiteral(TreeNode node){
+        realConstants.add(node.getSymbol());
+
+        generateInstructionOverrideMessage(OpCodes.LV0, 5, node);
+
+        generate5Bytes(OpCodes.LV0,-99); //placeholder - updated in second run
+
+    }
+
+    public void integerLiteral(TreeNode node){
+        int value = Integer.parseInt(node.getSymbol().getLexeme());
+
+        if(value < 256){
+            //LB Operation
+            generate2Bytes(OpCodes.LB, value);
+        }
+        else if(value < 65536){
+            generate3Bytes(OpCodes.LH,value);
+        }
+        else{
+            //add to constants
+            intConstants.add(node.getSymbol());
+
+            generateInstructionOverrideMessage(OpCodes.LV0,5,node);
+
+            generate5Bytes(OpCodes.LV0,-99); //placeholder - updated in second run
         }
     }
+
+    public void generateInstructionOverrideMessage(OpCodes opCode, int numberOfBytes, TreeNode node){
+        InstructionOverrideMessage message = new InstructionOverrideMessage(
+                program.getProgramCounter().getRow(),
+                program.getProgramCounter().getByte(),
+                numberOfBytes,
+                opCode,
+                node
+        );
+
+        overrideMessages.add(message);
+    }
+
+    private List<TreeNode> leaves = new ArrayList<>();
+    public List<TreeNode> detreeify(TreeNode root){
+        leaves = new ArrayList<>();
+        detreeify_recurse(root);
+        return leaves;
+    }
+
+    private void detreeify_recurse(TreeNode root){
+        if(root == null){
+            return;
+        }
+
+        if(root.getLeft() == null && root.getMiddle() == null && root.getRight() == null){
+            leaves.add(root);
+        }
+
+        if(root.getLeft() != null) detreeify_recurse(root.getLeft());
+        if(root.getMiddle() != null) detreeify_recurse(root.getMiddle());
+        if(root.getRight() != null) detreeify_recurse(root.getRight());
+    }
+
 }
 
 

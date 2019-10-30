@@ -3,6 +3,7 @@ package CD19.CodeGen;
 import CD19.Parser.SymbolTable;
 import CD19.Parser.SymbolTableRecord;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,45 +151,53 @@ public class InstructionMatrix {
         }
     }
 
-    public void printMatrix(boolean printByteAsChar){
+    public void printMatrix(boolean printByteAsChar, PrintWriter printWriter){
+        if (printWriter == null) {
+            printWriter = new PrintWriter(System.out);
+        }
+
+
         int instructionSize = programCounter.getStartOfIntegerRow();
         int integerSize = programCounter.getStartOfRealRow() - programCounter.getStartOfIntegerRow();
         int realSize = programCounter.getStartOfStringRow() - programCounter.getStartOfRealRow();
         int stringSize = matrix.size() - programCounter.getStartOfStringRow();
 
         //--------------INSTRUCTIONS--------------
-        System.out.println(instructionSize);
+        printWriter.println(instructionSize);
         for(int i = 0; i < instructionSize; i++){
             for(int j = 0; j < matrix.get(i).length;j++){
-                System.out.print(String.format("%02d", Integer.parseInt(matrix.get(i)[j])));
+                printWriter.print(String.format("%02d", Integer.parseInt(matrix.get(i)[j])));
                 if(printByteAsChar)
-                    System.out.print("(" + (char)Integer.parseInt(matrix.get(i)[j])+")");
-                System.out.print(" ");
+                    printWriter.print("(" + (char)Integer.parseInt(matrix.get(i)[j])+")");
+                printWriter.print(" ");
             }
-            System.out.println();
+            printWriter.println();
         }
 
         //--------------INTEGERS--------------
-        System.out.println(integerSize);
+        printWriter.println(integerSize);
         for(int i = programCounter.getStartOfIntegerRow(); i < programCounter.getStartOfIntegerRow()+integerSize; i++){
-            System.out.println(matrix.get(i)[0]);
+            printWriter.println(matrix.get(i)[0]);
         }
         //--------------REAL--------------
-        System.out.println(realSize);
+        printWriter.println(realSize);
         for(int i = programCounter.getStartOfRealRow(); i < programCounter.getStartOfRealRow()+realSize; i++){
-            System.out.println(matrix.get(i)[0]);
+            printWriter.println(matrix.get(i)[0]);
         }
 
         //--------------STRINGS--------------
-        System.out.println(stringSize);
+        printWriter.println(stringSize);
         for(int i = programCounter.getStartOfStringRow(); i < programCounter.getStartOfStringRow()+stringSize; i++){
             for(int j = 0; j < matrix.get(i).length;j++){
-                System.out.print(String.format("%02d", matrix.get(i)[j]));
+                printWriter.print(String.format("%02d", matrix.get(i)[j]));
                 if(printByteAsChar)
-                    System.out.print("(" + (char)Integer.parseInt(matrix.get(i)[j])+")");
-                System.out.print(" ");
+                    printWriter.print("(" + (char)Integer.parseInt(matrix.get(i)[j])+")");
+                printWriter.print(" ");
             }
-            System.out.println();
+            printWriter.println();
         }
+
+        printWriter.flush();
+        printWriter.close();
     }
 }

@@ -31,15 +31,23 @@ public class Compiler {
         List<Token> tokens = lexicalAnalysis(file);
         TreeNode tree = parse(tokens);
 
-
         printListingFileToFile("./c3256730_ProgramListing.lst");
         printErrorsToConsole();
         printTree(tree);
-        System.out.println();
 
         codeGeneration(tree);
-
+        printModToFile(getFileNameWithoutExtension(file.getName()));
     }
+
+    private String getFileNameWithoutExtension(String fileName){
+        int pos = fileName.lastIndexOf(".");
+        if (pos > 0 && pos < (fileName.length() - 1)) { // If '.' is not the first or last character.
+            fileName = fileName.substring(0, pos);
+        }
+
+        return fileName;
+    }
+
 
 
     /**
@@ -65,7 +73,6 @@ public class Compiler {
     public void codeGeneration(TreeNode tree){
         codeGenerator = new CodeGenerator(tree,parser.getConstants(), parser.getIdentifiers());
         codeGenerator.run();
-        codeGenerator.getProgram().printMatrix(false);
     }
 
     /**
@@ -89,8 +96,33 @@ public class Compiler {
             return;
         }
 
-        listingFile.print(null); //todo comment before submission
+        listingFile.print(null);
         listingFile.print(listingOut);
+    }
+
+    /**
+     * Print listing to file
+     */
+    private void printModToFile(String filenameWithoutExtension) {
+        PrintWriter modOut = null;
+
+        try {
+            modOut = new PrintWriter(filenameWithoutExtension+".mod");
+        } catch (FileNotFoundException e) {
+            File file = new File(filenameWithoutExtension+".mod");
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                System.err.println("Could not create mod File at location");
+                System.err.println(ex.getCause());
+            }
+        }
+        if (modOut == null) {
+            System.out.println("Couldn't print mod file");
+            return;
+        }
+        codeGenerator.printMatrix(false,null);
+        codeGenerator.printMatrix(false,modOut);
     }
 
     private void printErrorsToConsole() {
@@ -105,7 +137,7 @@ public class Compiler {
     private void printTree(TreeNode tree) {
         System.out.println("\n=================== XML Version of Tree =========================\n");
         System.out.println(tree.prettyPrintTree());
-//        System.out.println("\n=================== Dans Version of Tree =========================\n");
+        System.out.println();
 //
 //        PrintWriter out = new PrintWriter(System.out);
 //        tree.danPrintTree(out, tree);

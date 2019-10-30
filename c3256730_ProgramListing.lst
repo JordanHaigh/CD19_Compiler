@@ -2,7 +2,7 @@
 2: main
 3: 	i : integer
 4: begin
-5:     printline 5.5;
+5:     printline 100,101,102;
 6: 
 7: end
 8: CD19 test

@@ -12,7 +12,7 @@ import CD19.Parser.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Declaration implements Subject {
+public class Declaration {
 
     private static Declaration instance;
     private static SymbolTable identifiers;
@@ -92,28 +92,10 @@ public class Declaration implements Subject {
         generator.generate5Bytes(OpCodes.valueOf(LA),record.getOffset());
 
         // 42 = LB (Load Byte)
-        generator.generate3Bytes(OpCodes.LH,record.getOffset());
+        generator.generate2Bytes(OpCodes.LB,record.getOffset());
+        //generator.generate3Bytes(OpCodes.LH,record.getOffset());
 
         // 43 = ST (Store)
         generator.generate1Byte(OpCodes.ST);
-    }
-
-    List<Observer> observers = new ArrayList<>();
-
-    @Override
-    public void addObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObservers(ObservableMessage message) {
-        for(Observer observer : observers){
-            observer.handleMessage(message);
-        }
     }
 }
