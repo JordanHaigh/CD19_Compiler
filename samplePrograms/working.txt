@@ -5,7 +5,7 @@ begin
     input i;
     input j;
     k = i + j;
-    k = k * 10;
+    /--k = k * 10;
     printline k;
 
 end
