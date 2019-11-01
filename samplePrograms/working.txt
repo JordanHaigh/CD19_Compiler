@@ -4,8 +4,8 @@ main
 begin
     input i;
     input j;
-    i *= 5-5;
-    /--k = k * 10;
+    k = i + j;
+    k = k * 10;
     printline k;
 
 end

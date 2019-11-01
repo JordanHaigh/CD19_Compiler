@@ -55,9 +55,6 @@ public class CodeGenerator {
         if (root == null)
             return;
 
-        run(root.getLeft());
-        // todo middle???
-        run(root.getRight());
 
         // now deal with the node
         int rootValue = root.getValue();
@@ -67,11 +64,17 @@ public class CodeGenerator {
             case TreeNode.NRETN : //return stat
                 Statement.generate(this, root);
                 break;
-            // reptstat
-
-            //callstat
+//            // reptstat
+//
+//            //callstat
         }
         System.out.println(root + " ");
+
+
+
+        run(root.getLeft());
+        run(root.getMiddle());
+        run(root.getRight());
     }
 
 

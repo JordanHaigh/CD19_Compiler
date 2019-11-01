@@ -226,7 +226,7 @@ public class Statement{
         //LA0 - get constant
         String dataType = node.getType();
         if(dataType.equals("String")){
-            generator.generateInstructionOverrideMessage(OpCodes.LV0, 5, node.getLeft());
+            generator.generateInstructionOverrideMessage(OpCodes.LV0, 5, node);
             generator.generate5Bytes(OpCodes.LA0,-99);
             generator.generate1Byte(OpCodes.STRPR);
         }

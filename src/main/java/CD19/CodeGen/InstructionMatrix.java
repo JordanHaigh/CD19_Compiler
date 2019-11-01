@@ -189,7 +189,7 @@ public class InstructionMatrix {
         printWriter.println(stringSize);
         for(int i = programCounter.getStartOfStringRow(); i < programCounter.getStartOfStringRow()+stringSize; i++){
             for(int j = 0; j < matrix.get(i).length;j++){
-                printWriter.print(String.format("%02d", matrix.get(i)[j]));
+                printWriter.print(String.format("%02d",Integer.parseInt(matrix.get(i)[j])));
                 if(printByteAsChar)
                     printWriter.print("(" + (char)Integer.parseInt(matrix.get(i)[j])+")");
                 printWriter.print(" ");
