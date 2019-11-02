@@ -71,12 +71,6 @@ public class Statement{
         }
     }
 
-    public static void generateBool(CodeGenerator generator, TreeNode node){
-        TreeNode leftSide= node.getLeft();
-
-    }
-
-
     public static void generateRel(CodeGenerator generator, TreeNode node){
         TreeNode leftSide = node.getLeft();
         String LV = "LV" + leftSide.getSymbol().getBaseRegister(); //load value of x to be div'd at end
@@ -164,9 +158,31 @@ public class Statement{
         //--------------------------BOOL-----------------------------------
         TreeNode bool = node.getRight();
         if(bool.getValue() == TreeNode.NBOOL){//more than 1 bool
-            List<TreeNode> boolList = bool.detreeify();
+            List<TreeNode> boolList = bool.detreeifyLogops();
             for(TreeNode n : boolList){
-                generateBool(generator, n); //todo...
+                //if is neql node, do rel
+                //if is and or xor, do something else
+                //not not supported
+                switch(n.getValue()){
+                    case TreeNode.NEQL: case TreeNode.NNEQ :
+                        case TreeNode.NGRT: case TreeNode.NLEQ :
+                            case TreeNode.NLSS : case TreeNode.NGEQ: {
+                                generateRel(generator,n);
+                                break;
+                    }
+                    case TreeNode.NAND: {
+                        generator.generate1Byte(OpCodes.AND);
+                        break;
+                    }
+                    case TreeNode.NOR : {
+                        generator.generate1Byte(OpCodes.OR);
+                        break;
+                    }
+                    case TreeNode.NXOR:{
+                        generator.generate1Byte(OpCodes.XOR);
+                        break;
+                    }
+                }
             }
         }
         else{ //1 bool

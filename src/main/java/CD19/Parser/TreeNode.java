@@ -348,6 +348,27 @@ public class TreeNode {
         return deforestedNodes;
     }
 
+    List<TreeNode> deforestatedLogops;
+    public List<TreeNode> detreeifyLogops(){
+        deforestatedLogops = new ArrayList<>();
+        detreeifyLogops_recurse(this);
+        return deforestatedLogops;
+    }
+
+    private void detreeifyLogops_recurse(TreeNode node){
+
+        if(node == null)
+            return;
+
+
+        detreeifyLogops_recurse(node.getLeft());
+        detreeifyLogops_recurse(node.getMiddle());
+        detreeifyLogops_recurse(node.getRight());
+
+        deforestatedLogops.add(node);
+    }
+
+
     public List<TreeNode> getLeafNodes(){
         TreeNode root = this;
         List<TreeNode> leaves = new ArrayList<>();
