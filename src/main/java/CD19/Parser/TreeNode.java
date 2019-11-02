@@ -17,6 +17,7 @@ import CD19.Parser.Nodes.NodeDataTypes;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TreeNode {
@@ -318,6 +319,53 @@ public class TreeNode {
 
     public boolean hasNoChildren(){
         return left == null && middle == null && right == null;
+    }
+
+
+    public List<TreeNode> detreeify(){ //had a stab at this initially, repeat stat fucked everything up. thanks evan for helping me fix this
+        TreeNode root = this;
+        TreeNode iterator = root;
+        List<TreeNode> deforestedNodes = new ArrayList<>();
+        int rootValue = root.getValue();
+
+        if(root.getLeft() == null){
+            deforestedNodes.add(root);
+            return deforestedNodes;
+        }
+
+        while(iterator.getValue() == rootValue){
+            deforestedNodes.add(iterator.getLeft());
+            iterator = iterator.getRight();
+        }
+
+        deforestedNodes.add(iterator);
+
+        return deforestedNodes;
+    }
+
+    public List<TreeNode> getLeafNodes(){
+        TreeNode root = this;
+        List<TreeNode> leaves = new ArrayList<>();
+        LinkedList<TreeNode> queue = new LinkedList<>();
+
+        queue.add(root);
+        while (!queue.isEmpty())
+        {
+            TreeNode firstInQueue = queue.peek();
+            queue.poll();
+
+            if (firstInQueue.getLeft() != null)
+                queue.add(firstInQueue.getLeft());
+            if (firstInQueue.getMiddle() != null)
+                queue.add(firstInQueue.getMiddle());
+            if (firstInQueue.getRight() != null)
+                queue.add(firstInQueue.getRight());
+            if (firstInQueue.getLeft() == null && firstInQueue.getMiddle() == null &&firstInQueue.getRight() == null)
+                leaves.add(firstInQueue);
+        }
+        return leaves;
+
+
     }
 
 

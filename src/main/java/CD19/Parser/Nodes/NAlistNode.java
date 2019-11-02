@@ -65,27 +65,27 @@ public class NAlistNode implements Node {
 
         if (tail == null) {
             //tail is null, so we only have one asgnstat
-            SymbolTableRecord checker = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(), parser.getScope());
+            SymbolTableRecord checker = new SymbolTableRecord(token.getStr(), null, parser.getScope());
             SymbolTableRecord record = parser.lookupIdentifierRecord(checker);
 
             if(record != null){ //used for unit tests
-                asgnStat.setSymbol(record);
+                asgnStat.getLeft().setSymbol(record);
             }else{
                 parser.insertIdentifierRecord(checker);
-                asgnStat.setSymbol(checker);
+                asgnStat.getLeft().setSymbol(checker);
             }
 
             return asgnStat;
         } else {
             //insert SymbolTable Record for the AList
-            SymbolTableRecord checker = new SymbolTableRecord(token.getStr(), asgnStat.getRight().getType(), parser.getScope());
+            SymbolTableRecord checker = new SymbolTableRecord(token.getStr(), null, parser.getScope());
             SymbolTableRecord record = parser.lookupIdentifierRecord(checker);
 
             if(record != null){ //used for unit tests
-                asgnStat.setSymbol(record);
+                asgnStat.getLeft().setSymbol(record);
             }else{
                 parser.insertIdentifierRecord(checker);
-                asgnStat.setSymbol(checker);
+                asgnStat.getLeft().setSymbol(checker);
             }
 
             return new TreeNode(TreeNode.NASGNS, asgnStat, tail);
@@ -112,13 +112,15 @@ public class NAlistNode implements Node {
             parser.syntacticError("<alist> - Expected an Identifier", token);
             return new TreeNode(TreeNode.NUNDEF);
         }
-
-        SymbolTableRecord idRecord = new SymbolTableRecord(token.getStr(), null, parser.getScope());
-        if(parser.lookupIdentifierRecord(idRecord) == null){
+        SymbolTableRecord checker = new SymbolTableRecord(token.getStr(), null, parser.getScope());
+        SymbolTableRecord record = parser.lookupIdentifierRecord(checker);
+        if(record == null){
             parser.semanticError("Variable " + token.getStr() + " doesn't exist", token);
         }
 
         TreeNode asgnStat = nAsgnStatNode.makeWithId(parser,token);
+        asgnStat.getLeft().setSymbol(record);
+
         TreeNode tail = tail(parser);
 
         if (tail == null) {

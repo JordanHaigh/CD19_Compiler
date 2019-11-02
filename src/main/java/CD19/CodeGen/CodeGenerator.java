@@ -83,8 +83,8 @@ public class CodeGenerator {
         for(InstructionOverrideMessage message : overrideMessages){
             program.moveProgramCounter(message.getPcRowStart(),message.getPcByteStart());
 
-            int baseRegister = message.getNode().getSymbol().getBaseRegister();
-            int operand = message.getNode().getSymbol().getOffset();
+            int baseRegister = message.getRecord().getBaseRegister();
+            int operand = message.getRecord().getOffset();
 
             String LA = "LA" + baseRegister; //todo probs need to make this generic and use the opcode found in message
             generateXBytes(OpCodes.valueOf(LA),operand, message.getGenerateXBytes(), true);
@@ -161,77 +161,31 @@ public class CodeGenerator {
 
     private void generateMain(TreeNode root){
         //NSDLST or NSDECL
-        List<TreeNode> deforestatedSDeclNodes = detreeify(root.getLeft());
+        List<TreeNode> deforestatedSDeclNodes = root.getLeft().detreeify();
         Declaration.generate(this, deforestatedSDeclNodes);
 
         //NSTATS or NSTAT
-        List<TreeNode> deforestatedStatNodes = detreeify(root.getRight());
+        List<TreeNode> deforestatedStatNodes = root.getRight().detreeify();
         for(TreeNode stat : deforestatedStatNodes){
-            generateStat(stat);
+            Statement.generate(this, stat);
         }
     }
-
-    private void generateStat(TreeNode node){
-        int nodeValue= node.getValue();
-        switch(nodeValue){
-            //------------------------IOSTATS----------------------------
-            case TreeNode.NPRLN: {
-                Statement.generatePrintLineStatement(this,node);
-                break;
-            }
-            case TreeNode.NPRINT: {
-                Statement.generatePrintStatement(this,node);
-                break;
-            }
-            case TreeNode.NINPUT: {
-                Statement.generateInputStatement(this,node);
-                break;
-            }
-            //------------------------ASGNSTATS----------------------------
-            case TreeNode.NASGN:{
-                Statement.generateAssignStatement(this,node);
-                break;
-            }
-            case TreeNode.NPLEQ : {
-                Statement.generatePlusEqualsStatement(this,node);
-                break;
-            }
-            case TreeNode.NMNEQ : {
-                Statement.generateMinusEqualsStatement(this,node);
-                break;
-            }
-            case TreeNode.NSTEQ: {
-                Statement.generateStarEqualsStatement(this,node);
-                break;
-            }
-            case TreeNode.NDVEQ: {
-                Statement.generateDivideEqualsStatement(this,node);
-            }
-            //------------------------RETNSTAT----------------------------
-            case TreeNode.NRETN :
-                Statement.generateReturnStatement(this,node);
-                break;
-//            // reptstat
-//            //callstat
-        }
-    }
-
 
     public void printMatrix(boolean printByteAsChar, PrintWriter printWriter){
         program.printMatrix(printByteAsChar, printWriter);
     }
 
-    public void realLiteral(TreeNode node){
-        realConstants.add(node.getSymbol());
+    public void realLiteral(SymbolTableRecord record){
+        realConstants.add(record);
 
-        generateInstructionOverrideMessage(OpCodes.LV0, 5, node);
+        generateInstructionOverrideMessage(OpCodes.LV0, 5, record);
 
         generate5Bytes(OpCodes.LV0,-99); //placeholder - updated in second run
 
     }
 
-    public void integerLiteral(TreeNode node){
-        int value = Integer.parseInt(node.getSymbol().getLexeme());
+    public void integerLiteral(SymbolTableRecord record){
+        int value = Integer.parseInt(record.getLexeme());
 
         if(value < 256){
             //LB Operation
@@ -242,69 +196,27 @@ public class CodeGenerator {
         }
         else{
             //add to constants
-            intConstants.add(node.getSymbol());
+            intConstants.add(record);
 
-            generateInstructionOverrideMessage(OpCodes.LV0,5,node);
+            generateInstructionOverrideMessage(OpCodes.LV0,5,record);
 
             generate5Bytes(OpCodes.LV0,-99); //placeholder - updated in second run
         }
     }
 
-    public void generateInstructionOverrideMessage(OpCodes opCode, int numberOfBytes, TreeNode node){
+    public void generateInstructionOverrideMessage(OpCodes opCode, int numberOfBytes, SymbolTableRecord record){
         InstructionOverrideMessage message = new InstructionOverrideMessage(
                 program.getProgramCounter().getRow(),
                 program.getProgramCounter().getByte(),
                 numberOfBytes,
                 opCode,
-                node
+                record
         );
 
         overrideMessages.add(message);
     }
 
-    public List<TreeNode> detreeify(TreeNode root){ //had a stab at this initially, repeat stat fucked everything up. thanks evan for helping me fix this
-        TreeNode iterator = root;
-        List<TreeNode> deforestedNodes = new ArrayList<>();
-        int rootValue = root.getValue();
 
-        if(root.getLeft() == null){
-            deforestedNodes.add(root);
-            return deforestedNodes;
-        }
-
-        while(iterator.getValue() == rootValue){
-            deforestedNodes.add(iterator.getLeft());
-            iterator = iterator.getRight();
-        }
-
-        deforestedNodes.add(iterator);
-
-        return deforestedNodes;
-    }
-
-    public List<TreeNode> getLeafNodes(TreeNode root){
-        List<TreeNode> leaves = new ArrayList<>();
-        LinkedList<TreeNode> queue = new LinkedList<>();
-
-        queue.add(root);
-        while (!queue.isEmpty())
-        {
-            TreeNode firstInQueue = queue.peek();
-            queue.poll();
-
-            if (firstInQueue.getLeft() != null)
-                queue.add(firstInQueue.getLeft());
-            if (firstInQueue.getMiddle() != null)
-                queue.add(firstInQueue.getMiddle());
-            if (firstInQueue.getRight() != null)
-                queue.add(firstInQueue.getRight());
-            if (firstInQueue.getLeft() == null && firstInQueue.getMiddle() == null &&firstInQueue.getRight() == null)
-                leaves.add(firstInQueue);
-        }
-        return leaves;
-
-
-    }
 
     public void stopProcessing(){ stopProcessing = true; }
 }

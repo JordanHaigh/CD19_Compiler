@@ -1,19 +1,14 @@
 1: CD19 test
 2: main
-3: 	i : integer, j : integer, k : integer
+3: 	i : integer, j : integer
 4: begin
-5:     input i;
-6:     input j;
-7:     k = i + j;
-8:     k = k * 10;
-9:     printline k;
-10: 
-11:     /--repeat(i=1)
-12:       /--  i+=1;
-13:     /--until(i==3);
-14: 
-15:     printline k;
-16: 
-17: 
-18: end
-19: CD19 test
+5: 
+6:     repeat(i=1)
+7:       i+=1;
+8:     until(i==3 and j==4);
+9: 
+10:     printline i;
+11: 
+12: 
+13: end
+14: CD19 test

@@ -1,18 +1,13 @@
 CD19 test
 main
-	i : integer, j : integer, k : integer
+	i : integer, j : integer
 begin
-    input i;
-    input j;
-    k = i + j;
-    k = k * 10;
-    printline k;
 
-    /--repeat(i=1)
-      /--  i+=1;
-    /--until(i==3);
+    repeat(i=1)
+      i+=1;
+    until(i==3 and j==4);
 
-    printline k;
+    printline i;
 
 
 end

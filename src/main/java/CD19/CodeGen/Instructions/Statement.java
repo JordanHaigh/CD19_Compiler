@@ -22,6 +22,162 @@ public class Statement{
         return instance;
     }
 
+    public static void generate(CodeGenerator generator, TreeNode node){
+        int nodeValue= node.getValue();
+        switch(nodeValue){
+            //------------------------IOSTATS----------------------------
+            case TreeNode.NPRLN: {
+                generatePrintLineStatement(generator,node);
+                break;
+            }
+            case TreeNode.NPRINT: {
+                generatePrintStatement(generator,node);
+                break;
+            }
+            case TreeNode.NINPUT: {
+                generateInputStatement(generator,node);
+                break;
+            }
+            //------------------------ASGNSTATS----------------------------
+            case TreeNode.NASGN:{
+                generateAssignStatement(generator,node);
+                break;
+            }
+            case TreeNode.NPLEQ : {
+                generatePlusEqualsStatement(generator,node);
+                break;
+            }
+            case TreeNode.NMNEQ : {
+                generateMinusEqualsStatement(generator,node);
+                break;
+            }
+            case TreeNode.NSTEQ: {
+                generateStarEqualsStatement(generator,node);
+                break;
+            }
+            case TreeNode.NDVEQ: {
+                generateDivideEqualsStatement(generator,node);
+            }
+            //------------------------RETNSTAT----------------------------
+            case TreeNode.NRETN :{
+                generateReturnStatement(generator,node);
+                break;
+            }
+            //------------------------REPTSTAT----------------------------
+            case TreeNode.NREPT:{
+                generateRepeatStatement(generator, node);
+                break;
+            }
+        }
+    }
+
+    public static void generateBool(CodeGenerator generator, TreeNode node){
+        TreeNode leftSide= node.getLeft();
+
+    }
+
+
+    public static void generateRel(CodeGenerator generator, TreeNode node){
+        TreeNode leftSide = node.getLeft();
+        String LV = "LV" + leftSide.getSymbol().getBaseRegister(); //load value of x to be div'd at end
+        generator.generate5Bytes(OpCodes.valueOf(LV), leftSide.getSymbol().getOffset());
+
+        TreeNode rightSide = node.getRight();
+        if(rightSide.getValue() == TreeNode.NSIMV){ //variable
+            LV = "";
+            LV = "LV" + rightSide.getSymbol().getBaseRegister();
+            generator.generate5Bytes(OpCodes.valueOf(LV), rightSide.getSymbol().getOffset());
+        }
+        else{ //number
+            if(rightSide.getValue() == TreeNode.NILIT){ //int
+                generator.integerLiteral(rightSide.getSymbol());
+            }
+            else{// real
+                generator.realLiteral(rightSide.getSymbol());
+            }
+        }
+
+        //for == use sub
+        generator.generate1Byte(OpCodes.SUB);
+        //todo run programs and check all these
+        switch(node.getValue()){
+            case TreeNode.NEQL:{ //==
+                generator.generate1Byte(OpCodes.EQ);
+                break;
+            }
+            case TreeNode.NNEQ:{ //!=
+                generator.generate1Byte(OpCodes.NE);
+                break;
+            }
+            case TreeNode.NGRT:{ //>
+                generator.generate1Byte(OpCodes.GT);
+                break;
+            }
+            case TreeNode.NLEQ:{ //<=
+                generator.generate1Byte(OpCodes.LE);
+                break;
+            }
+            case TreeNode.NLSS:{ //<
+                generator.generate1Byte(OpCodes.LT);
+                break;
+            }
+            case TreeNode.NGEQ:{ // >=
+                generator.generate1Byte(OpCodes.GE);
+                break;
+            }
+        }
+
+    }
+
+
+    public static void generateRepeatStatement(CodeGenerator generator, TreeNode node){
+        //--------------------------ASGNLIST-----------------------------------
+        //MULTI ASGN WORKS
+        TreeNode asgnlistNode = node.getLeft();
+        if(asgnlistNode.getValue() == TreeNode.NASGNS){ //more than 1 assign
+            List<TreeNode> asgnList = asgnlistNode.detreeify();
+            for(TreeNode n : asgnList){
+                generateAssignStatement(generator, n);
+            }
+        }
+        else{ //only one assign
+            generateAssignStatement(generator, asgnlistNode);
+        }
+        //--------------------------STATS-----------------------------------
+        //MULTI STATS WORK
+        TreeNode stats = node.getMiddle();
+        TreeNode firstStat = stats.getLeft();
+
+        if(stats.getValue() == TreeNode.NSTATS){ //more than 1 stat
+            List<TreeNode> statList = stats.detreeify();
+            for(TreeNode n : statList){
+                Statement.generate(generator, n);
+            }
+        }
+        else{ //1 stat
+            Statement.generate(generator, stats);
+        }
+        //--------------------------LOAD FIRST ADDR-----------------------------------
+        //load address of first stat
+        generator.generate5Bytes(OpCodes.LA0, firstStat.getSymbol().getOffset());
+
+        //--------------------------BOOL-----------------------------------
+        TreeNode bool = node.getRight();
+        if(bool.getValue() == TreeNode.NBOOL){//more than 1 bool
+            List<TreeNode> boolList = bool.detreeify();
+            for(TreeNode n : boolList){
+                generateBool(generator, n); //todo...
+            }
+        }
+        else{ //1 bool
+            generateRel(generator, bool);
+        }
+
+        //--------------------------BF-----------------------------------
+
+        generator.generate1Byte(OpCodes.BF);
+    }
+
     public static void generateReturnStatement(CodeGenerator generator, TreeNode node){
         generator.generate1Byte(OpCodes.RETN);
         generator.stopProcessing();
@@ -136,10 +292,10 @@ public class Statement{
             }
             else{ //value
                 if(root.getValue() == TreeNode.NILIT){ //INT
-                    generator.integerLiteral(root);
+                    generator.integerLiteral(root.getSymbol());
                 }
                 else{//must be NFLIT
-                    generator.realLiteral(root);
+                    generator.realLiteral(root.getSymbol());
                 }
             }
         }
@@ -161,7 +317,7 @@ public class Statement{
     }
 
     public static void generatePrintLineStatement(CodeGenerator generator, TreeNode node){
-        List<TreeNode> leafNodes = generator.getLeafNodes(node); //checks if we're dealing with PLIST or not. Deforest regardless.
+        List<TreeNode> leafNodes = node.getLeafNodes(); //checks if we're dealing with PLIST or not. Deforest regardless.
         for(TreeNode leaf : leafNodes){
             generatePrintStatement(generator,leaf);
             generator.generate1Byte(OpCodes.NEWLN);
@@ -169,7 +325,7 @@ public class Statement{
     }
 
     public static void generatePrintStatement(CodeGenerator generator, TreeNode node){
-        List<TreeNode> leafNodes = generator.getLeafNodes(node);//checks if we're dealing with PLIST or not. Deforest regardless.
+        List<TreeNode> leafNodes = node.getLeafNodes();//checks if we're dealing with PLIST or not. Deforest regardless.
         for(TreeNode leaf : leafNodes){
             generatePrintOpCodes(generator, leaf);
         }
@@ -179,7 +335,7 @@ public class Statement{
         //LA0 - get constant
         String dataType = node.getType();
         if(dataType.equals("String")){
-            generator.generateInstructionOverrideMessage(OpCodes.LV0, 5, node);
+            generator.generateInstructionOverrideMessage(OpCodes.LV0, 5, node.getSymbol());
             generator.generate5Bytes(OpCodes.LA0,-99);
             generator.generate1Byte(OpCodes.STRPR);
         }
@@ -197,7 +353,7 @@ public class Statement{
             }
 
             else{//straight number
-                generator.integerLiteral(node);
+                generator.integerLiteral(node.getSymbol());
                 generator.generate1Byte(OpCodes.VALPR);
             }
         }
@@ -214,7 +370,7 @@ public class Statement{
                 generator.generate1Byte(OpCodes.VALPR);
             }
             else{ //number
-                generator.realLiteral(node);
+                generator.realLiteral(node.getSymbol());
                 generator.generate1Byte(OpCodes.VALPR);
             }
 
@@ -231,7 +387,7 @@ public class Statement{
 
     public static void generateInputStatement(CodeGenerator generator, TreeNode node){
         //could be list
-        List<TreeNode> leafNodes = generator.getLeafNodes(node);
+        List<TreeNode> leafNodes = node.getLeafNodes();
         if(leafNodes.size() == 1){
             generateInputOpCodes(generator, node.getLeft()); //only 1 NINPUT
         }
