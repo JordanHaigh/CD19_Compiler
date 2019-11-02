@@ -8,5 +8,12 @@
 8:     k = k * 10;
 9:     printline k;
 10: 
-11: end
-12: CD19 test
+11:     /--repeat(i=1)
+12:       /--  i+=1;
+13:     /--until(i==3);
+14: 
+15:     printline k;
+16: 
+17: 
+18: end
+19: CD19 test

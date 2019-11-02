@@ -3,26 +3,26 @@ package CD19.CodeGen;
 import CD19.CodeGen.Instructions.Declaration;
 import CD19.CodeGen.Instructions.Statement;
 import CD19.Observer.InstructionOverrideMessage;
-import CD19.Observer.ObservableMessage;
-import CD19.Observer.Observer;
 import CD19.Parser.SymbolTable;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
-import com.sun.org.apache.bcel.internal.classfile.Code;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CodeGenerator {
+    //todo fix return statement - when to stop processing - might need to be something in each statement function..
 
     TreeNode tree;
     SymbolTable constants;
     SymbolTable identifiers;
     InstructionMatrix program;
-    boolean stopProcessing = false;
-    public static final int REGISTERSIZE = 8;
-    public static int offset = 0;
+
+    private static boolean stopProcessing = false;
+    private static final int REGISTERSIZE = 8;
+    private static int offset = 0;
 
     List<SymbolTableRecord> intConstants = new ArrayList<>();
     List<SymbolTableRecord> realConstants = new ArrayList<>();
@@ -36,8 +36,7 @@ public class CodeGenerator {
     }
 
     public void run(){
-        Declaration.generate(this, identifiers);
-        run(tree); //first run for building most of matrix. need to do post code gen sweep for string constant locations
+        runFromNode(tree); //first run for building most of matrix. need to do post code gen sweep for string constant locations
         if(!stopProcessing) //if user hadn't stopped code-genning manually (didn't use a return statement)
             generate1Byte(OpCodes.RETN); //use this when finished program
         program.populateConstants(constants, intConstants, realConstants);
@@ -46,35 +45,35 @@ public class CodeGenerator {
 
     public InstructionMatrix getProgram() { return program; }
 
-    public void run(TreeNode root){
+    public void runFromNode(TreeNode node){
         if(stopProcessing){
             return;
         }
 
         //post order traversal
-        if (root == null)
+        if (node == null)
             return;
 
 
-        // now deal with the node
-        int rootValue = root.getValue();
-        switch(rootValue) {
-            case TreeNode.NPRLN: case TreeNode.NPRINT: case TreeNode.NINPUT: //iostat
-            case TreeNode.NASGN: case TreeNode.NPLEQ : case TreeNode.NMNEQ : case TreeNode.NSTEQ: case TreeNode.NDVEQ: //asgnstat
-            case TreeNode.NRETN : //return stat
-                Statement.generate(this, root);
+//        // now deal with the node
+        int nodeValue = node.getValue();
+        switch(nodeValue) {
+            case TreeNode.NPROG: {
+                generateProgram(node);
                 break;
-//            // reptstat
-//
-//            //callstat
+            }
+            case TreeNode.NGLOB: {
+                generateGlobals(node);
+                break;
+            }
+            case TreeNode.NMAIN: {
+                generateMain(node);
+                break;
+            }
+            case TreeNode.NSTATS: {
+
+            }
         }
-        System.out.println(root + " ");
-
-
-
-        run(root.getLeft());
-        run(root.getMiddle());
-        run(root.getRight());
     }
 
 
@@ -89,7 +88,6 @@ public class CodeGenerator {
 
             String LA = "LA" + baseRegister; //todo probs need to make this generic and use the opcode found in message
             generateXBytes(OpCodes.valueOf(LA),operand, message.getGenerateXBytes(), true);
-
         }
     }
 
@@ -98,7 +96,6 @@ public class CodeGenerator {
     }
 
     public void allocateVariable(SymbolTableRecord record){
-
         String scope = record.getScope();
         if(scope.equals("program")){
             record.setBaseRegister(0);
@@ -149,6 +146,77 @@ public class CodeGenerator {
         }
     }
 
+    private void generateProgram(TreeNode root){
+        //GLOB
+        generateGlobals(root.getLeft());
+        //MAIN
+        generateMain(root.getRight());
+
+    }
+
+    private void generateGlobals(TreeNode root){
+        //todo later
+
+    }
+
+    private void generateMain(TreeNode root){
+        //NSDLST or NSDECL
+        List<TreeNode> deforestatedSDeclNodes = detreeify(root.getLeft());
+        Declaration.generate(this, deforestatedSDeclNodes);
+
+        //NSTATS or NSTAT
+        List<TreeNode> deforestatedStatNodes = detreeify(root.getRight());
+        for(TreeNode stat : deforestatedStatNodes){
+            generateStat(stat);
+        }
+    }
+
+    private void generateStat(TreeNode node){
+        int nodeValue= node.getValue();
+        switch(nodeValue){
+            //------------------------IOSTATS----------------------------
+            case TreeNode.NPRLN: {
+                Statement.generatePrintLineStatement(this,node);
+                break;
+            }
+            case TreeNode.NPRINT: {
+                Statement.generatePrintStatement(this,node);
+                break;
+            }
+            case TreeNode.NINPUT: {
+                Statement.generateInputStatement(this,node);
+                break;
+            }
+            //------------------------ASGNSTATS----------------------------
+            case TreeNode.NASGN:{
+                Statement.generateAssignStatement(this,node);
+                break;
+            }
+            case TreeNode.NPLEQ : {
+                Statement.generatePlusEqualsStatement(this,node);
+                break;
+            }
+            case TreeNode.NMNEQ : {
+                Statement.generateMinusEqualsStatement(this,node);
+                break;
+            }
+            case TreeNode.NSTEQ: {
+                Statement.generateStarEqualsStatement(this,node);
+                break;
+            }
+            case TreeNode.NDVEQ: {
+                Statement.generateDivideEqualsStatement(this,node);
+            }
+            //------------------------RETNSTAT----------------------------
+            case TreeNode.NRETN :
+                Statement.generateReturnStatement(this,node);
+                break;
+//            // reptstat
+//            //callstat
+        }
+    }
+
+
     public void printMatrix(boolean printByteAsChar, PrintWriter printWriter){
         program.printMatrix(printByteAsChar, printWriter);
     }
@@ -194,30 +262,51 @@ public class CodeGenerator {
         overrideMessages.add(message);
     }
 
-    private List<TreeNode> leaves = new ArrayList<>();
-    public List<TreeNode> detreeify(TreeNode root){
-        leaves = new ArrayList<>();
-        detreeify_recurse(root);
+    public List<TreeNode> detreeify(TreeNode root){ //had a stab at this initially, repeat stat fucked everything up. thanks evan for helping me fix this
+        TreeNode iterator = root;
+        List<TreeNode> deforestedNodes = new ArrayList<>();
+        int rootValue = root.getValue();
+
+        if(root.getLeft() == null){
+            deforestedNodes.add(root);
+            return deforestedNodes;
+        }
+
+        while(iterator.getValue() == rootValue){
+            deforestedNodes.add(iterator.getLeft());
+            iterator = iterator.getRight();
+        }
+
+        deforestedNodes.add(iterator);
+
+        return deforestedNodes;
+    }
+
+    public List<TreeNode> getLeafNodes(TreeNode root){
+        List<TreeNode> leaves = new ArrayList<>();
+        LinkedList<TreeNode> queue = new LinkedList<>();
+
+        queue.add(root);
+        while (!queue.isEmpty())
+        {
+            TreeNode firstInQueue = queue.peek();
+            queue.poll();
+
+            if (firstInQueue.getLeft() != null)
+                queue.add(firstInQueue.getLeft());
+            if (firstInQueue.getMiddle() != null)
+                queue.add(firstInQueue.getMiddle());
+            if (firstInQueue.getRight() != null)
+                queue.add(firstInQueue.getRight());
+            if (firstInQueue.getLeft() == null && firstInQueue.getMiddle() == null &&firstInQueue.getRight() == null)
+                leaves.add(firstInQueue);
+        }
         return leaves;
+
+
     }
 
-    private void detreeify_recurse(TreeNode root){
-        if(root == null){
-            return;
-        }
-
-        if(root.getLeft() == null && root.getMiddle() == null && root.getRight() == null){
-            leaves.add(root);
-        }
-
-        if(root.getLeft() != null) detreeify_recurse(root.getLeft());
-        if(root.getMiddle() != null) detreeify_recurse(root.getMiddle());
-        if(root.getRight() != null) detreeify_recurse(root.getRight());
-    }
-
-    public void stopProcessing(){
-        stopProcessing = true;
-    }
+    public void stopProcessing(){ stopProcessing = true; }
 }
 
 

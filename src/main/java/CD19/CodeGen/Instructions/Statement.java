@@ -5,7 +5,6 @@ import CD19.CodeGen.OpCodes;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Statement{
@@ -23,58 +22,12 @@ public class Statement{
         return instance;
     }
 
-    public static void generate(CodeGenerator generator, TreeNode node){
-        int nodeValue = node.getValue();
-        switch(nodeValue){
-            //------------------------IO STATS----------------------------
-            case TreeNode.NPRINT: {
-                generatePrintStatement(generator,node);
-                break;
-            }
-            case TreeNode.NPRLN : {
-                generatePrintLineStatement(generator,node);
-                break;
-            }
-            case TreeNode.NINPUT: {
-                generateInputStatement(generator,node);
-                break;
-            }
-            //------------------------ASGNSTATS----------------------------
-            case TreeNode.NASGN: {
-                generateAssignStatement(generator, node);
-                break;
-            }
-            case TreeNode.NPLEQ:{
-                generatePlusEqualsStatement(generator,node);
-                break;
-            }
-            case TreeNode.NMNEQ:{
-                generateMinusEqualsStatement(generator,node);
-                break;
-            }
-            case TreeNode.NSTEQ:{
-                generateStarEqualsStatement(generator,node);
-                break;
-            }
-            case TreeNode.NDVEQ:{
-                generateDivideEqualsStatement(generator,node);
-                break;
-            }
-            //------------------------RETNSTAT----------------------------
-            case TreeNode.NRETN: {
-                generateReturnStatement(generator, node);
-                break;
-            }
-
-        }
-    }
-
-    private static void generateReturnStatement(CodeGenerator generator, TreeNode node){
+    public static void generateReturnStatement(CodeGenerator generator, TreeNode node){
         generator.generate1Byte(OpCodes.RETN);
         generator.stopProcessing();
     }
 
-    private static void generateDivideEqualsStatement(CodeGenerator generator, TreeNode node){
+    public static void generateDivideEqualsStatement(CodeGenerator generator, TreeNode node){
         //equivalent of x = x / <expr>
         SymbolTableRecord assignee = node.getLeft().getSymbol();
         String LA = "LA" + assignee.getBaseRegister();
@@ -91,7 +44,7 @@ public class Statement{
 
     }
 
-    private static void generateStarEqualsStatement(CodeGenerator generator, TreeNode node){
+    public static void generateStarEqualsStatement(CodeGenerator generator, TreeNode node){
         //equivalent of x = x * <expr>
         SymbolTableRecord assignee = node.getLeft().getSymbol();
         String LA = "LA" + assignee.getBaseRegister();
@@ -108,7 +61,7 @@ public class Statement{
 
     }
 
-    private static void generateMinusEqualsStatement(CodeGenerator generator, TreeNode node){
+    public static void generateMinusEqualsStatement(CodeGenerator generator, TreeNode node){
         //equivalent of x = x - <expr>
         SymbolTableRecord assignee = node.getLeft().getSymbol();
         String LA = "LA" + assignee.getBaseRegister();
@@ -124,7 +77,7 @@ public class Statement{
         generator.generate1Byte(OpCodes.ST); //store as normal
     }
 
-    private static void generatePlusEqualsStatement(CodeGenerator generator, TreeNode node){
+    public static void generatePlusEqualsStatement(CodeGenerator generator, TreeNode node){
         //equivalent of x = x + <expr>
         SymbolTableRecord assignee = node.getLeft().getSymbol();
         String LA = "LA" + assignee.getBaseRegister();
@@ -140,7 +93,7 @@ public class Statement{
         generator.generate1Byte(OpCodes.ST); //store as normal
     }
 
-    private static void generateAssignStatement(CodeGenerator generator, TreeNode node){
+    public static void generateAssignStatement(CodeGenerator generator, TreeNode node){
 //        Example:
 //        k = i + j;    LA “k”
 //                      LV “i”
@@ -201,22 +154,22 @@ public class Statement{
             else if(root.getValue() == TreeNode.NDIV)
                 generator.generate1Byte(OpCodes.DIV);
             else if(root.getValue() == TreeNode.NMOD)
-                generator.generate1Byte(OpCodes.REM);//todo is this right?
+                generator.generate1Byte(OpCodes.REM);
             else if(root.getValue() == TreeNode.NPOW)
                 generator.generate1Byte(OpCodes.POW);
         }
     }
 
-    private static void generatePrintLineStatement(CodeGenerator generator, TreeNode node){
-        List<TreeNode> leafNodes = generator.detreeify(node); //checks if we're dealing with PLIST or not. Deforest regardless.
+    public static void generatePrintLineStatement(CodeGenerator generator, TreeNode node){
+        List<TreeNode> leafNodes = generator.getLeafNodes(node); //checks if we're dealing with PLIST or not. Deforest regardless.
         for(TreeNode leaf : leafNodes){
             generatePrintStatement(generator,leaf);
             generator.generate1Byte(OpCodes.NEWLN);
         }
     }
 
-    private static void generatePrintStatement(CodeGenerator generator, TreeNode node){
-        List<TreeNode> leafNodes = generator.detreeify(node);//checks if we're dealing with PLIST or not. Deforest regardless.
+    public static void generatePrintStatement(CodeGenerator generator, TreeNode node){
+        List<TreeNode> leafNodes = generator.getLeafNodes(node);//checks if we're dealing with PLIST or not. Deforest regardless.
         for(TreeNode leaf : leafNodes){
             generatePrintOpCodes(generator, leaf);
         }
@@ -276,9 +229,9 @@ public class Statement{
         }
     }
 
-    private static void generateInputStatement(CodeGenerator generator, TreeNode node){
+    public static void generateInputStatement(CodeGenerator generator, TreeNode node){
         //could be list
-        List<TreeNode> leafNodes = generator.detreeify(node);
+        List<TreeNode> leafNodes = generator.getLeafNodes(node);
         if(leafNodes.size() == 1){
             generateInputOpCodes(generator, node.getLeft()); //only 1 NINPUT
         }
@@ -287,9 +240,6 @@ public class Statement{
                 generateInputOpCodes(generator, leaf); //probs VLIST
             }
         }
-
-
-
     }
 
     private static void generateInputOpCodes(CodeGenerator generator, TreeNode node){

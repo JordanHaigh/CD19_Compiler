@@ -8,5 +8,12 @@ begin
     k = k * 10;
     printline k;
 
+    /--repeat(i=1)
+      /--  i+=1;
+    /--until(i==3);
+
+    printline k;
+
+
 end
 CD19 test

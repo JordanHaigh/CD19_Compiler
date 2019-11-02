@@ -25,16 +25,15 @@ public class Declaration {
     }
 
 
-    public static void generate(CodeGenerator generator, SymbolTable identifiers){
-        List<SymbolTableRecord> identifierList = identifiers.getAllRecords();
-
-        if(identifierList.size() > 0){
-            generator.generate2Bytes(OpCodes.LB, identifierList.size());
+    public static void generate(CodeGenerator generator, List<TreeNode> sdecls){
+        if(sdecls.size() > 0){
+            generator.generate2Bytes(OpCodes.LB, sdecls.size());
             //generator.generate3Bytes(OpCodes.LH, recordsInScope.size());
             generator.generate1Byte(OpCodes.ALLOC);
         }
 
-        for(SymbolTableRecord record : identifierList){
+        for(TreeNode node : sdecls){
+            SymbolTableRecord record = node.getSymbol();
             generator.allocateVariable(record);
             initialiseVariableToDefault(generator, record); //k=i+j doesnt initialise, but hello world does. so just initialise regardless
         }
