@@ -335,10 +335,15 @@ public class TreeNode {
 
         while(iterator.getValue() == rootValue){
             deforestedNodes.add(iterator.getLeft());
+
+
             iterator = iterator.getRight();
         }
 
         deforestedNodes.add(iterator);
+        if(iterator.getMiddle() != null){
+            deforestedNodes.add(iterator.getMiddle());
+        }
 
         return deforestedNodes;
     }

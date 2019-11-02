@@ -30,6 +30,8 @@ public class NBoolNode implements Node{
         this.nLogopNode = nLogopNode;
     }
 
+    private boolean hasMultipleLogops = false;
+
     /**
      * Singleton method used so only one instance of the class is created throughout the entire program
      * @return - Instance of the class
@@ -48,6 +50,17 @@ public class NBoolNode implements Node{
      */
     @Override
     public TreeNode make(Parser parser) {
+        TreeNode tree = makeTree(parser);
+        if(hasMultipleLogops){
+            TreeNode returnNode = new TreeNode(TreeNode.NBOOL, tree, null);
+            hasMultipleLogops = false;
+            return returnNode;
+        }
+        else
+            return tree;
+    }
+
+    private TreeNode makeTree(Parser parser){
         Token peek = parser.peek();
         TreeNode rel = nRelNode.make(parser);
         TreeNode tail = tail(parser,peek);
@@ -58,6 +71,7 @@ public class NBoolNode implements Node{
         }
         else
             return rel;
+
     }
 
     /**
@@ -70,11 +84,9 @@ public class NBoolNode implements Node{
         if(token.getTokenID() == Token.TAND ||
                 token.getTokenID() == Token.TOR ||
                 token.getTokenID() == Token.TXOR){
-
+            hasMultipleLogops = true;
             TreeNode logop = nLogopNode.make(parser);
-            TreeNode bool = this.make(parser);
-
-
+            TreeNode bool = this.makeTree(parser);
 
             SymbolTableRecord idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(),null,parser.getScope()));
 
@@ -90,7 +102,7 @@ public class NBoolNode implements Node{
                 }
             }
 
-            return new TreeNode (TreeNode.NBOOL, null, logop, bool);
+            return new TreeNode (logop.getValue(), null, bool);
         }
         else
           return null; //eps trans

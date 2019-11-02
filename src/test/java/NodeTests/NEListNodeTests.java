@@ -64,10 +64,11 @@ public class NEListNodeTests {
         TreeNode elist = neListNode1.make(parser);
 
         assertEquals(TreeNode.NBOOL, elist.getValue());
-        assertEquals(TreeNode.NADD, elist.getLeft().getValue());
-        assertEquals(TreeNode.NBOOL, elist.getRight().getValue());
-        assertEquals(TreeNode.NPOW, elist.getRight().getLeft().getValue());
-        assertEquals(TreeNode.NMOD, elist.getRight().getRight().getValue());
+        assertEquals(TreeNode.NAND, elist.getLeft().getValue());
+        assertEquals(TreeNode.NADD, elist.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NOR, elist.getLeft().getRight().getValue());
+        assertEquals(TreeNode.NPOW, elist.getLeft().getRight().getLeft().getValue());
+        assertEquals(TreeNode.NMOD, elist.getLeft().getRight().getRight().getValue());
     }
 
     @Test
@@ -118,12 +119,14 @@ public class NEListNodeTests {
         assertEquals(TreeNode.NBOOL, elist.getLeft().getValue());
         assertEquals(TreeNode.NBOOL, elist.getRight().getValue());
 
-        assertEquals(TreeNode.NADD, elist.getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NADD, elist.getLeft().getRight().getValue());
+        assertEquals(TreeNode.NAND, elist.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NOR, elist.getRight().getLeft().getValue());
 
+        assertEquals(TreeNode.NADD, elist.getLeft().getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NADD, elist.getLeft().getLeft().getRight().getValue());
 
-        assertEquals(TreeNode.NSUB, elist.getRight().getLeft().getValue());
-        assertEquals(TreeNode.NSUB, elist.getRight().getRight().getValue());
+        assertEquals(TreeNode.NSUB, elist.getRight().getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NSUB, elist.getRight().getLeft().getRight().getValue());
 
     }
 
@@ -187,24 +190,25 @@ public class NEListNodeTests {
         NEListNode neListNode1 = new NEListNode(nBoolNode1);
         TreeNode elist = neListNode1.make(parser);
 
+
         assertEquals(TreeNode.NEXPL, elist.getValue());
+
         assertEquals(TreeNode.NBOOL, elist.getLeft().getValue());
+        assertEquals(TreeNode.NAND, elist.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NADD, elist.getLeft().getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NADD, elist.getLeft().getLeft().getRight().getValue());
+
         assertEquals(TreeNode.NEXPL, elist.getRight().getValue());
-
-        assertEquals(TreeNode.NADD, elist.getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NAND, elist.getLeft().getMiddle().getValue());
-        assertEquals(TreeNode.NADD, elist.getLeft().getRight().getValue());
-
         assertEquals(TreeNode.NBOOL, elist.getRight().getLeft().getValue());
+        assertEquals(TreeNode.NOR, elist.getRight().getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NSUB, elist.getRight().getLeft().getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NSUB, elist.getRight().getLeft().getLeft().getRight().getValue());
+
         assertEquals(TreeNode.NBOOL, elist.getRight().getRight().getValue());
+        assertEquals(TreeNode.NXOR, elist.getRight().getRight().getLeft().getValue());
+        assertEquals(TreeNode.NADD, elist.getRight().getRight().getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NADD, elist.getRight().getRight().getLeft().getRight().getValue());
 
-        assertEquals(TreeNode.NSUB, elist.getRight().getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NOR, elist.getRight().getLeft().getMiddle().getValue());
-        assertEquals(TreeNode.NSUB, elist.getRight().getLeft().getRight().getValue());
-
-        assertEquals(TreeNode.NADD, elist.getRight().getRight().getLeft().getValue());
-        assertEquals(TreeNode.NADD, elist.getRight().getRight().getRight().getValue());
-        assertEquals(TreeNode.NXOR, elist.getRight().getRight().getMiddle().getValue());
 
 
     }

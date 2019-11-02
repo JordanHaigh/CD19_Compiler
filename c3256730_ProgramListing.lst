@@ -5,7 +5,7 @@
 5: 
 6:     repeat(i=1)
 7:       i+=1;
-8:     until(i==3 and j==4);
+8:     until(i==3 and j==4 and  i==5);
 9: 
 10:     printline i;
 11: 
