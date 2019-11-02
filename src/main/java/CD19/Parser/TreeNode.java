@@ -391,7 +391,10 @@ public class TreeNode {
         }
         return leaves;
 
+    }
 
+    public boolean nodeIsLogop(){
+        return nodeValue == NAND || nodeValue == NOR || nodeValue == NXOR || nodeValue == NNOT;
     }
 
 

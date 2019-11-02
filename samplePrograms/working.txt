@@ -5,7 +5,7 @@ begin
 
     repeat(i=1)
       i+=1;
-    until(i==3 and i == 1);
+    until(not i==3 and i == 1 or i == 1);
 
     printline i;
 

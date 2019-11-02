@@ -71,7 +71,39 @@ public class Statement{
         }
     }
 
-    public static void generateRel(CodeGenerator generator, TreeNode node){
+    public static void generateLogop(CodeGenerator generator, TreeNode node){
+        //root is logop
+        //children are either more logops or relops
+        if(!node.getLeft().nodeIsLogop()){ //we dont need to process child if it logop. will already be done
+            generateRelop(generator,node.getLeft());
+        }
+
+        if(!node.getRight().nodeIsLogop()){
+            generateRelop(generator,node.getRight());
+        }
+
+        switch(node.getValue()){
+            case TreeNode.NAND: {
+                generator.generate1Byte(OpCodes.AND);
+                break;
+            }
+            case TreeNode.NOR:{
+                generator.generate1Byte(OpCodes.OR);
+                break;
+            }
+            case TreeNode.NXOR:{
+                generator.generate1Byte(OpCodes.XOR);
+                break;
+            }
+            case TreeNode.NNOT:{
+                generator.generate1Byte(OpCodes.NOT);
+                break;
+            }
+        }
+
+    }
+
+    public static void generateRelop(CodeGenerator generator, TreeNode node){
         TreeNode leftSide = node.getLeft();
         String LV = "LV" + leftSide.getSymbol().getBaseRegister(); //load value of x to be div'd at end
         generator.generate5Bytes(OpCodes.valueOf(LV), leftSide.getSymbol().getOffset());
@@ -160,33 +192,11 @@ public class Statement{
         if(bool.getValue() == TreeNode.NBOOL){//more than 1 bool
             List<TreeNode> boolList = bool.detreeifyLogops();
             for(TreeNode n : boolList){
-                //if is neql node, do rel
-                //if is and or xor, do something else
-                //not not supported
-                switch(n.getValue()){
-                    case TreeNode.NEQL: case TreeNode.NNEQ :
-                        case TreeNode.NGRT: case TreeNode.NLEQ :
-                            case TreeNode.NLSS : case TreeNode.NGEQ: {
-                                generateRel(generator,n);
-                                break;
-                    }
-                    case TreeNode.NAND: {
-                        generator.generate1Byte(OpCodes.AND);
-                        break;
-                    }
-                    case TreeNode.NOR : {
-                        generator.generate1Byte(OpCodes.OR);
-                        break;
-                    }
-                    case TreeNode.NXOR:{
-                        generator.generate1Byte(OpCodes.XOR);
-                        break;
-                    }
-                }
+                generateLogop(generator, n);
             }
         }
         else{ //1 bool
-            generateRel(generator, bool);
+            generateRelop(generator, bool);
         }
 
         //--------------------------BF-----------------------------------

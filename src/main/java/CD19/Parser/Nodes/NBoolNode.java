@@ -61,16 +61,20 @@ public class NBoolNode implements Node{
     }
 
     private TreeNode makeTree(Parser parser){
+//        Token peek = parser.peek();
+//        TreeNode rel = nRelNode.make(parser);
+//        TreeNode tail = tail(parser,peek);
+//
+//        if (tail != null) {
+//            tail.setLeft(rel); //the tail value will be the relop, reassign the tail left to the first rel
+//            return tail;
+//        }
+//        else
+//            return rel;
+
         Token peek = parser.peek();
         TreeNode rel = nRelNode.make(parser);
-        TreeNode tail = tail(parser,peek);
-
-        if (tail != null) {
-            tail.setLeft(rel); //the tail value will be the relop, reassign the tail left to the first rel
-            return tail;
-        }
-        else
-            return rel;
+        return tail(parser, peek, rel);
 
     }
 
@@ -79,34 +83,52 @@ public class NBoolNode implements Node{
      * @param parser The parser
      * @return - Null if there are no subsequent bool nodes, or a TreeNode containing tailing bool nodes
      */
-    private TreeNode tail(Parser parser, Token id){
-        Token token = parser.peek();
-        if(token.getTokenID() == Token.TAND ||
-                token.getTokenID() == Token.TOR ||
-                token.getTokenID() == Token.TXOR){
-            hasMultipleLogops = true;
-            TreeNode logop = nLogopNode.make(parser);
-            TreeNode bool = this.makeTree(parser);
+    private TreeNode tail(Parser parser, Token id, TreeNode left){
 
-            SymbolTableRecord idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(),null,parser.getScope()));
-
-            if (idRecord != null) { //this is here for the unit tests (don't remove it)
-
-                String idRecordType = idRecord.getDataType();
-                String boolType = bool.getType();
-
-                if (idRecordType != null && boolType != null) {
-                    if (!idRecordType.equals(boolType)) {
-                        parser.semanticError("Invalid logical expression", id);
-                    }
-                }
-            }
-
-            return new TreeNode (logop.getValue(), null, bool);
+////
+////
+////
+////            return new TreeNode (logop.getValue(), null, bool);
+////        }
+////        else
+////          return null; //eps trans
+        Token peek = parser.peek();
+        if(peek.getTokenID() == Token.TAND){
+            return buildLeftDerivedTree(parser, TreeNode.NAND, left, id);
         }
-        else
-          return null; //eps trans
+        else if(peek.getTokenID() == Token.TOR ){
+            return buildLeftDerivedTree(parser, TreeNode.NOR, left, id);
+        }
+        else if(peek.getTokenID() == Token.TXOR) {
+            return buildLeftDerivedTree(parser, TreeNode.NXOR, left, id);
+        }
+        else{
+            return left; //epsilon
+        }
+    }
 
+    private TreeNode buildLeftDerivedTree(Parser parser, int expectedNodeType, TreeNode left, Token id){ //evan helped me out with this. I was having issues trying to build a left derived version of this. check my notebook it was a mess
+//        SymbolTableRecord idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(),null,parser.getScope()));
+//
+//            if (idRecord != null) { //this is here for the unit tests (don't remove it)
+//
+//                String idRecordType = idRecord.getDataType();
+//                String boolType = bool.getType();
+//
+//                if (idRecordType != null && boolType != null) {
+//                    if (!idRecordType.equals(boolType)) {
+//                        parser.semanticError("Invalid logical expression", id);
+//                    }
+//                }
+//            }
+        //todo fix semantic checks here
+        hasMultipleLogops = true;
+        TreeNode logop = nLogopNode.make(parser);
+
+        TreeNode parent, right;
+        right = nRelNode.make(parser);
+        parent = new TreeNode(expectedNodeType,left,right);
+        return tail(parser,id, parent);
     }
 
 }
