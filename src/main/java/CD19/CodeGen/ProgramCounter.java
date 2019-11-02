@@ -34,6 +34,10 @@ public class ProgramCounter {
     public void incrementByte(){byte_++;}
     public void incrementRow(){ row_++;}
 
+    public int getProgramCounterPosition(){
+        return (row_ * ROWLENGTH) + byte_;
+    }
+
 
     @Override
     public String toString() {

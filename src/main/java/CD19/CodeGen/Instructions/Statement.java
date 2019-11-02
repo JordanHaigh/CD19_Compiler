@@ -105,6 +105,15 @@ public class Statement{
 
     public static void generateRelop(CodeGenerator generator, TreeNode node){
         TreeNode leftSide = node.getLeft();
+        if(node.getValue() == TreeNode.NTRUE){
+            generator.generate1Byte(OpCodes.TRUE);
+            return;
+        }
+        if(node.getValue() == TreeNode.NFALS){
+            generator.generate1Byte(OpCodes.FALSE);
+            return;
+        }
+
         String LV = "LV" + leftSide.getSymbol().getBaseRegister(); //load value of x to be div'd at end
         generator.generate5Bytes(OpCodes.valueOf(LV), leftSide.getSymbol().getOffset());
 
@@ -125,7 +134,6 @@ public class Statement{
 
         //for == use sub
         generator.generate1Byte(OpCodes.SUB);
-        //todo run programs and check all these
         switch(node.getValue()){
             case TreeNode.NEQL:{ //==
                 generator.generate1Byte(OpCodes.EQ);
@@ -157,6 +165,7 @@ public class Statement{
 
 
     public static void generateRepeatStatement(CodeGenerator generator, TreeNode node){
+        //todo i dont think evan handles until(true)
         //--------------------------ASGNLIST-----------------------------------
         //MULTI ASGN WORKS
         TreeNode asgnlistNode = node.getLeft();
@@ -173,6 +182,7 @@ public class Statement{
         //MULTI STATS WORK
         TreeNode stats = node.getMiddle();
         TreeNode firstStat = stats.getLeft();
+        int programCounterIndex = generator.getProgram().getProgramCounter().getProgramCounterPosition();
 
         if(stats.getValue() == TreeNode.NSTATS){ //more than 1 stat
             List<TreeNode> statList = stats.detreeify();
@@ -185,7 +195,7 @@ public class Statement{
         }
         //--------------------------LOAD FIRST ADDR-----------------------------------
         //load address of first stat
-        generator.generate5Bytes(OpCodes.LA0, firstStat.getSymbol().getOffset());
+        generator.generate5Bytes(OpCodes.LA0, programCounterIndex);
 
         //--------------------------BOOL-----------------------------------
         TreeNode bool = node.getRight();
