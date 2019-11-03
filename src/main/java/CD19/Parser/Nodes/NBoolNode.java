@@ -4,6 +4,9 @@ import CD19.Parser.Parser;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
+import sun.awt.Symbol;
+
+import java.util.List;
 
 /**
  * Generates a bool of the form:
@@ -50,31 +53,37 @@ public class NBoolNode implements Node{
      */
     @Override
     public TreeNode make(Parser parser) {
+        Token peekForSemantic = parser.peek();
         TreeNode tree = makeTree(parser);
         if(hasMultipleLogops){
             TreeNode returnNode = new TreeNode(TreeNode.NBOOL, tree, null);
             hasMultipleLogops = false;
+
+            //boring semantic bullshit
+            List<TreeNode> deforested = tree.detreeifyLogops();
+            for(TreeNode n : deforested){
+                if(n.nodeIsLogop()){
+                    if(n.getLeft() != null && n.getRight() != null){
+                        n.updateType(n.getLeft().getType(), n.getRight().getType());
+                        if(n.getType().equals("Mixed")){
+                            parser.semanticError("Invalid logical expression",peekForSemantic);
+                        }
+                    }
+                }
+            }
+            //end of boring semantic bullshit
+
+
             return returnNode;
         }
-        else
+        else{
             return tree;
+        }
     }
 
     private TreeNode makeTree(Parser parser){
-//        Token peek = parser.peek();
-//        TreeNode rel = nRelNode.make(parser);
-//        TreeNode tail = tail(parser,peek);
-//
-//        if (tail != null) {
-//            tail.setLeft(rel); //the tail value will be the relop, reassign the tail left to the first rel
-//            return tail;
-//        }
-//        else
-//            return rel;
-
-        Token peek = parser.peek();
         TreeNode rel = nRelNode.make(parser);
-        return tail(parser, peek, rel);
+        return tail(parser, rel);
 
     }
 
@@ -83,7 +92,7 @@ public class NBoolNode implements Node{
      * @param parser The parser
      * @return - Null if there are no subsequent bool nodes, or a TreeNode containing tailing bool nodes
      */
-    private TreeNode tail(Parser parser, Token id, TreeNode left){
+    private TreeNode tail(Parser parser, TreeNode left){
 
 ////
 ////
@@ -94,33 +103,20 @@ public class NBoolNode implements Node{
 ////          return null; //eps trans
         Token peek = parser.peek();
         if(peek.getTokenID() == Token.TAND){
-            return buildLeftDerivedTree(parser, TreeNode.NAND, left, id);
+            return buildLeftDerivedTree(parser, TreeNode.NAND, left);
         }
         else if(peek.getTokenID() == Token.TOR ){
-            return buildLeftDerivedTree(parser, TreeNode.NOR, left, id);
+            return buildLeftDerivedTree(parser, TreeNode.NOR, left);
         }
         else if(peek.getTokenID() == Token.TXOR) {
-            return buildLeftDerivedTree(parser, TreeNode.NXOR, left, id);
+            return buildLeftDerivedTree(parser, TreeNode.NXOR, left);
         }
         else{
             return left; //epsilon
         }
     }
 
-    private TreeNode buildLeftDerivedTree(Parser parser, int expectedNodeType, TreeNode left, Token id){ //evan helped me out with this. I was having issues trying to build a left derived version of this. check my notebook it was a mess
-//        SymbolTableRecord idRecord = parser.lookupIdentifierRecord(new SymbolTableRecord(id.getStr(),null,parser.getScope()));
-//
-//            if (idRecord != null) { //this is here for the unit tests (don't remove it)
-//
-//                String idRecordType = idRecord.getDataType();
-//                String boolType = bool.getType();
-//
-//                if (idRecordType != null && boolType != null) {
-//                    if (!idRecordType.equals(boolType)) {
-//                        parser.semanticError("Invalid logical expression", id);
-//                    }
-//                }
-//            }
+    private TreeNode buildLeftDerivedTree(Parser parser, int expectedNodeType, TreeNode left){ //evan helped me out with this. I was having issues trying to build a left derived version of this. check my notebook it was a mess
         //todo fix semantic checks here
         hasMultipleLogops = true;
         TreeNode logop = nLogopNode.make(parser);
@@ -128,7 +124,7 @@ public class NBoolNode implements Node{
         TreeNode parent, right;
         right = nRelNode.make(parser);
         parent = new TreeNode(expectedNodeType,left,right);
-        return tail(parser,id, parent);
+        return tail(parser, parent);
     }
 
 }

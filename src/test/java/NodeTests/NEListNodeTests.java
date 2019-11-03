@@ -64,11 +64,11 @@ public class NEListNodeTests {
         TreeNode elist = neListNode1.make(parser);
 
         assertEquals(TreeNode.NBOOL, elist.getValue());
-        assertEquals(TreeNode.NAND, elist.getLeft().getValue());
-        assertEquals(TreeNode.NADD, elist.getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NOR, elist.getLeft().getRight().getValue());
-        assertEquals(TreeNode.NPOW, elist.getLeft().getRight().getLeft().getValue());
-        assertEquals(TreeNode.NMOD, elist.getLeft().getRight().getRight().getValue());
+        assertEquals(TreeNode.NOR, elist.getLeft().getValue());
+        assertEquals(TreeNode.NAND, elist.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NMOD, elist.getLeft().getRight().getValue());
+        assertEquals(TreeNode.NPOW, elist.getLeft().getLeft().getRight().getValue());
+        assertEquals(TreeNode.NADD, elist.getLeft().getLeft().getLeft().getValue());
     }
 
     @Test

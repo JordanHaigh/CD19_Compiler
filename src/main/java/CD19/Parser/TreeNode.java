@@ -365,7 +365,17 @@ public class TreeNode {
         detreeifyLogops_recurse(node.getMiddle());
         detreeifyLogops_recurse(node.getRight());
 
-        deforestatedLogops.add(node);
+        if(node.getValue() == NSIMV ||
+                node.getValue() == NILIT ||
+                node.getValue() == NFLIT ||
+                node.getValue() == NFALS ||
+                node.getValue() == NTRUE
+        ){
+            //ignore
+        }
+        else{
+            deforestatedLogops.add(node);
+        }
     }
 
 
@@ -395,6 +405,10 @@ public class TreeNode {
 
     public boolean nodeIsLogop(){
         return nodeValue == NAND || nodeValue == NOR || nodeValue == NXOR || nodeValue == NNOT;
+    }
+
+    public boolean nodeIsRelop(){
+        return nodeValue == NGRT || nodeValue == NGEQ || nodeValue == NLSS || nodeValue == NLEQ || nodeValue == NEQL || nodeValue ==  NNEQ;
     }
 
 

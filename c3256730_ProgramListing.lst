@@ -5,7 +5,9 @@
 5: 
 6:     repeat(i=1)
 7:       i+=1;
-8:     until(i>=2);
+8:     until(i==true and j == 5);
+	Semantic Error - Incompatible types for relational operation(Line 8, Column 14)
+	Semantic Error - Invalid logical expression(Line 8, Column 11)
 9: 
 10:     printline i;
 11: 

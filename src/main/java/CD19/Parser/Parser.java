@@ -112,8 +112,10 @@ public class Parser implements Subject {
             if (m.getErrorMessage().equals(newM.getErrorMessage()) &&
                     m.getLine() == newM.getLine() &&
                     m.getColumn() == newM.getColumn()
-            )
+            ){
                 return true;
+            }
+
         }
         return false;
     }
@@ -123,8 +125,15 @@ public class Parser implements Subject {
             if (m.getErrorMessage().equals(newM.getErrorMessage()) &&
                     m.getLine() == newM.getLine() &&
                     m.getColumn() == newM.getColumn()
-            )
+            ){
                 return true;
+            }
+            if (m.getErrorMessage().equals(newM.getErrorMessage()) && //#judgementfreezone
+                    m.getLine() == newM.getLine() &&
+                    m.getColumn() == newM.getColumn()+1
+            ){
+                return true;
+            }
         }
         return false;
     }

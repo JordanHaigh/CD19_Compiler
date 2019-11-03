@@ -149,13 +149,13 @@ public class NBoolNodeTests {
         TreeNode bool = nBoolNode1.make(parser);
 
         assertEquals(TreeNode.NBOOL, bool.getValue());
-        assertEquals(TreeNode.NAND, bool.getLeft().getValue());
-        assertEquals(TreeNode.NNOT, bool.getLeft().getLeft().getValue());
-        assertEquals(TreeNode.NADD, bool.getLeft().getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NOR, bool.getLeft().getValue());
+        assertEquals(TreeNode.NAND, bool.getLeft().getLeft().getValue());
+        assertEquals(TreeNode.NNOT, bool.getLeft().getLeft().getLeft().getValue());
 
-        assertEquals(TreeNode.NOR,  bool.getLeft().getRight().getValue());
-        assertEquals(TreeNode.NPOW, bool.getLeft().getRight().getLeft().getValue());
-        assertEquals(TreeNode.NMOD, bool.getLeft().getRight().getRight().getValue());
+        assertEquals(TreeNode.NMOD,  bool.getLeft().getRight().getValue());
+        assertEquals(TreeNode.NPOW, bool.getLeft().getLeft().getRight().getValue());
+        assertEquals(TreeNode.NADD, bool.getLeft().getLeft().getLeft().getLeft().getValue());
 
     }
 }
