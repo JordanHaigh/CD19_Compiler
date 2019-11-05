@@ -3,12 +3,14 @@
 3: 	i : integer, j : integer
 4: begin
 5: 
-6:     i = 5;
-7:     if(i!=5)
-8:         printline "hello world it is i";
-9:     end
-10: 
-11:     printline i;
+6:     i = 6;
+7:     if(i==5)
+8:         printline "a";
+9:     else
+10:         printline "b";
+11:     end
 12: 
-13: end
-14: CD19 test
+13:     printline i;
+14: 
+15: end
+16: CD19 test

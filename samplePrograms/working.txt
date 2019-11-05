@@ -3,9 +3,11 @@ main
 	i : integer, j : integer
 begin
 
-    i = 5;
-    if(i!=5)
-        printline "hello world it is i";
+    i = 6;
+    if(i==5)
+        printline "a";
+    else
+        printline "b";
     end
 
     printline i;

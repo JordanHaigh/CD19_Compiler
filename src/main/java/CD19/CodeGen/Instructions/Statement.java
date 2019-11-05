@@ -71,11 +71,87 @@ public class Statement{
             //------------------------FORSTAT----------------------------
             case TreeNode.NFOR:{
                 generateForStatement(generator,node);
+                break;
             }
             case TreeNode.NIFTH:{
                 generateIfStatement(generator,node);
+                break;
+            }
+            case TreeNode.NIFTE:{
+                generateIfElseStatement(generator,node);
             }
         }
+    }
+
+    private static void moveProgramCounterOverwriteMoveBack(CodeGenerator generator, int startRow, int startByte, int currentPosition, int currentRow, int currentByte){
+        generator.getProgram().moveProgramCounter(startRow,startByte);
+        //update operand
+        generator.generateXBytes(OpCodes.LA0, currentPosition, 5, true);
+        //move back to position
+        generator.getProgram().moveProgramCounter(currentRow,currentByte);
+    }
+
+    private static void generateStatsInsideLoop(CodeGenerator generator, TreeNode node){
+        if(node.getValue() == TreeNode.NSTATS){ //more than 1 stat
+            List<TreeNode> statList = node.detreeify();
+            for(TreeNode n : statList){
+                Statement.generate(generator, n);
+            }
+        }
+        else{ //1 stat
+            Statement.generate(generator, node);
+        }
+
+        if (generator.hasStoppedProcessing()) {
+            return;
+        }
+    }
+
+    public static void generateIfElseStatement(CodeGenerator generator, TreeNode node){
+        //--------------------------BOOL-----------------------------------
+        int startRowOfBool = generator.getProgram().getProgramCounter().getRow();
+        int startByteOfBool = generator.getProgram().getProgramCounter().getByte();
+        TreeNode bool = node.getLeft();
+
+        generator.generate5Bytes(OpCodes.LA0,-99); //placeholder for when we need to return to start of loop for next iteration
+
+        List<TreeNode> boolList = bool.detreeifyLogops();
+        for(TreeNode n : boolList){
+            generateLogop(generator, n);
+        }
+
+        generator.generate1Byte(OpCodes.BF);
+
+        //--------------------------IFSTATS-----------------------------------
+        TreeNode ifstats = node.getMiddle();
+        generateStatsInsideLoop(generator, ifstats);
+
+        int startRowOfElseStatement = generator.getProgram().getProgramCounter().getRow();
+        int startByteOfElseStatement = generator.getProgram().getProgramCounter().getByte();
+        generator.generate5Bytes(OpCodes.LA0,-99); //placeholder for when we need to return to start of loop for next iteration
+        generator.generate1Byte(OpCodes.BR);
+
+
+        //--------------------------ELSESTATS-----------------------------------
+        int currentRow = generator.getProgram().getProgramCounter().getRow();
+        int currentByte = generator.getProgram().getProgramCounter().getByte();
+        int currentPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
+
+        //fill in remember 1 (location of else statement)
+        moveProgramCounterOverwriteMoveBack(generator, startByteOfBool, startRowOfBool, currentPosition,currentRow,currentByte);
+
+
+        TreeNode elseStats = node.getRight();
+        generateStatsInsideLoop(generator,elseStats);
+
+
+        currentRow = generator.getProgram().getProgramCounter().getRow();
+        currentByte = generator.getProgram().getProgramCounter().getByte();
+        currentPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
+
+        //fill in remember 2 (location of after the "then" part)
+        moveProgramCounterOverwriteMoveBack(generator, startRowOfElseStatement, startByteOfElseStatement, currentPosition,currentRow,currentByte);
+
     }
 
     public static void generateIfStatement(CodeGenerator generator, TreeNode node){
