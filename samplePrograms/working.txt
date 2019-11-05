@@ -5,7 +5,7 @@ begin
 
     repeat(i=1)
       i+=1;
-    until(i == );
+    until(not i == 50 and j == 2 and i ==4);
 
     printline i;
 

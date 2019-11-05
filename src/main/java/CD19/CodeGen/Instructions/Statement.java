@@ -74,13 +74,8 @@ public class Statement{
     public static void generateLogop(CodeGenerator generator, TreeNode node){
         //root is logop
         //children are either more logops or relops
-        if(!node.getLeft().nodeIsLogop()){ //we dont need to process child if it logop. will already be done
-            generateRelop(generator,node.getLeft());
-        }
-
-        if(!node.getRight().nodeIsLogop()){
-            generateRelop(generator,node.getRight());
-        }
+        if(node.nodeIsRelop())
+            generateRelop(generator, node);
 
         switch(node.getValue()){
             case TreeNode.NAND: {
@@ -112,6 +107,9 @@ public class Statement{
         if(node.getValue() == TreeNode.NFALS){
             generator.generate1Byte(OpCodes.FALSE);
             return;
+        }
+        if(leftSide.nodeIsLogop()){
+            return; //already handled previously
         }
 
         String LV = "LV" + leftSide.getSymbol().getBaseRegister(); //load value of x to be div'd at end
@@ -199,14 +197,9 @@ public class Statement{
 
         //--------------------------BOOL-----------------------------------
         TreeNode bool = node.getRight();
-        if(bool.getValue() == TreeNode.NBOOL){//more than 1 bool
-            List<TreeNode> boolList = bool.detreeifyLogops();
-            for(TreeNode n : boolList){
-                generateLogop(generator, n);
-            }
-        }
-        else{ //1 bool
-            generateRelop(generator, bool);
+        List<TreeNode> boolList = bool.detreeifyLogops();
+        for(TreeNode n : boolList){
+            generateLogop(generator, n); ///todo yo uare here. testing single logops and multi logops
         }
 
         //--------------------------BF-----------------------------------
