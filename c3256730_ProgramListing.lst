@@ -3,12 +3,10 @@
 3: 	i : integer, j : integer
 4: begin
 5: 
-6:     repeat(i=1)
-7:       i+=1;
-8:     until(not i == 50 and j == 2 and i ==4);
-9: 
-10:     printline i;
-11: 
-12: 
-13: end
-14: CD19 test
+6:     for(i=1;i<5)
+7:         i+=1;
+8:     end
+9:     printline i;
+10: 
+11: end
+12: CD19 test

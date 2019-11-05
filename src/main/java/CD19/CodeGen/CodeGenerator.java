@@ -13,8 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CodeGenerator {
-    //todo fix return statement - when to stop processing - might need to be something in each statement function..
-
     TreeNode tree;
     SymbolTable constants;
     SymbolTable identifiers;
@@ -165,10 +163,18 @@ public class CodeGenerator {
         Declaration.generate(this, deforestatedSDeclNodes);
 
         //NSTATS or NSTAT
-        List<TreeNode> deforestatedStatNodes = root.getRight().detreeify();
-        for(TreeNode stat : deforestatedStatNodes){
-            Statement.generate(this, stat);
+        if(root.getRight().getValue() == TreeNode.NSTATS){
+            List<TreeNode> deforestatedStatNodes = root.getRight().detreeify();
+            for(TreeNode stat : deforestatedStatNodes){
+                if(stopProcessing)
+                    break;
+                Statement.generate(this, stat);
+            }
         }
+        else{
+            Statement.generate(this,root.getRight());
+        }
+
     }
 
     public void printMatrix(boolean printByteAsChar, PrintWriter printWriter){
@@ -216,9 +222,11 @@ public class CodeGenerator {
         overrideMessages.add(message);
     }
 
+    public void stopProcessing(){
+        stopProcessing = true;
+    }
 
-
-    public void stopProcessing(){ stopProcessing = true; }
+    public boolean hasStoppedProcessing(){return stopProcessing;}
 }
 
 

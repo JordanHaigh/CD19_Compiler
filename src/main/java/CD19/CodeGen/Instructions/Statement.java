@@ -68,8 +68,75 @@ public class Statement{
                 generateRepeatStatement(generator, node);
                 break;
             }
+            //------------------------FORSTAT----------------------------
+            case TreeNode.NFOR:{
+                generateForStatement(generator,node);
+            }
         }
     }
+
+    public static void generateForStatement(CodeGenerator generator, TreeNode node){
+        //--------------------------ASGNLIST-----------------------------------
+        TreeNode asgnlistNode = node.getLeft();
+        //make asgnlist
+        if(asgnlistNode.getValue() == TreeNode.NASGNS){ //more than 1 assign
+            List<TreeNode> asgnList = asgnlistNode.detreeify();
+            for(TreeNode n : asgnList){
+                generateAssignStatement(generator, n);
+            }
+        }
+        else{ //only one assign
+            generateAssignStatement(generator, asgnlistNode);
+        }
+        //--------------------------BOOL-----------------------------------
+        //get address in case loop needs to repeat
+        int startRowOfBool = generator.getProgram().getProgramCounter().getRow();
+        int startByteOfBool = generator.getProgram().getProgramCounter().getByte();
+        int startBoolPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
+
+        generator.generate5Bytes(OpCodes.LA0,-99); //
+
+        TreeNode bool = node.getMiddle();
+
+        List<TreeNode> boolList = bool.detreeifyLogops();
+        for(TreeNode n : boolList){
+            generateLogop(generator, n);
+        }
+        generator.generate1Byte(OpCodes.BF);
+
+        //--------------------------STATS-----------------------------------
+        TreeNode stats = node.getRight();
+        if(stats.getValue() == TreeNode.NSTATS){ //more than 1 stat
+            List<TreeNode> statList = stats.detreeify();
+            for(TreeNode n : statList){
+                Statement.generate(generator, n);
+            }
+        }
+        else{ //1 stat
+            Statement.generate(generator, stats);
+        }
+
+        if (generator.hasStoppedProcessing()) {
+            return;
+        }
+
+
+        generator.generate5Bytes(OpCodes.LA0, startBoolPosition);
+        generator.generate1Byte(OpCodes.BR);
+
+        int currentRow = generator.getProgram().getProgramCounter().getRow();
+        int currentByte = generator.getProgram().getProgramCounter().getByte();
+        int currentPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
+
+        generator.getProgram().moveProgramCounter(startRowOfBool,startByteOfBool);
+        //update operand
+        generator.generate5Bytes(OpCodes.LA0, currentPosition);
+
+        //move back to position
+        generator.getProgram().moveProgramCounter(currentRow,currentByte);
+
+    }
+
 
     public static void generateLogop(CodeGenerator generator, TreeNode node){
         //root is logop
@@ -191,6 +258,10 @@ public class Statement{
         else{ //1 stat
             Statement.generate(generator, stats);
         }
+
+        if (generator.hasStoppedProcessing()) {
+            return;
+        }
         //--------------------------LOAD FIRST ADDR-----------------------------------
         //load address of first stat
         generator.generate5Bytes(OpCodes.LA0, programCounterIndex);
@@ -199,7 +270,7 @@ public class Statement{
         TreeNode bool = node.getRight();
         List<TreeNode> boolList = bool.detreeifyLogops();
         for(TreeNode n : boolList){
-            generateLogop(generator, n); ///todo yo uare here. testing single logops and multi logops
+            generateLogop(generator, n);
         }
 
         //--------------------------BF-----------------------------------

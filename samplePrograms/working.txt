@@ -3,12 +3,10 @@ main
 	i : integer, j : integer
 begin
 
-    repeat(i=1)
-      i+=1;
-    until(not i == 50 and j == 2 and i ==4);
-
+    for(i=1;i<5)
+        i+=1;
+    end
     printline i;
-
 
 end
 CD19 test
