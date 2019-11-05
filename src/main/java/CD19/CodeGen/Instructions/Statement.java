@@ -72,7 +72,58 @@ public class Statement{
             case TreeNode.NFOR:{
                 generateForStatement(generator,node);
             }
+            case TreeNode.NIFTH:{
+                generateIfStatement(generator,node);
+            }
         }
+    }
+
+    public static void generateIfStatement(CodeGenerator generator, TreeNode node){
+        //--------------------------BOOL-----------------------------------
+        int startRowOfBool = generator.getProgram().getProgramCounter().getRow();
+        int startByteOfBool = generator.getProgram().getProgramCounter().getByte();
+        //int startBoolPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
+
+        generator.generate5Bytes(OpCodes.LA0,-99); //placeholder for when we need to return to start of loop for next iteration
+
+        TreeNode bool = node.getLeft();
+        List<TreeNode> boolList = bool.detreeifyLogops();
+        for(TreeNode n : boolList){
+            generateLogop(generator, n);
+        }
+
+        generator.generate1Byte(OpCodes.BF);
+
+
+        //--------------------------STATS-----------------------------------
+        TreeNode stats = node.getRight();
+        if(stats.getValue() == TreeNode.NSTATS){ //more than 1 stat
+            List<TreeNode> statList = stats.detreeify();
+            for(TreeNode n : statList){
+                Statement.generate(generator, n);
+            }
+        }
+        else{ //1 stat
+            Statement.generate(generator, stats);
+        }
+
+        if (generator.hasStoppedProcessing()) {
+            return;
+        }
+
+        //section after stats
+        int currentRow = generator.getProgram().getProgramCounter().getRow();
+        int currentByte = generator.getProgram().getProgramCounter().getByte();
+        int currentPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
+
+
+        generator.getProgram().moveProgramCounter(startRowOfBool,startByteOfBool);
+        //update operand
+        generator.generateXBytes(OpCodes.LA0, currentPosition, 5, true);
+
+        //move back to position
+        generator.getProgram().moveProgramCounter(currentRow,currentByte);
+
     }
 
     public static void generateForStatement(CodeGenerator generator, TreeNode node){
@@ -94,7 +145,7 @@ public class Statement{
         int startByteOfBool = generator.getProgram().getProgramCounter().getByte();
         int startBoolPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
 
-        generator.generate5Bytes(OpCodes.LA0,-99); //
+        generator.generate5Bytes(OpCodes.LA0,-99); //placeholder for when we need to return to start of loop for next iteration
 
         TreeNode bool = node.getMiddle();
 
@@ -130,7 +181,7 @@ public class Statement{
 
         generator.getProgram().moveProgramCounter(startRowOfBool,startByteOfBool);
         //update operand
-        generator.generate5Bytes(OpCodes.LA0, currentPosition);
+        generator.generateXBytes(OpCodes.LA0, 5, currentPosition, true);
 
         //move back to position
         generator.getProgram().moveProgramCounter(currentRow,currentByte);
