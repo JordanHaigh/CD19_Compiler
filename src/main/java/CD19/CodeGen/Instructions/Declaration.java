@@ -9,24 +9,21 @@ import CD19.Parser.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Generates an sdecl node
+ *
+ * @author Jordan Haigh c3256730
+ * @since 6/11/19
+ */
 public class Declaration {
 
-    private static Declaration instance;
-
     /**
-     * Singleton method used so only one instance of the class is created throughout the entire program
-     * @return - Instance of the class
+     * Generates an sdecl node
+     * @param generator - Code generator
+     * @param sdecls - TreeNode of all sdecls
      */
-    public static Declaration INSTANCE() {
-        if (instance == null) {
-            instance = new Declaration();
-        }
-        return instance;
-    }
-
-
     public static void generate(CodeGenerator generator, List<TreeNode> sdecls){
-        if(sdecls.size() > 0){
+        if(sdecls.size() > 0){ //more than 1 sdecl, so its a list. need to optimise loading bytes
             generator.generate2Bytes(OpCodes.LB, sdecls.size());
             //generator.generate3Bytes(OpCodes.LH, recordsInScope.size());
             generator.generate1Byte(OpCodes.ALLOC);
@@ -39,6 +36,11 @@ public class Declaration {
         }
     }
 
+    /**
+     * Initialises variable to its respective default value
+     * @param generator  - Code Generator
+     * @param record - Record to initialise value
+     */
     private static void initialiseVariableToDefault(CodeGenerator generator, SymbolTableRecord record) {
         int baseAddr = record.getBaseRegister();
         String LA ="LA" + baseAddr;

@@ -7,21 +7,20 @@ import CD19.Parser.TreeNode;
 
 import java.util.List;
 
+/**
+ * Generates any statement nodes (iostat, asgnstat, reptstat, retnstat, ifstat, ifelsestat, forstat)
+ * not callstat because we arent doing any functions
+ *
+ * @author Jordan Haigh c3256730
+ * @since 6/11/19
+ */
 public class Statement{
 
-    private static Statement instance;
-
     /**
-     * Singleton method used so only one instance of the class is created throughout the entire program
-     * @return - Instance of the class
+     * Generate opcodes based on specific statement
+     * @param generator - Code Generator
+     * @param node - Node to generate data from
      */
-    public static Statement INSTANCE() {
-        if (instance == null) {
-            instance = new Statement();
-        }
-        return instance;
-    }
-
     public static void generate(CodeGenerator generator, TreeNode node){
         int nodeValue= node.getValue();
         switch(nodeValue){
@@ -84,6 +83,11 @@ public class Statement{
     }
 
 
+    /**
+     * Generates opcodes for if else statement
+     * @param generator - Code Generator
+     * @param node - IFTHE node to expand
+     */
     public static void generateIfElseStatement(CodeGenerator generator, TreeNode node){
         //--------------------------BOOL-----------------------------------
         int startRowOfBool = generator.getProgram().getProgramCounter().getRow();
@@ -127,6 +131,11 @@ public class Statement{
 
     }
 
+    /**
+     * Generates opcodes for if  statement
+     * @param generator - Code Generator
+     * @param node - NIFTH node to expand
+     */
     public static void generateIfStatement(CodeGenerator generator, TreeNode node){
         //--------------------------BOOL-----------------------------------
         int startRowOfBool = generator.getProgram().getProgramCounter().getRow();
@@ -175,6 +184,11 @@ public class Statement{
 
     }
 
+    /**
+     * Generates opcodes for a "for statement"
+     * @param generator - Code Generator
+     * @param node - NFOR node to expand
+     */
     public static void generateForStatement(CodeGenerator generator, TreeNode node){
         //--------------------------ASGNLIST-----------------------------------
         TreeNode asgnlistNode = node.getLeft();
@@ -237,6 +251,11 @@ public class Statement{
 
     }
 
+    /**
+     * Generates opcodes for a "repeat statement"
+     * @param generator - Code Generator
+     * @param node - NREPT node to expand
+     */
     public static void generateRepeatStatement(CodeGenerator generator, TreeNode node){
         //todo i dont think evan handles until(true)
         //--------------------------ASGNLIST-----------------------------------
@@ -286,11 +305,21 @@ public class Statement{
         generator.generate1Byte(OpCodes.BF);
     }
 
+    /**
+     * Generates opcodes for a "return statement"
+     * @param generator - Code Generator
+     * @param node - NRETN node to expand
+     */
     public static void generateReturnStatement(CodeGenerator generator, TreeNode node){
         generator.generate1Byte(OpCodes.RETN);
         generator.stopProcessing();
     }
 
+    /**
+     * Generic version to generate a PLEQ, MNEQ, STEQ, DVEQ statement and its opcodes
+     * @param generator - Code Generator
+     * @param node - Node to expand
+     */
     private static void generate__EqualsStatement(CodeGenerator generator, TreeNode node, OpCodes X){
         //equivalent of x = x ?? <expr>
         SymbolTableRecord assignee = node.getLeft().getSymbol();
@@ -308,22 +337,47 @@ public class Statement{
 
     }
 
+    /**
+     * Generates a DVEQ statement and its opcodes
+     * @param generator - Code Generator
+     * @param node - DVEQ Node to expand
+     */
     public static void generateDivideEqualsStatement(CodeGenerator generator, TreeNode node){
        generate__EqualsStatement(generator,node,OpCodes.DIV);
     }
 
+    /**
+     * Generates a STEQ statement and its opcodes
+     * @param generator - Code Generator
+     * @param node - NSTEQ Node to expand
+     */
     public static void generateStarEqualsStatement(CodeGenerator generator, TreeNode node){
         generate__EqualsStatement(generator,node,OpCodes.MUL);
     }
 
+    /**
+     * Generates a MNEQ statement and its opcodes
+     * @param generator - Code Generator
+     * @param node - MNEQ Node to expand
+     */
     public static void generateMinusEqualsStatement(CodeGenerator generator, TreeNode node){
         generate__EqualsStatement(generator,node,OpCodes.SUB);
     }
 
+    /**
+     * Generates a PLEQ statement and its opcodes
+     * @param generator - Code Generator
+     * @param node - PLEQ Node to expand
+     */
     public static void generatePlusEqualsStatement(CodeGenerator generator, TreeNode node){
         generate__EqualsStatement(generator,node,OpCodes.ADD);
     }
 
+    /**
+     * Generates an assignment statement and its opcodes
+     * @param generator - Code Generator
+     * @param node - NASGN to expand
+     */
     public static void generateAssignStatement(CodeGenerator generator, TreeNode node){
         //we have the main root which is the NASGN
         //the left child will be the thing to assign to
@@ -340,6 +394,12 @@ public class Statement{
         generator.generate1Byte(OpCodes.ST);
     }
 
+
+    /**
+     * Generates everything that is apart of an expression node. e.g. 5+8*6/a+1
+     * @param generator - Code Generator
+     * @param root - Expression Node to expand
+     */
     private static void postOrderOpCodesAssignStatement(CodeGenerator generator, TreeNode root){
         //post order traversal
         if (root == null)
@@ -383,6 +443,11 @@ public class Statement{
         }
     }
 
+    /**
+     * Generates a printline statement and its opcodes
+     * @param generator  - Code Generator
+     * @param node - Printline node
+     */
     public static void generatePrintLineStatement(CodeGenerator generator, TreeNode node){
         List<TreeNode> leafNodes = node.getLeafNodes(); //checks if we're dealing with PLIST or not. Deforest regardless.
         for(TreeNode leaf : leafNodes){
@@ -391,6 +456,11 @@ public class Statement{
         }
     }
 
+    /**
+     * Generates a print statement and its opcodes
+     * @param generator  - Code Generator
+     * @param node - Print statement node
+     */
     public static void generatePrintStatement(CodeGenerator generator, TreeNode node){
         List<TreeNode> leafNodes = node.getLeafNodes();//checks if we're dealing with PLIST or not. Deforest regardless.
         for(TreeNode leaf : leafNodes){
@@ -398,6 +468,11 @@ public class Statement{
         }
     }
 
+    /**
+     * Main heavy lifting of generating a print statement. gathers opcodes from records if necessary
+     * @param generator - Code Generator
+     * @param node - Node to expand
+     */
     private static void generatePrintOpCodes(CodeGenerator generator, TreeNode node){
         //LA0 - get constant
         String dataType = node.getType();
@@ -452,6 +527,11 @@ public class Statement{
         }
     }
 
+    /**
+     * Generates input statement and associates opcodes
+     * @param generator - Code Generator
+     * @param node - Node to expand
+     */
     public static void generateInputStatement(CodeGenerator generator, TreeNode node){
         //could be list
         List<TreeNode> leafNodes = node.getLeafNodes();
@@ -465,6 +545,11 @@ public class Statement{
         }
     }
 
+    /**
+     * Generates input opcodes. Main heavy lifting
+     * @param generator - Code Generator
+     * @param node - Node to expand
+     */
     private static void generateInputOpCodes(CodeGenerator generator, TreeNode node){
         SymbolTableRecord record = node.getSymbol();
 
@@ -483,6 +568,13 @@ public class Statement{
         generator.generate1Byte(OpCodes.ST);
     }
 
+    /**
+     * Moves program counter, overwrites the bytes at that location, and moves back to current position
+     * @param generator  - Code Generator
+     * @param startRow - Position to move to
+     * @param startByte - Position to move to
+     * @param overwritingValue - Value to overwrite at (row,byte) location
+     */
     private static void moveProgramCounterOverwriteMoveBack(CodeGenerator generator, int startRow, int startByte, int overwritingValue){
         int currentRow = generator.getProgram().getProgramCounter().getRow();
         int currentByte = generator.getProgram().getProgramCounter().getByte();
@@ -494,6 +586,11 @@ public class Statement{
         generator.getProgram().moveProgramCounter(currentRow,currentByte);
     }
 
+    /**
+     * Generates any extra stats that may exist from a node (used inside any repeating structures or if statements)
+     * @param generator - Code Generator
+     * @param node - Node to expand (NSTATS, NSTAT)
+     */
     private static void generateStatsInsideLoop(CodeGenerator generator, TreeNode node){
         if(node.getValue() == TreeNode.NSTATS){ //more than 1 stat
             List<TreeNode> statList = node.detreeify();
@@ -510,6 +607,11 @@ public class Statement{
         }
     }
 
+    /**
+     * Generates a logop from node and associated opcodes
+     * @param generator  - Code Generator
+     * @param node - Node to expand (NAND, NOR, NNOT, NXOR)
+     */
     public static void generateLogop(CodeGenerator generator, TreeNode node){
         //root is logop
         //children are either more logops or relops
@@ -537,6 +639,11 @@ public class Statement{
 
     }
 
+    /**
+     * Generates a relop from node and associated opcodes
+     * @param generator  - Code Generator
+     * @param node - Node to expand
+     */
     public static void generateRelop(CodeGenerator generator, TreeNode node){
         TreeNode leftSide = node.getLeft();
         if(node.getValue() == TreeNode.NTRUE){
