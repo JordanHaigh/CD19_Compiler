@@ -261,7 +261,9 @@ public class CodeGenerator {
      * @param record - Symboltablerecord containing the real literal
      */
     public void realLiteral(SymbolTableRecord record){
-        realConstants.add(record);
+        if(!constantsListAlreadyContainsRecordLexeme(realConstants, record)){
+            realConstants.add(record); //add it because it doesnt exist
+        }
 
         generateInstructionOverrideMessage(OpCodes.LV0, 5, record);
 
@@ -286,7 +288,11 @@ public class CodeGenerator {
         }
         else{
             //add to constants
-            intConstants.add(record);
+            //but check if it already existing in constants first (the value that is)
+            if(!constantsListAlreadyContainsRecordLexeme(intConstants, record)){
+                intConstants.add(record); //add it because it doesnt exist
+            }
+
 
             generateInstructionOverrideMessage(OpCodes.LV0,5,record);
 
@@ -324,6 +330,17 @@ public class CodeGenerator {
      * @return - true or false depending if processing stopped
      */
     public boolean hasStoppedProcessing(){return stopProcessing;}
+
+
+    private boolean constantsListAlreadyContainsRecordLexeme(List<SymbolTableRecord> list, SymbolTableRecord newRecord){
+        for(SymbolTableRecord record : list){
+            if(record.getLexeme().equals(newRecord.getLexeme())){
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 

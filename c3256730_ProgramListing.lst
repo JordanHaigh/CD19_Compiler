@@ -10,15 +10,24 @@
 10:     /--printline "PRLN Hello World"; /-- print thrice
 11:     /--printline "a";
 12:     /--printline "a","b","c";
-13:     printline 1;
-14:     printline 277;
-15:     printline 500000;
-16:     printline 654654;
-17: 
-18:     /-------------------------------------------------
-19: 
-20: 
-21: end
-22: 
-23: 
-24: CD19 test
+13:     /--printline 1, 277, 500000, 654654;
+14:     /--i = 1;
+15:     /--j = 2;
+16:     /--k = 3;
+17:     /--printline i;
+18:     /--printline j;
+19:     /--printline k;
+20:     /--printline i,j,k;
+21:     printline 500000;
+22:     printline 500000;
+23:     printline 5.0;
+24:     printline 5.0;
+25:     printline 5.0,5.1,1;
+26: 
+27:     /-------------------------------------------------
+28: 
+29: 
+30: end
+31: 
+32: 
+33: CD19 test
