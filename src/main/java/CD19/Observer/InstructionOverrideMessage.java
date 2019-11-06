@@ -9,19 +9,19 @@ public class InstructionOverrideMessage extends ObservableMessage {
     int pcRowStart;
     int pcByteStart;
     int generateXBytes;
-    OpCodes opCodes;
+    OpCodes opCode;
     SymbolTableRecord record;
     public int getPcRowStart() { return pcRowStart; }
 
-    public InstructionOverrideMessage(int pcRowStart, int pcByteStart, int generateXBytes, OpCodes opCodes, SymbolTableRecord record) {
+    public InstructionOverrideMessage(int pcRowStart, int pcByteStart, int generateXBytes, OpCodes opCode, SymbolTableRecord record) {
         this.pcRowStart = pcRowStart;
         this.pcByteStart = pcByteStart;
         this.generateXBytes = generateXBytes;
-        this.opCodes = opCodes;
+        this.opCode = opCode;
         this.record = record;
     }
     public int getPcByteStart() { return pcByteStart; }
     public int getGenerateXBytes() { return generateXBytes; }
-    public OpCodes getOpCodes() { return opCodes; }
+    public OpCodes getOpCode() { return opCode; }
     public SymbolTableRecord getRecord() { return record; }
 }

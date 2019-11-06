@@ -102,9 +102,11 @@ public class CodeGenerator {
 
             int baseRegister = message.getRecord().getBaseRegister();
             int operand = message.getRecord().getOffset();
-
-            String LA = "LA" + baseRegister; //todo probs need to make this generic and use the opcode found in message
-            generateXBytes(OpCodes.valueOf(LA),operand, message.getGenerateXBytes(), true);
+            //use LA for string variables
+            //use LV for real lites or big ints
+            OpCodes opcode = message.getOpCode();
+            //String LA = "LA" + baseRegister;
+            generateXBytes(opcode,operand, message.getGenerateXBytes(), true);
         }
     }
 

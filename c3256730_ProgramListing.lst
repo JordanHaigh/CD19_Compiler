@@ -3,17 +3,22 @@
 3: main
 4:     i : integer, j : integer, k : integer
 5: begin
-6:     printline "PRLN Hello World"; /-- print once
-7:     printline "PRLN Hello World"; /-- print twice
-8:     printline "PRLN Hello World"; /-- print thrice
-9:     printline "PRLN";
-10:     printline "a","b","c";
-11:     print"PRINT";
-12:     print"PRINT";
-13:     print"PRINT";
-14:     print "x","y","z";
-15: 
-16: end
+6:     /-------------------------------------------------
+7:     /-- Printline works with singles
+8:     /--printline "PRLN Hello World"; /-- print once
+9:     /--printline "PRLN Hello World"; /-- print twice
+10:     /--printline "PRLN Hello World"; /-- print thrice
+11:     /--printline "a";
+12:     /--printline "a","b","c";
+13:     printline 1;
+14:     printline 277;
+15:     printline 500000;
+16:     printline 654654;
 17: 
-18: 
-19: CD19 test
+18:     /-------------------------------------------------
+19: 
+20: 
+21: end
+22: 
+23: 
+24: CD19 test

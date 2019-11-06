@@ -3,15 +3,20 @@ CD19 test
 main
     i : integer, j : integer, k : integer
 begin
-    printline "PRLN Hello World"; /-- print once
-    printline "PRLN Hello World"; /-- print twice
-    printline "PRLN Hello World"; /-- print thrice
-    printline "PRLN";
-    printline "a","b","c";
-    print"PRINT";
-    print"PRINT";
-    print"PRINT";
-    print "x","y","z";
+    /-------------------------------------------------
+    /-- Printline works with singles
+    /--printline "PRLN Hello World"; /-- print once
+    /--printline "PRLN Hello World"; /-- print twice
+    /--printline "PRLN Hello World"; /-- print thrice
+    /--printline "a";
+    /--printline "a","b","c";
+    printline 1;
+    printline 277;
+    printline 500000;
+    printline 654654;
+
+    /-------------------------------------------------
+
 
 end
 
