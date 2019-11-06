@@ -27,6 +27,8 @@ public class Statement{
             //------------------------IOSTATS----------------------------
             case TreeNode.NPRLN: {
                 generatePrintLineStatement(generator,node);
+                generator.generate1Byte(OpCodes.NEWLN);
+
                 break;
             }
             case TreeNode.NPRINT: {
@@ -56,6 +58,7 @@ public class Statement{
             }
             case TreeNode.NDVEQ: {
                 generateDivideEqualsStatement(generator,node);
+                break;
             }
             //------------------------RETNSTAT----------------------------
             case TreeNode.NRETN :{
@@ -78,6 +81,7 @@ public class Statement{
             }
             case TreeNode.NIFTE:{
                 generateIfElseStatement(generator,node);
+                break;
             }
         }
     }
@@ -421,8 +425,16 @@ public class Statement{
                 if(root.getValue() == TreeNode.NILIT){ //INT
                     generator.integerLiteral(root.getSymbol());
                 }
-                else{//must be NFLIT
+                else if(root.getValue() == TreeNode.NFLIT){//must be NFLIT
                     generator.realLiteral(root.getSymbol());
+                }
+                else{ //must be boolean
+                    if(root.getValue() == TreeNode.NTRUE){
+                        generator.generate1Byte(OpCodes.TRUE);
+                    }
+                    else{
+                        generator.generate1Byte(OpCodes.FALSE);
+                    }
                 }
             }
         }

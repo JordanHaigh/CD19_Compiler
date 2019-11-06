@@ -1,33 +1,108 @@
-1: CD19 test
-2: 
-3: main
-4:     i : integer, j : integer, k : integer
-5: begin
-6:     /-------------------------------------------------
-7:     /-- Printline works with singles
-8:     /--printline "PRLN Hello World"; /-- print once
-9:     /--printline "PRLN Hello World"; /-- print twice
-10:     /--printline "PRLN Hello World"; /-- print thrice
-11:     /--printline "a";
-12:     /--printline "a","b","c";
-13:     /--printline 1, 277, 500000, 654654;
-14:     /--i = 1;
-15:     /--j = 2;
-16:     /--k = 3;
-17:     /--printline i;
-18:     /--printline j;
-19:     /--printline k;
-20:     /--printline i,j,k;
-21:     printline 500000;
-22:     printline 500000;
-23:     printline 5.0;
-24:     printline 5.0;
-25:     printline 5.0,5.1,1;
-26: 
-27:     /-------------------------------------------------
-28: 
+1: /-- TOODOOLOOS: prints are fucked
+2: /--         cant printline boolean variables
+3: /--         cant printline booleans period
+4: CD19 test
+5: 
+6: main
+7:     i : real, j : integer, k : integer
+8: 
+9: begin
+10:     /-------------------------------------------------
+11:     /--printline "PRLN Hello World"; /-- print once
+12:     /--printline "PRLN Hello World"; /-- print twice
+13:     /--printline "PRLN Hello World"; /-- print thrice
+14:     /--printline "a";
+15:     /--printline "a","b","c";
+16:     /--printline 1, 277, 500000, 654654;
+17:     /--i = 1;
+18:     /--j = 2;
+19:     /--k = 3;
+20:     /--printline i;
+21:     /--printline j;
+22:     /--printline k;
+23:     /--printline i,j,k;
+24:     /--printline 500000;
+25:     /--printline 500000;
+26:     /--printline 5.0;
+27:     /--printline 5.0;
+28:     /--printline 5.0,5.1,1;
 29: 
-30: end
-31: 
-32: 
-33: CD19 test
+30:     /-------------------------------------------------
+31:     /-- Print
+32:     /--TODO NONE OF THESE WORK
+33:     print "Hello World"; /-- print once
+34:     /--print "PRINT Hello World"; /-- print twice
+35:     /--print "PRINT Hello World"; /-- print thrice
+36:     /--print "a";
+37:     /--print "a","b","c";
+38:     /--print 1, 277, 500000, 654654;
+39:     /--i = 1;
+40:     /--j = 2;
+41:     /--k = 3;
+42:     /--print i;
+43:     /--print j;
+44:     /--print k;
+45:     /--print i,j,k;
+46:     /--print 500000;
+47:     /--print 500000;
+48:     /--print 5.0;
+49:     /--print 5.0;
+50:     /--print 5.0,5.1,1;
+51:     /-------------------------------------------------
+52:     /-- inputs on ints work
+53:     /-- inputs on reals work
+54:     /--input i;
+55:     /--input j;
+56:     /--input k;
+57:     /--input i,j,k;
+58: 
+59:     /--printline i;
+60:     /--printline j;
+61:     /--printline k;
+62:     /-------------------------------------------------
+63:     /-- int variable assign (1 number and 2 number) works, as well as signs
+64:     /-- real variable assign (1 number and 2 number) works, as well as signs
+65:     /--i=1;
+66:     /--j=2.4564+2.654;
+67:     /--printline i;
+68:     /--printline j;
+69: 
+70:     /--i=277;
+71:     /--j = 277*277.56;
+72:     /--printline i;
+73:     /--printline j;
+74: 
+75:     /--i=500000;
+76:     /--j=500000.12321-500000;
+77:     /--printline i;
+78:     /--printline j;
+79: 
+80:     /--mybool = true; /--TODO THIS DOESNT WORK
+81:     /--printline true; /--TODO THIS DOESNT WORK
+82: 
+83:     /--i = 5+5*5-5/5 + (1+1);
+84:     /--printline i;
+85: 
+86:     /--i += 7;
+87:     /--printline i;
+88: 
+89:     /--i -= 1;
+90:     /--printline i;
+91: 
+92:     /--i=5;
+93:     /--i *= 1;
+94:     /--printline i;
+95: 
+96:     /--i = 1/0;  /--interesting side note this actually works and is handled gracefully by SM19
+97:     /--printline i;
+98: 
+99:     /--i= 6;
+100:     /--printline i;
+101:     /--i /=6;
+102:     /--printline i;
+103: 
+104: 
+105: end
+106: 
+107: 
+108: CD19 test

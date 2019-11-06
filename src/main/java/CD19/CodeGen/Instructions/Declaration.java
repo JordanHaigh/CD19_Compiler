@@ -32,6 +32,7 @@ public class Declaration {
         for(TreeNode node : sdecls){
             SymbolTableRecord record = node.getSymbol();
             generator.allocateVariable(record);
+
             initialiseVariableToDefault(generator, record); //k=i+j doesnt initialise, but hello world does. so just initialise regardless
         }
     }
