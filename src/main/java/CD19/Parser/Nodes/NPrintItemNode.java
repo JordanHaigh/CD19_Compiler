@@ -67,12 +67,17 @@ public class NPrintItemNode implements Node{
         }
         else if(token.getTokenID() == Token.TSTRG){ //return string
             parser.consume(); //consume string token. we done with it
-            SymbolTableRecord record = new SymbolTableRecord(token.getStr(), "String", ""); //scope not relevant
-            parser.insertConstantRecord(record);
-
-            printitem = new TreeNode(TreeNode.NSTRG,record);
-
-            return printitem;
+            SymbolTableRecord checker = new SymbolTableRecord(token.getStr(), "String", ""); //scope not relevant
+            SymbolTableRecord record = parser.lookupConstantRecord(checker);
+            if(record == null){
+                parser.insertConstantRecord(checker);
+                printitem = new TreeNode(TreeNode.NSTRG,checker);
+                return printitem;
+            }
+            else{
+                printitem = new TreeNode(TreeNode.NSTRG,record);
+                return printitem;
+            }
         }
         else{
             parser.syntacticError("Expected a valid PrintItem Token", parser.peek());
