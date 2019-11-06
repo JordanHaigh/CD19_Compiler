@@ -264,6 +264,9 @@ public class CodeGenerator {
         if(!constantsListAlreadyContainsRecordLexeme(realConstants, record)){
             realConstants.add(record); //add it because it doesnt exist
         }
+        else{
+            record = realConstants.get(realConstants.indexOf(record));
+        }
 
         generateInstructionOverrideMessage(OpCodes.LV0, 5, record);
 
@@ -291,6 +294,11 @@ public class CodeGenerator {
             //but check if it already existing in constants first (the value that is)
             if(!constantsListAlreadyContainsRecordLexeme(intConstants, record)){
                 intConstants.add(record); //add it because it doesnt exist
+            }
+            else{
+                //ah so it does exist
+                //im just gonna override the record argument with the record that already exists in the table
+                record = intConstants.get(intConstants.indexOf(record));
             }
 
 
