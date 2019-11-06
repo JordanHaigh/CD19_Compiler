@@ -1,5 +1,14 @@
 package CD19.CodeGen;
 
+
+/**
+ * ProgramCounter Class used to keep track of where the current position is to add bytes.
+ * Also used to determine start of integer, real and string sections.
+ *
+ * This class is a Plain Old Java Object
+ * @author Jordan Haigh c3256730
+ * @since 6/11/19
+ */
 public class ProgramCounter {
     private int byte_;
     private int row_;
@@ -7,8 +16,6 @@ public class ProgramCounter {
     private int startOfIntegerRow;
     private int startOfRealRow;
     private int startOfStringRow;
-
-
 
     public static final int ROWLENGTH = 8;
 
@@ -34,6 +41,10 @@ public class ProgramCounter {
     public void incrementByte(){byte_++;}
     public void incrementRow(){ row_++;}
 
+    /**
+     * Gets offset from start of matrix
+     * @return - Total offset from start of matrix
+     */
     public int getProgramCounterPosition(){
         return (row_ * ROWLENGTH) + byte_;
     }

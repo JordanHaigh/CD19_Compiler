@@ -12,6 +12,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ *
+ * Main Code Generation Logic
+ *
+ * @author Jordan Haigh c3256730
+ * @since 6/11/19
+ * */
 public class CodeGenerator {
     TreeNode tree;
     SymbolTable constants;
@@ -33,6 +40,13 @@ public class CodeGenerator {
         program = new InstructionMatrix();
     }
 
+    public InstructionMatrix getProgram() { return program; }
+
+    /**
+     * Two sweeps - first sweep does main logic.
+     * Second sweep fixes up any constants addressing
+     * Adds return opcode at end of first sweep if necessary and generates the constants section
+     */
     public void run(){
         runFromNode(tree); //first run for building most of matrix. need to do post code gen sweep for string constant locations
         if(!stopProcessing) //if user hadn't stopped code-genning manually (didn't use a return statement)
@@ -41,8 +55,11 @@ public class CodeGenerator {
         secondRun();
     }
 
-    public InstructionMatrix getProgram() { return program; }
-
+    /**
+     * Entry point of running the tree structure.
+     * It'll go through all node types and generate opcodes for relevant node types.
+     * @param node - TreeNode entry point
+     */
     public void runFromNode(TreeNode node){
         if(stopProcessing){
             return;
@@ -75,7 +92,9 @@ public class CodeGenerator {
     }
 
 
-
+    /**
+     * Fixes up any addressing that we may've borked in the first run
+     */
     public void secondRun(){
         //fix up any addressing that was borked in first run
         for(InstructionOverrideMessage message : overrideMessages){
@@ -89,10 +108,19 @@ public class CodeGenerator {
         }
     }
 
+    /**
+     * Add offset when initialising variables
+     */
     public void incrementOffset(){
         offset += REGISTERSIZE;
     }
 
+
+    /**
+     * Set the base register and offset for a symbol table record
+     * Base Register depends on the scope of the record (program, main,etc.)
+     * @param record - Record to update
+     */
     public void allocateVariable(SymbolTableRecord record){
         String scope = record.getScope();
         if(scope.equals("program")){
@@ -109,22 +137,48 @@ public class CodeGenerator {
         incrementOffset();
     }
 
+    /**
+     * Generate a 1 byte opcode
+     * @param opCode - Opcode to generate
+     */
     public void generate1Byte(OpCodes opCode) {
         program.addByte(opCode.getValue(),false);
     }
 
+    /**
+     * Generate a 2 byte opcode
+     * @param opCode - Opcode to generate
+     * @param operand - Address operand for operation
+     */
     public void generate2Bytes(OpCodes opCode, int operand) {
         generateXBytes(opCode, operand, 2,false);
     }
 
+    /**
+     * Generate a 3 byte opcode
+     * @param opCode - Opcode to generate
+     * @param operand - Address operand for operation
+     */
     public void generate3Bytes(OpCodes opCode, int operand) {
         generateXBytes(opCode, operand, 3,false);
     }
 
+    /**
+     * Generate a 5 byte opcode
+     * @param opCode - Opcode to generate
+     * @param operand - Address operand for operation
+     */
     public void generate5Bytes(OpCodes opCode, int operand) {
         generateXBytes(opCode, operand, 5,false);
     }
 
+    /**
+     * Generates X bytes including opcode
+     * @param opCode - Opcode to generate
+     * @param operand - Address operand for generation
+     * @param x - Number of bytes
+     * @param overridingAddresses - Boolean if we are overriding addresses
+     */
     public void generateXBytes(OpCodes opCode, int operand, int x, boolean overridingAddresses){
         if(x < 0)
             return;
@@ -144,6 +198,10 @@ public class CodeGenerator {
         }
     }
 
+    /**
+     * Generate sections of mod file from program node
+     * @param root - Program node
+     */
     private void generateProgram(TreeNode root){
         //GLOB
         generateGlobals(root.getLeft());
@@ -152,11 +210,20 @@ public class CodeGenerator {
 
     }
 
+    /**
+     * Generate globals sections of parse tree as mod file operations
+     * @param root - Globals node
+     */
     private void generateGlobals(TreeNode root){
         //todo later
 
     }
 
+    /**
+     * Main node consists of sdecls and stats
+     * Generate all sdecls and then generate all stats.
+     * @param root - Main node
+     */
     private void generateMain(TreeNode root){
         //NSDLST or NSDECL
         List<TreeNode> deforestatedSDeclNodes = root.getLeft().detreeify();
@@ -177,10 +244,19 @@ public class CodeGenerator {
 
     }
 
+    /**
+     * Prints out matrix to printwriter
+     * @param printByteAsChar  - boolean if you want to print the chars in str constant section
+     * @param printWriter - Print writer to write out to
+     */
     public void printMatrix(boolean printByteAsChar, PrintWriter printWriter){
         program.printMatrix(printByteAsChar, printWriter);
     }
 
+    /**
+     * Adds real literal to the real constants list. adds a message to go and overwrite that location later in second sweep
+     * @param record - Symboltablerecord containing the real literal
+     */
     public void realLiteral(SymbolTableRecord record){
         realConstants.add(record);
 
@@ -190,6 +266,11 @@ public class CodeGenerator {
 
     }
 
+    /**
+     * Adds integer literal to the int constants list.
+     * adds a message to go and overwrite that location later in second sweep
+     * @param record - Symboltablerecord containing the int literal
+     */
     public void integerLiteral(SymbolTableRecord record){
         int value = Integer.parseInt(record.getLexeme());
 
@@ -210,6 +291,12 @@ public class CodeGenerator {
         }
     }
 
+    /**
+     * Instruction message containing all relevant information to overwrite location during second sweep
+     * @param opCode - Opcode that will overwrite old location
+     * @param numberOfBytes - new number of bytes that will overwrite old location
+     * @param record - record containing information to overwrite old location
+     */
     public void generateInstructionOverrideMessage(OpCodes opCode, int numberOfBytes, SymbolTableRecord record){
         InstructionOverrideMessage message = new InstructionOverrideMessage(
                 program.getProgramCounter().getRow(),
@@ -222,10 +309,17 @@ public class CodeGenerator {
         overrideMessages.add(message);
     }
 
+    /**
+     * if return statement hit, stop future processing
+     */
     public void stopProcessing(){
         stopProcessing = true;
     }
 
+    /**
+     * Checks if program has stopped processing
+     * @return - true or false depending if processing stopped
+     */
     public boolean hasStoppedProcessing(){return stopProcessing;}
 }
 

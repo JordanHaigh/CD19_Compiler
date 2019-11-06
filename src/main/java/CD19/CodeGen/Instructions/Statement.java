@@ -83,29 +83,6 @@ public class Statement{
         }
     }
 
-    private static void moveProgramCounterOverwriteMoveBack(CodeGenerator generator, int startRow, int startByte, int currentPosition, int currentRow, int currentByte){
-        generator.getProgram().moveProgramCounter(startRow,startByte);
-        //update operand
-        generator.generateXBytes(OpCodes.LA0, currentPosition, 5, true);
-        //move back to position
-        generator.getProgram().moveProgramCounter(currentRow,currentByte);
-    }
-
-    private static void generateStatsInsideLoop(CodeGenerator generator, TreeNode node){
-        if(node.getValue() == TreeNode.NSTATS){ //more than 1 stat
-            List<TreeNode> statList = node.detreeify();
-            for(TreeNode n : statList){
-                Statement.generate(generator, n);
-            }
-        }
-        else{ //1 stat
-            Statement.generate(generator, node);
-        }
-
-        if (generator.hasStoppedProcessing()) {
-            return;
-        }
-    }
 
     public static void generateIfElseStatement(CodeGenerator generator, TreeNode node){
         //--------------------------BOOL-----------------------------------
@@ -133,24 +110,20 @@ public class Statement{
 
 
         //--------------------------ELSESTATS-----------------------------------
-        int currentRow = generator.getProgram().getProgramCounter().getRow();
-        int currentByte = generator.getProgram().getProgramCounter().getByte();
         int currentPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
 
         //fill in remember 1 (location of else statement)
-        moveProgramCounterOverwriteMoveBack(generator, startByteOfBool, startRowOfBool, currentPosition,currentRow,currentByte);
+        moveProgramCounterOverwriteMoveBack(generator, startByteOfBool, startRowOfBool, currentPosition);
 
 
         TreeNode elseStats = node.getRight();
         generateStatsInsideLoop(generator,elseStats);
 
 
-        currentRow = generator.getProgram().getProgramCounter().getRow();
-        currentByte = generator.getProgram().getProgramCounter().getByte();
         currentPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
 
         //fill in remember 2 (location of after the "then" part)
-        moveProgramCounterOverwriteMoveBack(generator, startRowOfElseStatement, startByteOfElseStatement, currentPosition,currentRow,currentByte);
+        moveProgramCounterOverwriteMoveBack(generator, startRowOfElseStatement, startByteOfElseStatement, currentPosition);
 
     }
 
@@ -264,98 +237,6 @@ public class Statement{
 
     }
 
-
-    public static void generateLogop(CodeGenerator generator, TreeNode node){
-        //root is logop
-        //children are either more logops or relops
-        if(node.nodeIsRelop())
-            generateRelop(generator, node);
-
-        switch(node.getValue()){
-            case TreeNode.NAND: {
-                generator.generate1Byte(OpCodes.AND);
-                break;
-            }
-            case TreeNode.NOR:{
-                generator.generate1Byte(OpCodes.OR);
-                break;
-            }
-            case TreeNode.NXOR:{
-                generator.generate1Byte(OpCodes.XOR);
-                break;
-            }
-            case TreeNode.NNOT:{
-                generator.generate1Byte(OpCodes.NOT);
-                break;
-            }
-        }
-
-    }
-
-    public static void generateRelop(CodeGenerator generator, TreeNode node){
-        TreeNode leftSide = node.getLeft();
-        if(node.getValue() == TreeNode.NTRUE){
-            generator.generate1Byte(OpCodes.TRUE);
-            return;
-        }
-        if(node.getValue() == TreeNode.NFALS){
-            generator.generate1Byte(OpCodes.FALSE);
-            return;
-        }
-        if(leftSide.nodeIsLogop()){
-            return; //already handled previously
-        }
-
-        String LV = "LV" + leftSide.getSymbol().getBaseRegister(); //load value of x to be div'd at end
-        generator.generate5Bytes(OpCodes.valueOf(LV), leftSide.getSymbol().getOffset());
-
-        TreeNode rightSide = node.getRight();
-        if(rightSide.getValue() == TreeNode.NSIMV){ //variable
-            LV = "";
-            LV = "LV" + rightSide.getSymbol().getBaseRegister();
-            generator.generate5Bytes(OpCodes.valueOf(LV), rightSide.getSymbol().getOffset());
-        }
-        else{ //number
-            if(rightSide.getValue() == TreeNode.NILIT){ //int
-                generator.integerLiteral(rightSide.getSymbol());
-            }
-            else{// real
-                generator.realLiteral(rightSide.getSymbol());
-            }
-        }
-
-        //for == use sub
-        generator.generate1Byte(OpCodes.SUB);
-        switch(node.getValue()){
-            case TreeNode.NEQL:{ //==
-                generator.generate1Byte(OpCodes.EQ);
-                break;
-            }
-            case TreeNode.NNEQ:{ //!=
-                generator.generate1Byte(OpCodes.NE);
-                break;
-            }
-            case TreeNode.NGRT:{ //>
-                generator.generate1Byte(OpCodes.GT);
-                break;
-            }
-            case TreeNode.NLEQ:{ //<=
-                generator.generate1Byte(OpCodes.LE);
-                break;
-            }
-            case TreeNode.NLSS:{ //<
-                generator.generate1Byte(OpCodes.LT);
-                break;
-            }
-            case TreeNode.NGEQ:{ // >=
-                generator.generate1Byte(OpCodes.GE);
-                break;
-            }
-        }
-
-    }
-
-
     public static void generateRepeatStatement(CodeGenerator generator, TreeNode node){
         //todo i dont think evan handles until(true)
         //--------------------------ASGNLIST-----------------------------------
@@ -410,91 +291,50 @@ public class Statement{
         generator.stopProcessing();
     }
 
-    public static void generateDivideEqualsStatement(CodeGenerator generator, TreeNode node){
-        //equivalent of x = x / <expr>
+    private static void generate__EqualsStatement(CodeGenerator generator, TreeNode node, OpCodes X){
+        //equivalent of x = x ?? <expr>
         SymbolTableRecord assignee = node.getLeft().getSymbol();
         String LA = "LA" + assignee.getBaseRegister();
         generator.generate5Bytes(OpCodes.valueOf(LA),assignee.getOffset());
 
-        String LV = "LV" + assignee.getBaseRegister(); //load value of x to be div'd at end
+        String LV = "LV" + assignee.getBaseRegister(); //load value of x to be ??'d at end
         generator.generate5Bytes(OpCodes.valueOf(LV), assignee.getOffset());
 
         TreeNode exprNode = node.getRight(); //generate tree as assign statement
         postOrderOpCodesAssignStatement(generator, exprNode);
 
-        generator.generate1Byte(OpCodes.DIV); //final div opcode
+        generator.generate1Byte(X); //final ?? opcode
         generator.generate1Byte(OpCodes.ST); //store as normal
 
+    }
+
+    public static void generateDivideEqualsStatement(CodeGenerator generator, TreeNode node){
+       generate__EqualsStatement(generator,node,OpCodes.DIV);
     }
 
     public static void generateStarEqualsStatement(CodeGenerator generator, TreeNode node){
-        //equivalent of x = x * <expr>
-        SymbolTableRecord assignee = node.getLeft().getSymbol();
-        String LA = "LA" + assignee.getBaseRegister();
-        generator.generate5Bytes(OpCodes.valueOf(LA),assignee.getOffset());
-
-        String LV = "LV" + assignee.getBaseRegister(); //load value of x to be timesed at end
-        generator.generate5Bytes(OpCodes.valueOf(LV), assignee.getOffset());
-
-        TreeNode exprNode = node.getRight(); //generate tree as assign statement
-        postOrderOpCodesAssignStatement(generator, exprNode);
-
-        generator.generate1Byte(OpCodes.MUL); //final * opcode
-        generator.generate1Byte(OpCodes.ST); //store as normal
-
+        generate__EqualsStatement(generator,node,OpCodes.MUL);
     }
 
     public static void generateMinusEqualsStatement(CodeGenerator generator, TreeNode node){
-        //equivalent of x = x - <expr>
-        SymbolTableRecord assignee = node.getLeft().getSymbol();
-        String LA = "LA" + assignee.getBaseRegister();
-        generator.generate5Bytes(OpCodes.valueOf(LA),assignee.getOffset());
-
-        String LV = "LV" + assignee.getBaseRegister(); //load value of x to be subbed at end
-        generator.generate5Bytes(OpCodes.valueOf(LV), assignee.getOffset());
-
-        TreeNode exprNode = node.getRight(); //generate tree as assign statement
-        postOrderOpCodesAssignStatement(generator, exprNode);
-
-        generator.generate1Byte(OpCodes.SUB); //final sub opcode
-        generator.generate1Byte(OpCodes.ST); //store as normal
+        generate__EqualsStatement(generator,node,OpCodes.SUB);
     }
 
     public static void generatePlusEqualsStatement(CodeGenerator generator, TreeNode node){
-        //equivalent of x = x + <expr>
-        SymbolTableRecord assignee = node.getLeft().getSymbol();
-        String LA = "LA" + assignee.getBaseRegister();
-        generator.generate5Bytes(OpCodes.valueOf(LA),assignee.getOffset());
-
-        String LV = "LV" + assignee.getBaseRegister(); //load value of x to be summed at end
-        generator.generate5Bytes(OpCodes.valueOf(LV), assignee.getOffset());
-
-        TreeNode exprNode = node.getRight(); //generate tree as assign statement
-        postOrderOpCodesAssignStatement(generator, exprNode);
-
-        generator.generate1Byte(OpCodes.ADD); //final add opcode
-        generator.generate1Byte(OpCodes.ST); //store as normal
+        generate__EqualsStatement(generator,node,OpCodes.ADD);
     }
 
     public static void generateAssignStatement(CodeGenerator generator, TreeNode node){
-//        Example:
-//        k = i + j;    LA “k”
-//                      LV “i”
-//                      LV “j”
-//                      ADD
-//                      ST
-
         //we have the main root which is the NASGN
         //the left child will be the thing to assign to
-        //the right child will be the expr
-        // the expr will be a list of asgnops (add,mul,pow,etc.) and can be a mixed list. you will need to change detreeify to accommodate this
         SymbolTableRecord assignee = node.getLeft().getSymbol();
         String LA = "LA" + assignee.getBaseRegister();
         generator.generate5Bytes(OpCodes.valueOf(LA), assignee.getOffset());
 
+        //the right child will be the expr
         //Start working with right side of tree
         TreeNode exprNode = node.getRight();
-
+        // the expr will be a list of asgnops (add,mul,pow,etc.) and can be a mixed list. you will need to change detreeify to accommodate this
         //post order and build
         postOrderOpCodesAssignStatement(generator, exprNode);
         generator.generate1Byte(OpCodes.ST);
@@ -642,4 +482,123 @@ public class Statement{
 
         generator.generate1Byte(OpCodes.ST);
     }
+
+    private static void moveProgramCounterOverwriteMoveBack(CodeGenerator generator, int startRow, int startByte, int overwritingValue){
+        int currentRow = generator.getProgram().getProgramCounter().getRow();
+        int currentByte = generator.getProgram().getProgramCounter().getByte();
+
+        generator.getProgram().moveProgramCounter(startRow,startByte);
+        //update operand
+        generator.generateXBytes(OpCodes.LA0, overwritingValue, 5, true);
+        //move back to position
+        generator.getProgram().moveProgramCounter(currentRow,currentByte);
+    }
+
+    private static void generateStatsInsideLoop(CodeGenerator generator, TreeNode node){
+        if(node.getValue() == TreeNode.NSTATS){ //more than 1 stat
+            List<TreeNode> statList = node.detreeify();
+            for(TreeNode n : statList){
+                Statement.generate(generator, n);
+            }
+        }
+        else{ //1 stat
+            Statement.generate(generator, node);
+        }
+
+        if (generator.hasStoppedProcessing()) {
+            return;
+        }
+    }
+
+    public static void generateLogop(CodeGenerator generator, TreeNode node){
+        //root is logop
+        //children are either more logops or relops
+        if(node.nodeIsRelop())
+            generateRelop(generator, node);
+
+        switch(node.getValue()){
+            case TreeNode.NAND: {
+                generator.generate1Byte(OpCodes.AND);
+                break;
+            }
+            case TreeNode.NOR:{
+                generator.generate1Byte(OpCodes.OR);
+                break;
+            }
+            case TreeNode.NXOR:{
+                generator.generate1Byte(OpCodes.XOR);
+                break;
+            }
+            case TreeNode.NNOT:{
+                generator.generate1Byte(OpCodes.NOT);
+                break;
+            }
+        }
+
+    }
+
+    public static void generateRelop(CodeGenerator generator, TreeNode node){
+        TreeNode leftSide = node.getLeft();
+        if(node.getValue() == TreeNode.NTRUE){
+            generator.generate1Byte(OpCodes.TRUE);
+            return;
+        }
+        if(node.getValue() == TreeNode.NFALS){
+            generator.generate1Byte(OpCodes.FALSE);
+            return;
+        }
+        if(leftSide.nodeIsLogop()){
+            return; //already handled previously
+        }
+
+        String LV = "LV" + leftSide.getSymbol().getBaseRegister(); //load value of x to be div'd at end
+        generator.generate5Bytes(OpCodes.valueOf(LV), leftSide.getSymbol().getOffset());
+
+        TreeNode rightSide = node.getRight();
+        if(rightSide.getValue() == TreeNode.NSIMV){ //variable
+            LV = "";
+            LV = "LV" + rightSide.getSymbol().getBaseRegister();
+            generator.generate5Bytes(OpCodes.valueOf(LV), rightSide.getSymbol().getOffset());
+        }
+        else{ //number
+            if(rightSide.getValue() == TreeNode.NILIT){ //int
+                generator.integerLiteral(rightSide.getSymbol());
+            }
+            else{// real
+                generator.realLiteral(rightSide.getSymbol());
+            }
+        }
+
+        //for == use sub
+        generator.generate1Byte(OpCodes.SUB);
+        switch(node.getValue()){
+            case TreeNode.NEQL:{ //==
+                generator.generate1Byte(OpCodes.EQ);
+                break;
+            }
+            case TreeNode.NNEQ:{ //!=
+                generator.generate1Byte(OpCodes.NE);
+                break;
+            }
+            case TreeNode.NGRT:{ //>
+                generator.generate1Byte(OpCodes.GT);
+                break;
+            }
+            case TreeNode.NLEQ:{ //<=
+                generator.generate1Byte(OpCodes.LE);
+                break;
+            }
+            case TreeNode.NLSS:{ //<
+                generator.generate1Byte(OpCodes.LT);
+                break;
+            }
+            case TreeNode.NGEQ:{ // >=
+                generator.generate1Byte(OpCodes.GE);
+                break;
+            }
+        }
+
+    }
+
+
 }

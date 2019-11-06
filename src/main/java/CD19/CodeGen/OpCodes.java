@@ -1,6 +1,12 @@
 package CD19.CodeGen;
 
-
+/**
+ * OpCodes Enum. Keeps log of all opcode types in the code gen section.
+ * Has methods that map opcode name to value
+ *
+ * @author Jordan Haigh c3256730
+ * @since 6/11/19
+ */
 public enum OpCodes {
     HALT(0), //Stop execution
     NOOP(1), //Do nothing

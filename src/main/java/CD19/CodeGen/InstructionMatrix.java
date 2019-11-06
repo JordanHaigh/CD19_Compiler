@@ -7,21 +7,28 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is where bytes are added for creating the mod file. The instruction matrix will print the mod file in the
+ * appropriate ordering to be read by the stack machine.
+ *
+ * @author Jordan Haigh c3256730
+ * @since 6/11/19
+ */
 public class InstructionMatrix {
 
     List<String[]> matrix;
     ProgramCounter programCounter;
 
     public InstructionMatrix() {
-        initialiseMatrices();
-    }
-
-    private void initialiseMatrices(){
         matrix = new ArrayList<>();
         programCounter = new ProgramCounter();
         addNewRowToMatrix();
     }
 
+    /**
+     * Add a new row to the matrix.
+     * We need to pre-initialise each cell with "00". This will be updated when bytes are added to the matrix
+     */
     private void addNewRowToMatrix(){
         matrix.add(new String[ProgramCounter.ROWLENGTH]);
         int newInt = matrix.size()-1;
@@ -30,9 +37,18 @@ public class InstructionMatrix {
         }
     }
 
+    /**
+     * Get Matrix's program counter
+     * @return - Program counter
+     */
     public ProgramCounter getProgramCounter(){return programCounter;}
-    public void setProgramCounter(ProgramCounter programCounter){this.programCounter = programCounter;}
 
+
+    /**
+     * Adds a byte to instruction matrix. Boolean used if we are overriding addresses or not
+     * @param byteToAdd - Byte to add to matrix
+     * @param overridingAddress - Boolean if we are overriding address. This is useful so we don't add new rows when we are overriding
+     */
     public void addByte(int byteToAdd, boolean overridingAddress){
         int rowIndex = programCounter.getRow();
         int byteIndex = programCounter.getByte();
@@ -54,6 +70,10 @@ public class InstructionMatrix {
         }
     }
 
+    /**
+     * Add an integer literal to the instruction matrix (int section)
+     * @param number - Number to add
+     */
     public void addNumber(int number){
         int rowIndex = programCounter.getRow();
         int byteIndex = programCounter.getByte();
@@ -61,6 +81,10 @@ public class InstructionMatrix {
         matrix.get(rowIndex)[byteIndex] = ""+number;
     }
 
+    /**
+     * Add a real literal to the instruction matrix (reals section)
+     * @param number - Number to add
+     */
     public void addReal(double number){
         int rowIndex = programCounter.getRow();
         int byteIndex = programCounter.getByte();
@@ -68,6 +92,12 @@ public class InstructionMatrix {
         matrix.get(rowIndex)[byteIndex] = ""+number;
     }
 
+    /**
+     * Add a string literal to the instruction matrix (string section).
+     * Caps off with 00 byte at the end in case of more strings to be added
+     *
+     * @param record - String record to add
+     */
     public void addString(SymbolTableRecord record){
         String string = record.getLexeme();
 
@@ -83,6 +113,11 @@ public class InstructionMatrix {
         addByte(0,false); //cap off with zero
     }
 
+    /**
+     * Moves program counter to a specific location (row, byte)
+     * @param rowTomoveTo - Row to move to
+     * @param byteToMoveTo - Byte to move to
+     */
     public void moveProgramCounter(int rowTomoveTo, int byteToMoveTo){
         if(rowTomoveTo < 0 || rowTomoveTo > matrix.size()-1){
             return;
@@ -96,6 +131,15 @@ public class InstructionMatrix {
 
     }
 
+    /**
+     * Populate all the constants relevant to the mod file
+     * this happens after the first run of the program (useful for knowing
+     * where strings are when they are being called in the main instruction section).
+     *
+     * @param constants - String constants to be added
+     * @param integerConstants - Integer constants to be added
+     * @param realConstants - Real constants to be added
+     */
     public void populateConstants(SymbolTable constants, List<SymbolTableRecord> integerConstants, List<SymbolTableRecord> realConstants){
         //add new row for integer constants
         //--------------INTS--------------
@@ -151,6 +195,12 @@ public class InstructionMatrix {
         }
     }
 
+
+    /**
+     * Prints instruction matrix into format that is used for the stack machine
+     * @param printByteAsChar - boolean for human readable output for strings
+     * @param printWriter - Print Writer to write to (sys out or file)
+     */
     public void printMatrix(boolean printByteAsChar, PrintWriter printWriter){
         if (printWriter == null) {
             printWriter = new PrintWriter(System.out);
