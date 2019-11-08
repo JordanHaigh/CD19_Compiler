@@ -100,10 +100,7 @@ public class Statement{
 
         generator.generate5Bytes(OpCodes.LA0,-99); //placeholder for when we need to return to start of loop for next iteration
 
-        List<TreeNode> boolList = bool.detreeifyLogops();
-        for(TreeNode n : boolList){
-            generateLogop(generator, n);
-        }
+        generateBoolSection(generator,bool);
 
         generator.generate1Byte(OpCodes.BF);
 
@@ -144,15 +141,12 @@ public class Statement{
         //--------------------------BOOL-----------------------------------
         int startRowOfBool = generator.getProgram().getProgramCounter().getRow();
         int startByteOfBool = generator.getProgram().getProgramCounter().getByte();
-        //int startBoolPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
 
         generator.generate5Bytes(OpCodes.LA0,-99); //placeholder for when we need to return to start of loop for next iteration
 
         TreeNode bool = node.getLeft();
-        List<TreeNode> boolList = bool.detreeifyLogops();
-        for(TreeNode n : boolList){
-            generateLogop(generator, n);
-        }
+       generateBoolSection(generator,bool);
+
 
         generator.generate1Byte(OpCodes.BF);
 
@@ -174,17 +168,8 @@ public class Statement{
         }
 
         //section after stats
-        int currentRow = generator.getProgram().getProgramCounter().getRow();
-        int currentByte = generator.getProgram().getProgramCounter().getByte();
         int currentPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
-
-
-        generator.getProgram().moveProgramCounter(startRowOfBool,startByteOfBool);
-        //update operand
-        generator.generateXBytes(OpCodes.LA0, currentPosition, 5, true);
-
-        //move back to position
-        generator.getProgram().moveProgramCounter(currentRow,currentByte);
+        moveProgramCounterOverwriteMoveBack(generator, startRowOfBool, startByteOfBool, currentPosition);
 
     }
 
@@ -215,11 +200,7 @@ public class Statement{
         generator.generate5Bytes(OpCodes.LA0,-99); //placeholder for when we need to return to start of loop for next iteration
 
         TreeNode bool = node.getMiddle();
-
-        List<TreeNode> boolList = bool.detreeifyLogops();
-        for(TreeNode n : boolList){
-            generateLogop(generator, n);
-        }
+        generateBoolSection(generator,bool);
         generator.generate1Byte(OpCodes.BF);
 
         //--------------------------STATS-----------------------------------
@@ -248,7 +229,7 @@ public class Statement{
 
         generator.getProgram().moveProgramCounter(startRowOfBool,startByteOfBool);
         //update operand
-        generator.generateXBytes(OpCodes.LA0, 5, currentPosition, true);
+        generator.generateXBytes(OpCodes.LA0, currentPosition, 5, true);
 
         //move back to position
         generator.getProgram().moveProgramCounter(currentRow,currentByte);
@@ -261,7 +242,6 @@ public class Statement{
      * @param node - NREPT node to expand
      */
     public static void generateRepeatStatement(CodeGenerator generator, TreeNode node){
-        //todo i dont think evan handles until(true)
         //--------------------------ASGNLIST-----------------------------------
         //MULTI ASGN WORKS
         TreeNode asgnlistNode = node.getLeft();
@@ -299,10 +279,7 @@ public class Statement{
 
         //--------------------------BOOL-----------------------------------
         TreeNode bool = node.getRight();
-        List<TreeNode> boolList = bool.detreeifyLogops();
-        for(TreeNode n : boolList){
-            generateLogop(generator, n);
-        }
+       generateBoolSection(generator,bool);
 
         //--------------------------BF-----------------------------------
 
@@ -477,9 +454,9 @@ public class Statement{
         List<TreeNode> leafNodes = node.getLeafNodes();//checks if we're dealing with PLIST or not. Deforest regardless.
         for(TreeNode leaf : leafNodes){
             generatePrintOpCodes(generator, leaf);
-            generator.generate1Byte(OpCodes.NEWLN);
-
         }
+        generator.generate1Byte(OpCodes.NEWLN);
+
     }
 
     /**
@@ -620,6 +597,21 @@ public class Statement{
             return;
         }
     }
+
+
+    private static void generateBoolSection(CodeGenerator generator, TreeNode node){
+        if(node.getLeft().getValue() == TreeNode.NBOOL){
+            List<TreeNode> boolList = node.detreeifyLogops();
+            for(TreeNode n : boolList){
+                generateLogop(generator, n);
+            }
+        }
+        else{
+            //one bool
+            generateRelop(generator, node);
+        }
+    }
+
 
     /**
      * Generates a logop from node and associated opcodes
