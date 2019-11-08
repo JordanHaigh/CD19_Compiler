@@ -477,6 +477,8 @@ public class Statement{
         List<TreeNode> leafNodes = node.getLeafNodes();//checks if we're dealing with PLIST or not. Deforest regardless.
         for(TreeNode leaf : leafNodes){
             generatePrintOpCodes(generator, leaf);
+            generator.generate1Byte(OpCodes.NEWLN);
+
         }
     }
 
@@ -489,7 +491,7 @@ public class Statement{
         //LA0 - get constant
         String dataType = node.getType();
         if(dataType.equals("String")){
-            generator.generateInstructionOverrideMessage(OpCodes.LV0, 5, node.getSymbol());
+            generator.generateInstructionOverrideMessage(OpCodes.LA0, 5, node.getSymbol());
             generator.generate5Bytes(OpCodes.LA0,-99);
             generator.generate1Byte(OpCodes.STRPR);
         }

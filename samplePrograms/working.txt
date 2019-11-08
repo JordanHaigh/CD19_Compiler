@@ -1,6 +1,3 @@
-/-- TOODOOLOOS: prints are fucked
-/--         cant printline boolean variables
-/--         cant printline booleans period
 CD19 test
 
 main
@@ -8,6 +5,7 @@ main
 
 begin
     /-------------------------------------------------
+    /-- PRINTLINES - THESE ALL WORK NOW
     /--printline "PRLN Hello World"; /-- print once
     /--printline "PRLN Hello World"; /-- print twice
     /--printline "PRLN Hello World"; /-- print thrice
@@ -28,8 +26,7 @@ begin
     /--printline 5.0,5.1,1;
 
     /-------------------------------------------------
-    /-- Print
-    /--TODO NONE OF THESE WORK
+    /-- Print - THESE ALL WORK NOW
     /--print "Hello World"; /-- print once
     /--print "PRINT Hello World"; /-- print twice
     /--print "PRINT Hello World"; /-- print thrice
@@ -49,6 +46,7 @@ begin
     /--print 5.0;
     /--print 5.0,5.1,1;
     /-------------------------------------------------
+    /-- INPUTS - THESE ALL WORK NOW
     /-- inputs on ints work
     /-- inputs on reals work
     /--input i;
@@ -77,9 +75,6 @@ begin
     /--printline i;
     /--printline j;
 
-    /--mybool = true; /--TODO THIS DOESNT WORK
-    /--printline true; /--TODO THIS DOESNT WORK
-
     /--i = 5+5*5-5/5 + (1+1);
     /--printline i;
 
@@ -101,6 +96,8 @@ begin
     /--i /=6;
     /--printline i;
     /-------------------------------------------------
+    
+
     /--todo: test rept, if, if else, and for loops
     /-- todo -boolean shit
 

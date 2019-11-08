@@ -51,6 +51,7 @@ public class CodeGenerator {
         runFromNode(tree); //first run for building most of matrix. need to do post code gen sweep for string constant locations
         if(!stopProcessing) //if user hadn't stopped code-genning manually (didn't use a return statement)
             generate1Byte(OpCodes.RETN); //use this when finished program
+        generate1Byte(OpCodes.HALT);
         program.populateConstants(constants, intConstants, realConstants);
         secondRun();
     }

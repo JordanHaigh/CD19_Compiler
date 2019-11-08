@@ -57,10 +57,6 @@ public class InstructionMatrix {
         programCounter.incrementByte();
 
         if(programCounter.getByte() > 7){
-            if(byteToAdd == OpCodes.RETN.getValue()){
-                return; //this is an edge case where we have added a retn at the very end of a line. we don't need to make a new thingy
-            }
-
             //new line
             programCounter.incrementRow();
             programCounter.setByte(0);
