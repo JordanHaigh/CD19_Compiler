@@ -1,17 +1,66 @@
 1: CD19 test
 2: 
 3: main
-4:     i : real, j : integer, k : integer
+4:     i : integer, j : integer, k : integer
 5: 
 6: begin
 7:     i = 0;
 8:     if(i == 5)
-9:         print "i is 5";
-10:     else
-11:         printline "fwark";
-12:     end
-13: 
-14: end
-15: 
-16: 
-17: CD19 test
+9:         printline i;
+10:         /--print i;
+11:         /--i = 156;
+12:         /--i+=1;
+13:         /--i-=1;
+14:         /--i*=1;
+15:         /--i/=1;
+16:         /--repeat(i=1)
+17:         /--   i+=1;
+18:         /--until(i==2);
+19: 
+20:         /--for(i=1; i < 5)
+21:         /--    i+=1;
+22:         /--end
+23: 
+24:         /--if(i==1)
+25:         /--   i=1;
+26:         /--end
+27: 
+28:     else
+29:         printline "i is", i;
+30: 
+31:         i = 129;
+32:         printline "i is", i;
+33: 
+34:         i+=1;
+35:         printline "i is", i;
+36: 
+37:         i-=1;
+38:         printline "i is", i;
+39: 
+40:         i*=1;
+41:         printline "i is", i;
+42: 
+43:         i/=1;
+44:         printline "i is", i;
+45: 
+46:         repeat(i=1)
+47:           printline "i is", i;
+48: 
+49:           i+=1;
+50:         until(i==5);
+51: 
+52:         for(i=1; i < 5)
+53:           printline "i is", i;
+54:             i+=1;
+55:         end
+56: 
+57:         if(i>0)
+58:            i=1;
+59:            printline "i is", i;
+60:         end
+61:     end
+62: 
+63: end
+64: 
+65: 
+66: CD19 test

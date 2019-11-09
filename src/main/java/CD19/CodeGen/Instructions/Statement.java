@@ -438,9 +438,9 @@ public class Statement{
     public static void generatePrintLineStatement(CodeGenerator generator, TreeNode node){
         List<TreeNode> leafNodes = node.getLeafNodes(); //checks if we're dealing with PLIST or not. Deforest regardless.
         for(TreeNode leaf : leafNodes){
-            generatePrintStatement(generator,leaf);
-            generator.generate1Byte(OpCodes.NEWLN);
+            generatePrintOpCodes(generator,leaf);
         }
+        generator.generate1Byte(OpCodes.NEWLN);
     }
 
     /**

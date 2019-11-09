@@ -283,11 +283,11 @@ public class CodeGenerator {
     public void integerLiteral(SymbolTableRecord record){
         int value = Integer.parseInt(record.getLexeme());
 
-        if(value < 256){
+        if(value < 256/2){
             //LB Operation
             generate2Bytes(OpCodes.LB, value);
         }
-        else if(value < 65536){
+        else if(value < 65536/2){
             generate3Bytes(OpCodes.LH,value);
         }
         else{

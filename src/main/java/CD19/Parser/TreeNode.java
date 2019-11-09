@@ -344,7 +344,15 @@ public class TreeNode {
         if(iterator.getMiddle() != null){
             TreeNode middle = iterator.getMiddle();
             int middleValue = middle.getValue();
-            if(middleValue == TreeNode.NPRINT || middleValue == TreeNode.NPRLN){ //todo potensh fill out with other types of stats, i cant remember why this is here but its relevant
+            if(middleValue == NSTATS
+            || middleValue == TreeNode.NPRINT || middleValue == TreeNode.NPRLN || middleValue == TreeNode.NINPUT
+            || middleValue == TreeNode.NASGN || middleValue == TreeNode.NPLEQ || middleValue == TreeNode.NMNEQ || middleValue == TreeNode.NSTEQ || middleValue == TreeNode.NDVEQ
+            || middleValue == TreeNode.NRETN
+            || middleValue == TreeNode.NREPT
+            || middleValue == TreeNode.NFOR
+            || middleValue == TreeNode.NIFTH
+            || middleValue == TreeNode.NIFTE){
+                //todo potensh fill out with other types of stats, i cant remember why this is here but its relevant
                     //do nothing
             }
             else{
