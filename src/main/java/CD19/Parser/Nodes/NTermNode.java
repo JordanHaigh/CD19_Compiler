@@ -101,11 +101,19 @@ public class NTermNode implements Node{
         TreeNode returnTreeNode = new TreeNode(expectedTreeNodeValue);
         returnTreeNode.setLeft(leftNode);
 
+        Token peek = parser.peek();
+
         TreeNode fact = nFactNode.make(parser);
         returnTreeNode.setRight(fact);
 
         String firstType = getDataTypeOfNode(returnTreeNode.getLeft());
         String secondType = getDataTypeOfNode(returnTreeNode.getRight());
+
+        if(expectedTreeNodeValue == TreeNode.NMOD){
+            if((firstType.equals("Integer") && secondType.equals("Real")) || (firstType.equals("Real") && secondType.equals("Integer"))){
+                parser.semanticError("Cannot complete modulo operation on real", peek);
+            }
+        }
 
         returnTreeNode.updateType(firstType,secondType);
 

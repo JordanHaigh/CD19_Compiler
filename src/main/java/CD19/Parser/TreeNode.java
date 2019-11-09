@@ -239,9 +239,6 @@ public class TreeNode {
         boolean typePromotion = (firstType.equals("Integer") && secondType.equals("Real")) || //if one is int and one is real, promote to real
                 (firstType.equals("Real") && secondType.equals("Integer"));
 
-//        if(firstType.equals("Boolean")){
-//            this.setType("Boolean");
-//        }
         if(typePromotion){
             this.setType("Real");
         }

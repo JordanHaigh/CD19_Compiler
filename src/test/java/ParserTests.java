@@ -682,6 +682,46 @@ public class ParserTests {
     }
 
     @Test
+    public void semanticError_arraysize_arraysizedoesexist() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("constants");
+        code.add("mynum =10");
+        code.add("types");
+        code.add("mystruct is");
+        code.add("a : integer");
+        code.add("end");
+        code.add("myarray is array[mynum] of mystruct");
+        code.add("arrays");
+        code.add("programarray : myarray");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("a =5;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(0, parser.getSemanticErrors().size());
+
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(true, parser.isSemanticallyValid());
+
+    }
+
+    @Test
     public void semanticError_arraysize_arraysizedoesntexist_usingprogramname() {
         List<String> code = new ArrayList<>();
 
@@ -2620,6 +2660,85 @@ public class ParserTests {
     }
 
     @Test
+    public void semanticError_strongtyping_arrnoteqarr() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("types");
+        code.add("mystruct is");
+        code.add("a : integer");
+        code.add("end");
+        code.add("myarray is array[10] of mystruct");
+        code.add("arrays");
+        code.add("arrayA : myarray,");
+        code.add("arrayB: myarray");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("arrayA = 1;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_strongtyping_arreqeqarr() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("types");
+        code.add("mystruct is");
+        code.add("a : integer");
+        code.add("end");
+        code.add("myarray is array[10] of mystruct");
+        code.add("arrays");
+        code.add("arrayA : myarray,");
+        code.add("arrayB: myarray");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("if(arrayA == arrayB)");
+        code.add("printline \"hahaha\";");
+        code.add("end");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(0, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(true, parser.isSemanticallyValid());
+
+    }
+
+
+    @Test
     public void semanticError_funcargsize() {
         List<String> code = new ArrayList<>();
 
@@ -2652,6 +2771,74 @@ public class ParserTests {
         assertEquals(0, parser.getSemanticErrors().size());
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(true, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_modonintsfine() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : integer,");
+        code.add("b : integer,");
+        code.add("c : integer");
+        code.add("begin");
+        code.add("a = 5;");
+        code.add("b = 5;");
+        code.add("c = a % b;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(0, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(true, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_modonintandreal() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : integer,");
+        code.add("b : real,");
+        code.add("c : integer");
+        code.add("begin");
+        code.add("a = 5;");
+        code.add("b = 5.6565;");
+        code.add("c = a % b;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(2, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
 
     }
 
@@ -2720,6 +2907,40 @@ public class ParserTests {
             System.out.println(message.printAll());
 
         assertEquals(4, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_assignvoidfunctovar() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("function myfunc() : void");
+        code.add("begin");
+        code.add("return;");
+        code.add("end");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("a = myfunc();");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(false, parser.isSemanticallyValid());
 
