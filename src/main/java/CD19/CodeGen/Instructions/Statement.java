@@ -255,22 +255,24 @@ public class Statement{
         //--------------------------STATS-----------------------------------
         //MULTI STATS WORK
         TreeNode stats = node.getMiddle();
-        TreeNode firstStat = stats.getLeft();
+        //TreeNode firstStat = stats.getLeft();
         int programCounterIndex = generator.getProgram().getProgramCounter().getProgramCounterPosition();
 
-        if(stats.getValue() == TreeNode.NSTATS){ //more than 1 stat
-            List<TreeNode> statList = stats.detreeify();
-            for(TreeNode n : statList){
-                Statement.generate(generator, n);
-            }
-        }
-        else{ //1 stat
-            Statement.generate(generator, stats);
-        }
+        generateStatsInsideLoop(generator, stats);
 
-        if (generator.hasStoppedProcessing()) {
-            return;
-        }
+//        if(stats.getValue() == TreeNode.NSTATS){ //more than 1 stat
+//            List<TreeNode> statList = stats.detreeify();
+//            for(TreeNode n : statList){
+//                Statement.generate(generator, n);
+//            }
+//        }
+//        else{ //1 stat
+//            Statement.generate(generator, stats);
+//        }
+//
+//        if (generator.hasStoppedProcessing()) {
+//            return;
+//        }
         //--------------------------LOAD FIRST ADDR-----------------------------------
         //load address of first stat
         generator.generate5Bytes(OpCodes.LA0, programCounterIndex);
@@ -598,7 +600,7 @@ public class Statement{
 
 
     private static void generateBoolSection(CodeGenerator generator, TreeNode node){
-        if(node.getLeft().getValue() == TreeNode.NBOOL){
+        if(node.getValue() == TreeNode.NBOOL){
             List<TreeNode> boolList = node.detreeifyLogops();
             for(TreeNode n : boolList){
                 generateLogop(generator, n);

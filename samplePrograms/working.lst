@@ -11,10 +11,10 @@
 11:         printline "j is", j;
 12:         /--printline k;
 13:         i+=1;
-14:         j+=7;
+14:         j+=10;
 15:         k+=5;
 16:     /--until((i > 10 and j < 30) or k == 125);
-17:     until((i < 10 and j > 20 ) or j > 18);
+17:     until(i == 10 or j > 30);
 18: 
 19: end
 20: 

@@ -1,0 +1,66 @@
+CD19 test
+
+main
+    i : integer, j : integer, k : integer
+
+begin
+    i = 0;
+    if(i == 5)
+        printline i;
+        print i;
+        i = 156;
+        i+=1;
+        i-=1;
+        i*=1;
+        i/=1;
+        repeat(i=1)
+           i+=1;
+        until(i==2);
+
+        for(i=1; i < 5)
+            i+=1;
+        end
+
+        if(i==1)
+           i=1;
+        end
+
+    else
+        printline "i is", i;
+
+        i = 129;
+        printline "i is", i;
+
+        i+=1;
+        printline "i is", i;
+
+        i-=1;
+        printline "i is", i;
+
+        i*=1;
+        printline "i is", i;
+
+        i/=1;
+        printline "i is", i;
+
+        repeat(i=1)
+          printline "i is", i;
+
+          i+=1;
+        until(i==5);
+
+        for(i=1; i < 5)
+          printline "i is", i;
+            i+=1;
+        end
+
+        if(i>0)
+           i=1;
+           printline "i is", i;
+        end
+    end
+
+end
+
+
+CD19 test
