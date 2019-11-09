@@ -342,7 +342,14 @@ public class TreeNode {
 
         deforestedNodes.add(iterator);
         if(iterator.getMiddle() != null){
-            deforestedNodes.add(iterator.getMiddle());
+            TreeNode middle = iterator.getMiddle();
+            int middleValue = middle.getValue();
+            if(middleValue == TreeNode.NPRINT || middleValue == TreeNode.NPRLN){ //todo potensh fill out with other types of stats, i cant remember why this is here but its relevant
+                    //do nothing
+            }
+            else{
+                deforestedNodes.add(iterator.getMiddle());
+            }
         }
 
         return deforestedNodes;

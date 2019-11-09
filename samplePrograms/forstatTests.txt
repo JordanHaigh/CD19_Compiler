@@ -1,0 +1,18 @@
+CD19 test
+
+main
+    i : real, j : integer, k : integer
+
+begin
+
+    for(i=0; i < 10)
+        for(j=0;j<10)
+            print i,j;
+            j+=1;
+        end
+        i+=1;
+    end
+
+end
+
+CD19 test

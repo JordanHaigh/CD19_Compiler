@@ -1,0 +1,29 @@
+CD19 test
+
+main
+    i : real, j : integer, k : integer
+
+begin
+    /-------------------------------------------------
+    /-- PRINTLINES - THESE ALL WORK NOW
+    printline "PRLN Hello World"; /-- print once
+    printline "PRLN Hello World"; /-- print twice
+    printline "PRLN Hello World"; /-- print thrice
+    printline "a";
+    printline "a","b","c";
+    printline 1, 277, 500000, 654654;
+    i = 1;
+    j = 2;
+    k = 3;
+    printline i;
+    printline j;
+    printline k;
+    printline i,j,k;
+    printline 500000;
+    printline 500000;
+    printline 5.0;
+    printline 5.0;
+    printline 5.0,5.1,1;
+end
+
+CD19 test

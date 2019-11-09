@@ -27,8 +27,6 @@ public class Statement{
             //------------------------IOSTATS----------------------------
             case TreeNode.NPRLN: {
                 generatePrintLineStatement(generator,node);
-                generator.generate1Byte(OpCodes.NEWLN);
-
                 break;
             }
             case TreeNode.NPRINT: {
@@ -118,10 +116,10 @@ public class Statement{
         int currentPosition = generator.getProgram().getProgramCounter().getProgramCounterPosition();
 
         //fill in remember 1 (location of else statement)
-        moveProgramCounterOverwriteMoveBack(generator, startByteOfBool, startRowOfBool, currentPosition);
-
+        moveProgramCounterOverwriteMoveBack(generator, startRowOfBool, startByteOfBool, currentPosition);
 
         TreeNode elseStats = node.getRight();
+
         generateStatsInsideLoop(generator,elseStats);
 
 
@@ -469,7 +467,7 @@ public class Statement{
         String dataType = node.getType();
         if(dataType.equals("String")){
             generator.generateInstructionOverrideMessage(OpCodes.LA0, 5, node.getSymbol());
-            generator.generate5Bytes(OpCodes.LA0,-99);
+            generator.generate5Bytes(OpCodes.LA0,-88);
             generator.generate1Byte(OpCodes.STRPR);
         }
         else if(dataType.equals("Integer")){

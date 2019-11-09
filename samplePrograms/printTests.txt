@@ -1,0 +1,30 @@
+CD19 test
+
+main
+    i : real, j : integer, k : integer
+
+begin
+    /-------------------------------------------------
+    /-- Print - THESE ALL WORK NOW
+    print "Hello World"; /-- print once
+    print "PRINT Hello World"; /-- print twice
+    print "PRINT Hello World"; /-- print thrice
+    print "a";
+    print "a","b","c";
+    print 1, 277, 500000, 654654;
+    i = 1;
+    j = 2;
+    k = 3;
+    print i;
+    print j;
+    print k;
+    print i,j,k;
+    print 500000;
+    print 500000;
+    print 5.0;
+    print 5.0;
+    print 5.0,5.1,1;
+
+end
+
+CD19 test

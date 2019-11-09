@@ -271,7 +271,7 @@ public class CodeGenerator {
 
         generateInstructionOverrideMessage(OpCodes.LV0, 5, record);
 
-        generate5Bytes(OpCodes.LV0,-99); //placeholder - updated in second run
+        generate5Bytes(OpCodes.LV0,-77); //placeholder - updated in second run
 
     }
 
@@ -305,7 +305,7 @@ public class CodeGenerator {
 
             generateInstructionOverrideMessage(OpCodes.LV0,5,record);
 
-            generate5Bytes(OpCodes.LV0,-99); //placeholder - updated in second run
+            generate5Bytes(OpCodes.LV0,-66); //placeholder - updated in second run
         }
     }
 

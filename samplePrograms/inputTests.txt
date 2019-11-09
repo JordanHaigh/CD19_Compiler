@@ -1,0 +1,22 @@
+CD19 test
+
+main
+    i : real, j : integer, k : integer
+
+begin
+    /-------------------------------------------------
+    /-- INPUTS - THESE ALL WORK NOW
+    /-- inputs on ints work
+    /-- inputs on reals work
+    input i;
+    input j;
+    input k;
+    input i,j,k;
+
+    printline i;
+    printline j;
+    printline k;
+
+end
+
+CD19 test

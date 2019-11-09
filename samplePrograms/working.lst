@@ -1,0 +1,169 @@
+1: CD19 test
+2: 
+3: main
+4:     i : real, j : integer, k : integer
+5: 
+6: begin
+7:     /-------------------------------------------------
+8:     /-- PRINTLINES - THESE ALL WORK NOW
+9:     /--printline "PRLN Hello World"; /-- print once
+10:     /--printline "PRLN Hello World"; /-- print twice
+11:     /--printline "PRLN Hello World"; /-- print thrice
+12:     /--printline "a";
+13:     /--printline "a","b","c";
+14:     /--printline 1, 277, 500000, 654654;
+15:     /--i = 1;
+16:     /--j = 2;
+17:     /--k = 3;
+18:     /--printline i;
+19:     /--printline j;
+20:     /--printline k;
+21:     /--printline i,j,k;
+22:     /--printline 500000;
+23:     /--printline 500000;
+24:     /--printline 5.0;
+25:     /--printline 5.0;
+26:     /--printline 5.0,5.1,1;
+27: 
+28:     /-------------------------------------------------
+29:     /-- Print - THESE ALL WORK NOW
+30:     /--print "Hello World"; /-- print once
+31:     /--print "PRINT Hello World"; /-- print twice
+32:     /--print "PRINT Hello World"; /-- print thrice
+33:     /--print "a";
+34:     /--print "a","b","c";
+35:     /--print 1, 277, 500000, 654654;
+36:     /--i = 1;
+37:     /--j = 2;
+38:     /--k = 3;
+39:     /--print i;
+40:     /--print j;
+41:     /--print k;
+42:     /--print i,j,k;
+43:     /--print 500000;
+44:     /--print 500000;
+45:     /--print 5.0;
+46:     /--print 5.0;
+47:     /--print 5.0,5.1,1;
+48:     /-------------------------------------------------
+49:     /-- INPUTS - THESE ALL WORK NOW
+50:     /-- inputs on ints work
+51:     /-- inputs on reals work
+52:     /--input i;
+53:     /--input j;
+54:     /--input k;
+55:     /--input i,j,k;
+56: 
+57:     /--printline i;
+58:     /--printline j;
+59:     /--printline k;
+60:     /-------------------------------------------------
+61:     /-- int variable assign (1 number and 2 number) works, as well as signs
+62:     /-- real variable assign (1 number and 2 number) works, as well as signs
+63:     /--i=1;
+64:     /--j=2.4564+2.654;
+65:     /--printline i;
+66:     /--printline j;
+67: 
+68:     /--i=277;
+69:     /--j = 277*277.56;
+70:     /--printline i;
+71:     /--printline j;
+72: 
+73:     /--i=500000;
+74:     /--j=500000.12321-500000;
+75:     /--printline i;
+76:     /--printline j;
+77: 
+78:     /--i = 5+5*5-5/5 + (1+1);
+79:     /--printline i;
+80: 
+81:     /--i += 7;
+82:     /--printline i;
+83: 
+84:     /--i -= 1;
+85:     /--printline i;
+86: 
+87:     /--i=5;
+88:     /--i *= 1;
+89:     /--printline i;
+90: 
+91:     /--i = 1/0;  /--interesting side note this actually works and is handled gracefully by SM19
+92:     /--printline i;
+93: 
+94:     /--i= 6;
+95:     /--printline i;
+96:     /--i /=6;
+97:     /--printline i;
+98:     /-------------------------------------------------
+99:     /-- REPEATS WORK
+100:     /--repeat(i=0,j=10,k = 100)
+101:     /--    printline i;
+102:     /--    printline j;
+103:     /--    printline k;
+104:     /--    i+=1;
+105:     /--    j+=1;
+106:     /--       k+=5
+107:     /--until((i > 10 and j < 30) or k == 125);
+108:     /-------------------------------------------------
+109:     /--for(i=0; i < 10)
+110:     /--    for(j=0;j<10)
+111:     /--        print i,j;
+112:     /--        j+=1;
+113:     /--    end
+114:     /--    i+=1;
+115:     /--end
+116:     /-------------------------------------------------
+117:     /--i=0;
+118:     /--if(i==0)
+119:     /--    printline "i is 0";
+120:     /--end
+121: 
+122: 
+123:     /--if(i != 1)
+124:     /--   printline "i is not 1";
+125:     /--end
+126: 
+127:     /--if(i >= 0)
+128:     /--    printline " i is greater than or equal to 1";
+129:     /--end
+130: 
+131:     /--if(i <= 0)
+132:     /--    printline "i is less than or equal to 1";
+133:     /--end
+134: 
+135:     /--i = 1;
+136: 
+137:     /--if(i > 0)
+138:     /--    printline "i is greater than 0";
+139:     /--end
+140: 
+141:     /--if(i < 5)
+142:     /--    printline "i is less than 5";
+143:     /--end
+144: 
+145:     /--j = 5;
+146:     /--if(i < j)
+147:     /--        printline "i is less than j";
+148:     /--end
+149: 
+150:     /--if(true)
+151:     /--    printline "true";
+152:     /--end
+153: 
+154:    /--if(false)
+155:    /--     printline "false";
+156:    /--end
+157: 
+158:     /-------------------------------------------------
+159:     i = 0;
+160:     if(i == 5)
+161:         printline "i is 5";
+162:     else
+163:         printline "fwark";
+164:     end
+165: 
+166: end
+167: 
+168: 
+169: CD19 test

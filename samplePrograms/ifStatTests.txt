@@ -1,0 +1,51 @@
+CD19 test
+
+main
+    i : real, j : integer, k : integer
+
+begin
+
+    i=0;
+    if(i==0)
+        printline "i is 0";
+    end
+
+
+    if(i != 1)
+       printline "i is not 1";
+    end
+
+    if(i >= 0)
+        printline " i is greater than or equal to 1";
+    end
+
+    if(i <= 0)
+        printline "i is less than or equal to 1";
+    end
+
+    i = 1;
+
+    if(i > 0)
+        printline "i is greater than 0";
+    end
+
+    if(i < 5)
+        printline "i is less than 5";
+    end
+
+    j = 5;
+    if(i < j)
+            printline "i is less than j";
+    end
+
+    if(true)
+        printline "true";
+    end
+
+    if(false)
+         printline "false";
+    end
+
+end
+
+CD19 test
