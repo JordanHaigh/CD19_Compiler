@@ -4,6 +4,7 @@ import CD19.CodeGen.CodeGenerator;
 import CD19.CodeGen.OpCodes;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -38,7 +39,11 @@ public class Statement{
                 break;
             }
             //------------------------ASGNSTATS----------------------------
-            case TreeNode.NASGN:{
+            case TreeNode.NINIT:{
+                generateNinitStatement(generator,node);
+                break;
+            }
+            case TreeNode.NASGN: {
                 generateAssignStatement(generator,node);
                 break;
             }
@@ -81,9 +86,20 @@ public class Statement{
                 generateIfElseStatement(generator,node);
                 break;
             }
+            //can't use any fncalls because the function needs to exist semantics wise, and if function does exist its alredy cancelled out by compiler error
         }
     }
 
+    public static void generateNinitStatement(CodeGenerator generator, TreeNode node){
+        SymbolTableRecord assignee = node.getSymbol();
+        String LA = "LA" + assignee.getBaseRegister();
+        generator.generate5Bytes(OpCodes.valueOf(LA), assignee.getOffset());
+        
+        TreeNode exprNode = node.getLeft();
+        postOrderOpCodesAssignStatement(generator, exprNode);
+        generator.generate1Byte(OpCodes.ST);
+
+    }
 
     /**
      * Generates opcodes for if else statement

@@ -21,6 +21,7 @@ public class Compiler {
     Scanner scanner;
     Parser parser;
     CodeGenerator codeGenerator;
+    PrintStream stdout = System.out;
 
     /**
      * Compile source file
@@ -31,13 +32,12 @@ public class Compiler {
         List<Token> tokens = lexicalAnalysis(file);
         TreeNode tree = parse(tokens);
 
-        printListingFileToFile("./c3256730_ProgramListing.lst");
+        printListingFileToFile("./"+getFileNameWithoutExtension(file.getName())+".lst");
         printErrorsToConsole();
         printTree(tree);
 
         if(parser.isSyntacticallyValid() && parser.isSemanticallyValid()){
-            codeGeneration(tree);
-            printModToFile(getFileNameWithoutExtension(file.getName()));
+            codeGeneration(tree,file);
         }
         else{
             System.out.println("Fix program errors before Code Gen");
@@ -76,9 +76,17 @@ public class Compiler {
         return parser.parse();
     }
 
-    public void codeGeneration(TreeNode tree){
+    public void codeGeneration(TreeNode tree, File file){
         codeGenerator = new CodeGenerator(tree,parser.getConstants(), parser.getIdentifiers());
         codeGenerator.run();
+        if(codeGenerator.hasCompilerError()){
+            return;
+        }
+        else{
+            printModToFile(getFileNameWithoutExtension(file.getName()));
+            System.out.println("\n" + getFileNameWithoutExtension(file.getName()) +" compiled successfully!");
+
+        }
     }
 
     /**
@@ -127,8 +135,8 @@ public class Compiler {
             System.out.println("Couldn't print mod file");
             return;
         }
-        codeGenerator.printMatrix(false,null);
         codeGenerator.printMatrix(false,modOut);
+        codeGenerator.printMatrix(false,null);
     }
 
     private void printErrorsToConsole() {

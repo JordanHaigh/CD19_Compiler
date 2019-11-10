@@ -244,6 +244,5 @@ public class InstructionMatrix {
         }
 
         printWriter.flush();
-        printWriter.close();
     }
 }

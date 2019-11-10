@@ -22,7 +22,7 @@ public class Declaration {
      * @param generator - Code generator
      * @param sdecls - TreeNode of all sdecls
      */
-    public static void generate(CodeGenerator generator, List<TreeNode> sdecls){
+    public static void generate(CodeGenerator generator, List<TreeNode> sdecls, boolean initialising){
         if(sdecls.size() > 0){ //more than 1 sdecl, so its a list. need to optimise loading bytes
             generator.generate2Bytes(OpCodes.LB, sdecls.size());
             //generator.generate3Bytes(OpCodes.LH, recordsInScope.size());
@@ -32,8 +32,8 @@ public class Declaration {
         for(TreeNode node : sdecls){
             SymbolTableRecord record = node.getSymbol();
             generator.allocateVariable(record);
-
-            initialiseVariableToDefault(generator, record); //k=i+j doesnt initialise, but hello world does. so just initialise regardless
+            if(initialising)
+                initialiseVariableToDefault(generator, record); //k=i+j doesnt initialise, but hello world does. so just initialise regardless
         }
     }
 

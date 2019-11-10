@@ -1,20 +1,14 @@
 CD19 test
+constants
+    MYCONST = 10, SECOND = 1
 
 main
     i : real, j : integer, k : integer
 
 begin
-
-    /-- REPEATS WORK
-    repeat(i=0,j=10,k = 100)
-        printline "i is", i;
-        printline "j is", j;
-        /--printline k;
-        i+=1;
-        j+=7;
-        k+=5;
-    /--until((i > 10 and j < 30) or k == 125);
-    until((i < 10 and j > 20 ) or j > 18);
+    printline MYCONST;
+    i = 10 + MYCONST;
+    printline i;
 
 end
 

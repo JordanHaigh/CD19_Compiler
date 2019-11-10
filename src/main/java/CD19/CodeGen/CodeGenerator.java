@@ -28,6 +28,7 @@ public class CodeGenerator {
     private static boolean stopProcessing = false;
     private static final int REGISTERSIZE = 8;
     private static int offset = 0;
+    private boolean compilerError = false;
 
     List<SymbolTableRecord> intConstants = new ArrayList<>();
     List<SymbolTableRecord> realConstants = new ArrayList<>();
@@ -48,50 +49,17 @@ public class CodeGenerator {
      * Adds return opcode at end of first sweep if necessary and generates the constants section
      */
     public void run(){
-        runFromNode(tree); //first run for building most of matrix. need to do post code gen sweep for string constant locations
+        generateProgram(tree);
+
+        if(compilerError){
+            return;
+        }
         if(!stopProcessing) //if user hadn't stopped code-genning manually (didn't use a return statement)
             generate1Byte(OpCodes.RETN); //use this when finished program
         generate1Byte(OpCodes.HALT);
         program.populateConstants(constants, intConstants, realConstants);
         secondRun();
     }
-
-    /**
-     * Entry point of running the tree structure.
-     * It'll go through all node types and generate opcodes for relevant node types.
-     * @param node - TreeNode entry point
-     */
-    public void runFromNode(TreeNode node){
-        if(stopProcessing){
-            return;
-        }
-
-        //post order traversal
-        if (node == null)
-            return;
-
-
-//        // now deal with the node
-        int nodeValue = node.getValue();
-        switch(nodeValue) {
-            case TreeNode.NPROG: {
-                generateProgram(node);
-                break;
-            }
-            case TreeNode.NGLOB: {
-                generateGlobals(node);
-                break;
-            }
-            case TreeNode.NMAIN: {
-                generateMain(node);
-                break;
-            }
-            case TreeNode.NSTATS: {
-
-            }
-        }
-    }
-
 
     /**
      * Fixes up any addressing that we may've borked in the first run
@@ -127,7 +95,7 @@ public class CodeGenerator {
     public void allocateVariable(SymbolTableRecord record){
         String scope = record.getScope();
         if(scope.equals("program")){
-            record.setBaseRegister(0);
+            record.setBaseRegister(1);
         }
         else if(scope.equals("main")){
             record.setBaseRegister(1);
@@ -208,7 +176,17 @@ public class CodeGenerator {
      */
     private void generateProgram(TreeNode root){
         //GLOB
-        generateGlobals(root.getLeft());
+        try{
+            generateGlobals(root.getLeft());
+            generateFunctions(root.getMiddle());
+        }
+        catch(NoSuchMethodException e){
+            System.out.println(e.getMessage());
+            return;
+        }
+
+
+
         //MAIN
         generateMain(root.getRight());
 
@@ -218,10 +196,55 @@ public class CodeGenerator {
      * Generate globals sections of parse tree as mod file operations
      * @param root - Globals node
      */
-    private void generateGlobals(TreeNode root){
-        //todo later
+    private void generateGlobals(TreeNode root) throws NoSuchMethodException {
+        TreeNode constants = root.getLeft();
+        if(constants != null){
+            if(constants.getValue() == TreeNode.NILIST){
+                //need to detreeify
+                List<TreeNode> deforestedConstants = constants.detreeify();
+                //need to do lb X alloc, but then make it an assign
+                Declaration.generate(this, deforestedConstants, false);
+
+                for(TreeNode n : deforestedConstants){
+                    Statement.generate(this, n);
+                }
+            }
+            else{
+                List<TreeNode> dummy = new ArrayList<>();
+                dummy.add(constants);
+                Declaration.generate(this, dummy, false);
+
+                Statement.generate(this, constants);
+            }
+
+        }
+
+        TreeNode types = root.getMiddle();
+        if(types != null){
+            compilerError = true;
+            throw new NoSuchMethodException("Compiler Error - Types not implemented in Code Generation");
+        }
+
+        TreeNode arrays = root.getRight();
+        if(arrays != null){
+            compilerError = true;
+            throw new NoSuchMethodException("Compiler Error - Arrays not implemented in Code Generation");
+        }
 
     }
+
+    /**
+     * Throw exception for functions. Not implemented in code gen
+     * @param root - Function treenode
+     * @throws NoSuchMethodException - Not implemented in code gen
+     */
+    private void generateFunctions(TreeNode root) throws NoSuchMethodException {
+        if(root != null){
+            compilerError = true;
+            throw new NoSuchMethodException("Compiler Error - Functions not implemented in Code Generation");
+        }
+    }
+
 
     /**
      * Main node consists of sdecls and stats
@@ -231,13 +254,13 @@ public class CodeGenerator {
     private void generateMain(TreeNode root){
         //NSDLST or NSDECL
         List<TreeNode> deforestatedSDeclNodes = root.getLeft().detreeify();
-        Declaration.generate(this, deforestatedSDeclNodes);
+        Declaration.generate(this, deforestatedSDeclNodes,true);
 
         //NSTATS or NSTAT
         if(root.getRight().getValue() == TreeNode.NSTATS){
             List<TreeNode> deforestatedStatNodes = root.getRight().detreeify();
             for(TreeNode stat : deforestatedStatNodes){
-                if(stopProcessing)
+                if(stopProcessing || compilerError)
                     break;
                 Statement.generate(this, stat);
             }
@@ -350,6 +373,8 @@ public class CodeGenerator {
 
         return false;
     }
+
+    public boolean hasCompilerError(){return compilerError;}
 }
 
 
