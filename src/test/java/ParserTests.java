@@ -3333,4 +3333,37 @@ public class ParserTests {
         assertEquals(false, parser.isSemanticallyValid());
 
     }
+
+    @Test
+    public void codegenoptimisationilitfusionha() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+
+        code.add("main");
+        code.add("a : real,");
+        code.add("b : integer");
+        code.add("begin");
+        code.add("b = 15;");
+        code.add("a = 5.0+5.5*5/5;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(0, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(true, parser.isSemanticallyValid());
+
+    }
 }

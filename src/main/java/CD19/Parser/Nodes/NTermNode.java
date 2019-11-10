@@ -66,6 +66,8 @@ public class NTermNode implements Node{
 
         }
 
+
+
         return tail;
     }
 
@@ -116,6 +118,7 @@ public class NTermNode implements Node{
         }
 
         returnTreeNode.updateType(firstType,secondType);
+        returnTreeNode = Optimiser.constantFolding(parser,returnTreeNode);
 
         TreeNode tail = tail(parser, returnTreeNode);
 

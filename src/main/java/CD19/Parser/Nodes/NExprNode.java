@@ -1,6 +1,7 @@
 package CD19.Parser.Nodes;
 
 import CD19.Parser.Parser;
+import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
 
@@ -62,6 +63,7 @@ public class NExprNode implements Node{
             }
         }
 
+
         return tail;
     }
 
@@ -97,6 +99,8 @@ public class NExprNode implements Node{
         TreeNode fact = nTermNode.make(parser);
         returnTreeNode.setRight(fact);
 
+
+
         String firstType = getDataTypeOfNode(returnTreeNode.getLeft());
         if(returnTreeNode.getLeft().getValue() == TreeNode.NARRV){
             firstType = returnTreeNode.getLeft().getSymbol().getDataType();
@@ -106,6 +110,8 @@ public class NExprNode implements Node{
             secondType = returnTreeNode.getRight().getSymbol().getDataType();
         }
         returnTreeNode.updateType(firstType,secondType);
+
+        returnTreeNode = Optimiser.constantFolding(parser,returnTreeNode);
 
         TreeNode tail = tail(parser, returnTreeNode);
 

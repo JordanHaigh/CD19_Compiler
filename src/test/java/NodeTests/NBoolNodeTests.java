@@ -41,7 +41,7 @@ public class NBoolNodeTests {
         tokens.add(new Token(Token.TFALS,1,1,null));
 
 
-        tokens.add(new Token(Token.TILIT,1,1,null));
+        tokens.add(new Token(Token.TFUNC,1,1,null));
 
         Parser parser = new Parser(tokens);
 

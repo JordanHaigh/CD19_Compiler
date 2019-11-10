@@ -65,6 +65,8 @@ public class NFactNode implements Node{
             }
         }
 
+
+
         return tail;
 
     }
@@ -87,6 +89,7 @@ public class NFactNode implements Node{
             String secondType = returnTreeNode.getRight().getType();
 
             returnTreeNode.updateType(firstType,secondType);
+            returnTreeNode = Optimiser.constantFolding(parser,returnTreeNode);
 
             TreeNode tail = tail(parser,returnTreeNode);
 
