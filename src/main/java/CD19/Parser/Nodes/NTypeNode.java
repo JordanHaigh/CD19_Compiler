@@ -92,10 +92,16 @@ public class NTypeNode implements Node {
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), dataType, parser.getScope()); //global (program) scope
 
         if(isStruct){
-            parser.insertTypeRecord(record);
+            boolean insertSuccessful = parser.insertTypeRecord(record);
+            if(!insertSuccessful){
+                parser.semanticError("Struct already exists", id);
+            }
         }
         else{
-            parser.insertIdentifierRecord(record);
+            boolean insertSuccessful = parser.insertIdentifierRecord(record);
+            if(!insertSuccessful){
+                parser.semanticError("Array Type already exists", id);
+            }
         }
         tail.setSymbol(record);
         return tail;

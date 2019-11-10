@@ -66,7 +66,10 @@ public class NArrDeclNode implements Node {
         }
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), typeId.getStr()+appendForDataType, parser.getScope());
-        parser.insertTypeRecord(record);
+        boolean insertSuccessful = parser.insertTypeRecord(record);
+        if(!insertSuccessful){
+            parser.semanticError("Array variable already exists", id);
+        }
 
         arrdecl.setValue(TreeNode.NARRD);
         arrdecl.setSymbol(record);

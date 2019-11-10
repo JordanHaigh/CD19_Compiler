@@ -65,7 +65,10 @@ public class NSDeclNode implements Node{
         }
 
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), stype.getType(),parser.getScope());
-        parser.insertIdentifierRecord(record);
+        boolean insertSuccessful = parser.insertIdentifierRecord(record);
+        if(!insertSuccessful){
+            parser.semanticError("Variable already exists", id);
+        }
 
         sdecl = new TreeNode(TreeNode.NSDECL, record);
         return sdecl;

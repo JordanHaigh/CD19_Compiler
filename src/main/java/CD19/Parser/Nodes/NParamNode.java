@@ -73,12 +73,16 @@ public class NParamNode implements Node{
         //already consumed const
 
         NArrDeclNode nArrDeclNode = new NArrDeclNode();
+        Token peek = parser.peek();
         TreeNode arrdecl =  nArrDeclNode.make(parser); //get narrd
 
         TreeNode returnTreeNode = new TreeNode(TreeNode.NARRC, arrdecl, null);
 
         SymbolTableRecord constRecord = arrdecl.getSymbol();
-        parser.insertConstantRecord(constRecord);
+        boolean insertSuccessful =  parser.insertConstantRecord(constRecord);
+        if(!insertSuccessful){
+            parser.semanticError("Array variable already exists", peek);
+        }
 
         return returnTreeNode; //map to narrc
 
@@ -110,7 +114,10 @@ public class NParamNode implements Node{
         //since we LL(1), we already have the id of the variable, but we need to call param type tail to get the data type
         SymbolTableRecord record = new SymbolTableRecord(id.getStr(), tail.getType(),parser.getScope());
 
-        parser.insertIdentifierRecord(record);
+        boolean insertSuccessful =  parser.insertIdentifierRecord(record);
+        if(!insertSuccessful){
+            parser.semanticError("Variable already exists", id);
+        }
 
         if(tail.getValue() == TreeNode.NARRD){
             TreeNode returnTreeNode = new TreeNode(TreeNode.NARRP, tail, null);

@@ -329,8 +329,8 @@ public class Parser implements Subject {
      *
      * @param record - Record to add
      */
-    public void insertTypeRecord(SymbolTableRecord record) {
-        insertRecord(record, types);
+    public boolean insertTypeRecord(SymbolTableRecord record) {
+        return insertRecord(record, types);
     }
 
     /**
@@ -338,8 +338,8 @@ public class Parser implements Subject {
      *
      * @param record - Record to add
      */
-    public void insertConstantRecord(SymbolTableRecord record) {
-        insertRecord(record, constants);
+    public boolean insertConstantRecord(SymbolTableRecord record) {
+        return insertRecord(record, constants);
     }
 
     /**
@@ -347,8 +347,8 @@ public class Parser implements Subject {
      *
      * @param record - Record to add
      */
-    public void insertIdentifierRecord(SymbolTableRecord record) {
-        insertRecord(record, identifiers);
+    public boolean insertIdentifierRecord(SymbolTableRecord record) {
+        return insertRecord(record, identifiers);
     }
 
     /**

@@ -45,7 +45,7 @@ public class NPListNode implements Node{
     @Override
     public TreeNode make(Parser parser) {
         Token token = parser.peek();
-        if(token.getTokenID() == Token.TIDEN){
+        if(token.getTokenID() == Token.TIDEN || token.getTokenID() == Token.TCNST){
             return nParamsNode.make(parser);
         }
 

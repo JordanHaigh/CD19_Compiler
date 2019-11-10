@@ -3089,6 +3089,157 @@ public class ParserTests {
 
     }
 
+    @Test
+    public void semanticError_variablealreadyexists() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("main");
+        code.add("a : integer,");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("a = 1;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_variablealreadyexistsinfunc() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("function myfunc(a: integer, a : integer) : void");
+        code.add("begin");
+        code.add("return;");
+        code.add("end");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("a = 1;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_constvariablealreadyexistsinfunc() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("types");
+        code.add("mystruct is");
+        code.add("x : integer");
+        code.add("end");
+
+        code.add("mystruct is");
+        code.add("x : integer");
+        code.add("end");
+
+        code.add("myarray is array[7] of mystruct");
+        code.add("myarray is array[7] of mystruct");
+
+        code.add("arrays");
+        code.add("variablearray : myarray,");
+        code.add("variablearray : myarray");
+
+        code.add("function myfunc(const a: myarray, const a: myarray) : void");
+        code.add("begin");
+        code.add("return;");
+        code.add("end");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("a = 1;");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(5, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
+
+    }
 
 
+    @Test
+    public void semanticError_samevariableforfunc() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("types");
+
+
+        code.add("function myfunc(a: integer, b: integer) : void");
+        code.add("begin");
+        code.add("return;");
+        code.add("end");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("a = 1;");
+        code.add("myfunc(a,a);");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(0, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(true, parser.isSemanticallyValid());
+
+    }
 }
