@@ -279,7 +279,7 @@ public class TreeNode {
             return;
 
         if(root.getLeft() == null && root.getMiddle() == null && root.getRight() == null){
-            if(root.getValue() == NSIMV && root.getSymbol() != null)
+            if((root.getValue() == NSIMV || root.getValue() == NARRD) && root.getSymbol() != null)
                 dataTypeOrderingForFunctions.add(root.getSymbol().getDataType());
             else
                 dataTypeOrderingForFunctions.add(root.getType());

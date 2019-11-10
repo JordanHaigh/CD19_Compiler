@@ -110,6 +110,11 @@ public class NAsgnStatOrCallStatNode implements Node{
 
                     if(expected == null || actual == null)
                         continue;
+                    if(expected.contains("IsArrayOf")){
+                        expected = expected.replaceAll("IsArrayOf", " ");
+                        String[] split = expected.split(" ");
+                        expected = split[0];
+                    }
 
                     if(expected.contains("Array")){
                         expected = expected.replaceAll("Array","");

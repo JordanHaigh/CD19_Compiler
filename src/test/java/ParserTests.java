@@ -3206,6 +3206,46 @@ public class ParserTests {
 
 
     @Test
+    public void semanticError_badarrayassign() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("types");
+        code.add("mystruct is");
+        code.add("x : integer");
+        code.add("end");
+
+        code.add("myarray is array[7] of mystruct");
+
+        code.add("arrays");
+        code.add("arrayA : myarray,");
+        code.add("arrayB : myarray");
+
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("arrayA[1] = arrayB[1];");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(2, parser.getSyntacticErrors().size());
+        assertEquals(false, parser.isSyntacticallyValid());
+
+    }
+
+    @Test
     public void semanticError_samevariableforfunc() {
         List<String> code = new ArrayList<>();
 
@@ -3240,6 +3280,57 @@ public class ParserTests {
         assertEquals(0, parser.getSemanticErrors().size());
         assertEquals(true, parser.isSyntacticallyValid());
         assertEquals(true, parser.isSemanticallyValid());
+
+    }
+
+    @Test
+    public void semanticError_badpassingarraytofunc() {
+        List<String> code = new ArrayList<>();
+
+        code.add("CD19 Prog");
+        code.add("types");
+        code.add("mystruct1 is");
+        code.add("x : integer");
+        code.add("end");
+
+        code.add("mystruct2 is");
+        code.add("x : integer");
+        code.add("end");
+
+        code.add("myarray1 is array[7] of mystruct1");
+        code.add("myarray2 is array[7] of mystruct2");
+
+        code.add("arrays");
+        code.add("variablearray1 : myarray1,");
+        code.add("variablearray2 : myarray2");
+
+        code.add("function myfunc(const a: myarray1) : void");
+        code.add("begin");
+        code.add("return;");
+        code.add("end");
+        code.add("main");
+        code.add("a : integer");
+        code.add("begin");
+        code.add("a = 1;");
+        code.add("myfunc(variablearray2);");
+        code.add("end");
+        code.add("CD19 Prog");
+
+        Scanner scanner = new Scanner(new CodeFileReader(code));
+        List<Token> tokens = scanner.getAllTokens();
+
+        Parser parser = new Parser(tokens);
+        TreeNode tree = parser.parse();
+        System.out.println(tree.prettyPrintTree());
+        for (SemanticErrorMessage message : parser.getSemanticErrors())
+            System.out.println(message.printAll());
+
+        for (SyntacticErrorMessage message : parser.getSyntacticErrors())
+            System.out.println(message.printAll());
+
+        assertEquals(1, parser.getSemanticErrors().size());
+        assertEquals(true, parser.isSyntacticallyValid());
+        assertEquals(false, parser.isSemanticallyValid());
 
     }
 }
