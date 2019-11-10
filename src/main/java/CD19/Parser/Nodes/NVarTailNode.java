@@ -5,7 +5,6 @@ import CD19.Parser.SymbolTable;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
-import sun.awt.Symbol;
 
 /**
  * Generates a vartail of the form:

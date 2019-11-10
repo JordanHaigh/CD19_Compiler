@@ -4,7 +4,6 @@ import CD19.Parser.Parser;
 import CD19.Parser.SymbolTableRecord;
 import CD19.Parser.TreeNode;
 import CD19.Scanner.Token;
-import sun.awt.Symbol;
 
 import java.util.List;
 
