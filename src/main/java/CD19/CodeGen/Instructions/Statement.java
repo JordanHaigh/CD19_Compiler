@@ -615,11 +615,18 @@ public class Statement{
 
 
     private static void generateBoolSection(CodeGenerator generator, TreeNode node){
-        if(node.getValue() == TreeNode.NBOOL){
+        if(node.getValue() == TreeNode.NBOOL ){
             List<TreeNode> boolList = node.detreeifyLogops();
             for(TreeNode n : boolList){
                 generateLogop(generator, n);
             }
+        }
+        else if(node.getValue() == TreeNode.NNOT){
+            List<TreeNode> boolList = node.detreeify();
+            for(TreeNode n : boolList){
+                generateLogop(generator, n);
+            }
+            generator.generate1Byte(OpCodes.NOT);
         }
         else{
             //one bool

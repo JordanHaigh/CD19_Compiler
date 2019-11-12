@@ -1,15 +1,21 @@
 1: CD19 test
-2: constants
-3:     MYCONST = 10, SECOND = 1
-4: 
-5: main
-6:     i : real, j : integer, k : integer
+2: 
+3: main
+4:     i : real, j : integer, k : integer
+5: 
+6: begin
 7: 
-8: begin
-9:     printline MYCONST;
-10:     i = 10 + MYCONST;
-11:     printline i;
-12: 
-13: end
-14: 
-15: CD19 test
+8:     /-- REPEATS WORK
+9:     repeat(i=0,j=10,k = 100)
+10:         printline "i is", i;
+11:         printline "j is", j;
+12:         /--printline k;
+13:         i+=1;
+14:         j+=7;
+15:         k+=5;
+16:     /--until((i > 10 and j < 30) or k == 125);
+17:     until((i < 10 and j > 20 ) or j > 18);
+18: 
+19: end
+20: 
+21: CD19 test

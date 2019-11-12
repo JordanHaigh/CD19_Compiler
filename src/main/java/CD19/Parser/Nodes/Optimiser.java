@@ -47,7 +47,14 @@ public class Optimiser {
                     break;
                 }
                 case TreeNode.NDIV:{
-                    int fusionedChildren = leftLexemeToInt / rightLexemeToInt;
+                    int fusionedChildren;
+                    if(rightLexemeToInt == 0){
+                        fusionedChildren = 0;
+                    }
+                    else{
+                       fusionedChildren = leftLexemeToInt / rightLexemeToInt;
+                    }
+
                     SymbolTableRecord record = new SymbolTableRecord(""+fusionedChildren, "Integer", parser.getScope());
                     node = new TreeNode(TreeNode.NILIT, record);
                     break;

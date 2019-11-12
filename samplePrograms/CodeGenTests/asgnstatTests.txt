@@ -1,7 +1,7 @@
 CD19 test
 
 main
-    i : real, j : integer, k : integer
+    i : real, j : real, k : integer
 
 begin
 

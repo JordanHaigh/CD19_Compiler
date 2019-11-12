@@ -335,10 +335,14 @@ public class TreeNode {
 
 
             iterator = iterator.getRight();
+
+            if(iterator == null)
+                break;
         }
 
-        deforestedNodes.add(iterator);
-        if(iterator.getMiddle() != null){
+        if(iterator != null)
+            deforestedNodes.add(iterator);
+        if(iterator != null && iterator.getMiddle() != null){
             TreeNode middle = iterator.getMiddle();
             int middleValue = middle.getValue();
             if(middleValue == NSTATS
@@ -353,7 +357,8 @@ public class TreeNode {
                     //do nothing
             }
             else{
-                deforestedNodes.add(iterator.getMiddle());
+                if(iterator != null)
+                    deforestedNodes.add(iterator.getMiddle());
             }
         }
 
@@ -379,9 +384,8 @@ public class TreeNode {
 
         if(node.getValue() == NSIMV ||
                 node.getValue() == NILIT ||
-                node.getValue() == NFLIT ||
-                node.getValue() == NFALS ||
-                node.getValue() == NTRUE
+                node.getValue() == NFLIT
+
         ){
             //ignore
         }
@@ -420,7 +424,8 @@ public class TreeNode {
     }
 
     public boolean nodeIsRelop(){
-        return nodeValue == NGRT || nodeValue == NGEQ || nodeValue == NLSS || nodeValue == NLEQ || nodeValue == NEQL || nodeValue ==  NNEQ;
+        return nodeValue == NGRT || nodeValue == NGEQ || nodeValue == NLSS || nodeValue == NLEQ || nodeValue == NEQL
+                || nodeValue ==  NNEQ || nodeValue == NFALS || nodeValue == NTRUE;
     }
 
 
